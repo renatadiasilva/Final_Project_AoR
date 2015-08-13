@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition>
+		<h:form id="form-playlists">
+			<!-- toolbar com os botoes adicionar editar excluir -->
+			<p:toolbar id="toolbar">
+				<p:toolbarGroup align="left"
+					style="margin-top:3px; margin-left:5px;">
+					<p:outputLabel value="Playlists"></p:outputLabel>
+				</p:toolbarGroup>
+
+				<!-- os botoes sao colocados à esquerda da toolbar -->
+				<p:toolbarGroup align="right">
+					<!--  menu de sort -->
+					<p:commandButton id="sortButton" value="Sort" type="button"
+						icon="ui-icon-arrow-2-n-s" />
+					<p:tieredMenu overlay="true" trigger="sortButton" my="left top"
+						at="left bottom" style="width:200px">
+						<p:submenu label="Name">
+							<p:menuitem value="Ascendent"
+								actionListener="#{playlistCDIBean.sortName('asc')}"
+								update=":form-playlists:gridplaylists" icon="ui-icon-arrow-1-n" />
+							<p:menuitem value="Descendent"
+								actionListener="#{playlistCDIBean.sortName('desc')}"
+								update=":form-playlists:gridplaylists" icon="ui-icon-arrow-1-s" />
+						</p:submenu>
+						<p:submenu label="Date">
+							<p:menuitem value="Ascendent"
+								actionListener="#{playlistCDIBean.sortDate('asc')}"
+								update=":form-playlists:gridplaylists" icon="ui-icon-arrow-1-n" />
+							<p:menuitem value="Descendent"
+								actionListener="#{playlistCDIBean.sortDate('desc')}"
+								update=":form-playlists:gridplaylists" icon="ui-icon-arrow-1-s" />
+						</p:submenu>
+						<p:submenu label="Size">
+							<p:menuitem value="Ascendent"
+								actionListener="#{playlistCDIBean.sortSize('asc')}"
+								update=":form-playlists:gridplaylists" icon="ui-icon-arrow-1-n" />
+							<p:menuitem value="Descendent"
+								actionListener="#{playlistCDIBean.sortSize('desc')}"
+								update=":form-playlists:gridplaylists" icon="ui-icon-arrow-1-s" />
+						</p:submenu>
+					</p:tieredMenu>
+					<span class="ui-separator"><span
+						class="ui-icon ui-icon-grip-dotted-vertical" /> </span>
+					<!-- botao nova playlist -->
+					<p:commandButton type="button" icon="ui-icon-document"
+						onclick="PF('dialogPlaylist').show(); return false;">
+						<p:resetInput target=":form-nova-playlist:playlist-dialog"></p:resetInput>
+					</p:commandButton>
+
+					<!-- Seleccionar editar playlist -->
+					<p:commandButton type="button" icon="ui-icon-pencil"
+						disabled="#{playlistCDIBean.selectedPlaylist==null}"
+						onclick="PF('dg-edit-playlist').show(); return false;"
+						update=":form-edit-playlist:playlist-edit-dialog">
+					</p:commandButton>
+
+					<!-- Seleccionar eliminar playlist -->
+					<p:commandButton type="button" icon="ui-icon-trash"
+						disabled="#{playlistCDIBean.selectedPlaylist==null}"
+						onclick="PF('exclusaoDialog').show(); return false;">
+					</p:commandButton>
+
+					<p:confirmDialog header="Confirmação de eliminação"
+						message="Pretende eliminar esta playlist?"
+						widgetVar="exclusaoDialog" showEffect="explode"
+						hideEffect="explode">
+						<p:commandButton value="Yes" action="#{playlistCDIBean.excluir()}"
+							oncomplete="PF('exclusaoDialog').hide()"
+							update="gridplaylists toolbar :right-bar :right-panel"></p:commandButton>
+						<p:button value="Cancel"
+							onclick="PF('exclusaoDialog').hide(); return false;" />
+					</p:confirmDialog>
+
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<!-- Table com as playlists -->
+			<p:dataTable id="gridplaylists" var="var"
+				value="#{playlistCDIBean.playlists}" selectionMode="single"
+				selection="#{playlistCDIBean.selectedPlaylist}" rowKey="#{var.id}"
+				scrollable="true" scrollHeight="500" scrollRows="20"
+				styleClass="borderless">
+				<f:facet name="header">
+				</f:facet>
+				<p:ajax event="rowSelect" listener="#{playlistCDIBean.onRowSelect}"
+					update=":form-playlists:toolbar :form-edit-playlist:playlist-edit-dialog :right-panel" />
+				<p:ajax event="rowUnselect" update="form-playlists:toolbar" />
+				<p:column headerText="Name">
+					<p:outputLabel value="#{var.nome}"></p:outputLabel>
+				</p:column>
+				<p:column headerText="Date">
+					<p:outputLabel value="#{var.data_criacao}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Size">
+					<p:outputLabel value="#{var.tamanho}"></p:outputLabel>
+				</p:column>
+
+			</p:dataTable>
+			<p:growl id="msgs" life="2000" autoUpdate="true" />
+		</h:form>
+
+		<!-- ************************ Dialog NOVA playlist ************************-->
+		<h:form id="form-nova-playlist">
+			<p:dialog header="Playlist" id="playlist-dialog"
+				widgetVar="dialogPlaylist" minHeight="120" showEffect="explode"
+				hideEffect="explode" modal="true" height="100" resizable="false">
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Nome: " for="playName" />
+					<p:inputText id="playName" required="true"
+						requiredMessage="A name is required." size="30"
+						value="#{playlistCDIBean.tempName}"></p:inputText>
+				</p:panelGrid>
+				<p:button value="Cancel"
+					style="width:100px; margin-right:10px; margin-top:15px;"
+					onclick="PF('dialogPlaylist').hide(); return false;"
+					icon="ui-icon-cancel"></p:button>
+
+				<p:commandButton value="Ok"
+					style="width:100px;margin-left:10px;margin-top:15px;"
+					action="#{playlistCDIBean.save}"
+					oncomplete="if (!args.validationFailed)PF('dialogPlaylist').hide();"
+					update="form-playlists:gridplaylists form-playlists:toolbar form-nova-playlist:playlist-dialog :right-bar :right-panel"
+					icon="ui-icon-check"></p:commandButton>
+			</p:dialog>
+		</h:form>
+		<!-- ************************ Dialog Edit PLAYLIST ****************************-->
+		<h:form id="form-edit-playlist">
+
+			<p:dialog header="Edit Playlist" id="playlist-edit-dialog"
+				widgetVar="dg-edit-playlist" minHeight="120" modal="true"
+				showEffect="explode" hideEffect="explode" height="100"
+				resizable="false">
+
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Nome: " for="editName" />
+					<p:inputText id="editName" size="30"
+						value="#{playlistCDIBean.nomeInicial}">
+					</p:inputText>
+				</p:panelGrid>
+
+				<p:button value="Cancel" type="button"
+					style="width:100px; margin-right:10px; margin-top:15px;"
+					onclick="PF('dg-edit-playlist').hide(); return false;"
+					icon="ui-icon-cancel"></p:button>
+
+				<p:commandButton value="Ok"
+					style="width:100px;margin-left:10px;margin-top:15px;"
+					action="#{playlistCDIBean.updateName}"
+					oncomplete="if (!args.validationFailed)PF('dg-edit-playlist').hide()"
+					update="form-playlists:gridplaylists form-playlists:toolbar :right-bar :right-panel"
+					icon="ui-icon-check"></p:commandButton>
+			</p:dialog>
+		</h:form>
+	</ui:composition>
+</h:body>
+</html>

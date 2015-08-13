@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+	<!-- Seleccionar o tipo de pesquisa de musicas na base de dados: Artista -->
+	<h:form id="form-search">
+		<p:toolbar id="toolbar-search">
+			<!-- os botoes sao colocados Ã  esquerda da toolbar -->
+			<p:toolbarGroup name="left">
+				<span class="ui-separator"><span /> </span>
+				<!-- escolher musica por titulo -->
+				<p:outputLabel for="menu1" value="Title: "
+					style="vertical-align:super; margin:5px;" />
+				<p:selectOneMenu id="menu1"
+					value="#{pesquisaAuxiliar.selectedItemTitulo}" label="Title"
+					filter="true" filterMatchMode="startsWith"
+					panelStyle="width:200px;" style="width:180px; margin-top:4px;">
+					<p:ajax listener="#{pesquisaAuxiliar.findMusicaByTitulo()}"
+						update="display" />
+					<f:selectItem itemLabel="Search Title" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{pesquisaAuxiliar.listaTitulos}" />
+				</p:selectOneMenu>
+				<span class="ui-separator"><span /> </span>
+
+				<!-- escolher musica por artista e titulo -->
+				<p:outputLabel for="menu3" value="Artist and Title: "
+					style="vertical-align:super; margin:5px;" />
+				<p:selectOneMenu id="menu3"
+					value="#{pesquisaAuxiliar.artistaSeleccionado}" label="Nome"
+					filter="true" filterMatchMode="startsWith"
+					panelStyle="width:200px;" style="width:180px; margin-top:4px;">
+					<p:ajax listener="#{pesquisaAuxiliar.onArtistaChange}"
+						update="titulo3 display" />
+					<f:selectItem itemLabel="Search Artist" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{pesquisaAuxiliar.listaArtistas}" />
+				</p:selectOneMenu>
+
+				<p:selectOneMenu id="titulo3"
+					value="#{pesquisaAuxiliar.tituloSeleccionadoPorArtista}"
+					panelStyle="width:200px; margin-top:2px;"
+					style="width:180px; margin-top:4px;">
+					<p:ajax listener="#{pesquisaAuxiliar.procuraMusica()}"
+						update="display" />
+					<f:selectItem itemLabel="Select Title" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{pesquisaAuxiliar.listaTitulosPorArtista}" />
+				</p:selectOneMenu>
+
+			</p:toolbarGroup>
+		</p:toolbar>
+		<!-- tabela para listar as musicas -->
+
+		<p:dataTable id="display" value="#{pesquisaAuxiliar.listaPesquisa}"
+			var="musica" scrollable="true" scrollHeight="400" rows="20"
+			scrollRows="20" height="400"
+			selection="#{pesquisaAuxiliar.musicaSeleccionada}"
+			selectionMode="single" rowKey="#{musica.id}" styleClass="borderless">
+			<p:ajax event="rowSelect" listener="#{pesquisaAuxiliar.onRowSelect}"
+				update=":right-bar" />
+			<p:column headerText="Title" width="20">
+				<h:outputText value="#{musica.titulo}" />
+			</p:column>
+
+			<p:column headerText="Artist" width="20">
+				<h:outputText value="#{musica.artista}" />
+			</p:column>
+
+			<p:column headerText="Album" width="20">
+				<h:outputText value="#{musica.album}" />
+			</p:column>
+
+			<p:column headerText="Release Date" width="20">
+				<h:outputText value="#{musica.anoLancamento}" />
+			</p:column>
+
+			<!-- Duarte Start -->
+			<p:column headerText="Lyric" width="20">
+
+				<p:commandButton
+					value="#{lyricWebServices.lyricButtonValue(musica)}"
+					action="#{lyricWebServices.lyricButtonAction(musica)}"
+					oncomplete="PF('edicaoLyric').show()" process="@this" update="frm3"
+					style="width:100%;">
+					<p:resetInput target=" frm3:painel-dialog3" />
+				</p:commandButton>
+
+			</p:column>
+			<!-- Duarte End -->
+
+		</p:dataTable>
+	</h:form>
+</ui:composition>
+</html>

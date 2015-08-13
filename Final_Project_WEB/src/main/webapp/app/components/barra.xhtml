@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+	<h:graphicImage library="images" name="icon.jpg"
+		style="float:left; height:70px;" />
+	<h1 style="float: left; margin-left: 25px; margin-top: 15px;">PrimeMusic</h1>
+	<!--  botao logout -->
+	<h:form id="form-logout">
+		<p:commandButton value="Logout" icon="ui-icon-power"
+			action="#{loginStart.logout}" ajax="false"
+			style="float:right; height:32px; margin-top:19px;margin-right: 10px;" />
+	</h:form>
+
+	<h:form id="form-edit">
+		<!-- menu editar informacao de conta -->
+		<p:commandButton id="dropbutton" value="My Account" type="button"
+			icon="ui-icon-person"
+			style="float:right; height:32px; margin-top:19px;margin-right: 10px;" />
+		<p:menu overlay="true" trigger="dropbutton" my="right top"
+			at="right bottom">
+			<p:submenu label="Account Options">
+				<p:menuitem value="Edit Info" icon="ui-icon-pencil" title="Edit"
+					oncomplete="PF('edicaoDadosDialog').show()" process="@this"
+					update="frmEditarDados" />
+
+				<p:menuitem value="Edit Password" icon="ui-icon-key"
+					title="Edit Password" oncomplete="PF('edicaoPassDialog').show()"
+					process="@this" update="frmEditarPass">
+					<p:resetInput target="frmEditarPass:formEditarPass" />
+				</p:menuitem>
+				<p:menuitem value="Close Account" icon="ui-icon-closethick"
+					onclick="PF('exclusaoContaDialog').show(); return false;" />
+			</p:submenu>
+		</p:menu>
+	</h:form>
+	<h:form id="play-form"
+		style="float:right; margin-top:19px; margin-right: 10px;">
+		<audio src="#{playlistCDIBean.url}" controls="controls"
+			autoplay="autoplay" />
+		<!-- 		<p:media id="media" value="#{playlistCDIBean.url}" player="flash" -->
+		<!-- 			width="350px" height="55px" style="float:right; margin-top:19px; margin-right: 10px; padding:0px;" > -->
+		<!-- 			<f:param name="autoPlay" value="true" /> -->
+		<!-- 		</p:media> -->
+	</h:form>
+
+	<!-- Dialog encerrar conta -->
+	<h:form id="form-delete">
+		<p:confirmDialog header="Confirmação de eliminação"
+			message="Tem a certeza que pretende eliminar a conta?"
+			showEffect="explode" hideEffect="explode"
+			widgetVar="exclusaoContaDialog">
+			<p:commandButton value="Yes" action="#{userSession.deleteAccount}"
+				oncomplete="PF('exclusaoContaDialog').hide()"></p:commandButton>
+			<p:button value="Cancel"
+				onclick="PF('exclusaoContaDialog').hide(); return false;" />
+		</p:confirmDialog>
+	</h:form>
+
+	<!-- dialog editar info -->
+	<h:form id="frmEditarDados">
+		<!-- Formulário Editar Dados  -->
+		<p:dialog header="Edit Info" widgetVar="edicaoDadosDialog"
+			showEffect="explode" hideEffect="explode" id="formEditarDados"
+			resizable="false" modal="true" closeOnEscape="true">
+
+			<!-- formulário campos user -->
+			<h:panelGrid columns="2" id="painel-dialogEditarDados">
+				<p:outputLabel value="Name" for="nome" />
+				<p:inputText id="nome" size="20" maxlenght="40"
+					value="#{userSession.current.nome}" required="true"
+					requiredMessage="A name is required." />
+
+				<p:outputLabel value="E-mail" for="eMail" />
+				<p:inputText id="eMail" size="20" maxlenght="40"
+					value="#{userSession.current.mail}" required="true"
+					requiredMessage="An email is required." />
+			</h:panelGrid>
+			<p:button value="Cancel" style=" margin-right:10px; margin-top:10px;"
+				onclick="PF('edicaoDadosDialog').hide(); return false;" />
+
+			<p:commandButton value="Save" id="botao-editar"
+				style=" margin-left:10px;margin-top:10px;"
+				action="#{userSession.editar()}"
+				oncomplete="if (!args.validationFailed)PF('edicaoDadosDialog').hide()" />
+		</p:dialog>
+	</h:form>
+
+	<!-- DIALOG Editar PASSWORD -->
+	<h:form id="frmEditarPass">
+		<!-- Formulário Editar Dados  -->
+		<p:dialog header="Edit Password" widgetVar="edicaoPassDialog"
+			showEffect="explode" hideEffect="explode" id="formEditarPass"
+			resizable="false" modal="true" closeOnEscape="true">
+
+			<!-- formulário password -->
+			<h:panelGrid columns="2" id="painel-dialogEditarPass">
+
+				<h:outputLabel for="pwd1" value="New Password:" />
+				<p:password id="pwd1" value="#{userSession.password}" match="pwd2"
+					label="Password 1" required="true" />
+				<h:outputLabel for="pwd2" value="Confirm:" />
+				<p:password id="pwd2" label="Password 2" required="true" />
+			</h:panelGrid>
+			<p:button value="Cancel" style=" margin-right:10px; margin-top:10px;"
+				onclick="PF('edicaoPassDialog').hide(); return false;" />
+			<p:commandButton value="Save" type="submit"
+				style="margin-left:10px;margin-top:10px;"
+				action="#{userSession.editarPass()}"
+				oncomplete="if (!args.validationFailed)PF('edicaoPassDialog').hide()" />
+		</p:dialog>
+	</h:form>
+
+</ui:composition>
+</html>

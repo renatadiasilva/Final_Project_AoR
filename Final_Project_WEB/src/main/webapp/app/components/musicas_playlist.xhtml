@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition>
+		<h:form id="music-form">
+
+			<p:dataTable id="musicas-table"
+				value="#{playlistCDIBean.selectedPlaylist.musicas}" var="musica"
+				scrollable="true" scrollHeight="500" scrollRows="20" height="500"
+				styleClass="borderless">
+
+				<p:column headerText="Play" width="8%">
+					<p:commandButton icon="ui-icon-triangle-1-e" title="Play music"
+						action="#{playlistCDIBean.play}" update=":play-form"
+						process="@this">
+						<f:setPropertyActionListener
+							target="#{playlistCDIBean.musicaPlay}" value="#{musica}" />
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Title" width="17%">
+					<h:outputText value="#{musica.titulo}" />
+				</p:column>
+				<p:column headerText="Artist" width="17%">
+					<h:outputText value="#{musica.artista}" />
+				</p:column>
+
+				<p:column headerText="Album" width="17%">
+					<h:outputText value="#{musica.album}" />
+				</p:column>
+
+				<p:column headerText="Release Date" width="17%">
+					<h:outputText value="#{musica.anoLancamento}" />
+				</p:column>
+
+				<!-- Duarte Start -->
+				<p:column headerText="Lyric" width="16%">
+
+					<p:commandButton
+						value="#{lyricWebServices.lyricButtonValue(musica)}"
+						action="#{lyricWebServices.lyricButtonAction(musica)}"
+						oncomplete="PF('edicaoLyric').show()" process="@this"
+						update="frm3" style="width:100%;">
+						<p:resetInput target="frm3:painel-dialog3" />
+					</p:commandButton>
+
+				</p:column>
+				<!-- Duarte End -->
+
+				<p:column headerText="Remove" width="8%">
+					<p:commandButton icon="ui-icon-trash" title="Delete"
+						oncomplete="PF('remover-da-playlist').show(); return false;"
+						update=":music-form:dialog-removeMusica">
+						<f:setPropertyActionListener
+							target="#{playlistCDIBean.musicaRemover}" value="#{musica}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:confirmDialog header="Removal confirmation" showEffect="explode"
+				hideEffect="explode" message="Remove music from playlist?"
+				widgetVar="remover-da-playlist" id="dialog-removeMusica">
+				<p:commandButton value="Yes"
+					action="#{playlistCDIBean.removeDaPlaylist}"
+					oncomplete="PF('remover-da-playlist').hide()"
+					update=":form-playlists:gridplaylists :music-form:musicas-table"
+					process="@this"></p:commandButton>
+				<p:button value="Cancel"
+					onclick="PF('remover-da-playlist').hide(); return false;" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:composition>
+</h:body>
+</html>

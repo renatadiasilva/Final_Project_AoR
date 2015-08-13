@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+	<!-- TABELA TODAS MUSICAS POR DONO -->
+	<h:form id="frm">
+		<!-- toolbar com os botoes adicionar editar excluir -->
+		<p:toolbar id="toolbar">
+			<!-- os botoes sao colocados à  esquerda da toolbar -->
+			<p:toolbarGroup name="left">
+				<!-- botao nova musica -->
+				<p:commandButton icon="ui-icon-plus"
+					oncomplete="PF('edicaoMusicaDialog').show()" process="@this"
+					update="frm1" action="#{musicaCDIBean.criarNovaMusica()}">
+					<p:resetInput target="frm1:painel-dialog" />
+				</p:commandButton>
+
+				<!-- separador dos botoes entre nova mÃºsica e os restantes editar eliminar e exportar -->
+				<span class="ui-separator"> <span
+					class="ui-icon ui-icon-grip-dotted-vertical" />
+				</span>
+
+				<!-- Seleccionar editar musica -->
+				<p:commandButton icon="ui-icon-pencil" title="Edit music"
+					disabled="#{musicaCDIBean.musicaSeleccionada==null}"
+					oncomplete="PF('edicaoMusicaDialog2').show()" process="@this"
+					update="frm2">
+					<p:resetInput target="frm2:painel-dialog2" />
+				</p:commandButton>
+
+				<!-- Seleccionar eliminar musica -->
+				<p:commandButton icon="ui-icon-trash" title="Delete music"
+					disabled="#{musicaCDIBean.musicaSeleccionada==null}"
+					onclick="PF('exclusaoMusicaDialog').show(); return false;">
+				</p:commandButton>
+				<p:confirmDialog header="Confirm elimination"
+					message="Delete this music?" widgetVar="exclusaoMusicaDialog"
+					showEffect="explode" hideEffect="explode">
+					<p:commandButton value="Yes" action="#{musicaCDIBean.excluir()}"
+						oncomplete="PF('exclusaoMusicaDialog').hide()"
+						update=":right-panel :right-bar" />
+					<p:button value="Cancel"
+						onclick="PF('exclusaoMusicaDialog').hide(); return false;" />
+				</p:confirmDialog>
+			</p:toolbarGroup>
+		</p:toolbar>
+
+		<!-- tabela para listar todas as musicas por dono -->
+		<p:dataTable value="#{musicaCDIBean.todasMusicasByDono}" var="musica"
+			id="musica-table" scrollable="true" scrollHeight="460" rows="20"
+			scrollRows="20" height="500"
+			selection="#{musicaCDIBean.musicaSeleccionada}"
+			selectionMode="single" rowKey="#{musica.id}" styleClass="borderless">
+
+			<p:ajax event="rowSelect"
+				update=":frm:toolbar :right-panel :right-bar"
+				listener="#{musicaCDIBean.onRowSelect}" />
+			<p:ajax event="rowUnselect" update=":frm:toolbar" />
+
+			<p:column headerText="Title" width="20">
+				<h:outputText value="#{musica.titulo}" />
+			</p:column>
+
+			<p:column headerText="Artist" width="20">
+				<h:outputText value="#{musica.artista}" />
+			</p:column>
+
+			<p:column headerText="Album" width="20">
+				<h:outputText value="#{musica.album}" />
+			</p:column>
+
+			<p:column headerText="Release Date" width="20">
+				<h:outputText value="#{musica.anoLancamento}" />
+			</p:column>
+
+			<!-- Duarte Start -->
+			<p:column headerText="Lyric" width="20">
+
+				<p:commandButton
+					value="#{lyricWebServices.lyricButtonValue(musica)}"
+					action="#{lyricWebServices.lyricButtonAction(musica)}"
+					oncomplete="PF('edicaoLyric').show()" process="@this"
+					update="frm3" style="width:100%;">
+					<p:resetInput target="frm3:painel-dialog3" />
+				</p:commandButton>
+
+			</p:column>
+			<!-- Duarte End -->
+
+		</p:dataTable>
+	</h:form>
+
+	<h:form id="frm1" enctype="multipart/form-data">
+		<!-- Formulario Nova musica  -->
+		<p:dialog header="Add Song" widgetVar="edicaoMusicaDialog"
+			id="formNovaMusica" resizable="false" modal="true" width="250"
+			showEffect="explode" hideEffect="explode" height="250"
+			closeOnEscape="true">
+
+			<!-- formulario campos da musica -->
+			<h:panelGrid columns="2" id="painel-dialog">
+				<p:outputLabel value="Title" for="titulo" />
+				<p:inputText id="titulo" size="20" maxlenght="40"
+					value="#{musicaCDIBean.musicaCriacao.titulo}" />
+
+				<p:outputLabel value="Artist" for="artista" />
+				<p:inputText id="artista" size="20" maxlenght="40"
+					value="#{musicaCDIBean.musicaCriacao.artista}" />
+
+				<p:outputLabel value="Album" for="album" />
+				<p:inputText id="album" size="20" maxlenght="30"
+					value="#{musicaCDIBean.musicaCriacao.album}" />
+
+				<p:outputLabel value="Year" />
+				<p:calendar pattern="dd/MM/yyyy" mask="99.99.9999" navigator="true"
+					mindate="1/1/50"
+					value="#{musicaCDIBean.musicaCriacao.anoLancamento}" />
+
+				<p:outputLabel value="File" for="path" />
+				<p:fileUpload id="path" value="#{musicaCDIBean.file}"
+					mode="advanced" skinSimple="true"
+					fileUploadListener="#{musicaCDIBean.fileUploadListener}"
+					auto="true" sizeLimit="9000000"
+					invalidSizeMessage="Max file size is 9mb" required="true">
+				</p:fileUpload>
+			</h:panelGrid>
+			<p:commandButton value="Add" id="botao-salvar"
+				style="width:60px; margin-top:15px;"
+				action="#{musicaCDIBean.salvar()}"
+				oncomplete="if (!args.validationFailed)PF('edicaoMusicaDialog').hide()"
+				update=":right-panel :right-bar" />
+		</p:dialog>
+	</h:form>
+
+	<h:form id="frm2">
+		<!-- Formulario Editar musica  -->
+		<p:dialog header="Edit Song" widgetVar="edicaoMusicaDialog2"
+			id="formEditarMusica" resizable="false" modal="true"
+			showEffect="explode" hideEffect="explode" closeOnEscape="true">
+
+			<!-- formulÃ¡rio campos da musica -->
+			<h:panelGrid columns="2" id="painel-dialog2">
+				<p:outputLabel value="Title" for="titulo1" />
+				<p:inputText id="titulo1" size="20" maxlenght="40"
+					value="#{musicaCDIBean.musicaSeleccionada.titulo}" />
+
+				<p:outputLabel value="Artist" for="artista1" />
+				<p:inputText id="artista1" size="20" maxlenght="40"
+					value="#{musicaCDIBean.musicaSeleccionada.artista}" />
+
+				<p:outputLabel value="Album" for="album1" />
+				<p:inputText id="album1" size="20" maxlenght="30"
+					value="#{musicaCDIBean.musicaSeleccionada.album}" />
+			</h:panelGrid>
+			<p:commandButton value="Save" id="botao-editar"
+				action="#{musicaCDIBean.editar()}"
+				oncomplete="if (!args.validationFailed)PF('edicaoMusicaDialog2').hide()"
+				update=":right-panel :right-bar" />
+		</p:dialog>
+	</h:form>
+
+</ui:composition>
+</html>
