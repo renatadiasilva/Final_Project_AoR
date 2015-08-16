@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public abstract class GenericDao<O> {
 
-	@PersistenceContext(unitName = "Projeto4")
+	@PersistenceContext(unitName = "ProjetoFinal")
 	protected EntityManager em;
 
 	private Class<O> entityClass;
