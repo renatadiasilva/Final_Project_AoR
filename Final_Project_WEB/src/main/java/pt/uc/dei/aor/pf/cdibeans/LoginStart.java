@@ -60,8 +60,6 @@ public class LoginStart implements Serializable{
 		return mail;
 	}
 
-
-
 	public void setMail(String mail) {
 		this.mail = mail;
 	}

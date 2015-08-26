@@ -2,6 +2,6 @@
 
 <jboss-web>
 
-<security-domain>ProjetoFinal</security-domain>
+	<security-domain>ProjetoFinal</security-domain>
 
 </jboss-web>

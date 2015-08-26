@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import pt.uc.dei.aor.pf.entities.Utilizador;
 
+
 public class UsersCount {
 
 	private static int num = 0;

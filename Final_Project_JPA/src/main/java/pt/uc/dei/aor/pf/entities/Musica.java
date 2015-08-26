@@ -22,9 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
-@Entity
-@Table
-@XmlRootElement(name="musica")
+
 public class Musica implements Serializable {
 
 	private static final long serialVersionUID = 9008393849875735770L;

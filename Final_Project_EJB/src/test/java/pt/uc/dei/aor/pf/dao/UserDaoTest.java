@@ -21,6 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pt.uc.dei.aor.pf.entities.Musica;
 import pt.uc.dei.aor.pf.entities.Utilizador;
 
+
 @RunWith(MockitoJUnitRunner.class)
 public class UserDaoTest {
 

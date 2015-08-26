@@ -1,0 +1,77 @@
+@CHARSET "UTF-8";
+
+/* Override PrimeFaces Font */
+.ui-widget {
+	font-family: ITJobs_1;
+}
+
+input {
+	font-family: ITJobs_1;
+}
+
+/* p:inputText, etc */
+.ui-inputfield {
+	padding: 0px;
+	box-shadow: none;
+	border-radius: 0px;
+	border-style: none;
+	background-color: #DBDBDB;
+	color: #5E5E5E;
+	text-shadow: none;
+}
+
+/* Erros - background da fonte nos campos em falta/erro */
+.ui-outputlabel.ui-state-error {
+	background: none;
+}
+
+/* Erros, infos - caixa das mensagens */
+.ui-messages-error {
+	border-radius: 0px;
+	border: none;
+	padding: 5px;
+}
+
+.ui-messages-info {
+	border-radius: 0px;
+	border: none;
+	padding: 5px;
+}
+
+.ui-messages-error-icon {
+	/* Esconde o ícone */
+	visibility: hidden;
+}
+
+.ui-messages-info-icon {
+	/* Esconde o ícone */
+	visibility: hidden;
+}
+
+/* p:commandButton */
+.ui-button {
+	box-shadow: none;
+	border-radius: 0px;
+	border-style: none;
+	
+	/* Cor primária */
+	/*background-color: #3F51B5;*/
+	background: #3F51B5;
+	
+	color: #FFF;
+	text-shadow: none;
+}
+
+.ui-button:hover {
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: #ff4081;
+}
+
+/* p:calendar date-picker */
+.ui-datepicker {
+	border-radius: 0px;
+	color: #3F51B5;
+	text-shadow: none;
+	font-weight: normal;
+}

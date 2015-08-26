@@ -6,6 +6,7 @@ import javax.ejb.Local;
 
 import pt.uc.dei.aor.pf.entities.Utilizador;
 
+
 @Local
 public interface UserInterface {
 

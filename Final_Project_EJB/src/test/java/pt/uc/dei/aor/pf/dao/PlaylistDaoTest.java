@@ -24,6 +24,7 @@ import pt.uc.dei.aor.pf.entities.Musica;
 import pt.uc.dei.aor.pf.entities.Playlist;
 import pt.uc.dei.aor.pf.entities.Utilizador;
 
+
 @RunWith(MockitoJUnitRunner.class)
 public class PlaylistDaoTest {
 

@@ -18,12 +18,11 @@
 	</login-config>
 
 	<security-constraint>
-		<display-name>Playlist</display-name>
+		<display-name>ProjFinal</display-name>
 		<web-resource-collection>
 			<web-resource-name>Protected Area</web-resource-name>
 			<description></description>
-			<url-pattern></url-pattern>
-		
+			<url-pattern>/admin/*</url-pattern>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
 			<http-method>HEAD</http-method>

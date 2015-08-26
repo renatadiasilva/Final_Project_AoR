@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.entities.Playlist;
 import pt.uc.dei.aor.pf.entities.Utilizador;
 
+
 @Stateless
 public class PlaylistDao extends GenericDao<Playlist> {
 	

@@ -21,8 +21,7 @@ import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-@Entity
-@Table(name = "playlists")
+
 @NamedQueries({
 @NamedQuery(name="PlaylistName.ASC", query="select p from Playlist p where p.dono.id = :userId order by p.nome asc"),
 @NamedQuery(name="PlaylistName.DESC", query="select p from Playlist p where p.dono.id = :userId order by p.nome desc"),
