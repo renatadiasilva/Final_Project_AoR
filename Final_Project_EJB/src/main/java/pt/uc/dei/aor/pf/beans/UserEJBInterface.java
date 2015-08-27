@@ -7,7 +7,7 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
 @Local
-public interface UserEntityInterface{
+public interface UserEJBInterface{
 	public abstract void save(UserEntity userEntity);
 	public abstract void update(UserEntity userEntity);
 	public abstract void delete(UserEntity userEntity);

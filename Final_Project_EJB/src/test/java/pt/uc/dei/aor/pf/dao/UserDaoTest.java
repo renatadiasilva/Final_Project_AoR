@@ -35,7 +35,7 @@ public class UserDaoTest {
 	Utilizador utilizador;
 
 	@InjectMocks
-	UserDao ejb;
+	Old_UserDao ejb;
 
 	@Test
 	public void fazLoginPorUtilizador() {

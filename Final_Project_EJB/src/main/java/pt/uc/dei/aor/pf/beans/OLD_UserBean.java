@@ -18,17 +18,17 @@ import org.slf4j.LoggerFactory;
 
 
 import pt.uc.dei.aor.pf.dao.MusicaDao;
-import pt.uc.dei.aor.pf.dao.UserDao;
+import pt.uc.dei.aor.pf.dao.Old_UserDao;
 import pt.uc.dei.aor.pf.entities.Musica;
 import pt.uc.dei.aor.pf.entities.Utilizador;
 
 @Stateless
-public class UserBean implements UserInterface {
+public class OLD_UserBean implements UserInterface {
 	
-	private static final Logger log = LoggerFactory.getLogger(UserBean.class);
+	private static final Logger log = LoggerFactory.getLogger(OLD_UserBean.class);
 	
 	@EJB
-	UserDao userDao;
+	Old_UserDao userDao;
 	
 	@EJB
 	MusicaDao musicaDao;

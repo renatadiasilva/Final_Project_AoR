@@ -3,14 +3,14 @@ package pt.uc.dei.aor.pf.beans;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import pt.uc.dei.aor.pf.dao.UserEntityDao;
+import pt.uc.dei.aor.pf.dao.UserDao;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
-public class UserEntityBean implements UserEntityInterface {
+public class UserEJBImp implements UserEJBInterface {
 
 	@EJB
-	private UserEntityDao loginTestsDao;
+	private UserDao loginTestsDao;
 
 	@Override
 	public void save(UserEntity user){

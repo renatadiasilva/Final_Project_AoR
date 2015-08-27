@@ -1,4 +1,4 @@
-package pt.uc.dei.aor.pf.DGeRS;
+package pt.uc.dei.aor.pf.cdibeans;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import pt.uc.dei.aor.pf.beans.UserEntityInterface;
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ public class LoginTestsCDI implements Serializable {
 	private static final long serialVersionUID = -5595743605410577249L;
 	
 	@Inject
-	UserEntityInterface userEntityBean;
+	UserEJBInterface userEntityBean;
 
 	public LoginTestsCDI() {
 	}
