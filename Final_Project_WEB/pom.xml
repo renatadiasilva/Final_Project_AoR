@@ -35,8 +35,8 @@
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<!-- Theme -->
-			<artifactId>default</artifactId>
-			<version>1.0.10</version>
+			<artifactId>aristo</artifactId>
+			<version>1.0.1</version>
 		</dependency>
 
 		<!-- dependencia do weld -->
