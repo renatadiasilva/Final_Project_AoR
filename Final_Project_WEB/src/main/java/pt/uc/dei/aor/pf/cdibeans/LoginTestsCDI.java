@@ -7,7 +7,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.beans.UserEJBInterfaceRENATA;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ public class LoginTestsCDI implements Serializable {
 	private static final long serialVersionUID = -5595743605410577249L;
 	
 	@Inject
-	UserEJBInterface userEntityBean;
+	UserEJBInterfaceRENATA userEntityBean;
 
 	public LoginTestsCDI() {
 	}

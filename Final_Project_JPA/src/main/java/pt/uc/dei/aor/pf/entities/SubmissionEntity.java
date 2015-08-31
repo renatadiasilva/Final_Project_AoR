@@ -55,6 +55,7 @@ public class SubmissionEntity implements Serializable {
 	@Column(name="motivationLetter")
 	private String motivationLetter;
 
+	// aqui???
 	@Column(name="linkedin")
 	private String linkedin;
 
@@ -80,6 +81,7 @@ public class SubmissionEntity implements Serializable {
 	@Column(name="proposal", nullable = true)
 	private String proposal;
 
+	// atributo dateOfHired (para relatório tempo médio de contratação)
 	// Nullable
 	@Column(name="hired", nullable = true)
 	private boolean hired;

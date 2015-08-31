@@ -32,12 +32,6 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public PositionEntity findPositionById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<PositionEntity> findAll() {
 		// TODO Auto-generated method stub
 		return null;
@@ -94,17 +88,36 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public List<PositionEntity> findPositions(Date openingDate1,
-			Date openingDate2, String positionCode, String title,
-			String location, String currentState, String company,
-			String tecnhicalArea, UserEntity positionManager) {
+	public PositionEntity find(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public List<PositionEntity> findPositionsByAdmin(UserEntity positionCreator) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
-	public List<PositionEntity> findPositionsByCandidate(UserEntity candidate) {
+	public List<PositionEntity> findPositions(Date openingDate1,
+			Date openingDate2, String positionCode, String title,
+			String location, String currentState, String company,
+			String tecnhicalArea, UserEntity positionManager,
+			UserEntity positionCreator) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PositionEntity> findOpenPositions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PositionEntity> findPositionsByCandidate(
+			UserEntity candidate) {
 		// TODO Auto-generated method stub
 		return null;
 	}

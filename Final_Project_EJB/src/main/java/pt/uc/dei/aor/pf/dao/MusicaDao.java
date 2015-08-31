@@ -15,7 +15,7 @@ import pt.uc.dei.aor.pf.entities.Utilizador;
 
 
 @Stateless
-public class MusicaDao extends GenericDao<Musica>{
+public class MusicaDao extends OLD_GenericDao<Musica>{
 
 	private static final Logger log = LoggerFactory.getLogger(MusicaDao.class);
 	

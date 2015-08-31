@@ -12,7 +12,7 @@ import pt.uc.dei.aor.pf.entities.Utilizador;
 
 
 @Stateless
-public class Old_UserDao extends GenericDao<Utilizador> {
+public class Old_UserDao extends OLD_GenericDao<Utilizador> {
 
 	private static final Logger log = LoggerFactory.getLogger(Old_UserDao.class);
 
