@@ -101,5 +101,12 @@ public class PositionEJBImp implements PositionEJBInterface {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public List<PositionEntity> findPositionsByCandidate(UserEntity candidate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

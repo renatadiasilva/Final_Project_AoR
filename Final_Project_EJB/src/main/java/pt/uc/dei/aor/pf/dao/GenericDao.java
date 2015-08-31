@@ -40,6 +40,8 @@ public abstract class GenericDao<O> {
 		cq.select(cq.from(entityClass));
 		return em.createQuery(cq).getResultList();
 	}
+	
+	//usar mais NamedQueries
 
 
 }
