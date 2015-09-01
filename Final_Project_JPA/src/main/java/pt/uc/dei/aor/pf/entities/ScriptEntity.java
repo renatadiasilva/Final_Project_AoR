@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -165,6 +166,15 @@ public class ScriptEntity implements Serializable{
 
 	public void setInterviewScript(List<InterviewEntity> interviewScript) {
 		this.interviewScript = interviewScript;
+	}
+	
+	public void addQuestion(QuestionEntity question) {
+		if (questions == null) questions = new ArrayList<QuestionEntity>();
+		questions.add(question);
+	}
+
+	public void removeQuestion(QuestionEntity question) {
+		questions.remove(question);
 	}
 
 }

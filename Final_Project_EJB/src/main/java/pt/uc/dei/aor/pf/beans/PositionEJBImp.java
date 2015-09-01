@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 //import org.slf4j.Logger;
@@ -118,6 +119,24 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByCandidate(
 			UserEntity candidate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PositionEntity> findCloseToSLAPositions(int daysBefore) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PositionEntity> findPositions(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PositionEntity> findPositionByScript(ScriptEntity script) {
 		// TODO Auto-generated method stub
 		return null;
 	}

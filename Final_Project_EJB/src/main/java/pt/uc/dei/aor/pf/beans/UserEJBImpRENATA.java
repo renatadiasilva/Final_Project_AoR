@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import pt.uc.dei.aor.pf.dao.UserDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -98,8 +99,8 @@ public class UserEJBImpRENATA implements UserEJBInterfaceRENATA {
 	}
 
 	@Override
-	public List<UserEntity> findCandidates(String email, String firstName,
-			String lastName) {
+	public List<UserEntity> findCandidatesByPosition(String email,
+			String firstName, String lastName, PositionEntity position) {
 		// TODO Auto-generated method stub
 		return null;
 	}

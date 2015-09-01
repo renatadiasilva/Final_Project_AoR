@@ -3,6 +3,7 @@ package pt.uc.dei.aor.pf.beans;
 import java.util.List;
 
 import pt.uc.dei.aor.pf.entities.QuestionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 
 public class QuestionEJBImp implements QuestionEJBInterface {
 
@@ -32,6 +33,12 @@ public class QuestionEJBImp implements QuestionEJBInterface {
 
 	@Override
 	public List<QuestionEntity> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<QuestionEntity> findQuestionsByScript(ScriptEntity script) {
 		// TODO Auto-generated method stub
 		return null;
 	}

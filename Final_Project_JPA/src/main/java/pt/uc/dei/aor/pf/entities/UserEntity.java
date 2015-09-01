@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,10 +55,10 @@ public class UserEntity implements Serializable {
 	@Column(name="lastName")
 	private String lastName;
 
-	@Column(name="role")
-	private String role;
+	@Column(name="defaultRole")
+	private String defaultRole;
 
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	private List<String>roles;
 
 	@OneToOne(optional = true)
@@ -155,11 +156,11 @@ public class UserEntity implements Serializable {
 	}
 
 	public String getRole() {
-		return role;
+		return defaultRole;
 	}
 
 	public void setRole(String role) {
-		this.role = role;
+		this.defaultRole = role;
 	}
 
 	public List<String> getRoles() {

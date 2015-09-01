@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -156,6 +157,15 @@ public class InterviewEntity implements Serializable{
 
 	public void setInterviewScheduledBy(UserEntity interviewScheduledBy) {
 		this.interviewScheduledBy = interviewScheduledBy;
+	}
+
+	public void addInterviewer(UserEntity user) {
+		if (interviewers == null) interviewers = new ArrayList<UserEntity>();
+		interviewers.add(user);
+	}
+
+	public void removeInterviewer(UserEntity user) {
+		interviewers.remove(user);
 	}
 
 }

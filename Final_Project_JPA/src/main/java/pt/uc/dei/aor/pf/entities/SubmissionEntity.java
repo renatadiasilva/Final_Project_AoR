@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -39,9 +40,9 @@ public class SubmissionEntity implements Serializable {
 
 	// Nullable
 	// Se estiver vazia é uma candidatura espontanea
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="position")
-	private PositionEntity position;
+	@ManyToMany
+	@JoinColumn(name="positions")
+	private List<PositionEntity> positions;
 
 	@Column(name="spontaneous")
 	private boolean spontaneous;
@@ -54,10 +55,6 @@ public class SubmissionEntity implements Serializable {
 	// Link
 	@Column(name="motivationLetter")
 	private String motivationLetter;
-
-	// aqui???
-	@Column(name="linkedin")
-	private String linkedin;
 
 	@ElementCollection
 	private List<String> source;
@@ -81,18 +78,18 @@ public class SubmissionEntity implements Serializable {
 	@Column(name="proposal", nullable = true)
 	private String proposal;
 
-	// atributo dateOfHired (para relatório tempo médio de contratação)
-	// Nullable
 	@Column(name="hired", nullable = true)
-	private boolean hired;
-
+	private boolean hired;	
+	
+	@Column(name="rejectedReason", nullable = true)
+	private String rejectReason;		
+	
 	public SubmissionEntity() {
 	}
 
-	public SubmissionEntity(UserEntity candidate, PositionEntity position,
+	public SubmissionEntity(UserEntity candidate,
 			String motivationLetter, List<String> source, boolean spontaneous) {
 		this.candidate = candidate;
-		this.position = position;
 		this.motivationLetter = motivationLetter;
 		this.source = source;
 		this.spontaneous = spontaneous;
@@ -114,12 +111,12 @@ public class SubmissionEntity implements Serializable {
 		this.candidate = candidate;
 	}
 
-	public PositionEntity getPosition() {
-		return position;
+	public List<PositionEntity> getPositions() {
+		return positions;
 	}
 
-	public void setPosition(PositionEntity position) {
-		this.position = position;
+	public void setPosition(List<PositionEntity> positions) {
+		this.positions = positions;
 	}
 
 	public boolean isSpontaneous() {
@@ -144,14 +141,6 @@ public class SubmissionEntity implements Serializable {
 
 	public void setMotivationLetter(String motivationLetter) {
 		this.motivationLetter = motivationLetter;
-	}
-
-	public String getLinkedin() {
-		return linkedin;
-	}
-
-	public void setLinkedin(String linkedin) {
-		this.linkedin = linkedin;
 	}
 
 	public List<String> getSource() {
@@ -201,13 +190,21 @@ public class SubmissionEntity implements Serializable {
 	public void setProposal(String proposal) {
 		this.proposal = proposal;
 	}
-
+	
 	public boolean isHired() {
 		return hired;
 	}
 
 	public void setHired(boolean hired) {
 		this.hired = hired;
+	}
+
+	public String getRejectReason() {
+		return rejectReason;
+	}
+
+	public void setRejectReason(String rejectReason) {
+		this.rejectReason = rejectReason;
 	}
 	
 }

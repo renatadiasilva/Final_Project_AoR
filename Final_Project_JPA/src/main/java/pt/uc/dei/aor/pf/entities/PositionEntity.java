@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -78,6 +79,7 @@ public class PositionEntity implements Serializable{
 	@ElementCollection
 	private List<String> location;
 
+	// Closed and Fullfilled or "Closed and not Fullfilled
 	@Column(name="currentState")
 	private String currentState;
 
@@ -117,7 +119,7 @@ public class PositionEntity implements Serializable{
 
 	// Post
 	// posições a que se candidatou - Submissions
-	@OneToMany(mappedBy="position", cascade=CascadeType.ALL)
+	@ManyToMany(mappedBy="positions")
 	private List<SubmissionEntity> submissions;
 
 	public PositionEntity() {

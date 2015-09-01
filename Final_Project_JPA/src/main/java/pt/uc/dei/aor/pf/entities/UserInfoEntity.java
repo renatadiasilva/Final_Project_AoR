@@ -24,15 +24,15 @@ public class UserInfoEntity implements Serializable {
 	@Column(name="id")
 	private long id;
 	
-	@Column(name="adress")
-	private String adress;
+	@Column(name="address")
+	private String address;
 	
 	@Column(name="city")
 	private String city;
 	
 	// Nullable
-	@Column(name="telephone", nullable=true)
-	private int telephone;
+	@Column(name="phone", nullable=true)
+	private int phone;
 	
 	@Column(name="mobilePhone")
 	private int mobilePhone;
@@ -50,10 +50,10 @@ public class UserInfoEntity implements Serializable {
 	@Column(name="cv")
 	private String cv;
 	
-	// Na SubmissionEntity:
-//	private String motivationLetter;
-//	private List<String> source;
-
+	// Link
+	@Column(name="linkedin")
+	private String linkedin;
+	
 	@OneToOne(mappedBy= "userInfo")
 	private UserEntity owner;
 	
@@ -63,9 +63,9 @@ public class UserInfoEntity implements Serializable {
 	public UserInfoEntity(String adress, String city, int telephone,
 			int mobilePhone, String country, String course, String school, String cv) {
 		super();
-		this.adress = adress;
+		this.address = adress;
 		this.city = city;
-		this.telephone = telephone;
+		this.phone = telephone;
 		this.mobilePhone = mobilePhone;
 		this.country = country;
 		this.course = course;
@@ -82,11 +82,11 @@ public class UserInfoEntity implements Serializable {
 	}
 
 	public String getAdress() {
-		return adress;
+		return address;
 	}
 
 	public void setAdress(String adress) {
-		this.adress = adress;
+		this.address = adress;
 	}
 
 	public String getCity() {
@@ -98,11 +98,11 @@ public class UserInfoEntity implements Serializable {
 	}
 
 	public int getTelephone() {
-		return telephone;
+		return phone;
 	}
 
 	public void setTelephone(int telephone) {
-		this.telephone = telephone;
+		this.phone = telephone;
 	}
 
 	public int getMobilePhone() {
@@ -143,6 +143,30 @@ public class UserInfoEntity implements Serializable {
 
 	public void setCv(String cv) {
 		this.cv = cv;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public int getPhone() {
+		return phone;
+	}
+
+	public void setPhone(int phone) {
+		this.phone = phone;
+	}
+
+	public String getLinkedin() {
+		return linkedin;
+	}
+
+	public void setLinkedin(String linkedin) {
+		this.linkedin = linkedin;
 	}
 
 	public UserEntity getOwner() {

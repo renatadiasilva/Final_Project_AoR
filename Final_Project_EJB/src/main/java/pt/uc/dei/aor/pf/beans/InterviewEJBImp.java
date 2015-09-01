@@ -81,4 +81,38 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 		return null;
 	}
 
+	@Override
+	public List<InterviewEntity> findScheduledInterviewsByUser(
+			UserEntity interviewer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<InterviewEntity> findInterviewsByScheduler(UserEntity scheduler) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<InterviewEntity> findScheduledInterviewsByManager(
+			UserEntity manager) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<InterviewEntity> findCarriedOutInterviewsByManager(
+			UserEntity manager) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<InterviewEntity> findScheduledInterviewsByCanditate(
+			UserEntity candidate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
