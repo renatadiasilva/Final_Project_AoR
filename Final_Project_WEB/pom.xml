@@ -72,6 +72,14 @@
 			<artifactId>hamcrest-all</artifactId>
 			<version>1.3</version>
 		</dependency>
+
+		<!-- Para o flush das credenciais do servidor --> 
+		<dependency>
+			<groupId>org.jboss.as</groupId>
+			<artifactId>jboss-as-security</artifactId>
+			<version>7.1.1.Final</version>
+		</dependency>
+		
 	</dependencies>
 	<repositories>
 		<repository>
