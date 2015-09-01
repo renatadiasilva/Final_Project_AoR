@@ -1,0 +1,84 @@
+<ui:composition template="WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">New Posit - IT Jobs</ui:define>
+
+	<ui:define name="contents">
+		<div>
+
+			<br /> <br />
+			<h1>Nova Posição</h1>
+			
+			<p:outputLabel value="#{loginTestsCDI.currentUser.email} | logged as: #{loginTestsCDI.currentUser.role}"/>
+			
+			<h:form id="ADMIN" rendered="#{loginTestsCDI.admin}">
+				<p:commandButton value="Admin"
+					action="#{loginTestsCDI.changeRole('ADMIN')}" ajax="false" />
+			</h:form>
+
+			<h:form id="MANAGER" rendered="#{loginTestsCDI.manager}">
+				<p:commandButton value="Manager"
+					action="#{loginTestsCDI.changeRole('MANAGER')}" ajax="false" />
+			</h:form>
+
+			<h:form id="INTERVIEWER" rendered="#{loginTestsCDI.interviewer}">
+				<p:commandButton value="Interviewer"
+					action="#{loginTestsCDI.changeRole('INTERVIEWER')}" ajax="false" />
+			</h:form>
+
+			<h:form id="CANDIDATE" rendered="#{loginTestsCDI.candidate}">
+				<p:commandButton value="Candidate"
+					action="#{loginTestsCDI.changeRole('CANDIDATE')}" ajax="false" />
+			</h:form>
+
+			<h:form id="frm1">
+				<p:messages />
+
+				<br />
+				<br />
+
+				<p:commandButton value="Create ADMIN (+MANAGER+INTERVIEWER)"
+					action="#{loginTestsCDI.createUserAdmin()}" ajax="false" />
+				<p:commandButton value="Create MANAGER (+CANDIDATE)"
+					action="#{loginTestsCDI.createUserManager()}" ajax="false" />
+				<p:commandButton value="Create INTERVIEWER"
+					action="#{loginTestsCDI.createUserInterviewer()}" ajax="false" />
+				<p:commandButton value="Create CANDIDATE"
+					action="#{loginTestsCDI.createUserCandidate()}" ajax="false" />
+
+				<br />
+				<br />
+
+				<p:commandButton value="Login ADMIN (+MANAGER+INTERVIEWER)"
+					action="#{loginTestsCDI.login('admin')}" ajax="false" />
+				<p:commandButton value="Login MANAGER (+CANDIDATE)"
+					action="#{loginTestsCDI.login('manager')}" ajax="false" />
+				<p:commandButton value="Login INTERVIEWER"
+					action="#{loginTestsCDI.login('interviewer')}" ajax="false" />
+				<p:commandButton value="Login CANDIDATE"
+					action="#{loginTestsCDI.login('candidate')}" ajax="false" />
+
+				<br />
+				<br />
+
+				<p:commandButton value="Logout" action="#{loginTestsCDI.logout()}"
+					ajax="false" />
+			</h:form>
+
+			<a href="role/admin/Landing.xhtml">Página Admin</a><br /> <br /> <a
+				href="role/manager/Landing.xhtml">Página Manager</a><br /> <br />
+			<a href="role/interviewer/Landing.xhtml">Página Interviewer</a><br />
+			<br /> <a href="role/candidate/Landing.xhtml">Página Candidate</a>
+			<br /> <br />
+
+			
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

@@ -14,10 +14,20 @@
 			<h:form id="frm">
 				<p:messages />
 
-				<p:commandButton value="Create ADMIN" action="#{loginTestsCDI.createUserAdmin()}"/>
-				<p:commandButton value="Create MANAGER" action="#{loginTestsCDI.createUserAdmin()}"/>
-				<p:commandButton value="Create INTERVIEWER" action="#{loginTestsCDI.createUserAdmin()}"/>
-				<p:commandButton value="Create CANDIDATE" action="#{loginTestsCDI.createUserAdmin()}"/>
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Data de Abertura" for="dataDeAbertura" />
+					<p:calendar id="dataDeAbertura" required="true"
+						pattern="dd/MM/yyyy" value="#{newPositionBean.openingDate}"
+						readonlyInput="true" navigator="true" locale="pt" />
+
+					<p:outputLabel value="Código da Posição" for="codigoDaPosicao" />
+					<p:inputText id="codigoDaPosicao" required="true"
+						value="#{newPositionBean.positionCode}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Feito" action="#{newPositionBean.done()}"
+					update="@form" />
 			</h:form>
 		</div>
 

@@ -1,61 +1,30 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition template="WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<meta charset="UTF-8" />
-	<h:outputStylesheet library="css" name="style.css" />
-</h:head>
-<!-- Body -->
-<h:body styleClass="indexbck">
-	<h1 style="margin:15px; font-size: 34px;">PrimeMusic</h1>
-	<div id="caixa-exterior-login">
-		<div id="login-caixa">
-			<h1>Login</h1>
-			<h:form>
-				<h:panelGrid columns="2" cellpadding="5" styleClass="grid-login">
-					<h:outputLabel for="mail" value="E-mail:" />
-					<p:inputText id="mail" required="true" label="mail" size="30"
-						value="#{loginStart.mail}" />
-					<h:outputLabel for="password" value="Password:" />
-					<p:password id="password" required="true" label="password"
-						size="30" value="#{loginStart.password}" />
-					<f:facet name="footer">
-						<h:commandButton value="Login" type="submit"
-							action="#{loginStart.login()}" />
-					</f:facet>
-				</h:panelGrid>
-				<p:growl id="msgs" life="2000" autoUpdate="true" />
-			</h:form>
-		</div>
 
-		<div id="newuser-caixa">
-			<h1>Nova conta</h1>
-			<h:form>
-				<h:panelGrid columns="2" cellpadding="5" styleClass="grid-login">
-					<h:outputLabel for="nome" value="Nome:" />
-					<p:inputText id="nome" required="true" label="nome" size="30"
-						value="#{login.current.nome}" />
+	<ui:define name="Título">IT Jobs</ui:define>
 
-					<h:outputLabel for="mail" value="E-mail:" />
-					<p:inputText id="mail" required="true" label="mail" size="30"
-						value="#{login.current.mail}" />
+	<ui:define name="header-menus">
+		<h:form id="header-login">
+			<h:panelGrid columns="5">
+			
+				<p:outputLabel value="Email: " for="login-email"/>
+				<p:inputText id="login-email" value="#{loginCDI.email}" size="30" required="true" />
 
-					<h:outputLabel for="pwd1" value="Password:" />
-					<p:password id="pwd1" value="#{login.current.password}"
-						match="pwd2" label="Password 1" required="true" />
+				<p:outputLabel value="Password: " for="login-password"/>
+				<p:password id="login-password" value="#{loginCDI.password}" size="30" required="true" />
 
-					<h:outputLabel for="pwd2" value="Confirm:" />
-					<p:password id="pwd2" label="Password 2" required="true" />
-					<f:facet name="footer">
-						<p:commandButton value="Register" type="submit"
-							action="#{login.register()}" update="@form" />
-					</f:facet>
-				</h:panelGrid>
-			</h:form>
-		</div>
-	</div>
-</h:body>
-</html>
+				<p:commandButton value="Login" action="#{loginCDI.login()}" update="@form" ajax="false"/>
+				
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="contents">
+		<p:commandButton value="Populate" action="#{loginCDI.populate()}"/>
+	</ui:define>
+
+</ui:composition>

@@ -41,24 +41,39 @@
 </h:head>
 
 <h:body>
+
 	<header>
-	<div>
+	
+	<!-- Logótipo -->
+	<div id="header-link">
 		<h:link>
 			<h:graphicImage library="images" name="logo_49px.png" />
 		</h:link>
 	</div>
+
+	<!-- Mensagens PrimeFaces -->
+	<div id="header-messages">
+		<ui:insert name="messages">
+			<p:messages />
+		</ui:insert>
+	</div>
+
+	<!-- Menus de navegação -->
+	<div id="header-menus">
+		<ui:insert name="header-menus">
+			<ui:include src="header-menus.xhtml" />
+		</ui:insert>
+	</div>
+
 	</header>
 
 	<div id="inner-body">
-
 		<div id="contents">
-			<ui:insert name="contents"></ui:insert>
+			<ui:insert name="contents" />
 		</div>
-
-
+		<!-- Footer -->
 		<div id="footer">IT Jobs - Projecto Final | Programação Avançada
 			em JAVA | Duarte Gonçalves | Renata Silva</div>
-
 	</div>
 
 </h:body>

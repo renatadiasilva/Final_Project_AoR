@@ -1,161 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-	id="WebApp_ID" version="3.1">
-	<display-name>Final_Project</display-name>
-	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
-	</welcome-file-list>
-	
-	<!-- Login Config -->
-	<login-config>
-		<auth-method>FORM</auth-method>
-		<form-login-config>
-			<form-login-page>/index.xhtml</form-login-page>
-			<form-error-page>/loginError.xhtml</form-error-page>
-		</form-login-config>
-	</login-config>
-
-	<!-- ADMIN -->
-	<security-constraint>
-		<display-name>ProjFinal</display-name>
-		<web-resource-collection>
-			<web-resource-name>ADMIN Protected Area</web-resource-name>
-			<url-pattern>/role/admin/*</url-pattern>
-			<http-method>GET</http-method>
-			<http-method>POST</http-method>
-			<http-method>HEAD</http-method>
-			<http-method>PUT</http-method>
-			<http-method>OPTIONS</http-method>
-			<http-method>TRACE</http-method>
-			<http-method>DELETE</http-method>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>ADMIN</role-name>
-		</auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>NONE</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-
-	<security-role>
-		<role-name>ADMIN</role-name>
-	</security-role>
-	
-	<!-- MANAGER -->
-	<security-constraint>
-		<display-name>ProjFinal</display-name>
-		<web-resource-collection>
-			<web-resource-name>MANAGER Protected Area</web-resource-name>
-			<url-pattern>/role/manager/*</url-pattern>
-			<http-method>GET</http-method>
-			<http-method>POST</http-method>
-			<http-method>HEAD</http-method>
-			<http-method>PUT</http-method>
-			<http-method>OPTIONS</http-method>
-			<http-method>TRACE</http-method>
-			<http-method>DELETE</http-method>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>MANAGER</role-name>
-		</auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>NONE</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-
-	<security-role>
-		<role-name>MANAGER</role-name>
-	</security-role>
-	
-	<!-- INTERVIEWER -->
-	<security-constraint>
-		<display-name>ProjFinal</display-name>
-		<web-resource-collection>
-			<web-resource-name>INTERVIEWER Protected Area</web-resource-name>
-			<url-pattern>/role/interviewer/*</url-pattern>
-			<http-method>GET</http-method>
-			<http-method>POST</http-method>
-			<http-method>HEAD</http-method>
-			<http-method>PUT</http-method>
-			<http-method>OPTIONS</http-method>
-			<http-method>TRACE</http-method>
-			<http-method>DELETE</http-method>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>INTERVIEWER</role-name>
-		</auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>NONE</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-
-	<security-role>
-		<role-name>INTERVIEWER</role-name>
-	</security-role>
-	
-	<security-constraint>
-		<display-name>ProjFinal</display-name>
-		<web-resource-collection>
-			<web-resource-name>CANDIDATE Protected Area</web-resource-name>
-			<url-pattern>/role/candidate/*</url-pattern>
-			<http-method>GET</http-method>
-			<http-method>POST</http-method>
-			<http-method>HEAD</http-method>
-			<http-method>PUT</http-method>
-			<http-method>OPTIONS</http-method>
-			<http-method>TRACE</http-method>
-			<http-method>DELETE</http-method>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>CANDIDATE</role-name>
-		</auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>NONE</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-
-	<security-role>
-		<role-name>CANDIDATE</role-name>
-	</security-role>
-
-
-	<!-- Login Config -->
-	
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.xhtml</url-pattern>
-	</servlet-mapping>
-	<context-param>
-		<param-name>primefaces.THEME</param-name>
-		<param-value>aristo</param-value>
-	</context-param>
-<context-param>
-		<description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
-		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-		<param-value>client</param-value>
-	</context-param>
-	<context-param>
-		<param-name>primefaces.UPLOADER</param-name>
-		<param-value>commons</param-value>
-	</context-param>
-		<listener>
-		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
-	<filter>
- <filter-name>PrimeFaces FileUpload Filter</filter-name>
- <filter-class>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>Final_Project</display-name>
+  <welcome-file-list>
+    <welcome-file>index.xhtml</welcome-file>
+  </welcome-file-list>
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/index.xhtml</form-login-page>
+      <form-error-page>/loginError.xhtml</form-error-page>
+    </form-login-config>
+  </login-config>
+  <security-constraint>
+    <display-name>ProjFinal</display-name>
+    <web-resource-collection>
+      <web-resource-name>ADMIN Protected Area</web-resource-name>
+      <url-pattern>/role/admin/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>HEAD</http-method>
+      <http-method>PUT</http-method>
+      <http-method>OPTIONS</http-method>
+      <http-method>TRACE</http-method>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>ADMIN</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <security-role>
+    <role-name>ADMIN</role-name>
+  </security-role>
+  <security-constraint>
+    <display-name>ProjFinal</display-name>
+    <web-resource-collection>
+      <web-resource-name>MANAGER Protected Area</web-resource-name>
+      <url-pattern>/role/manager/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>HEAD</http-method>
+      <http-method>PUT</http-method>
+      <http-method>OPTIONS</http-method>
+      <http-method>TRACE</http-method>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>MANAGER</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <security-role>
+    <role-name>MANAGER</role-name>
+  </security-role>
+  <security-constraint>
+    <display-name>ProjFinal</display-name>
+    <web-resource-collection>
+      <web-resource-name>INTERVIEWER Protected Area</web-resource-name>
+      <url-pattern>/role/interviewer/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>HEAD</http-method>
+      <http-method>PUT</http-method>
+      <http-method>OPTIONS</http-method>
+      <http-method>TRACE</http-method>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>INTERVIEWER</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <security-role>
+    <role-name>INTERVIEWER</role-name>
+  </security-role>
+  <security-constraint>
+    <display-name>ProjFinal</display-name>
+    <web-resource-collection>
+      <web-resource-name>CANDIDATE Protected Area</web-resource-name>
+      <url-pattern>/role/candidate/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>HEAD</http-method>
+      <http-method>PUT</http-method>
+      <http-method>OPTIONS</http-method>
+      <http-method>TRACE</http-method>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>CANDIDATE</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <security-role>
+    <role-name>CANDIDATE</role-name>
+  </security-role>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>aristo</param-value>
+  </context-param>
+  <context-param>
+    <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>client</param-value>
+  </context-param>
+  <context-param>
+    <param-name>primefaces.UPLOADER</param-name>
+    <param-value>commons</param-value>
+  </context-param>
+  <listener>
+    <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+  </listener>
+  <filter>
+    <filter-name>PrimeFaces FileUpload Filter</filter-name>
+    <filter-class>
   org.primefaces.webapp.filter.FileUploadFilter
  </filter-class>
-</filter>
-<filter-mapping>
- <filter-name>PrimeFaces FileUpload Filter</filter-name>
- <servlet-name>Faces Servlet</servlet-name>
-</filter-mapping>
+  </filter>
+  <filter-mapping>
+    <filter-name>PrimeFaces FileUpload Filter</filter-name>
+    <servlet-name>Faces Servlet</servlet-name>
+  </filter-mapping>
 </web-app>

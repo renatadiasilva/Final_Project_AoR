@@ -14,7 +14,9 @@ body {
 	font-weight: normal;
 }
 
-header {
+/*header start*/
+header {	
+	width: 100%;
 	padding: 8px 0px;
 	height: 49px; /*Total 65px*/
 	background-color: #3f51b5;
@@ -26,10 +28,23 @@ header {
 	/*box-shadow: 0px 2px 2px #9fa8da;*/
 }
 
-/*Primeira div dentro do header*/
-header>div {
+#header-link {
 	margin-left: 16px;
+	float: left;
 }
+
+#header-messages {
+	margin-left: 16px;
+	margin-top: 16px;
+	float: left;
+}
+
+#header-menus {
+	margin-right: 16px;
+	margin-top: 16px;
+	float: right;
+}
+/*header end*/
 
 #inner-body {
 	display: block;
@@ -63,7 +78,6 @@ header>div {
 	width: 100%;
 	min-width: 1024px;
 	bottom: 0px;
-	background-color: #3f51b5;
 }
 
 /* Login Start */
