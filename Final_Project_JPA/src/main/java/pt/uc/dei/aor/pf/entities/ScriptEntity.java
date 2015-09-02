@@ -174,7 +174,7 @@ public class ScriptEntity implements Serializable{
 	}
 
 	public void removeQuestion(QuestionEntity question) {
-		questions.remove(question);
+		if (questions != null) questions.remove(question);
 	}
 
 }

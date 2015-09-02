@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,8 +41,8 @@ public class SubmissionEntity implements Serializable {
 
 	// Nullable
 	// Se estiver vazia é uma candidatura espontanea
-	@ManyToMany
-	@JoinColumn(name="positions")
+	@ManyToMany(fetch=FetchType.EAGER)
+//	@JoinColumn(name="positions")
 	private List<PositionEntity> positions;
 
 	@Column(name="spontaneous")
@@ -207,4 +208,12 @@ public class SubmissionEntity implements Serializable {
 		this.rejectReason = rejectReason;
 	}
 	
+	public void addPosition(PositionEntity position) {
+		if (positions == null) positions = new ArrayList<PositionEntity>();
+		positions.add(position);
+	}
+	
+	public void removePosition(PositionEntity position) {
+		if (positions != null) positions.remove(position);
+	}
 }

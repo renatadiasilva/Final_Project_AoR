@@ -165,7 +165,7 @@ public class InterviewEntity implements Serializable{
 	}
 
 	public void removeInterviewer(UserEntity user) {
-		interviewers.remove(user);
+		if (interviewers != null) interviewers.remove(user);
 	}
 
 }
