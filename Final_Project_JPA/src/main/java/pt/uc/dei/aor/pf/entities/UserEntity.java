@@ -57,11 +57,12 @@ public class UserEntity implements Serializable {
 	private String firstName;
 
 	@NotNull
-	@Column(name="last_name", nullable = false, length = 40)
+	@Column(name = "last_name", nullable = false, length = 40)
 	private String lastName;
 
-	@NotNull
-	@Column(name="default_role", nullable = false)
+//	@NotNull
+//	@Column(name = "default_role", nullable = false)
+	@Column(name = "default_role")
 	private String defaultRole;
 
 	@ElementCollection(fetch = FetchType.EAGER)
