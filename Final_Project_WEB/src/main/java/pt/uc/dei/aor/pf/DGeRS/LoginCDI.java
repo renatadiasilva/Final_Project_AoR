@@ -14,12 +14,12 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @Named
 @RequestScoped
 public class LoginCDI {
-	
+
 	@Inject
 	private UserSessionManagement userSessionManagement;
-	
+
 	private String email;
-	
+
 	private String password;
 
 	public LoginCDI() {
@@ -29,7 +29,7 @@ public class LoginCDI {
 		System.out.println("Atempting to log "+email+" with pass "+password);
 		return this.userSessionManagement.login(email, password);
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -45,15 +45,24 @@ public class LoginCDI {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	// Populate: sai fora!!!
+
+	public void printSomething(){
+		System.out.println("It is printing...");
+	}
+
+	// Sai Fora!!!
 	@Inject
 	TestUserInterface testUserBean;
-	
+
 	public void populate(){
+
+		System.out.println("Populate...");
+
 		UserEntity newUser=new UserEntity();
 		List<String> roles = new ArrayList<String>();
-		
+
 		roles.add(UserEntity.ROLE_ADMIN);
 		roles.add(UserEntity.ROLE_MANAGER);
 		roles.add(UserEntity.ROLE_INTERVIEWER);
@@ -62,11 +71,11 @@ public class LoginCDI {
 		newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
 
 		this.testUserBean.save(newUser);
-		
-		
-		
-		
-		
+
+
+
+
+
 		roles.clear();
 		roles.add(UserEntity.ROLE_MANAGER);
 		roles.add(UserEntity.ROLE_CANDIDATE);
@@ -75,11 +84,11 @@ public class LoginCDI {
 		newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
 
 		this.testUserBean.save(newUser);
-		
-		
-		
-		
-		
+
+
+
+
+
 		roles.clear();
 		roles.add(UserEntity.ROLE_INTERVIEWER);
 
@@ -87,11 +96,11 @@ public class LoginCDI {
 		newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
 
 		this.testUserBean.save(newUser);
-		
-		
-		
-		
-		
+
+
+
+
+
 		roles.clear();
 		roles.add(UserEntity.ROLE_CANDIDATE);
 

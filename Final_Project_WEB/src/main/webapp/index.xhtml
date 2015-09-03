@@ -10,21 +10,26 @@
 	<ui:define name="header-menus">
 		<h:form id="header-login">
 			<h:panelGrid columns="5">
-			
-				<p:outputLabel value="Email: " for="login-email"/>
-				<p:inputText id="login-email" value="#{loginCDI.email}" size="30" required="true" />
 
-				<p:outputLabel value="Password: " for="login-password"/>
-				<p:password id="login-password" value="#{loginCDI.password}" size="30" required="true" />
+				<p:outputLabel value="Email: " for="login-email" />
+				<p:inputText id="login-email" value="#{loginCDI.email}" size="30"
+					required="true" />
 
-				<p:commandButton value="Login" action="#{loginCDI.login()}" update="@form" ajax="false"/>
-				
+				<p:outputLabel value="Password: " for="login-password" />
+				<p:password id="login-password" value="#{loginCDI.password}"
+					size="30" required="true" />
+
+				<p:commandButton value="Login" action="#{loginCDI.login()}"
+					update="@form" ajax="false" />
+
 			</h:panelGrid>
 		</h:form>
 	</ui:define>
 
 	<ui:define name="contents">
-		<p:commandButton value="Populate" action="#{loginCDI.populate()}"/>
+		<h:form>
+			<p:commandButton value="Populate" action="#{loginCDI.populate()}" />
+		</h:form>
 	</ui:define>
 
 </ui:composition>

@@ -36,8 +36,9 @@ public class UserSessionManagement implements Serializable {
 	}
 	
 	public String login(String email, String password){
-		if(this.currentUser!=null) this.logout();
 
+		this.logout();
+		
 		// Server
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -48,7 +49,9 @@ public class UserSessionManagement implements Serializable {
 			this.currentUser = testUserBean.findUserByEmail(email);
 			
 			// Roles para mostrar na web
-			if(this.currentUser!=null) this.setRoles();
+			this.setDefaultRoles();
+			
+			System.out.println("Login sucessfull: "+email);
 		} catch (ServletException e){
 			e.printStackTrace();
 			System.out.println("Login failed: "+email);
@@ -58,7 +61,7 @@ public class UserSessionManagement implements Serializable {
 		return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?faces-redirect=true";
 	}
 
-	public String logout(){
+	public void logout(){
 		System.out.println("Logout");
 
 		// Server
@@ -69,6 +72,7 @@ public class UserSessionManagement implements Serializable {
 			request.logout();
 			
 			this.admin=this.manager=this.interviewer=this.candidate=false;
+			
 			this.currentUser=new UserEntity();
 			
 			System.out.println("Logout sucessfull.");
@@ -76,12 +80,10 @@ public class UserSessionManagement implements Serializable {
 			System.out.println("Logout failed.");
 			context.addMessage(null, new FacesMessage("Logout failed."));
 		}
-		
-		return "../../index.xhtml";
 	}
 	
-	private void setRoles() {
-		for (String s: this.currentUser.getRoles()){
+	private void setDefaultRoles() {
+		for (String s: this.currentUser.getDefaultRoles()){
 			if(s.equals(UserEntity.ROLE_ADMIN)) this.admin=true;
 			if(s.equals(UserEntity.ROLE_MANAGER)) this.manager=true;
 			if(s.equals(UserEntity.ROLE_INTERVIEWER)) this.interviewer=true;
@@ -89,8 +91,24 @@ public class UserSessionManagement implements Serializable {
 		}
 	}
 	
-	public void setDefaultRole(String role){
+	public void defaultRole(String role){
+		System.out.println("Role currente: "+currentUser.getDefaultRole()+"Novo role: "+role);
 		
+		System.out.println("Antes: "+currentUser.getDefaultRole());
+		
+		if(role.equals(UserEntity.ROLE_ADMIN)) this.currentUser.setDefaultRole(role);
+		if(role.equals(UserEntity.ROLE_MANAGER)) this.currentUser.setDefaultRole(role);
+		if(role.equals(UserEntity.ROLE_INTERVIEWER)) this.currentUser.setDefaultRole(role);
+		if(role.equals(UserEntity.ROLE_CANDIDATE)) this.currentUser.setDefaultRole(role);
+		
+		System.out.println("Depois: "+currentUser.getDefaultRole());
+		
+		this.testUserBean.update(this.currentUser);	
+	}
+	
+	public boolean checkDefault(String role){
+		if(this.currentUser.getDefaultRole().equals(role)) return true;
+		return false;
 	}
 
 	public UserEntity getCurrentUser() {
