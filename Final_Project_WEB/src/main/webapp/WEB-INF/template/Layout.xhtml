@@ -51,9 +51,6 @@
 
 	<!-- Mensagens PrimeFaces -->
 	<div id="header-messages">
-		<ui:insert name="messages">
-			<p:messages />
-		</ui:insert>
 	</div>
 
 	<!-- Menus de navegação -->
@@ -66,14 +63,15 @@
 	</header>
 
 	<div id="inner-body">
+		<p:messages />
 		<div id="contents">
 			<ui:insert name="contents" />
-			<br /> <br />
-			<a href="../../role/admin/Landing.xhtml">Página Admin</a><br /> <br /> <a
-				href="../../role/manager/Landing.xhtml">Página Manager</a><br /> <br />
-			<a href="../../role/interviewer/Landing.xhtml">Página Interviewer</a><br />
-			<br /> <a href="../../role/candidate/Landing.xhtml">Página Candidate</a> <br />
-			<br />
+			<br /> <br /> <a href="../../role/admin/Landing.xhtml">Página
+				Admin</a><br /> <br /> <a href="../../role/manager/Landing.xhtml">Página
+				Manager</a><br /> <br /> <a
+				href="../../role/interviewer/Landing.xhtml">Página Interviewer</a><br />
+			<br /> <a href="../../role/candidate/Landing.xhtml">Página
+				Candidate</a> <br /> <br />
 		</div>
 		<!-- Footer -->
 		<div id="footer">IT Jobs - Projecto Final | Programação Avançada

@@ -2,7 +2,6 @@ package pt.uc.dei.aor.pf.DGeRS.session;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -37,7 +36,7 @@ public class UserSessionManagement implements Serializable {
 	
 	public String login(String email, String password){
 
-		this.logout();
+		if(this.currentUser.getEmail()!=null) this.logout();
 		
 		// Server
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -52,17 +51,18 @@ public class UserSessionManagement implements Serializable {
 			this.setDefaultRoles();
 			
 			System.out.println("Login sucessfull: "+email);
+			
+			return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?faces-redirect=true";
+			
 		} catch (ServletException e){
 			e.printStackTrace();
-			System.out.println("Login failed: "+email);
 			context.addMessage(null, new FacesMessage("Login failed."));
 		}
 		
-		return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?faces-redirect=true";
+		return "#";
 	}
 
-	public void logout(){
-		System.out.println("Logout");
+	public String logout(){
 
 		// Server
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -76,14 +76,19 @@ public class UserSessionManagement implements Serializable {
 			this.currentUser=new UserEntity();
 			
 			System.out.println("Logout sucessfull.");
+			
+			return "/../../index?faces-redirect=true";
+			
 		} catch (ServletException e) {
 			System.out.println("Logout failed.");
 			context.addMessage(null, new FacesMessage("Logout failed."));
 		}
+		
+		return "#";
 	}
 	
 	private void setDefaultRoles() {
-		for (String s: this.currentUser.getDefaultRoles()){
+		for (String s: this.currentUser.getRoles()){
 			if(s.equals(UserEntity.ROLE_ADMIN)) this.admin=true;
 			if(s.equals(UserEntity.ROLE_MANAGER)) this.manager=true;
 			if(s.equals(UserEntity.ROLE_INTERVIEWER)) this.interviewer=true;
