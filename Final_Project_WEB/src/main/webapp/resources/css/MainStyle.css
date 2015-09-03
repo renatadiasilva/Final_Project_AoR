@@ -61,6 +61,8 @@ header {
 #contents {
 	position: absolute;
 	padding: 20px;
+	/*margem para o footer*/
+	margin-bottom: 52px;
 }
 
 #footer {

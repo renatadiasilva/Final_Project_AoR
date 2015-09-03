@@ -26,8 +26,7 @@ public class LoginCDI {
 	}
 
 	public String login() {
-		System.out.println("Atempting to log "+email+" with pass "+password);
-		return this.userSessionManagement.login(email, password);
+		return this.userSessionManagement.login(this.email, this.password);
 	}
 
 	public String getEmail() {
@@ -47,12 +46,6 @@ public class LoginCDI {
 	}
 
 	// Populate: sai fora!!!
-
-	public void printSomething(){
-		System.out.println("It is printing...");
-	}
-
-	// Sai Fora!!!
 	@Inject
 	TestUserInterface testUserBean;
 
