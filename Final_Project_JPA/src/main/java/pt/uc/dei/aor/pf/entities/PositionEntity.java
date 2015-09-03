@@ -4,139 +4,133 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="PositionEntity")
-public class PositionEntity implements Serializable{
+@Table(name = "positions")
+public class PositionEntity implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2368658385927790368L;
 
-
 	public static final String LISBOA="Lisboa";
-
 	public static final String PORTO="Porto";
-
 	public static final String COIMBRA="Coimbra";
 
-
 	public static final String OPEN="Open";
-
 	public static final String CLOSED="Closed";
-
 	public static final String ONHOLD="on Hold";
-
+	// closed with hired people (just internal??)
+	public static final String FULFILLED="Closed and Fulfilled";
 
 	public static final String TECH_SSPA="SSPA";
-
 	public static final String TECH_DOTNET=".Net Development";
-
 	public static final String TECH_JAVA="Java Development";
-
 	public static final String TECH_SAFETY="Safety Critical";
-
 	public static final String TECH_MANAGEMENT="Project Management";
-
 	public static final String TECH_INTEGRATION="Integration";
 
-
 	public static final String SOCIAL_CRITICAL="Critical Software Website";
-
 	public static final String SOCIAL_LINKEDIN="Linkedin";
-
 	public static final String SOCIAL_GLASSDOOR="Glassdoor";
-
 	public static final String SOCIAL_FACEBOOK="Facebook";
-
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
-	@Column(name="openingDate")
-	@Temporal(javax.persistence.TemporalType.DATE)
+	@NotNull
+	@Column(name = "opening_date", nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date openingDate;
 
-	@Column(name="positionCode")
+	@NotNull
+	@Column(name = "code", nullable = false, unique = true)
 	private String positionCode;
 
 	@ElementCollection
-	private List<String> location;
+	@CollectionTable(name = "locations",
+		joinColumns=@JoinColumn(name="position_id"))
+	@Column(name = "location")
+	private List<String> locations;
 
-	// Closed and Fullfilled or "Closed and not Fullfilled
-	@Column(name="currentState")
-	private String currentState;
+	@NotNull
+	@Column(name = "status", nullable = false)
+	private String status;
 
-	@Column(name="openings")
+	@NotNull
+	@Column(name = "openings", nullable = false)
 	private int openings;
 
-	@Column(name="closingDate")
-	@Temporal(javax.persistence.TemporalType.DATE)
+	@Column(name = "closing_date")
+	@Temporal(TemporalType.DATE)
 	private Date closingDate;
 
-	@Column(name="sla")
-	private String sla;
+	// weeks??? DAYS???
+	@Column(name = "sla")
+	private int sla;
 
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name="positionManager")
+	@JoinColumn(name = "manager", nullable = false)
 	private UserEntity positionManager;
 
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name="positionCreator")
+	@JoinColumn(name = "creator", nullable = false)
 	private UserEntity positionCreator;
 
-	@Column(name="company")
+	@NotNull
+	@Column(name = "company", nullable = false, length = 40)
 	private String company;
 
-	@Column(name="technicalArea")
+	@NotNull
+	@Column(name = "technical_area", nullable = false)
 	private String technicalArea;
 
-	@Column(name="description")
+	@Column(name = "description", length = 200)
 	private String description;
 
 	@ElementCollection
+	@CollectionTable(name = "advertising_channels",
+	        joinColumns = @JoinColumn(name = "position_id"))
+	@Column(name = "channel")
 	private List<String> advertisingChannels;
 
 	@ManyToOne
-	@JoinColumn(name="defaultScript")
+	@JoinColumn(name = "default_script")
 	private ScriptEntity defaultScript;
 
-	// Post
-	// posições a que se candidatou - Submissions
-//	@ManyToMany(mappedBy="positiona", cascade=CascadeType.ALL)
-	@ManyToMany(mappedBy="positions")
+//	@ManyToMany(mappedBy="positions", cascade=CascadeType.ALL)
+	@ManyToMany(mappedBy = "positions")
 	private List<SubmissionEntity> submissions;
 
 	public PositionEntity() {
 	}
 
 	public PositionEntity(Date openingDate, String positionCode,
-			List<String> location, String currentState, int openings,
-			Date closingDate, String sla, UserEntity positionManager,
+			List<String> locations, String currentState, int openings,
+			Date closingDate, int sla, UserEntity positionManager,
 			UserEntity positionCreator, String company, String technicalArea,
 			String description, List<String> advertisingChannels,
 			ScriptEntity defaultScript) {
 		this.openingDate = openingDate;
 		this.positionCode = positionCode;
-		this.location = location;
-		this.currentState = currentState;
+		this.locations = locations;
+		this.status = currentState;
 		this.openings = openings;
 		this.closingDate = closingDate;
 		this.sla = sla;
@@ -149,11 +143,11 @@ public class PositionEntity implements Serializable{
 		this.defaultScript = defaultScript;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -173,20 +167,20 @@ public class PositionEntity implements Serializable{
 		this.positionCode = positionCode;
 	}
 
-	public List<String> getLocation() {
-		return location;
+	public List<String> getLocations() {
+		return locations;
 	}
 
-	public void setLocation(List<String> location) {
-		this.location = location;
+	public void setLocations(List<String> locations) {
+		this.locations = locations;
 	}
 
-	public String getCurrentState() {
-		return currentState;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setCurrentState(String currentState) {
-		this.currentState = currentState;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public int getOpenings() {
@@ -205,11 +199,11 @@ public class PositionEntity implements Serializable{
 		this.closingDate = closingDate;
 	}
 
-	public String getSla() {
+	public int getSla() {
 		return sla;
 	}
 
-	public void setSla(String sla) {
+	public void setSla(int sla) {
 		this.sla = sla;
 	}
 

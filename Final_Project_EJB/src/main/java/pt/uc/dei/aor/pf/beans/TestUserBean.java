@@ -11,7 +11,6 @@ import com.sun.syndication.io.impl.Base64;
 
 import pt.uc.dei.aor.pf.dao.TestUserDao;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.entities.Utilizador;
 
 @Stateless
 public class TestUserBean implements TestUserInterface {

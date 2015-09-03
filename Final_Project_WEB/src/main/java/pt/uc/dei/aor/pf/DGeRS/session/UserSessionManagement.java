@@ -55,7 +55,7 @@ public class UserSessionManagement implements Serializable {
 			context.addMessage(null, new FacesMessage("Login failed."));
 		}
 		
-		return "/role/"+this.currentUser.getRole().toLowerCase()+"/Landing?faces-redirect=true";
+		return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?faces-redirect=true";
 	}
 
 	public String logout(){

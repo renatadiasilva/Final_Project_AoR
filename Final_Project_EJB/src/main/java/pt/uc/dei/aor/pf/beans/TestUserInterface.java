@@ -3,7 +3,6 @@ package pt.uc.dei.aor.pf.beans;
 import javax.ejb.Local;
 
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.entities.Utilizador;
 
 
 

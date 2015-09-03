@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -14,93 +15,96 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="SubmissionEntity")
+@Table(name = "submissions")
 public class SubmissionEntity implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2164233391673103244L;
 
+	// more??
+	public static final String STATUS_SUBMITED = "Submited";
+	public static final String STATUS_REJECTED = "Rejected";
+	public static final String STATUS_ACCEPTED = "Accepted to Interview";
+	public static final String STATUS_PROPOSAL = "Presented Proposal";
+	public static final String STATUS_HIRED    = "Hired";
+	public static final String STATUS_NOTHIRED = "Not Hired"; 
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="candidate")
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "candidate", nullable = false)
 	private UserEntity candidate;
 
-	// Nullable
-	// Se estiver vazia é uma candidatura espontanea
-	@ManyToMany(fetch=FetchType.EAGER)
-//	@JoinColumn(name="positions")
+	// Se a list estiver vazia é uma candidatura espontanea
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "submissions_positions",
+			joinColumns = @JoinColumn(name = "submission_id"),
+			inverseJoinColumns = @JoinColumn(name = "position_id"))
 	private List<PositionEntity> positions;
 
-	@Column(name="spontaneous")
+	@Column(name = "spontaneous")
 	private boolean spontaneous;
 
-	// Nullable
 	@ManyToOne
-	@JoinColumn(name="associatedBy")
+	@JoinColumn(name = "associated_by")
 	private UserEntity associatedBy;
 
 	// Link
-	@Column(name="motivationLetter")
+	@Column(name = "motivation_letter")
 	private String motivationLetter;
 
 	@ElementCollection
-	private List<String> source;
+	@CollectionTable(name = "sources",
+		joinColumns = @JoinColumn(name = "submission_id"))
+	@Column(name = "source")
+	private List<String> sources;
 
-	@Column(name="date")
-	@Temporal(javax.persistence.TemporalType.DATE)
+	@NotNull
+	@Column(name = "date", nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date date;
 
-	@Column(name="status")
+	@NotNull
+	@Column(name = "status", nullable = false)
 	private String status;
 
-	// entrevistas da submissão
-	@OneToMany(mappedBy="submission", cascade=CascadeType.ALL)
-	private List<InterviewEntity>interviews;
+	@OneToMany(mappedBy = "submission", cascade = CascadeType.ALL)
+	@OrderBy("date")
+	private List<InterviewEntity> interviews;
 
-	// Nullable
-	@Column(name="accepted", nullable = true)
-	private boolean accepted;
-
-	// Nullable
-	@Column(name="proposal", nullable = true)
-	private String proposal;
-
-	@Column(name="hired", nullable = true)
-	private boolean hired;	
-	
-	@Column(name="rejectedReason", nullable = true)
+	@Column(name = "rejected_reason", length = 100)
 	private String rejectReason;		
 	
 	public SubmissionEntity() {
 	}
 
 	public SubmissionEntity(UserEntity candidate,
-			String motivationLetter, List<String> source, boolean spontaneous) {
+			String motivationLetter, List<String> sources, boolean spontaneous) {
 		this.candidate = candidate;
 		this.motivationLetter = motivationLetter;
-		this.source = source;
+		this.sources = sources;
 		this.spontaneous = spontaneous;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -116,7 +120,7 @@ public class SubmissionEntity implements Serializable {
 		return positions;
 	}
 
-	public void setPosition(List<PositionEntity> positions) {
+	public void setPositions(List<PositionEntity> positions) {
 		this.positions = positions;
 	}
 
@@ -144,12 +148,12 @@ public class SubmissionEntity implements Serializable {
 		this.motivationLetter = motivationLetter;
 	}
 
-	public List<String> getSource() {
-		return source;
+	public List<String> getSources() {
+		return sources;
 	}
 
-	public void setSource(List<String> source) {
-		this.source = source;
+	public void setSources(List<String> sources) {
+		this.sources = sources;
 	}
 
 	public Date getDate() {
@@ -176,30 +180,6 @@ public class SubmissionEntity implements Serializable {
 		this.interviews = interviews;
 	}
 
-	public boolean isAccepted() {
-		return accepted;
-	}
-
-	public void setAccepted(boolean accepted) {
-		this.accepted = accepted;
-	}
-
-	public String getProposal() {
-		return proposal;
-	}
-
-	public void setProposal(String proposal) {
-		this.proposal = proposal;
-	}
-	
-	public boolean isHired() {
-		return hired;
-	}
-
-	public void setHired(boolean hired) {
-		this.hired = hired;
-	}
-
 	public String getRejectReason() {
 		return rejectReason;
 	}
@@ -207,7 +187,7 @@ public class SubmissionEntity implements Serializable {
 	public void setRejectReason(String rejectReason) {
 		this.rejectReason = rejectReason;
 	}
-	
+
 	public void addPosition(PositionEntity position) {
 		if (positions == null) positions = new ArrayList<PositionEntity>();
 		positions.add(position);

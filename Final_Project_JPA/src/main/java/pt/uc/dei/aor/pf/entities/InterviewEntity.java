@@ -12,59 +12,63 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="InterviewEntity")
-public class InterviewEntity implements Serializable{
+@Table(name = "interviews")
+public class InterviewEntity implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2959804497058358297L;
-
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "interviews_interviewers",
+		joinColumns = @JoinColumn(name = "interview_id"),
+		inverseJoinColumns = @JoinColumn(name = "interviewer_id"))
+	@OrderBy("first_name")
 	private List<UserEntity> interviewers;
 
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="submission")
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "submission", nullable = false)
 	private SubmissionEntity submission;
 
-	@Column(name="date")
-	@Temporal(javax.persistence.TemporalType.DATE)
+	@Column(name = "date")
+	@Temporal(TemporalType.DATE)
 	private Date date;
 
-	@Column(name="carriedOut", nullable = true)
+	@Column(name = "carried_out")
 	private boolean carriedOut;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="script", nullable = true)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "script")
 	private ScriptEntity script;
 
 	@OneToMany
-	private List<AnswerEntity>answers;
+	private List<AnswerEntity> answers;
 
-	@Column(name="approved", nullable = true)
+	@Column(name = "approved")
 	private boolean approved;
 
-	@Column(name="feedback", nullable = true)
+	@Column(name = "feedback", length = 100)
 	private String feedback;
-
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="interviewScheduledBy")
-	private UserEntity interviewScheduledBy;
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "scheduled_by", nullable = false)
+	private UserEntity scheduledBy;
 
 	public InterviewEntity() {
 	}
@@ -76,14 +80,14 @@ public class InterviewEntity implements Serializable{
 		this.submission = submission;
 		this.date = date;
 		this.script = script;
-		this.interviewScheduledBy = interviewScheduledBy;
+		this.scheduledBy = interviewScheduledBy;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -151,12 +155,12 @@ public class InterviewEntity implements Serializable{
 		this.feedback = feedback;
 	}
 
-	public UserEntity getInterviewScheduledBy() {
-		return interviewScheduledBy;
+	public UserEntity getScheduledBy() {
+		return scheduledBy;
 	}
 
-	public void setInterviewScheduledBy(UserEntity interviewScheduledBy) {
-		this.interviewScheduledBy = interviewScheduledBy;
+	public void setScheduledBy(UserEntity interviewScheduledBy) {
+		this.scheduledBy = interviewScheduledBy;
 	}
 
 	public void addInterviewer(UserEntity user) {

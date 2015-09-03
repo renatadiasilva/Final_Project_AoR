@@ -8,7 +8,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.entities.Utilizador;
 
 @Stateless
 public class TestUserDao extends GenericDao<UserEntity> {

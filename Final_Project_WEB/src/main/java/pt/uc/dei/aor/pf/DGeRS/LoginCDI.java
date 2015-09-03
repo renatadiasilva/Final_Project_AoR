@@ -59,7 +59,7 @@ public class LoginCDI {
 		roles.add(UserEntity.ROLE_INTERVIEWER);
 
 		newUser=new UserEntity("admin@mail.com", "12345", "Admin", "Admin", roles);
-		newUser.setRole(UserEntity.ROLE_ADMIN);
+		newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
 
 		this.testUserBean.save(newUser);
 		
@@ -72,7 +72,7 @@ public class LoginCDI {
 		roles.add(UserEntity.ROLE_CANDIDATE);
 
 		newUser=new UserEntity("manager@mail.com", "12345", "Manager", "Manager", roles);
-		newUser.setRole(UserEntity.ROLE_MANAGER);
+		newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
 
 		this.testUserBean.save(newUser);
 		
@@ -84,7 +84,7 @@ public class LoginCDI {
 		roles.add(UserEntity.ROLE_INTERVIEWER);
 
 		newUser=new UserEntity("interviewer@mail.com", "12345", "Interviewer", "Interviewer", roles);
-		newUser.setRole(UserEntity.ROLE_INTERVIEWER);
+		newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
 
 		this.testUserBean.save(newUser);
 		
@@ -96,7 +96,7 @@ public class LoginCDI {
 		roles.add(UserEntity.ROLE_CANDIDATE);
 
 		newUser=new UserEntity("candidate@mail.com", "12345", "Candidate", "Candidate", roles);
-		newUser.setRole(UserEntity.ROLE_CANDIDATE);
+		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
 
 		this.testUserBean.save(newUser);
 	}

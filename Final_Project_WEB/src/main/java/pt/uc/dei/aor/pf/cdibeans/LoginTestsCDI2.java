@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @Named
 @SessionScoped
-public class LoginTestsCDI implements Serializable {
+public class LoginTestsCDI2 implements Serializable {
 
 	/**
 	 * 
@@ -23,7 +23,7 @@ public class LoginTestsCDI implements Serializable {
 	@Inject
 	UserEJBInterfaceRENATA userEntityBean;
 
-	public LoginTestsCDI() {
+	public LoginTestsCDI2() {
 	}
 	
 	public void createUserAdmin(){
@@ -31,7 +31,7 @@ public class LoginTestsCDI implements Serializable {
 		roles.add(UserEntity.ROLE_ADMIN);
 		
 		UserEntity newUser=new UserEntity("admin@mail.com", "12345", "Admin", "Admin", roles);
-		newUser.setRole(UserEntity.ROLE_ADMIN);
+		newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
 		
 		this.userEntityBean.save(newUser);
 	}
@@ -41,7 +41,7 @@ public class LoginTestsCDI implements Serializable {
 		roles.add(UserEntity.ROLE_MANAGER);
 		
 		UserEntity newUser=new UserEntity("manager@mail.com", "12345", "Admin", "Admin", roles);
-		newUser.setRole(UserEntity.ROLE_MANAGER);
+		newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
 		
 		this.userEntityBean.save(newUser);
 	}
@@ -51,7 +51,7 @@ public class LoginTestsCDI implements Serializable {
 		roles.add(UserEntity.ROLE_INTERVIEWER);
 		
 		UserEntity newUser=new UserEntity("interviewer@mail.com", "12345", "Admin", "Admin", roles);
-		newUser.setRole(UserEntity.ROLE_INTERVIEWER);
+		newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
 		
 		this.userEntityBean.save(newUser);
 	}
@@ -61,7 +61,7 @@ public class LoginTestsCDI implements Serializable {
 		roles.add(UserEntity.ROLE_CANDIDATE);
 		
 		UserEntity newUser=new UserEntity("candidate@mail.com", "12345", "Admin", "Admin", roles);
-		newUser.setRole(UserEntity.ROLE_CANDIDATE);
+		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
 		
 		this.userEntityBean.save(newUser);
 	}

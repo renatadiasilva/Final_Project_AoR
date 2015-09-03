@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -17,91 +18,91 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="UserEntity")
+@Table(name = "users")
 public class UserEntity implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2911048822662162612L;
 
-
 	public static final String ROLE_ADMIN="ADMIN";
-
 	public static final String ROLE_MANAGER="MANAGER";
-
 	public static final String ROLE_INTERVIEWER="INTERVIEWER";
-
 	public static final String ROLE_CANDIDATE="CANDIDATE";
 
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
-	@Column(name="email")
+	@NotNull
+//  pattern mais simples??? limita??
+//	@Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+//    +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+//    +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+//         message="{invalid.email}")
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
-	@Column(name="password")
+	@NotNull
+	@Column(name ="password", nullable = false, length = 10)
 	private String password;
 
-	@Column(name="firstName")
+	@NotNull
+	//@NotBlank??
+	@Column(name = "first_name", nullable = false, length = 20)
 	private String firstName;
 
-	@Column(name="lastName")
+	@NotNull
+	@Column(name="last_name", nullable = false, length = 40)
 	private String lastName;
 
-	@Column(name="defaultRole")
+	@NotNull
+	@Column(name="default_role", nullable = false)
 	private String defaultRole;
 
-	@ElementCollection(fetch=FetchType.EAGER)
-	private List<String>roles;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "roles",
+    	joinColumns = @JoinColumn(name = "user_id"))
+	@Column(name = "role")
+	private List<String> roles;
 
 	@OneToOne(optional = true)
+	@JoinColumn(name = "user_info", unique = true, updatable = false)
 	private UserInfoEntity userInfo;
 
 	@OneToOne(optional = true)
-	@JoinColumn(name = "createdBy", unique = false, nullable = true, updatable = false)
+	@JoinColumn(name = "created_by", updatable = false)
 	private UserEntity createdBy;
 
-
-	// Post
-	// manager da PositionEntity
-	@OneToMany(mappedBy="positionManager", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "positionManager", cascade = CascadeType.ALL)
+	@OrderBy("positionCode")
 	private List<PositionEntity> managedPositions;
 
-	// Post
-	// admin que criou a PositionEntity
-	@OneToMany(mappedBy="positionCreator", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "positionCreator", cascade = CascadeType.ALL)
+	@OrderBy("positionCode")
 	private List<PositionEntity> createdPositions;
 
-	// Post
-	// admin que criou a ScriptEntity
-	@OneToMany(mappedBy="scriptCreator", cascade=CascadeType.ALL)
-	private List<ScriptEntity> scriptCreator;
+	@OneToMany(mappedBy = "scriptCreator", cascade = CascadeType.ALL)
+	@OrderBy("title")
+	private List<ScriptEntity> createdScripts;
 
-	// Post
-	// interviewers, a que entrevistas estão assignados
 	@ManyToMany(mappedBy = "interviewers")
 	private List<InterviewEntity> interviews;
 
-	// Post
-	// user que marcou a Interview
-	@OneToMany(mappedBy="interviewScheduledBy", cascade=CascadeType.ALL)
-	private List<InterviewEntity> interviewScheduler;
+	@OneToMany(mappedBy="scheduledBy", cascade = CascadeType.ALL)
+	@OrderBy("date DESC")
+	private List<InterviewEntity> scheduledInterviews;
 	
-	// Post
-	// posições a que se candidatou - Submissions
-	@OneToMany(mappedBy="candidate", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+	@OrderBy("date")
 	private List<SubmissionEntity> submissions;
 	
-	// Post
-	// User que associou um candidatura espontanea a determinada submissão
-	@OneToMany(mappedBy="associatedBy", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "associatedBy", cascade = CascadeType.ALL)
+	@OrderBy("date")
 	private List<SubmissionEntity> spontaneusSubmissionAssociatedBy;
 
 	public UserEntity() {
@@ -115,11 +116,11 @@ public class UserEntity implements Serializable {
 		this.roles=roles;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -155,16 +156,16 @@ public class UserEntity implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public String getRole() {
+	public String getDefaultRole() {
 		return defaultRole;
 	}
 
-	public void setRole(String role) {
-		this.defaultRole = role;
+	public void setDefaultRole(String defaultRole) {
+		this.defaultRole = defaultRole;
 	}
 
 	public List<String> getRoles() {
-		return this.roles;
+		return roles;
 	}
 
 	public void setRoles(List<String> roles) {
@@ -203,12 +204,12 @@ public class UserEntity implements Serializable {
 		this.createdPositions = createdPositions;
 	}
 
-	public List<ScriptEntity> getScriptCreator() {
-		return scriptCreator;
+	public List<ScriptEntity> getCreatedScripts() {
+		return createdScripts;
 	}
 
-	public void setScriptCreator(List<ScriptEntity> scriptCreator) {
-		this.scriptCreator = scriptCreator;
+	public void setCreatedScripts(List<ScriptEntity> createdScripts) {
+		this.createdScripts = createdScripts;
 	}
 
 	public List<InterviewEntity> getInterviews() {
@@ -219,12 +220,12 @@ public class UserEntity implements Serializable {
 		this.interviews = interviews;
 	}
 
-	public List<InterviewEntity> getInterviewScheduler() {
-		return interviewScheduler;
+	public List<InterviewEntity> getScheduledInterviews() {
+		return scheduledInterviews;
 	}
 
-	public void setInterviewScheduler(List<InterviewEntity> interviewScheduler) {
-		this.interviewScheduler = interviewScheduler;
+	public void setScheduledInterviews(List<InterviewEntity> scheduledInterviews) {
+		this.scheduledInterviews = scheduledInterviews;
 	}
 
 	public List<SubmissionEntity> getSubmissions() {
@@ -233,6 +234,15 @@ public class UserEntity implements Serializable {
 
 	public void setSubmissions(List<SubmissionEntity> submissions) {
 		this.submissions = submissions;
+	}
+
+	public List<SubmissionEntity> getSpontaneusSubmissionAssociatedBy() {
+		return spontaneusSubmissionAssociatedBy;
+	}
+
+	public void setSpontaneusSubmissionAssociatedBy(
+			List<SubmissionEntity> spontaneusSubmissionAssociatedBy) {
+		this.spontaneusSubmissionAssociatedBy = spontaneusSubmissionAssociatedBy;
 	}
 
 }

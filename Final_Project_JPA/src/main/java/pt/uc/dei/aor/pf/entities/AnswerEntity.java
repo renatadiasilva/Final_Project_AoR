@@ -9,17 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="AnswerEntity")
+@Table(name = "answers")
 //@NamedQueries({
 //	@NamedQuery(name="User.findUserByEmail", 
 //			query="SELECT u FROM User u WHERE u.email = :email"),
@@ -30,70 +25,35 @@ import javax.persistence.TemporalType;
 //	@NamedQuery(name="User.findAllByIdOrder", 
 //		query="SELECT u FROM User u ORDER BY u.id")
 //}) 
-public class AnswerEntity implements Serializable{
+public class AnswerEntity implements Serializable {
 	
-	//Strategy AUTO
-	
-	// Min Max Pattern Size Past
-	
-	//nullable unique lenght
-//	, nullable = false, unique = true
-	
-//	@OrderBy("name")
-	
-	// NotNull NotEmpty NotBlank
-	
-//	@Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-//	        +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-//	        +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-//	             message="{invalid.email}")
-
-//	@Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
-//            message="{invalid.phonenumber}")
-//   protected String mobilePhone;
-//   @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
-//            message="{invalid.phonenumber}")
-//   protected String homePhone;
-	
-//	(xxx) xxx–xxxx
-	
-//	@Temporal(TemporalType.DATE)
-
-//	@ManyToMany
-//	@JoinTable(name = "playlist_contains_songs",
-//			joinColumns = @JoinColumn(name = "playlist_id"),
-//			inverseJoinColumns = @JoinColumn(name = "song_id"))
-
-   
 	private static final long serialVersionUID = 6475879936674697759L;
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 	
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name="interview")
+	@JoinColumn(name = "interview", nullable = false)
 	private InterviewEntity interview;
 	
+	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="question")
+	@JoinColumn(name = "question", nullable = false)
 	private QuestionEntity question;
 	
-	// Nullable
-	@Column(name="value", nullable=true)
+	@Column(name = "value")
 	private int value;
 	
-	// Nullable
-	@Column(name="isTrue", nullable=true)
+	@Column(name = "is_true")
 	private boolean isTrue;
 	
-	// Nullable
-	@Column(name="answer", nullable=true)
+	@Column(name = "answer", length = 100)
 	private String answer;
 	
-	// Nullable
-	@Column(name="comments", nullable=true)
+	@Column(name = "comments", length = 100)
 	private String comments;
 
 	public AnswerEntity() {
@@ -111,11 +71,11 @@ public class AnswerEntity implements Serializable{
 		this.comments = comments;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -166,5 +126,5 @@ public class AnswerEntity implements Serializable{
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	
+
 }

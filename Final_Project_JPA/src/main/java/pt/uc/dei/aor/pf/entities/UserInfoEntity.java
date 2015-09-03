@@ -11,61 +11,63 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="UserInfoEntity")
+@Table(name = "usersInfo")
 public class UserInfoEntity implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5226638137102796213L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 	
-	@Column(name="address")
+	@Column(name = "address", length = 200)
 	private String address;
 	
-	@Column(name="city")
+	@Column(name = "city", length = 40)
 	private String city;
 	
-	// Nullable
-	@Column(name="phone", nullable=true)
-	private int phone;
+//	check pattern
+//  @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
+//  	message="{invalid.phonenumber}")
+	@Column(name = "home_phone", length = 20)
+	private String homePhone;
 	
-	@Column(name="mobilePhone")
-	private int mobilePhone;
+//	check pattern
+//	@Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
+//  	message="{invalid.mobilephone}")
+	@Column(name = "mobile_phone", length = 20)
+	private String mobilePhone;
 	
-	@Column(name="country")
+	@Column(name = "country", length = 40)
 	private String country;
 	
-	@Column(name="course")
+	@Column(name = "course", length = 40)
 	private String course;
 	
-	@Column(name="school")
+	@Column(name = "school", length = 40)
 	private String school;
 	
 	// Link
-	@Column(name="cv")
+	@Column(name = "cv")
 	private String cv;
 	
-	// Link
-	@Column(name="linkedin")
+	// Link (validação!!)
+	@Column(name = "linkedin")
 	private String linkedin;
 	
-	@OneToOne(mappedBy= "userInfo")
+	@OneToOne(mappedBy = "userInfo")
 	private UserEntity owner;
 	
 	public UserInfoEntity() {
 	}
 
-	public UserInfoEntity(String adress, String city, int telephone,
-			int mobilePhone, String country, String course, String school, String cv) {
+	public UserInfoEntity(String adress, String city, String telephone,
+			String mobilePhone, String country, String course, String school, String cv) {
 		super();
 		this.address = adress;
 		this.city = city;
-		this.phone = telephone;
+		this.homePhone = telephone;
 		this.mobilePhone = mobilePhone;
 		this.country = country;
 		this.course = course;
@@ -73,20 +75,20 @@ public class UserInfoEntity implements Serializable {
 		this.cv=cv;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getAdress() {
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.address = adress;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getCity() {
@@ -97,19 +99,19 @@ public class UserInfoEntity implements Serializable {
 		this.city = city;
 	}
 
-	public int getTelephone() {
-		return phone;
+	public String getHomePhone() {
+		return homePhone;
 	}
 
-	public void setTelephone(int telephone) {
-		this.phone = telephone;
+	public void setHomePhone(String homePhone) {
+		this.homePhone = homePhone;
 	}
 
-	public int getMobilePhone() {
+	public String getMobilePhone() {
 		return mobilePhone;
 	}
 
-	public void setMobilePhone(int mobilePhone) {
+	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
 
@@ -143,22 +145,6 @@ public class UserInfoEntity implements Serializable {
 
 	public void setCv(String cv) {
 		this.cv = cv;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public int getPhone() {
-		return phone;
-	}
-
-	public void setPhone(int phone) {
-		this.phone = phone;
 	}
 
 	public String getLinkedin() {

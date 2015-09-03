@@ -11,43 +11,34 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="QuestionEntity")
+@Table(name = "questions")
 public class QuestionEntity implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8262287711073210783L;
 
-
 	public static final String VALUE="value";
-
 	public static final String ISTRUE="isTrue";
-
 	public static final String ANSWER="answer";
 
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
-	@Column(name="type", updatable = false)
+	@NotNull
+	@Column(name = "type", updatable = false, nullable = false)
 	private String type;
 
-	@Column(name="question", updatable = false)
+	@NotNull
+	@Column(name="question", updatable = false, nullable = false, length = 100)
 	private String question;
 
-	// Post
-	// Os Scripts que usam esta Question
 	@ManyToMany(mappedBy = "questions")
 	private List<ScriptEntity> scripts;
 
-	// Post
-	// As respostas a esta Question
 	@OneToMany(mappedBy = "question")
 	private List<AnswerEntity> answers;
 
@@ -63,11 +54,11 @@ public class QuestionEntity implements Serializable{
 		this.question = question;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

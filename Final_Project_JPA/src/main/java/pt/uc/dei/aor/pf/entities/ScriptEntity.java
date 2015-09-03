@@ -13,63 +13,66 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="ScriptEntity")
+@Table(name="scripts")
 public class ScriptEntity implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8279496261691105535L;
 
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-	private long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
 	// O Script do qual deriva este Script - Null: foi criado de raíz
 	@OneToOne(optional = true)
-	@JoinColumn(name = "derivedFrom", unique = false, nullable = true, updatable = false)
+	@JoinColumn(name = "derived_from", updatable = false)
 	private ScriptEntity derivedFrom;
 
-	@Column(name="title")
+	@NotNull
+	@Column(name = "title", nullable = false, length = 40)
 	private String title;
 
-	@Column(name="creationDate")
-	@Temporal(javax.persistence.TemporalType.DATE)
+	@NotNull
+	@Column(name = "creation_date", nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "scripts_questions",
+		joinColumns = @JoinColumn(name = "script_id"),
+		inverseJoinColumns = @JoinColumn(name = "question_id"))
 	private List<QuestionEntity> questions;
 
-	@Column(name="comments")
+	@Column(name="comments", length = 100)
 	private String comments;
 
 	// True by Default
-	@Column(name="reusable")
+	@Column(name = "reusable")
 	private boolean reusable;
 
+	@NotNull
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="scriptCreator")
+	@JoinColumn(name = "creator", nullable = false)
 	private UserEntity scriptCreator;
 
-	// Post
-	// Os scripts por defeito das positions
-	@OneToMany(mappedBy="defaultScript", cascade=CascadeType.ALL)
-	private List<PositionEntity> defaultScriptInPositions;
+	@OneToMany(mappedBy = "defaultScript", cascade = CascadeType.ALL)
+	@OrderBy("positionCode")
+	private List<PositionEntity> positionsWithScriptDefault;
 
-	// Post
-	// Os scripts das interviews
-	@OneToMany(mappedBy="script", cascade=CascadeType.ALL)
-	private List<InterviewEntity> interviewScript;
+	@OneToMany(mappedBy = "script", cascade=CascadeType.ALL)
+	private List<InterviewEntity> interviewsUsingScript;
 
 	public ScriptEntity() {
 	}
@@ -87,11 +90,11 @@ public class ScriptEntity implements Serializable{
 		this.scriptCreator = scriptCreator;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -151,23 +154,23 @@ public class ScriptEntity implements Serializable{
 		this.scriptCreator = scriptCreator;
 	}
 
-	public List<PositionEntity> getDefaultScriptInPositions() {
-		return defaultScriptInPositions;
+	public List<PositionEntity> getPositionsWithScriptDefault() {
+		return positionsWithScriptDefault;
 	}
 
-	public void setDefaultScriptInPositions(
-			List<PositionEntity> defaultScriptInPositions) {
-		this.defaultScriptInPositions = defaultScriptInPositions;
+	public void setPositionsWithScriptDefault(
+			List<PositionEntity> positionsWithScriptDefault) {
+		this.positionsWithScriptDefault = positionsWithScriptDefault;
 	}
 
-	public List<InterviewEntity> getInterviewScript() {
-		return interviewScript;
+	public List<InterviewEntity> getInterviewsUsingScript() {
+		return interviewsUsingScript;
 	}
 
-	public void setInterviewScript(List<InterviewEntity> interviewScript) {
-		this.interviewScript = interviewScript;
+	public void setInterviewsUsingScript(List<InterviewEntity> interviewsUsingScript) {
+		this.interviewsUsingScript = interviewsUsingScript;
 	}
-	
+
 	public void addQuestion(QuestionEntity question) {
 		if (questions == null) questions = new ArrayList<QuestionEntity>();
 		questions.add(question);
