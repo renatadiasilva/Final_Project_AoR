@@ -56,7 +56,7 @@ public class InterviewEntity implements Serializable {
 	@JoinColumn(name = "script")
 	private ScriptEntity script;
 
-	@OneToMany
+	@OneToMany(mappedBy = "interview")
 	private List<AnswerEntity> answers;
 
 	@Column(name = "approved")
