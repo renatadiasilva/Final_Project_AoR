@@ -1,52 +1,44 @@
 package pt.uc.dei.aor.pf.beans;
 
-import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import pt.uc.dei.aor.pf.dao.AnswerDAO;
 import pt.uc.dei.aor.pf.entities.AnswerEntity;
-import pt.uc.dei.aor.pf.entities.InterviewEntity;
 
+@Stateless
 public class AnswerEJBImp implements AnswerEJBInterface {
 
+	private static final Logger log = LoggerFactory.getLogger(AnswerEJBImp.class);
+	
+	@EJB
+	private AnswerDAO answerDAO;
+	
 	@Override
 	public void save(AnswerEntity answer) {
-		// TODO Auto-generated method stub
-		
+		log.info("Saving answer in DB");
+		answerDAO.save(answer);
 	}
 
 	@Override
 	public void update(AnswerEntity answer) {
-		// TODO Auto-generated method stub
-		
+		log.info("Updating answer of DB");
+		answerDAO.update(answer);
 	}
 
 	@Override
 	public void delete(AnswerEntity answer) {
-		// TODO Auto-generated method stub
-		
+		log.info("Deleting answer from DB");
+		answerDAO.delete(answer.getId(), AnswerEntity.class);
 	}
 
 	@Override
 	public AnswerEntity find(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<AnswerEntity> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<AnswerEntity> findAnswerByInterview(InterviewEntity interview) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<AnswerEntity> findAnswerByQuestion(InterviewEntity interview) {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("Finding answer by ID");
+		return answerDAO.find(id);
 	}
 
 }

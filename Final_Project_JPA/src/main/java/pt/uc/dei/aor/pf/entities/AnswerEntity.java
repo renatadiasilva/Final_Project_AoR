@@ -15,16 +15,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "answers")
-//@NamedQueries({
-//	@NamedQuery(name="User.findUserByEmail", 
-//			query="SELECT u FROM User u WHERE u.email = :email"),
-//	@NamedQuery(name="User.findUserStartingBy",
-//			query="SELECT u FROM User u WHERE u.name like :exp ORDER BY u.name"),
-//	@NamedQuery(name="User.findUserById", 
-//		query="SELECT u FROM User u WHERE u.id = :id"),
-//	@NamedQuery(name="User.findAllByIdOrder", 
-//		query="SELECT u FROM User u ORDER BY u.id")
-//}) 
 public class AnswerEntity implements Serializable {
 	
 	private static final long serialVersionUID = 6475879936674697759L;
@@ -59,9 +49,10 @@ public class AnswerEntity implements Serializable {
 	public AnswerEntity() {
 	}
 
-	public AnswerEntity(QuestionEntity question, int value, boolean isTrue,
-			String answer, String comments) {
+	public AnswerEntity(InterviewEntity interview, QuestionEntity question, 
+			int value, boolean isTrue, String answer, String comments) {
 		
+		this.interview = interview;
 		this.question = question;
 		
 		if (question.getType().equals(QuestionEntity.VALUE)) this.value = value;
