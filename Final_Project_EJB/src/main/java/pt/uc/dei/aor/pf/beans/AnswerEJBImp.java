@@ -1,5 +1,7 @@
 package pt.uc.dei.aor.pf.beans;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -39,6 +41,12 @@ public class AnswerEJBImp implements AnswerEJBInterface {
 	public AnswerEntity find(Long id) {
 		log.info("Finding answer by ID");
 		return answerDAO.find(id);
+	}
+
+	@Override
+	public List<AnswerEntity> findAll() {
+		log.info("Creating Query for all answers");
+		return answerDAO.findAll();
 	}
 
 }

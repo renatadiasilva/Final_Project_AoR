@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -24,6 +26,20 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "interviews")
+@NamedQueries({
+	@NamedQuery(name = "Interview.carriedOutInterviews",
+			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE AND i.date BETWEEN :date1 AND :date2"),
+//	@NamedQuery(name="Song.songsOfUser",
+//			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
+//	@NamedQuery(name="Song.songsOfUserOrderId",
+//			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.id"),
+//	@NamedQuery(name="Song.songsByArtistTitle",
+//			query="SELECT s FROM Song s WHERE UPPER(s.title) LIKE :t AND UPPER(s.artist) LIKE :a ORDER BY s.title"),
+//	@NamedQuery(name="Song.findSongById",
+//			query="SELECT s FROM Song s WHERE s.id = :id"),
+//	@NamedQuery(name="Song.songsOfUserId",
+//			query="SELECT s FROM Song s WHERE s.id = :id AND s.owner = :ownerId"),
+})
 public class InterviewEntity implements Serializable {
 
 	private static final long serialVersionUID = -2959804497058358297L;
@@ -73,10 +89,8 @@ public class InterviewEntity implements Serializable {
 	public InterviewEntity() {
 	}
 
-	public InterviewEntity(List<UserEntity> interviewers,
-			SubmissionEntity submission, Date date, ScriptEntity script,
-			UserEntity interviewScheduledBy) {
-		this.interviewers = interviewers;
+	public InterviewEntity(SubmissionEntity submission, Date date, 
+			ScriptEntity script, UserEntity interviewScheduledBy) {
 		this.submission = submission;
 		this.date = date;
 		this.script = script;
