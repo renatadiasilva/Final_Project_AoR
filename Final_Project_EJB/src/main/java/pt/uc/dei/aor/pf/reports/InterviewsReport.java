@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 // to put in WEB (CDI Bean)
 public class InterviewsReport {
@@ -38,7 +39,7 @@ public class InterviewsReport {
 
 		// contagens totais de meses/anos... aviso ao utilizador
 		
-		int y1 = 0, m1 = 0, day1 = 0;
+		int y1 = 0, m1 = 0, day1 = 0, n = 0;
 		List<Integer> countInterviews = new ArrayList<Integer>();
 
 		switch (period) {
@@ -49,15 +50,26 @@ public class InterviewsReport {
 				m1 = cal1.get(Calendar.MONTH);
 				day1 = cal1.get(Calendar.DAY_OF_MONTH);
 				// get list of interviews of the day
+				// juntar listas?? addAll()
 				List<InterviewEntity> list = 
 						interviewEJB.findCarriedOutInterviews(cal1.getTime(), cal1.getTime());  
 				// count the number of interviews of the day
-				countInterviews.add(list.size());
+				n = list.size();
+				countInterviews.add(n);
+				System.out.println("\n Número de entrevistas (DIA: "+cal1.getTime()+"): "+n);
 				// print results of interviews of the day
 				for (InterviewEntity i : list) {
 					// PDF file
-					System.out.println();
-					System.out.println("Feedback:"+i.getFeedback()+" ");
+					System.out.println("\n\nEntrevista "+ list.indexOf(i));
+					System.out.println("\nData: "+i.getDate());
+					System.out.println("\nEntrevistadores: ");
+					for (UserEntity u : i.getInterviewers())
+						System.out.println(u.getFirstName()+" "+u.getLastName()+", ");
+					System.out.println("\nCandidato: ");
+					System.out.println(i.getSubmission().getCandidate().getFirstName()+" "
+							+i.getSubmission().getCandidate().getLastName());
+					System.out.println("\n\nAprovado: "+(i.isApproved()?"SIM":"NÃO"));
+					System.out.println("\nFeedback: "+i.getFeedback());
 				}
 				// move to next day
 				cal1.add(Calendar.DAY_OF_YEAR, 1); // Calendar.DATE???
@@ -74,7 +86,7 @@ public class InterviewsReport {
 				cal3.set(Calendar.DAY_OF_MONTH, cal1.getActualMaximum(Calendar.DAY_OF_MONTH));
 				cal3.set(Calendar.MONTH, cal1.get(Calendar.MONTH));
 				cal3.set(Calendar.YEAR, cal1.get(Calendar.YEAR));
-				l.add(interviewEJB.findCarriedOutInterviews(cal1.getTime(), cal3.getTime()).size());
+//				l.add(interviewEJB.findCarriedOutInterviews(cal1.getTime(), cal3.getTime()).size());
 				// move to next month
 				cal1.add(Calendar.MONTH, 1); // check
 			}
@@ -87,14 +99,14 @@ public class InterviewsReport {
 			cal2.set(Calendar.MONTH, 0);
 			while (!cal1.after(cal2)) {
 				y1 = cal1.get(Calendar.YEAR);
-				l.add(interviewEJB.findCarriedOutInterviews(0, 0, y1).size());
+//				l.add(interviewEJB.findCarriedOutInterviews(0, 0, y1).size());
 				// move to next year
 				cal1.add(Calendar.YEAR, 1); // check
 			}
 			break;
 		}
 		
-		return l;
+		return countInterviews;
 
 	}
 
