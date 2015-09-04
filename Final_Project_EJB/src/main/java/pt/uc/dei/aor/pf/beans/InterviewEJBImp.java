@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.beans;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -55,16 +56,37 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
-	public List<InterviewEntity> findCarriedOutInterviews(Date date1,
-			Date date2, String period) {
-		log.info("Finding all carried out interviews between two dates");
-		//muitas validações...
-//		switch (period) {
-//		case "daily": break;
-//		case "monthly": break;
-//		case "yearly": break;
+	public List<InterviewEntity> findCarriedOutInterviews(Date date1, Date date2) {
+		log.info("Finding all carried out interviews of a day, month, or year");
+		
+//		Calendar calendar1 = Calendar.getInstance();
+//		Calendar calendar2 = Calendar.getInstance();
+//		calendar1.set(Calendar.YEAR, year);
+//		calendar2.set(Calendar.YEAR, year);
+//		
+//		if (month != 0) { //month defined
+//			calendar1.set(Calendar.MONTH, month);
+//			calendar2.set(Calendar.MONTH, month);
+//			if (day != 0) { // day, month, and year
+//				calendar1.set(Calendar.DAY_OF_MONTH, day);
+//				calendar2.set(Calendar.DAY_OF_MONTH, day);
+//			} else { // only month and year
+//				calendar1.set(Calendar.DAY_OF_MONTH, 1);
+//				int daysInMonth = calendar1.getActualMaximum(Calendar.DAY_OF_MONTH);
+//				calendar2.set(Calendar.DAY_OF_MONTH, daysInMonth);				
+//			}
 //		}
-			
+//		else { // no month (and no day) defined - only year
+//			// January, 1 to December, 31 of given year
+//			calendar1.set(Calendar.MONTH, 0);
+//			calendar1.set(Calendar.DAY_OF_MONTH, 1);
+//			calendar2.set(Calendar.MONTH, 11);
+//			calendar2.set(Calendar.DAY_OF_MONTH, 31);
+//		} 
+//		
+//		Date date1 = calendar1.getTime();
+//		Date date2 = calendar2.getTime();
+//		
 		return interviewDAO.findCarriedOutInterviews(date1, date2);
 	}
 

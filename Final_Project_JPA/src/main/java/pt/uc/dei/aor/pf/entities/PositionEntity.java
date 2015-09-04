@@ -79,7 +79,7 @@ public class PositionEntity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date closingDate;
 
-	// weeks??? DAYS???
+	// weeks??? DAYS!
 	@Column(name = "sla")
 	private int sla;
 

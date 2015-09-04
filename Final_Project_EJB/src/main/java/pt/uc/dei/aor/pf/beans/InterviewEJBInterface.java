@@ -15,7 +15,7 @@ public interface InterviewEJBInterface {
 	public abstract void delete(InterviewEntity interview);
 	public abstract InterviewEntity find(Long id);
 	public abstract List<InterviewEntity> findAll();
-	public abstract List<InterviewEntity> findCarriedOutInterviews(Date date1, Date date2, String period);  //relatório
+	public abstract List<InterviewEntity> findCarriedOutInterviews(Date date1, Date date2);
 	public abstract List<InterviewEntity> findInterviewsByUser(UserEntity interviewer);  //get??? needed???
 	public abstract List<InterviewEntity> findCarriedOutInterviewsByUser(UserEntity interviewer);
 	public abstract List<InterviewEntity> findScheduledInterviewsByUser(UserEntity interviewer);

@@ -28,7 +28,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "interviews")
 @NamedQueries({
 	@NamedQuery(name = "Interview.carriedOutInterviews",
-			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE AND i.date BETWEEN :date1 AND :date2"),
+			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE AND"
+					+ " i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
 //	@NamedQuery(name="Song.songsOfUser",
 //			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
 //	@NamedQuery(name="Song.songsOfUserOrderId",
@@ -75,6 +76,7 @@ public class InterviewEntity implements Serializable {
 	@OneToMany(mappedBy = "interview")
 	private List<AnswerEntity> answers;
 
+	// negative positive??
 	@Column(name = "approved")
 	private boolean approved;
 

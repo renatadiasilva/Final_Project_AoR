@@ -35,7 +35,10 @@ public class SubmissionEntity implements Serializable {
 	public static final String STATUS_SUBMITED = "Submited";
 	public static final String STATUS_REJECTED = "Rejected";
 	public static final String STATUS_ACCEPTED = "Accepted to Interview";
-	public static final String STATUS_PROPOSAL = "Presented Proposal";
+	public static final String STATUS_SPROPOSAL = "Submited Proposal";
+	public static final String STATUS_RPROPOSAL = "Rejected Proposal";
+	public static final String STATUS_APROPOSAL = "Accepted Proposal";  //o mesmo q a de baixo??
+	public static final String STATUS_OFFER    = "Offer Process (Negotiation)";
 	public static final String STATUS_HIRED    = "Hired";
 	public static final String STATUS_NOTHIRED = "Not Hired"; 
 	
