@@ -1,0 +1,121 @@
+<ui:composition template="WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">IT Jobs</ui:define>
+
+	<ui:define name="header-menus">
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{userSessionManagement.checkForUser()}" />
+		</f:metadata>
+		<h:form id="header-login">
+			<h:panelGrid columns="5" style="margin-left: 5px">
+
+				<p:outputLabel value="Email: " for="login-email" />
+				<p:inputText id="login-email" value="#{loginCDI.email}" size="50"
+					required="true" />
+
+				<p:outputLabel value="Password: " for="login-password" />
+				<p:password id="login-password" value="#{loginCDI.password}"
+					size="50" required="true" />
+
+				<p:commandButton value="Login" action="#{loginCDI.login()}"
+					ajax="false" icon="ui-icon-key" />
+
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="contents">
+		<h1>Novo Registo</h1>
+		<h:form id="signup">
+			<p:messages />
+
+			<h:panelGrid columns="2">
+
+				<p:outputLabel value="Email: " for="signup-email" />
+				<p:inputText id="signup-email" value="#{signupCDI.email}" size="50"
+					required="true" />
+
+				<p:outputLabel value="Password: " for="signup-password" />
+				<p:password id="signup-password" value="#{signupCDI.password}"
+					size="50" required="true" feedback="true" weakLabel="Fraca"
+					goodLabel="Boa" strongLabel="Forte" promptLabel="Insira uma senha"
+					match="signup-repeatPassword" />
+
+				<p:outputLabel value="Repita a Password: "
+					for="signup-repeatPassword" />
+				<p:password id="signup-repeatPassword" size="50" required="true" />
+
+				<p:outputLabel />
+				<p:outputLabel />
+				<p:outputLabel />
+				<p:outputLabel />
+
+				<p:outputLabel value="Primeiro Nome: " for="signup-firstName" />
+				<p:inputText id="signup-firstName" value="#{signupCDI.firstName}"
+					size="50" required="true" />
+
+				<p:outputLabel value="Último Nome: " for="signup-lastName" />
+				<p:inputText id="signup-lastName" value="#{signupCDI.lastName}"
+					size="50" required="true" />
+
+				<p:outputLabel value="Telefone: " for="signup-homePhone" />
+				<p:inputMask mask="999 999 999" id="signup-homePhone"
+					value="#{signupCDI.homePhone}" size="50" maxlength="20" />
+
+				<p:outputLabel value="Telefone móvel: " for="signup-mobilePhone" />
+				<p:inputMask mask="999 999 999" id="signup-mobilePhone"
+					value="#{signupCDI.mobilePhone}" size="50" maxlength="20"
+					required="true" />
+
+				<p:outputLabel />
+				<p:outputLabel />
+				<p:outputLabel />
+				<p:outputLabel />
+
+				<p:outputLabel value="Morada: " for="signup-adress" />
+				<h:panelGroup>
+					<p:inputTextarea id="signup-adress" value="#{signupCDI.adress}"
+						cols="50" rows="3" maxlength="200" counter="maxAdress"
+						counterTemplate=" - {0}" />
+					<h:outputText id="maxAdress" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Cidade: " for="signup-city" />
+				<p:inputText id="signup-city" value="#{signupCDI.city}" size="50"
+					maxlength="40" />
+
+				<p:outputLabel value="País: " for="signup-country" />
+				<p:inputText id="signup-country" value="#{signupCDI.country}"
+					size="50" maxlength="40" />
+
+				<p:outputLabel />
+				<p:outputLabel />
+				<p:outputLabel />
+				<p:outputLabel />
+
+				<p:outputLabel value="Curso: " for="signup-course" />
+				<p:inputText id="signup-course" value="#{signupCDI.course}"
+					size="50" maxlength="40" />
+
+				<p:outputLabel value="Escola: " for="signup-school" />
+				<p:inputText id="signup-school" value="#{signupCDI.course}"
+					size="50" maxlength="40" />
+
+				<p:outputLabel value="LinkedIn: " for="signup-linkedin" />
+				<p:inputText id="signup-linkedin" value="#{signupCDI.linkedin}"
+					size="50" maxlength="40" />
+
+				<p:commandButton value="Signup" action="#{signupCDI.signUp()}"/>
+
+			</h:panelGrid>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

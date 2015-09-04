@@ -17,7 +17,9 @@ input {
 .ui-inputfield {
 	padding: 0px;
 	box-shadow: none;
-	border-radius: 0px; border-width : 1px; border-style : solid;
+	border-radius: 0px;
+	border-width: 1px;
+	border-style: solid;
 	/*background-color: #DBDBDB;*/
 	background-color: #fff;
 	color: #5E5E5E;
@@ -59,10 +61,11 @@ input {
 	box-shadow: none;
 	border-radius: 0px;
 	/*border-width: 1px;
-	border-style: solid;
-	border-color: #ff4081;
+	border-style: solid;*/
+	border-color: #3F51B5;
 	/* Cor primária */
-	/*background-color: #3F51B5;*/
+	background-color: #fff;
+	font-weight: normal;
 	/*background: #fff; color : #3F51B5;
 	text-shadow: none;
 	color: #3F51B5;*/
@@ -70,9 +73,12 @@ input {
 
 .ui-button:hover {
 	/*border-bottom-style: solid;
-	border-width: 1px;
+	border-width: 1px;*/
 	border-color: #3F51B5;
-	color: #ff4081;*/
+	background: #C4C4C4
+		-moz-linear-gradient(center top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0)) repeat scroll 0% 0%;
+	/*color: #ff4081;*/
 }
 
 /* p:calendar date-picker */
@@ -85,7 +91,7 @@ input {
 
 /*Menu*/
 .ui-menu {
-	padding: 0px;
+	/*padding: 0px;*/
 	margin-left: 16px;
 }
 

@@ -2,13 +2,13 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>Final_Project</display-name>
   <welcome-file-list>
-    <welcome-file>index.xhtml</welcome-file>
+    <welcome-file>Index.xhtml</welcome-file>
   </welcome-file-list>
   <login-config>
     <auth-method>FORM</auth-method>
     <form-login-config>
-      <form-login-page>/index.xhtml</form-login-page>
-      <form-error-page>/loginError.xhtml</form-error-page>
+      <form-login-page>/Index.xhtml</form-login-page>
+      <form-error-page>/Index.xhtml</form-error-page>
     </form-login-config>
   </login-config>
   <security-constraint>

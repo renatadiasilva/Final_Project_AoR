@@ -8,40 +8,13 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><ui:insert name="titulo">IT Jobs</ui:insert></title>
-	<h:outputStylesheet library="css" name="MainStyle.css"></h:outputStylesheet>
-	<h:outputStylesheet library="css" name="PrimeFacesOverride.css"></h:outputStylesheet>
-	<script>
-	PrimeFaces.locales['pt'] = {
-		    closeText: 'Fechar',
-		    prevText: 'Anterior',
-		    nextText: 'Próximo',
-		    currentText: 'Começo',
-		    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-		    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun', 'Jul','Ago','Set','Out','Nov','Dez'],
-		    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
-		    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
-		    dayNamesMin: ['D','S','T','Q','Q','S','S'],
-		    weekHeader: 'Semana',
-		    firstDay: 0,
-		    isRTL: false,
-		    showMonthAfterYear: false,
-		    yearSuffix: '',
-		    timeOnlyTitle: 'Só Horas',
-		    timeText: 'Tempo',
-		    hourText: 'Hora',
-		    minuteText: 'Minuto',
-		    secondText: 'Segundo',
-		    ampm: false,
-		    month: 'Mês',
-		    week: 'Semana',
-		    day: 'Dia',
-		    allDayText : 'Todo o Dia'
-		};
-	</script>
+	<h:outputStylesheet library="css" name="MainStyle.css" />
+	<h:outputStylesheet library="css" name="PrimeFacesOverride.css" />
+	<h:outputScript library="scripts" name="calendar.js" />
 </h:head>
 
 <h:body>
-
+	
 	<header> <!-- Logótipo -->
 	<div id="header-link">
 		<h:link>
@@ -49,30 +22,27 @@
 		</h:link>
 	</div>
 
-	<!-- Mensagens PrimeFaces -->
+	<!-- Mensagens -->
 	<div id="header-messages">
+		<ui:insert name="header-messages" />
 	</div>
 
 	<!-- Menus de navegação -->
 	<div id="header-menus">
 		<ui:insert name="header-menus">
-			<ui:include src="header-menus.xhtml" />
+			<ui:include src="Header-menus.xhtml" />
 		</ui:insert>
 	</div>
 
 	</header>
 
 	<div id="inner-body">
-		<p:messages />
+
+		<!-- Conteúdo das páginas -->
 		<div id="contents">
 			<ui:insert name="contents" />
-			<br /> <br /> <a href="../../role/admin/Landing.xhtml">Página
-				Admin</a><br /> <br /> <a href="../../role/manager/Landing.xhtml">Página
-				Manager</a><br /> <br /> <a
-				href="../../role/interviewer/Landing.xhtml">Página Interviewer</a><br />
-			<br /> <a href="../../role/candidate/Landing.xhtml">Página
-				Candidate</a> <br /> <br />
 		</div>
+
 		<!-- Footer -->
 		<div id="footer">IT Jobs - Projecto Final | Programação Avançada
 			em JAVA | Duarte Gonçalves | Renata Silva</div>
