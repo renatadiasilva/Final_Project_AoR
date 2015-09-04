@@ -9,14 +9,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
-public abstract class GenericDAO<E> {
+public abstract class GenericDao<E> {
 
 	@PersistenceContext(unitName = "ProjetoFinal")
 	protected EntityManager em;
 
 	private Class<E> entityClass;
 
-	public GenericDAO(Class<E> entityClass) {
+	public GenericDao(Class<E> entityClass) {
 		this.entityClass = entityClass;
 	}
 

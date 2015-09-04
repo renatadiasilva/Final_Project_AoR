@@ -10,9 +10,9 @@ import javax.ejb.Stateless;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 
 @Stateless
-public class InterviewDAO extends GenericDAO<InterviewEntity> {
+public class InterviewDao extends GenericDao<InterviewEntity> {
 
-	public InterviewDAO() {
+	public InterviewDao() {
 		super(InterviewEntity.class);
 	}
 

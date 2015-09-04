@@ -64,6 +64,11 @@
 				<p:inputText id="signup-lastName" value="#{signupCDI.lastName}"
 					size="50" required="true" />
 
+				<p:outputLabel value="Data de Nascimento: " for="signup-birthday" />
+				<p:calendar id="signup-birthday" value="#{signupCDI.birthday}"
+					required="true" pattern="dd/MM/yyyy" readonlyInput="true"
+					navigator="true" maxdate="#{signupCDI.maxDate}" locale="pt" />
+
 				<p:outputLabel value="Telefone: " for="signup-homePhone" />
 				<p:inputMask mask="999 999 999" id="signup-homePhone"
 					value="#{signupCDI.homePhone}" size="50" maxlength="20" />
@@ -111,10 +116,15 @@
 				<p:inputText id="signup-linkedin" value="#{signupCDI.linkedin}"
 					size="50" maxlength="40" />
 
-				<p:commandButton value="Signup" action="#{signupCDI.signUp()}"/>
+				<p:commandButton value="Signup" action="#{signupCDI.signUp()}"
+					update="" />
 
 			</h:panelGrid>
 
+		</h:form>
+
+		<h:form>
+			<p:commandButton value="Cancelar" action="/Index.xhtml" />
 		</h:form>
 	</ui:define>
 

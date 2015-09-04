@@ -110,7 +110,7 @@ public class UserSessionManagement implements Serializable {
 			this.context.addMessage(null, new FacesMessage("Logout falhou."));
 		} catch (IOException e) {
 			this.context.addMessage(null, new FacesMessage("Redirect falhou."));
-		} 
+		}
 	}
 
 	private void setAvailableRoles() {

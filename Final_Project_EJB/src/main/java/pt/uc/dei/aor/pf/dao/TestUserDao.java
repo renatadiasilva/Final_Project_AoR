@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
-public class TestUserDao extends GenericDAO<UserEntity> {
+public class TestUserDao extends GenericDao<UserEntity> {
 	
 	public TestUserDao() {
 		super(UserEntity.class);

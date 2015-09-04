@@ -5,9 +5,9 @@ import javax.ejb.Stateless;
 import pt.uc.dei.aor.pf.entities.AnswerEntity;
 
 @Stateless
-public class AnswerDAO extends GenericDAO<AnswerEntity> {
+public class AnswerDao extends GenericDao<AnswerEntity> {
 
-	public AnswerDAO() {
+	public AnswerDao() {
 		super(AnswerEntity.class);
 	}
 

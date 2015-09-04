@@ -1,5 +1,7 @@
 package pt.uc.dei.aor.pf.DGeRS;
 
+import java.util.Date;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,6 +21,8 @@ public class SignupCDI {
 	// UserInfoEntity
 	private String adress, city, homePhone, mobilePhone, country, course, school, linkedin;
 
+	private Date birthday;
+	
 	public SignupCDI() {
 	}
 	
@@ -121,6 +125,18 @@ public class SignupCDI {
 
 	public void setLinkedin(String linkedin) {
 		this.linkedin = linkedin.trim();
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public Date getMaxDate() {
+		return new Date();
 	}
 	
 }
