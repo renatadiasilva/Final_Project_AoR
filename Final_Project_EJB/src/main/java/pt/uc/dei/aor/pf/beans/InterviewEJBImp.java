@@ -1,6 +1,6 @@
 package pt.uc.dei.aor.pf.beans;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pt.uc.dei.aor.pf.dao.InterviewDAO;
+import pt.uc.dei.aor.pf.dao.InterviewDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
@@ -22,7 +22,7 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	private static final Logger log = LoggerFactory.getLogger(InterviewEJBImp.class);
 	
 	@EJB
-	private InterviewDAO interviewDAO;
+	private InterviewDao interviewDAO;
 	
 	@Override
 	public void save(InterviewEntity interview) {
@@ -57,103 +57,52 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 
 	@Override
 	public List<InterviewEntity> findCarriedOutInterviews(Date date1, Date date2) {
-		log.info("Finding all carried out interviews of a day, month, or year");
-		
-//		Calendar calendar1 = Calendar.getInstance();
-//		Calendar calendar2 = Calendar.getInstance();
-//		calendar1.set(Calendar.YEAR, year);
-//		calendar2.set(Calendar.YEAR, year);
-//		
-//		if (month != 0) { //month defined
-//			calendar1.set(Calendar.MONTH, month);
-//			calendar2.set(Calendar.MONTH, month);
-//			if (day != 0) { // day, month, and year
-//				calendar1.set(Calendar.DAY_OF_MONTH, day);
-//				calendar2.set(Calendar.DAY_OF_MONTH, day);
-//			} else { // only month and year
-//				calendar1.set(Calendar.DAY_OF_MONTH, 1);
-//				int daysInMonth = calendar1.getActualMaximum(Calendar.DAY_OF_MONTH);
-//				calendar2.set(Calendar.DAY_OF_MONTH, daysInMonth);				
-//			}
-//		}
-//		else { // no month (and no day) defined - only year
-//			// January, 1 to December, 31 of given year
-//			calendar1.set(Calendar.MONTH, 0);
-//			calendar1.set(Calendar.DAY_OF_MONTH, 1);
-//			calendar2.set(Calendar.MONTH, 11);
-//			calendar2.set(Calendar.DAY_OF_MONTH, 31);
-//		} 
-//		
-//		Date date1 = calendar1.getTime();
-//		Date date2 = calendar2.getTime();
-//		
+		log.info("Finding all carried out interviews between two dates");
 		return interviewDAO.findCarriedOutInterviews(date1, date2);
-	}
-
-	@Override
-	public List<InterviewEntity> findInterviewsByUser(UserEntity interviewer) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public List<InterviewEntity> findCarriedOutInterviewsByUser(
 			UserEntity interviewer) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<InterviewEntity> findInterviewsBySubmission(
-			SubmissionEntity submission) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<InterviewEntity> findInterviewsByDate(Date date1, Date date2,
-			String period) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<InterviewEntity> findInterviewsByPosition(
-			PositionEntity position) {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("Finding all carried out interviews of a interviewer");
+		return interviewDAO.findInterviewsByUser(true, interviewer);
 	}
 
 	@Override
 	public List<InterviewEntity> findScheduledInterviewsByUser(
 			UserEntity interviewer) {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("Finding all scheduled interviews of a interviewer");
+		return interviewDAO.findInterviewsByUser(false, interviewer);
 	}
 
 	@Override
-	public List<InterviewEntity> findInterviewsByScheduler(UserEntity scheduler) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<InterviewEntity> findInterviewsByPosition(
+			PositionEntity position) {
+		// dá???? (meter no CDIBean)
+		List<InterviewEntity> l = new ArrayList<InterviewEntity>();
+		
+		// submission list of position
+		List<SubmissionEntity> list = position.getSubmissions();
+		
+		// collect all interviews for all submissions
+		for (SubmissionEntity s : list) {
+			List<InterviewEntity> listI = s.getInterviews();
+			l.addAll(listI);
+		}
+		
+		return l;
 	}
 
 	@Override
-	public List<InterviewEntity> findScheduledInterviewsByManager(
-			UserEntity manager) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<InterviewEntity> findCarriedOutInterviewsByManager(
-			UserEntity manager) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<InterviewEntity> findScheduledInterviewsByCanditate(
+	public List<InterviewEntity> findScheduledInterviewsByCandidate(
 			UserEntity candidate) {
+		log.info("Finding all scheduled interviews of a candidate");
+		return interviewDAO.findScheduledInterviewsByCandidate(candidate);
+	}
+
+	@Override
+	public List<InterviewEntity> findCarriedOutInterviewsBySubmission(
+			Date date1, Date date2, SubmissionEntity submission) {
 		// TODO Auto-generated method stub
 		return null;
 	}

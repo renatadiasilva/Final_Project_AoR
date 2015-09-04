@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pt.uc.dei.aor.pf.dao.AnswerDAO;
+import pt.uc.dei.aor.pf.dao.AnswerDao;
 import pt.uc.dei.aor.pf.entities.AnswerEntity;
 
 @Stateless
@@ -17,7 +17,7 @@ public class AnswerEJBImp implements AnswerEJBInterface {
 	private static final Logger log = LoggerFactory.getLogger(AnswerEJBImp.class);
 	
 	@EJB
-	private AnswerDAO answerDAO;
+	private AnswerDao answerDAO;
 	
 	@Override
 	public void save(AnswerEntity answer) {

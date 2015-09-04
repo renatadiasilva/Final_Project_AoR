@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
 public class InterviewDao extends GenericDao<InterviewEntity> {
@@ -23,4 +24,20 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		parameters.put("date2", date2);  //formato!!
 		return super.findSomeResults("Interview.carriedOutInterviews", parameters);
 	}
+	
+	public List<InterviewEntity> findInterviewsByUser(boolean carriedOut, 
+			UserEntity interviewer) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("co", carriedOut);
+		parameters.put("id", interviewer);
+		return super.findSomeResults("Interview.InterviewsByUser", parameters);
+	}
+	
+	public List<InterviewEntity> findScheduledInterviewsByCandidate(
+			UserEntity candidate) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", candidate);
+		return super.findSomeResults("Interview.ScheduledInterviewsByCandidate", parameters);
+	}
+	
 }

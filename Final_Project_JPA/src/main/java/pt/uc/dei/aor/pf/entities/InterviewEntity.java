@@ -30,6 +30,15 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Interview.carriedOutInterviews",
 			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE AND"
 					+ " i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
+	@NamedQuery(name = "Interview.InterviewsByUser",
+			query = "SELECT i FROM InterviewEntity i JOIN i.interviewers u "
+					+ "WHERE i.carriedOut = :co AND u.id = :id ORDER BY i.date DESC"),
+	@NamedQuery(name = "Interview.ScheduledInterviewsByCandidate",
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
+					+ "WHERE i.carriedOut = FALSE AND s.candidate = :id ORDER BY i.date"),
+	@NamedQuery(name = "Interview.CarriedOutInterviewsBySubmission",
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
+					+ "WHERE i.carriedOut = TRUE AND s.id = :id ORDER BY i.date"),  // see better
 //	@NamedQuery(name="Song.songsOfUser",
 //			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
 //	@NamedQuery(name="Song.songsOfUserOrderId",
@@ -66,6 +75,7 @@ public class InterviewEntity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
+	
 	@Column(name = "carried_out")
 	private boolean carriedOut;
 	
@@ -97,6 +107,7 @@ public class InterviewEntity implements Serializable {
 		this.date = date;
 		this.script = script;
 		this.scheduledBy = interviewScheduledBy;
+		this.carriedOut = false;  // passadas ou concluidas??
 	}
 
 	public Long getId() {

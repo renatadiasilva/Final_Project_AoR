@@ -16,6 +16,7 @@ public interface SubmissionEJBInterface {
 	public abstract List<SubmissionEntity> findAll();
 	public abstract List<SubmissionEntity> findSubmissionsByPosition(PositionEntity position);  //get???
 	public abstract List<SubmissionEntity> findSpontaneousSubmissions();
+	public abstract List<SubmissionEntity> findSubmissionsWithInterview();
 	
 	// listagens para relatório?? (marketing)
 	public abstract List<SubmissionEntity> findSubmissionsBySource(String source); // lista!!!
@@ -25,6 +26,5 @@ public interface SubmissionEJBInterface {
 	public abstract List<SubmissionEntity> findSubmissionsByDate(Date date1, Date date2, String period);  // daily/monthly/yearly??
 	public abstract List<SubmissionEntity> findSpontaneousSubmissionsByDate(Date date1, Date date2, String period);
 	public abstract List<SubmissionEntity> findRejectedSubmissions(Date date1, Date date2, String period);  // more status??? ver!!
-
 	
 }
