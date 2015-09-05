@@ -62,13 +62,13 @@ public class InterviewsReport {
 		}
 
 		// convert to calendar to easily manipulate
-		Calendar cal1 = Calendar.getInstance();
-		Calendar cal2 = Calendar.getInstance();
-		cal1.setTime(d1);
-		cal2.setTime(d2);
+		Calendar startDate = Calendar.getInstance();
+		Calendar endDate = Calendar.getInstance();
+		startDate.setTime(d1);
+		endDate.setTime(d2);
 
 		// muitas validações... (limite dias/meses/etc)
-		long ndays = daysBetween(cal1, cal2);
+		long ndays = daysBetween(startDate, endDate);
 		if (ndays < 0) {
 			// erro, datas não ordenadas
 		}
@@ -86,11 +86,11 @@ public class InterviewsReport {
 
 		switch (period) {
 		case 'm':
-			cal1.set(Calendar.DAY_OF_MONTH, 1);
-			cal2.set(Calendar.DAY_OF_MONTH, 1);
+			startDate.set(Calendar.DAY_OF_MONTH, 1);
+			endDate.set(Calendar.DAY_OF_MONTH, 1);
 		case 'y':
-			cal1.set(Calendar.MONTH, 0);
-			cal2.set(Calendar.MONTH, 0);
+			startDate.set(Calendar.MONTH, 0);
+			endDate.set(Calendar.MONTH, 0);
 		}
 
 		// juntar listas?? não... 
@@ -100,33 +100,33 @@ public class InterviewsReport {
 		int countTotal = 0;
 		double avg;
 		// each WHILE iteration corresponds to a single day, month, or year between d1 and d2
-		while (!cal1.after(cal2)) {
+		while (!startDate.after(endDate)) {
 
 			// compute temporary end date
-			Calendar cal3 = Calendar.getInstance();
+			Calendar interDate = Calendar.getInstance();
 			switch (period) {
 			case 'd': 
 				// same day
-				cal3.setTime(cal1.getTime());
+				interDate.setTime(startDate.getTime());
 				break;
 			case 'm':
 				// last day in the current month 
-				cal3.set(Calendar.DAY_OF_MONTH, cal1.getActualMaximum(Calendar.DAY_OF_MONTH));
-				cal3.set(Calendar.MONTH, cal1.get(Calendar.MONTH));
-				cal3.set(Calendar.YEAR, cal1.get(Calendar.YEAR));
+				interDate.set(Calendar.DAY_OF_MONTH, startDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+				interDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
+				interDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
 				break;
 			case 'y':
 				// last day in the current year (December, 31)
-				cal3.set(Calendar.DAY_OF_MONTH, 31);
-				cal3.set(Calendar.MONTH, 11);
-				cal3.set(Calendar.YEAR, cal1.get(Calendar.YEAR));
+				interDate.set(Calendar.DAY_OF_MONTH, 31);
+				interDate.set(Calendar.MONTH, 11);
+				interDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
 				break;
 			}
 
 			switch (report) {
 			case 1:
 				// get list of carried out interviews of the day, month, or year
-				listI = interviewEJB.findCarriedOutInterviews(cal1.getTime(), cal3.getTime());
+				listI = interviewEJB.findCarriedOutInterviews(startDate.getTime(), interDate.getTime());
 
 				//				allInterviews.addAll(list);
 
@@ -138,9 +138,9 @@ public class InterviewsReport {
 				// update overall number of interviews
 				total += n;
 				break;
-			case 2:
+			case 2: // QUERIES????
 				// get list of submissions of the day, month, or year
-				listS = submissionEJB.findSubmissionsByDate(cal1.getTime(), cal3.getTime());
+				listS = submissionEJB.findSubmissionsByDate(startDate.getTime(), interDate.getTime());
 
 				// compute the average time to first interview 
 				// (ignore submission without carried out interview)
@@ -161,15 +161,15 @@ public class InterviewsReport {
 						Calendar firstI = tomorrow;
 
 						// find the first carried out interview of this submission, if any
-						Calendar cal5 = Calendar.getInstance();
+						Calendar cDate = Calendar.getInstance();
 						for (InterviewEntity i : listSI) {
 							if (i.isCarriedOut()) {
 								// date of interview
-								cal5.setTime(i.getDate());
+								cDate.setTime(i.getDate());
 								
 								// if interview date before older update
-								if (cal5.before(firstI)) {
-									firstI.setTime(cal5.getTime());
+								if (cDate.before(firstI)) {
+									firstI.setTime(cDate.getTime());
 								}
 							}
 						}
@@ -179,9 +179,9 @@ public class InterviewsReport {
 						
 							Date dS = s.getDate();
 							// convert to calendar to easily manipulate
-							cal5.setTime(dS);
+							cDate.setTime(dS);
 
-							ndays = daysBetween(cal5, firstI);
+							ndays = daysBetween(cDate, firstI);
 							if (ndays < 0)  {
 								// erro, datas não ordenadas
 							}
@@ -204,16 +204,16 @@ public class InterviewsReport {
 
 			switch (period) {
 			case 'd':
-				String m = cal1.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+				String m = startDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
 				System.out.println("\n"+header+" (DIA: "+
-						cal1.get(Calendar.DAY_OF_MONTH)+" "+m+" "+cal1.get(Calendar.YEAR)+"): "+n);
+						startDate.get(Calendar.DAY_OF_MONTH)+" "+m+" "+startDate.get(Calendar.YEAR)+"): "+n);
 				break;
 			case 'm':
-				m = cal1.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-				System.out.println("\n"+header+" (MÊS: "+m+" "+cal1.get(Calendar.YEAR)+"): "+n);
+				m = startDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+				System.out.println("\n"+header+" (MÊS: "+m+" "+startDate.get(Calendar.YEAR)+"): "+n);
 				break;
 			case 'y':
-				System.out.println("\n"+header+" (ANO: "+cal1.get(Calendar.YEAR)+"): "+n);
+				System.out.println("\n"+header+" (ANO: "+startDate.get(Calendar.YEAR)+"): "+n);
 				break;
 			}
 
@@ -241,15 +241,15 @@ public class InterviewsReport {
 			switch (period) {
 			case 'd':
 				// move to next day
-				cal1.add(Calendar.DAY_OF_YEAR, 1); // Calendar.DATE???
+				startDate.add(Calendar.DAY_OF_YEAR, 1); // Calendar.DATE???
 				break;
 			case 'm':
 				// move to next month
-				cal1.add(Calendar.MONTH, 1); // check
+				startDate.add(Calendar.MONTH, 1); // check
 				break;
 			case 'y':
 				// move to next year
-				cal1.add(Calendar.YEAR, 1); // check
+				startDate.add(Calendar.YEAR, 1); // check
 			}
 		}
 
