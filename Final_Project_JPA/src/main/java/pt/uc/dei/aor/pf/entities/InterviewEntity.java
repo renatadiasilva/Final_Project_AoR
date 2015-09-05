@@ -37,18 +37,9 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
 					+ "WHERE i.carriedOut = FALSE AND s.candidate = :id ORDER BY i.date"),
 	@NamedQuery(name = "Interview.CarriedOutInterviewsBySubmission",
-			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
-					+ "WHERE i.carriedOut = TRUE AND s.id = :id ORDER BY i.date"),  // see better
-//	@NamedQuery(name="Song.songsOfUser",
-//			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.title"),
-//	@NamedQuery(name="Song.songsOfUserOrderId",
-//			query="SELECT s FROM Song s WHERE s.owner = :ownerId ORDER BY s.id"),
-//	@NamedQuery(name="Song.songsByArtistTitle",
-//			query="SELECT s FROM Song s WHERE UPPER(s.title) LIKE :t AND UPPER(s.artist) LIKE :a ORDER BY s.title"),
-//	@NamedQuery(name="Song.findSongById",
-//			query="SELECT s FROM Song s WHERE s.id = :id"),
-//	@NamedQuery(name="Song.songsOfUserId",
-//			query="SELECT s FROM Song s WHERE s.id = :id AND s.owner = :ownerId"),
+			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE"
+					+ " AND i.submission = :id AND i.date BETWEEN :date1 AND :date2 "
+					+ "ORDER BY i.date")
 })
 public class InterviewEntity implements Serializable {
 

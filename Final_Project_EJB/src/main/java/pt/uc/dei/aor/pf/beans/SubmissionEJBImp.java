@@ -60,8 +60,7 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 
 	@Override
-	public List<SubmissionEntity> findSubmissionsByDate(Date date1, Date date2,
-			String period) {
+	public List<SubmissionEntity> findSubmissionsByDate(Date date1, Date date2) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -82,6 +81,12 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 
 	@Override
 	public List<SubmissionEntity> findSubmissionsBySource(String source) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<SubmissionEntity> findSubmissionsWithInterview() {
 		// TODO Auto-generated method stub
 		return null;
 	}
