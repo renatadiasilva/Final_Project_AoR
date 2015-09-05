@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.ejb.Stateless;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -26,28 +25,25 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		return super.findSomeResults("Interview.carriedOutInterviews", parameters);
 	}
 	
-	public List<InterviewEntity> findInterviewsByUser(boolean carriedOut, 
+	public List<InterviewEntity> findCarriedOutInterviewsByUser(
 			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("co", carriedOut);
 		parameters.put("id", interviewer);
-		return super.findSomeResults("Interview.InterviewsByUser", parameters);
+		return super.findSomeResults("Interview.CarriedOutInterviewsByUser", parameters);
 	}
 	
+	public List<InterviewEntity> findScheduledInterviewsByUser(
+			UserEntity interviewer) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", interviewer);
+		return super.findSomeResults("Interview.ScheduledInterviewsByUser", parameters);
+	}
+
 	public List<InterviewEntity> findScheduledInterviewsByCandidate(
 			UserEntity candidate) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("id", candidate);
 		return super.findSomeResults("Interview.ScheduledInterviewsByCandidate", parameters);
-	}
-	
-	public List<InterviewEntity> findCarriedOutInterviewsBySubmission(Date date1,
-			Date date2, SubmissionEntity submission) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("id", submission);
-		parameters.put("date1", date1);
-		parameters.put("date2", date2);
-		return super.findSomeResults("Interview.CarriedOutInterviewsBySubmission", parameters);
 	}
 	
 }

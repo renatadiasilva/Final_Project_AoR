@@ -5,7 +5,6 @@ import java.util.List;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 public interface InterviewEJBInterface {
@@ -17,12 +16,8 @@ public interface InterviewEJBInterface {
 	public abstract List<InterviewEntity> findAll();
 	public abstract List<InterviewEntity> findCarriedOutInterviewsByUser(UserEntity interviewer);
 	public abstract List<InterviewEntity> findScheduledInterviewsByUser(UserEntity interviewer);
-
-	//reports
 	public abstract List<InterviewEntity> findCarriedOutInterviews(Date date1, Date date2);
-	public abstract List<InterviewEntity> findCarriedOutInterviewsBySubmission(Date date1, Date date2, SubmissionEntity submission);
-
-	public abstract List<InterviewEntity> findInterviewsByPosition(PositionEntity position); //needed?? gestor
 	public abstract List<InterviewEntity> findScheduledInterviewsByCandidate(UserEntity candidate);
+	public abstract List<InterviewEntity> findInterviewsByPosition(PositionEntity position); //needed?? gestor
 
 }

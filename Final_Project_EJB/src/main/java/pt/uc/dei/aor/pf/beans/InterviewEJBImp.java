@@ -65,19 +65,24 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	public List<InterviewEntity> findCarriedOutInterviewsByUser(
 			UserEntity interviewer) {
 		log.info("Finding all carried out interviews of a interviewer");
-		return interviewDAO.findInterviewsByUser(true, interviewer);
+		return interviewDAO.findCarriedOutInterviewsByUser(interviewer);
 	}
 
 	@Override
 	public List<InterviewEntity> findScheduledInterviewsByUser(
 			UserEntity interviewer) {
 		log.info("Finding all scheduled interviews of a interviewer");
-		return interviewDAO.findInterviewsByUser(false, interviewer);
+		return interviewDAO.findScheduledInterviewsByUser(interviewer);
 	}
 
 	@Override
 	public List<InterviewEntity> findInterviewsByPosition(
 			PositionEntity position) {
+		
+		// needed????
+		
+		// carried out and scheduled
+		
 		// dá???? (meter no CDIBean)
 		List<InterviewEntity> l = new ArrayList<InterviewEntity>();
 		
@@ -90,7 +95,8 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 			l.addAll(listI);
 		}
 		
-		return l;
+		return l; // order by???
+		
 	}
 
 	@Override
@@ -100,13 +106,20 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 		return interviewDAO.findScheduledInterviewsByCandidate(candidate);
 	}
 
-	@Override
-	public List<InterviewEntity> findCarriedOutInterviewsBySubmission(
-			Date date1, Date date2, SubmissionEntity submission) {
-		// TODO Auto-generated method stub
-		return null;
+	private void isInterviewComplete(InterviewEntity interview) {
+		boolean hasError = false;
+		
+		// is empty??? more anotations? more validations?
+		if (interview == null) hasError = true;
+		else if (interview.getDate() == null) hasError = true;
+		else if (interview.getInterviewers() == null) hasError = true;
+		else if (interview.getScheduledBy() == null) hasError = true;
+		else if (interview.getScript() == null) hasError = true;
+		else if (interview.getSubmission() == null) hasError = true;
+
+		if (hasError)
+			throw new IllegalArgumentException("The interview is missing data. "
+					+ "Check the notnull attributes.");
 	}
 
-	
-	// verificar tudo ver MusicaBean
 }
