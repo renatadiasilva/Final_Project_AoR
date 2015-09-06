@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pt.uc.dei.aor.pf.beans.TestUserInfoInterface;
 import pt.uc.dei.aor.pf.beans.TestUserInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
@@ -29,6 +30,9 @@ public class UserSessionManagement implements Serializable {
 
 	@Inject
 	TestUserInterface testUserBean;
+
+	@Inject
+	TestUserInfoInterface testUserInfoBean;
 
 	private UserEntity currentUser;
 
@@ -104,7 +108,7 @@ public class UserSessionManagement implements Serializable {
 			this.currentUser=new UserEntity();
 
 			// Encaminha para...
-			this.response.sendRedirect(request.getContextPath()+"/Index.xhtml");
+			this.response.sendRedirect(request.getContextPath()+"/Index.xhtml?faces-redirect=true");
 
 		} catch (ServletException e) {
 			this.context.addMessage(null, new FacesMessage("Logout falhou."));
@@ -139,36 +143,49 @@ public class UserSessionManagement implements Serializable {
 
 	public void newUser(String email, String password, String firstName, String lastName, String adress, String city,
 			String homePhone, String mobilePhone, String country, String course, String school, String linkedin){
-		
+
 		this.context = FacesContext.getCurrentInstance();
 		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
 		this.response = (HttpServletResponse) context.getExternalContext().getResponse();
-		
+
 		// Verifica primeiro se o email já está a uso
 		if(this.testUserBean.findUserByEmail(email)==null){
 			List<String> roles = new ArrayList<String>();
 			roles.add(UserEntity.ROLE_CANDIDATE);
-			
+
 			// Atributos do UserEntity
 			UserEntity newUser=new UserEntity(email, password, firstName, lastName, roles);
-			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
-			
+			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);						
+
 			// Atributos do UserInfoEntity do respectivo UserEntity
 			UserInfoEntity newUserInfo= new UserInfoEntity(adress, city, homePhone, mobilePhone, country, course, school, null);
+			this.testUserInfoBean.save(newUserInfo);
+
 			newUser.setUserInfo(newUserInfo);
-			
-			this.testUserBean.save(newUser);
-			
-			try {
-				this.response.sendRedirect(request.getContextPath()+"/Index.xhtml");
-			} catch (IOException e) {
-				this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email+" Redirect Falhou."));
-			}
-			
+
+			this.testUserBean.save(newUser);			
+
 			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
-		}
-		
-		this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+
+		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+	}
+
+	public void updateUser(String firstName, String lastName){
+		this.currentUser.setFirstName(firstName);
+		this.currentUser.setLastName(lastName);
+		this.testUserBean.update(this.currentUser);
+	}
+
+	public void updateUserInfo(String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
+		this.currentUser.getUserInfo().setAddress(address);
+		this.currentUser.getUserInfo().setCity(city);
+		this.currentUser.getUserInfo().setHomePhone(homePhone);
+		this.currentUser.getUserInfo().setMobilePhone(mobilePhone);
+		this.currentUser.getUserInfo().setCountry(country);
+		this.currentUser.getUserInfo().setCourse(course);
+		this.currentUser.getUserInfo().setSchool(school);
+		this.currentUser.getUserInfo().setLinkedin(linkedin);
+		this.testUserInfoBean.update(this.currentUser.getUserInfo());
 	}
 
 	public UserEntity getCurrentUser() {

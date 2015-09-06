@@ -14,7 +14,7 @@
 </h:head>
 
 <h:body>
-	
+
 	<header> <!-- Logótipo -->
 	<div id="header-link">
 		<h:link>
@@ -30,13 +30,18 @@
 	<!-- Menus de navegação -->
 	<div id="header-menus">
 		<ui:insert name="header-menus">
-			<ui:include src="Header-menus.xhtml" />
+			<ui:include src="header-menus.xhtml" />
 		</ui:insert>
 	</div>
 
 	</header>
 
 	<div id="inner-body">
+
+		<!-- Mensagens -->
+		<h:form id="messages">
+			<p:messages />
+		</h:form>
 
 		<!-- Conteúdo das páginas -->
 		<div id="contents">
@@ -47,6 +52,11 @@
 		<div id="footer">IT Jobs - Projecto Final | Programação Avançada
 			em JAVA | Duarte Gonçalves | Renata Silva</div>
 	</div>
+
+	<!-- Pop-ups comuns -->
+	<ui:insert name="edit-user-info">
+		<ui:include src="edit-user-info.xhtml" />
+	</ui:insert>
 
 </h:body>
 </html>

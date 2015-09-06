@@ -27,7 +27,6 @@ public class TestUserBean implements TestUserInterface {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		
 		this.testUserDao.save(user);
 	}
 

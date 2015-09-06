@@ -12,51 +12,45 @@ import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
 
 @Named
 @RequestScoped
-public class SignupCDI {
+public class EditUserInfoCDI {
 	
 	@Inject
 	UserSessionManagement userSessionManagement;
 	
 	// UserEntity
-	private String email, password, firstName, lastName;
+	private String firstName, lastName;
 	
 	// UserInfoEntity
 	private String address, city, homePhone, mobilePhone, country, course, school, linkedin;
 
 	private Date birthday;
 	
-	public SignupCDI() {
+	public EditUserInfoCDI() {
+//		this.firstName=this.userSessionManagement.getCurrentUser().getFirstName();
+//		this.lastName=this.userSessionManagement.getCurrentUser().getLastName();
+//		
+//		this.address=this.userSessionManagement.getCurrentUser().getUserInfo().getAddress();
+//		this.city=this.userSessionManagement.getCurrentUser().getUserInfo().getCity();
+//		this.homePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getHomePhone();
+//		this.mobilePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getMobilePhone();
+//		this.country=this.userSessionManagement.getCurrentUser().getUserInfo().getCountry();
+//		this.course=this.userSessionManagement.getCurrentUser().getUserInfo().getCourse();
+//		this.school=this.userSessionManagement.getCurrentUser().getUserInfo().getSchool();
+//		this.linkedin=this.userSessionManagement.getCurrentUser().getUserInfo().getLinkedin();
 	}
 	
-	public String signUp(){
-		this.userSessionManagement.newUser(email, password, firstName, lastName, address, 
-				city, homePhone,mobilePhone, country, course, school, linkedin);
-		
-		return("/Index.xhtml");
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email.trim();
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password.trim();
+	public void update(){
+		this.userSessionManagement.updateUserInfo(address, city, homePhone, mobilePhone, country, course, school, linkedin);
+		this.userSessionManagement.updateUser(firstName, lastName);
 	}
 
 	public String getFirstName() {
+		if(this.firstName==null) return this.userSessionManagement.getCurrentUser().getFirstName();
 		return firstName;
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName.trim();
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
@@ -64,15 +58,15 @@ public class SignupCDI {
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName.trim();
+		this.lastName = lastName;
 	}
 
 	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(String adress) {
-		this.address = adress.trim();
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getCity() {
@@ -80,7 +74,7 @@ public class SignupCDI {
 	}
 
 	public void setCity(String city) {
-		this.city = city.trim();
+		this.city = city;
 	}
 
 	public String getHomePhone() {
@@ -88,7 +82,7 @@ public class SignupCDI {
 	}
 
 	public void setHomePhone(String homePhone) {
-		this.homePhone = homePhone.trim();
+		this.homePhone = homePhone;
 	}
 
 	public String getMobilePhone() {
@@ -96,7 +90,7 @@ public class SignupCDI {
 	}
 
 	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone.trim();
+		this.mobilePhone = mobilePhone;
 	}
 
 	public String getCountry() {
@@ -104,7 +98,7 @@ public class SignupCDI {
 	}
 
 	public void setCountry(String country) {
-		this.country = country.trim();
+		this.country = country;
 	}
 
 	public String getCourse() {
@@ -112,7 +106,7 @@ public class SignupCDI {
 	}
 
 	public void setCourse(String course) {
-		this.course = course.trim();
+		this.course = course;
 	}
 
 	public String getSchool() {
@@ -120,7 +114,7 @@ public class SignupCDI {
 	}
 
 	public void setSchool(String school) {
-		this.school = school.trim();
+		this.school = school;
 	}
 
 	public String getLinkedin() {
@@ -128,9 +122,9 @@ public class SignupCDI {
 	}
 
 	public void setLinkedin(String linkedin) {
-		this.linkedin = linkedin.trim();
+		this.linkedin = linkedin;
 	}
-
+	
 	public Date getBirthday() {
 		return birthday;
 	}

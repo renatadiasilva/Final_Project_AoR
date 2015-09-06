@@ -15,7 +15,7 @@ input {
 
 /* p:inputText, etc */
 .ui-inputfield {
-	padding: 0px;
+	/*padding: 0px;*/
 	box-shadow: none;
 	border-radius: 0px;
 	border-width: 1px;
@@ -84,6 +84,9 @@ input {
 /* p:calendar date-picker */
 .ui-datepicker {
 	border-radius: 0px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #A8A8A8;
 	color: #3F51B5;
 	text-shadow: none;
 	font-weight: normal;

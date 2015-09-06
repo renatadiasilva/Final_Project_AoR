@@ -9,7 +9,7 @@
 
 	<ui:composition>
 
-		<h:form>
+		<h:form id="header-menus">
 
 			<p:megaMenu orientation="horizontal">
 
@@ -29,7 +29,7 @@
 							rendered="#{!userSessionManagement.checkDefault('ADMIN')}">
 							<p:menuitem value="Definir por defeito"
 								action="#{userSessionManagement.defaultRole('ADMIN')}"
-								ajax="false" icon="ui-icon-home" />
+								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
 
@@ -63,7 +63,7 @@
 							rendered="#{!userSessionManagement.checkDefault('MANAGER')}">
 							<p:menuitem value="Definir por defeito"
 								action="#{userSessionManagement.defaultRole('MANAGER')}"
-								ajax="false" icon="ui-icon-home" />
+								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
 
@@ -103,7 +103,7 @@
 							rendered="#{!userSessionManagement.checkDefault('INTERVIEWER')}">
 							<p:menuitem value="Definir por defeito"
 								action="#{userSessionManagement.defaultRole('INTERVIEWER')}"
-								ajax="false" icon="ui-icon-home" />
+								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
 
@@ -136,7 +136,7 @@
 							rendered="#{!userSessionManagement.checkDefault('CANDIDATE')}">
 							<p:menuitem value="Definir por defeito"
 								action="#{userSessionManagement.defaultRole('CANDIDATE')}"
-								ajax="false" icon="ui-icon-home" />
+								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
 
@@ -153,9 +153,9 @@
 					label="#{userSessionManagement.currentUser.firstName} #{userSessionManagement.currentUser.lastName}"
 					icon="ui-icon-person">
 					<p:column>
-						<p:submenu label="Utilizador.1">
-							<p:menuitem value="Utilizador.1.1" url="#" />
-							<p:menuitem value="Utilizador.1.2" url="#" />
+						<p:submenu label="Utilizador">
+							<p:menuitem value="Mudar a passord" url="#" />
+							<p:menuitem value="Editar dados Pessoais" onclick="editUserInfo.show(); return false;" />
 						</p:submenu>
 						<p:submenu label="Candidato.2">
 							<p:menuitem value="Utilizador.2.1" url="#" />
