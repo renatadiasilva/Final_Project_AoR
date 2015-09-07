@@ -27,7 +27,7 @@ public class StatisticalReports {
 
 	// needed here??? FILE!!!
 	public int submissionsByPosition(PositionEntity position) {
-		List<SubmissionEntity> listS = position.getSubmissions();
+		List<SubmissionEntity> listS = submissionEJB.findSubmissionByPosition(position);
 		System.out.println("\n\nPosição :"+position.getTitle()+
 				" ("+position.getPositionCode()+")"); //truncate title??"
 		for (SubmissionEntity s : listS) 			

@@ -46,6 +46,8 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT s FROM SubmissionEntity s JOIN s.sources so WHERE so = :source"
 					+ " AND s.date BETWEEN :date1 AND :date2"),
 //			query = "SELECT s SubmissionEntity s WHERE :source MEMBER OF s.sources"), //(TESTAR)
+	@NamedQuery(name = "Submission.submissionByPosition",
+			query = "SELECT s FROM SubmissionEntity s WHERE s.position = :id"),
 })
 public class SubmissionEntity implements Serializable {
 

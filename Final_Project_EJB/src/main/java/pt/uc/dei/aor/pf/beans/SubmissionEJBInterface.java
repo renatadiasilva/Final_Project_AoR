@@ -3,6 +3,7 @@ package pt.uc.dei.aor.pf.beans;
 import java.util.Date;
 import java.util.List;
 
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 
 public interface SubmissionEJBInterface {
@@ -13,6 +14,7 @@ public interface SubmissionEJBInterface {
 	public abstract SubmissionEntity find(Long id);
 	public abstract List<SubmissionEntity> findAll();
 	public abstract List<SubmissionEntity> findSpontaneousSubmissions();
+	public abstract List<SubmissionEntity> findSubmissionByPosition(PositionEntity position);
 	
 	// listagens para relatório?? (marketing)
 	public abstract List<SubmissionEntity> findSubmissionsBySource(String source, Date date1, Date date2);

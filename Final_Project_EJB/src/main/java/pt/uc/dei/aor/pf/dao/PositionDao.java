@@ -98,10 +98,4 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		} else return super.findSomeResults("Position.positionsByKeyword", parameters);		
 	}
 
-	public List<PositionEntity> findPositionsByCandidate(UserEntity candidate) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("id", candidate);
-		return super.findSomeResults("Position.positionsByCandidate", parameters);
-	}
-
 }

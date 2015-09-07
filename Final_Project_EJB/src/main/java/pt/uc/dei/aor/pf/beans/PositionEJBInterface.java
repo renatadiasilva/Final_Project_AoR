@@ -32,6 +32,6 @@ public interface PositionEJBInterface {
 			String technicalArea, UserEntity positionManager);
 	public abstract List<PositionEntity> findPositionsByKeyword(String keyword);
 	public abstract List<PositionEntity> findPositionsByKeywordByManager(String keyword, UserEntity positionManager);
-	public abstract List<PositionEntity> findPositionsByCandidate(UserEntity candidate); //??submission
+	public abstract List<PositionEntity> findPositionsByCandidate(UserEntity candidate); //??submission SIIIIM
 	
 }

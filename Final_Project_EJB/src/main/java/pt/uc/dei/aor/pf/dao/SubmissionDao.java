@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 
 public class SubmissionDao extends GenericDao<SubmissionEntity> {
@@ -15,8 +16,15 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 	
 	public List<SubmissionEntity> findSpontaneousSubmissions() {
 		return super.findSomeResults("Submission.spontaneousSubmissions", null);
-	}	
+	}
+	
+	public List<SubmissionEntity> findSubmissionsByPosition(PositionEntity position) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("id", position);
+		return super.findSomeResults("Submission.submissionByPosition", parameters);
+	}
 
+	
 	public List<SubmissionEntity> findSubmissionsByDate(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);

@@ -6,6 +6,7 @@ import java.util.List;
 
 import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import javax.ejb.EJB;
@@ -128,11 +129,18 @@ public class PositionEJBImp implements PositionEJBInterface {
 		return positionDAO.findPositionsByStatus("open");
 	}
 
+	//tirar daqui
 	@Override
 	public List<PositionEntity> findPositionsByCandidate(
 			UserEntity candidate) {
 		log.info("Finding positions associated to a given candidate");
-		return positionDAO.findPositionsByCandidate(candidate);
+		// colocar isto fora...
+		List<PositionEntity> listP = new ArrayList<PositionEntity>();
+		List<SubmissionEntity> listS = candidate.getSubmissions();
+		for (SubmissionEntity s : listS)
+			listP.add(s.getPosition());
+		return listP; //order by??
+//		return positionDAO.findPositionsByCandidate(candidate);
 	}
 
 	@Override

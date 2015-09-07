@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 
 @Stateless
@@ -56,6 +57,13 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	public List<SubmissionEntity> findSpontaneousSubmissions() {
 		log.info("Finding spontaneous submissions");
 		return submissionDAO.findSpontaneousSubmissions();
+	}
+
+	@Override
+	public List<SubmissionEntity> findSubmissionByPosition(
+			PositionEntity position) {
+		log.info("Finding submission by position");
+		return submissionDAO.findSubmissionsByPosition(position);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.dao.InterviewDao;
+import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
@@ -23,6 +24,9 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	
 	@EJB
 	private InterviewDao interviewDAO;
+	
+	@EJB
+	private SubmissionDao submissionDAO;
 	
 	@Override
 	public void save(InterviewEntity interview) {
@@ -89,7 +93,7 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 		List<InterviewEntity> l = new ArrayList<InterviewEntity>();
 		
 		// submission list of position
-		List<SubmissionEntity> list = position.getSubmissions();
+		List<SubmissionEntity> list = submissionDAO.findSubmissionsByPosition(position);
 		
 		// collect all interviews for all submissions
 		for (SubmissionEntity s : list) {

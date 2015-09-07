@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -78,9 +77,6 @@ import javax.validation.constraints.NotNull;
 					+ " UPPER(p.technicalArea) LIKE :keyword OR"
 					+ " UPPER(p.description) LIKE :keyword) "
 					+ " AND p.positionManager = :id ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.positionsByCandidate",
-			query = "SELECT p FROM PositionEntity p JOIN p.submissions s"
-					+ " WHERE s.candidate = :id ORDER BY p.positionCode"),	
 })
 public class PositionEntity implements Serializable {
 
@@ -181,8 +177,8 @@ public class PositionEntity implements Serializable {
 	private ScriptEntity defaultScript;
 
 //	@ManyToMany(mappedBy="positions", cascade=CascadeType.ALL)
-	@ManyToMany(mappedBy = "positions")
-	private List<SubmissionEntity> submissions;
+//	@ManyToMany(mappedBy = "positions")
+//	private List<SubmissionEntity> submissions;
 
 	public PositionEntity() {
 	}
@@ -335,14 +331,6 @@ public class PositionEntity implements Serializable {
 
 	public void setDefaultScript(ScriptEntity defaultScript) {
 		this.defaultScript = defaultScript;
-	}
-
-	public List<SubmissionEntity> getSubmissions() {
-		return submissions;
-	}
-
-	public void setSubmissions(List<SubmissionEntity> submissions) {
-		this.submissions = submissions;
 	}
 
 }
