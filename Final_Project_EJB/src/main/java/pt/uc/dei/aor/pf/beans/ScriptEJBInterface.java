@@ -9,9 +9,9 @@ public interface ScriptEJBInterface {
 	public abstract void update(ScriptEntity script);
 	public abstract void delete(ScriptEntity script);
 	public abstract ScriptEntity find(Long id);
-//	public abstract List<ScriptEntity> findAll();
-	public abstract List<ScriptEntity> findReusableScriptsByDate();
-	public abstract List<ScriptEntity> findScriptsByTitle(String title);  //será preciso???
+	public abstract List<ScriptEntity> findAll();
+	public abstract List<ScriptEntity> findReusableScripts();
+	public abstract List<ScriptEntity> findScriptsByTitle(String title); // needed??
 	
-//	public abstract List<ScriptEntity> findScriptByQuestion(QuestionEntity question);  //reports???
+//	public abstract List<ScriptEntity> findScriptByQuestion(QuestionEntity question);  //GET!!! reports???
 }

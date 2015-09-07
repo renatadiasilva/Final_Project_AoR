@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -26,6 +28,14 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="scripts")
+@NamedQueries({
+	@NamedQuery(name = "Script.reusableScripts",
+			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
+					+ " ORDER BY s.creationDate DESC"),
+	@NamedQuery(name = "Script.scriptsByTitle",
+			query = "SELECT s FROM ScriptEntity s WHERE UPPER(s.title) LIKE :t"
+					+ " ORDER BY s.title"),
+})
 public class ScriptEntity implements Serializable{
 
 	private static final long serialVersionUID = 8279496261691105535L;

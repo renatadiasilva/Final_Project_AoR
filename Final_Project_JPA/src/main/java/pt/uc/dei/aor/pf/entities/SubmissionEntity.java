@@ -1,7 +1,6 @@
 package pt.uc.dei.aor.pf.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,9 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -27,20 +26,47 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "submissions")
+@NamedQueries({
+	@NamedQuery(name = "Submission.spontaneousSubmissions",
+			query = "SELECT s FROM SubmissionEntity s WHERE s.spontaneous = TRUE"
+					+ " ORDER BY s.date DESC"),
+	@NamedQuery(name = "Submission.submissionsByDate",
+			query = "SELECT s FROM SubmissionEntity s WHERE "
+					+ " s.date BETWEEN :date1 AND :date2"),
+	@NamedQuery(name = "Submission.spontaneousSubmissionsByDate",
+			query = "SELECT s FROM SubmissionEntity s WHERE "
+					+ " s.spontaneous = TRUE AND s.date BETWEEN :date1 AND :date2"),
+	@NamedQuery(name = "Submission.rejectedSubmissionsByDate",
+			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) = 'REJECTED'"
+					+ " AND s.date BETWEEN :date1 AND :date2"),
+	@NamedQuery(name = "Submission.presentedProposalsByDate",
+			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) = '%PROPOSAL'"
+					+ " AND s.date BETWEEN :date1 AND :date2"),
+	@NamedQuery(name = "Submission.submissionsBySource",
+			query = "SELECT s FROM SubmissionEntity s JOIN s.sources so WHERE so = :source"
+					+ " AND s.date BETWEEN :date1 AND :date2"),
+//			query = "SELECT s SubmissionEntity s WHERE :source MEMBER OF s.sources"), //(TESTAR)
+})
 public class SubmissionEntity implements Serializable {
 
 	private static final long serialVersionUID = -2164233391673103244L;
 
-	// more??
 	public static final String STATUS_SUBMITED  = "Submited";
 	public static final String STATUS_REJECTED  = "Rejected";
 	public static final String STATUS_ACCEPTED  = "Accepted to Interview";
-	public static final String STATUS_SPROPOSAL = "Submited Proposal";
+	public static final String STATUS_SPROPOSAL = "Presented Proposal";  // automatismo????
 	public static final String STATUS_RPROPOSAL = "Rejected Proposal";
-	public static final String STATUS_APROPOSAL = "Accepted Proposal";  //o mesmo q a de baixo??
-	public static final String STATUS_OFFER     = "Offer Process (Negotiation)";
+	public static final String STATUS_APROPOSAL = "Accepted Proposal";
+	public static final String STATUS_OPROPOSAL = "On Negotiation Proposal"; //"Offer Process (Negotiation)";
 	public static final String STATUS_HIRED     = "Hired";
 	public static final String STATUS_NOTHIRED  = "Not Hired"; 
+
+	// outros??
+	public static final String SOURCE_EXPRESSO = "EXPRESSO";
+	public static final String SOURCE_LINKEDIN = "LINKEDIN";
+	public static final String SOURCE_FACEBOOK = "FACEBOOK";
+	public static final String SOURCE_NETEMPREGO = "NET.EMPREGO";
+
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,12 +78,16 @@ public class SubmissionEntity implements Serializable {
 	@JoinColumn(name = "candidate", nullable = false)
 	private UserEntity candidate;
 
+	// NÃO DÁ!!! tem de se clonar a candidatura se for associada a mais posições
 	// Se a list estiver vazia é uma candidatura espontanea
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "submissions_positions",
-			joinColumns = @JoinColumn(name = "submission_id"),
-			inverseJoinColumns = @JoinColumn(name = "position_id"))
-	private List<PositionEntity> positions;
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name = "submissions_positions",
+//			joinColumns = @JoinColumn(name = "submission_id"),
+//			inverseJoinColumns = @JoinColumn(name = "position_id"))
+//	private List<PositionEntity> positions;
+	
+	@Column(name = "position")
+	private PositionEntity position; 
 
 	@Column(name = "spontaneous")
 	private boolean spontaneous;
@@ -119,12 +149,12 @@ public class SubmissionEntity implements Serializable {
 		this.candidate = candidate;
 	}
 
-	public List<PositionEntity> getPositions() {
-		return positions;
+	public PositionEntity getPosition() {
+		return position;
 	}
 
-	public void setPositions(List<PositionEntity> positions) {
-		this.positions = positions;
+	public void setPosition(PositionEntity position) {
+		this.position = position;
 	}
 
 	public boolean isSpontaneous() {
@@ -191,12 +221,4 @@ public class SubmissionEntity implements Serializable {
 		this.rejectReason = rejectReason;
 	}
 
-	public void addPosition(PositionEntity position) {
-		if (positions == null) positions = new ArrayList<PositionEntity>();
-		positions.add(position);
-	}
-	
-	public void removePosition(PositionEntity position) {
-		if (positions != null) positions.remove(position);
-	}
 }

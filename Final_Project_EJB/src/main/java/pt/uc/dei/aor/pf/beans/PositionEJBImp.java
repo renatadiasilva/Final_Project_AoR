@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 @Stateless
 public class PositionEJBImp implements PositionEJBInterface {
 
-	private static final Logger log = LoggerFactory.getLogger(PositionEJBInterface.class);
+	private static final Logger log = LoggerFactory.getLogger(PositionEJBImp.class);
 	
 	@EJB
 	private PositionDao positionDAO;
