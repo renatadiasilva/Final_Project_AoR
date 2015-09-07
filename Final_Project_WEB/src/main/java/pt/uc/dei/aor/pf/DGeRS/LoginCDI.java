@@ -8,8 +8,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
+import pt.uc.dei.aor.pf.beans.TestUserInfoInterface;
 import pt.uc.dei.aor.pf.beans.TestUserInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
 @Named
 @RequestScoped
@@ -49,6 +51,9 @@ public class LoginCDI {
 	@Inject
 	TestUserInterface testUserBean;
 
+	@Inject
+	TestUserInfoInterface testUserInfoBean;
+
 	public void populate(){
 
 		System.out.println("Populate...");
@@ -62,6 +67,11 @@ public class LoginCDI {
 
 		newUser=new UserEntity("admin@mail.com", "12345", "Admin", "Admin", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
+		
+		UserInfoEntity newUserInfo= new UserInfoEntity(null, null, null, null, null, null, null, null, null);
+		this.testUserInfoBean.save(newUserInfo);
+
+		newUser.setUserInfo(newUserInfo);
 
 		this.testUserBean.save(newUser);
 
@@ -75,6 +85,11 @@ public class LoginCDI {
 
 		newUser=new UserEntity("manager@mail.com", "12345", "Manager", "Manager", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
+		
+		newUserInfo= new UserInfoEntity(null, null, null, null, null, null, null, null, null);
+		this.testUserInfoBean.save(newUserInfo);
+
+		newUser.setUserInfo(newUserInfo);
 
 		this.testUserBean.save(newUser);
 
@@ -87,6 +102,11 @@ public class LoginCDI {
 
 		newUser=new UserEntity("interviewer@mail.com", "12345", "Interviewer", "Interviewer", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
+		
+		newUserInfo= new UserInfoEntity(null, null, null, null, null, null, null, null, null);
+		this.testUserInfoBean.save(newUserInfo);
+
+		newUser.setUserInfo(newUserInfo);
 
 		this.testUserBean.save(newUser);
 
@@ -99,6 +119,11 @@ public class LoginCDI {
 
 		newUser=new UserEntity("candidate@mail.com", "12345", "Candidate", "Candidate", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
+		
+		newUserInfo= new UserInfoEntity(null, null, null, null, null, null, null, null, null);
+		this.testUserInfoBean.save(newUserInfo);
+
+		newUser.setUserInfo(newUserInfo);
 
 		this.testUserBean.save(newUser);
 	}

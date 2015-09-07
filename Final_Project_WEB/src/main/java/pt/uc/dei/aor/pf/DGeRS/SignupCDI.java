@@ -29,7 +29,7 @@ public class SignupCDI {
 	}
 	
 	public String signUp(){
-		this.userSessionManagement.newUser(email, password, firstName, lastName, address, 
+		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, 
 				city, homePhone,mobilePhone, country, course, school, linkedin);
 		
 		return("/Index.xhtml");

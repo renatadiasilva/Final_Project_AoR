@@ -13,6 +13,10 @@ input {
 	font-family: ITJobs_1;
 }
 
+input .ui-widget-content{
+	font-family: ITJobs_1;
+}
+
 /* p:inputText, etc */
 .ui-inputfield {
 	/*padding: 0px;*/
@@ -26,6 +30,10 @@ input {
 	text-shadow: none;
 	border-width: 1px;
 	border-style: solid;
+}
+
+.ui-widget-content {
+	box-shadow: none;
 }
 
 /* Erros - background da fonte nos campos em falta/erro */
@@ -105,4 +113,9 @@ input {
 .ui-widget-header {
 	border-style: none;
 	/*background: #3F51B5;*/
+}
+
+/* Dialog */
+.ui-dialog-titlebar-close {
+	visibility: hidden;
 }

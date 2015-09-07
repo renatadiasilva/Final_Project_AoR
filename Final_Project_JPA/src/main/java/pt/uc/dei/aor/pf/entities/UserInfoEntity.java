@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "usersInfo")
@@ -20,6 +23,10 @@ public class UserInfoEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
+	
+	@Column(name = "birthday")
+	@Temporal(TemporalType.DATE)
+	private Date birthday;
 	
 	@Column(name = "address", length = 200)
 	private String address;
@@ -62,9 +69,10 @@ public class UserInfoEntity implements Serializable {
 	public UserInfoEntity() {
 	}
 
-	public UserInfoEntity(String adress, String city, String telephone,
+	public UserInfoEntity(Date birthday, String adress, String city, String telephone,
 			String mobilePhone, String country, String course, String school, String cv) {
 		super();
+		this.birthday = birthday;
 		this.address = adress;
 		this.city = city;
 		this.homePhone = telephone;
@@ -81,6 +89,14 @@ public class UserInfoEntity implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	public String getAddress() {

@@ -69,9 +69,9 @@
 
 				<p:outputLabel value="Data de Nascimento: " for="signup-birthday" />
 				<p:calendar id="signup-birthday" value="#{signupCDI.birthday}"
-					required="true" pattern="dd/MM/yyyy" readonlyInput="true"
-					navigator="true" mindate="#{signupCDI.minDate}"
-					maxdate="#{signupCDI.maxDate}" locale="pt" size="35" />
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+					yearRange="c-100:c+0" maxdate="#{signupCDI.maxDate}" locale="pt"
+					size="35" />
 
 				<p:outputLabel value="Telefone: " for="signup-homePhone" />
 				<p:inputMask mask="999 999 999" id="signup-homePhone"
@@ -127,7 +127,7 @@
 
 		</h:form>
 	</ui:define>
-	
+
 	<!-- Retira Pop-ups -->
 	<ui:define name="edit-user-info" />
 

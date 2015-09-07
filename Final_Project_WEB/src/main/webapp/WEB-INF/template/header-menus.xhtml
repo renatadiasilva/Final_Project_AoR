@@ -9,7 +9,7 @@
 
 	<ui:composition>
 
-		<h:form id="header-menus">
+		<h:form>
 
 			<p:megaMenu orientation="horizontal">
 
@@ -28,7 +28,7 @@
 						<p:submenu label="Área Inicial"
 							rendered="#{!userSessionManagement.checkDefault('ADMIN')}">
 							<p:menuitem value="Definir por defeito"
-								action="#{userSessionManagement.defaultRole('ADMIN')}"
+								actionListener="#{userSessionManagement.defaultRole('ADMIN')}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
@@ -62,7 +62,7 @@
 						<p:submenu label="Área Inicial"
 							rendered="#{!userSessionManagement.checkDefault('MANAGER')}">
 							<p:menuitem value="Definir por defeito"
-								action="#{userSessionManagement.defaultRole('MANAGER')}"
+								actionListener="#{userSessionManagement.defaultRole('MANAGER')}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
@@ -102,7 +102,7 @@
 						<p:submenu label="Área Inicial"
 							rendered="#{!userSessionManagement.checkDefault('INTERVIEWER')}">
 							<p:menuitem value="Definir por defeito"
-								action="#{userSessionManagement.defaultRole('INTERVIEWER')}"
+								actionListener="#{userSessionManagement.defaultRole('INTERVIEWER')}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
@@ -135,7 +135,7 @@
 						<p:submenu label="Área Inicial"
 							rendered="#{!userSessionManagement.checkDefault('CANDIDATE')}">
 							<p:menuitem value="Definir por defeito"
-								action="#{userSessionManagement.defaultRole('CANDIDATE')}"
+								actionListener="#{userSessionManagement.defaultRole('CANDIDATE')}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
@@ -155,7 +155,10 @@
 					<p:column>
 						<p:submenu label="Utilizador">
 							<p:menuitem value="Mudar a passord" url="#" />
-							<p:menuitem value="Editar dados Pessoais" onclick="editUserInfo.show(); return false;" />
+							<p:menuitem value="Editar dados Pessoais"
+								actionListener="#{editUserInfoCDI.init()}"
+								update="editUserInfoDialog"
+								oncomplete="PF('editUserInfo').show();" />
 						</p:submenu>
 						<p:submenu label="Candidato.2">
 							<p:menuitem value="Utilizador.2.1" url="#" />
@@ -173,7 +176,7 @@
 				</p:submenu>
 
 				<p:menuitem value="Logout" icon="ui-icon-power"
-					action="#{userSessionManagement.logout()}" ajax="false" />
+					actionListener="#{userSessionManagement.logout()}" ajax="false" />
 			</p:megaMenu>
 
 		</h:form>

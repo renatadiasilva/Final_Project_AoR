@@ -17,6 +17,7 @@ import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Named
@@ -87,7 +88,7 @@ public class UserSessionManagement implements Serializable {
 			this.context.addMessage(null, new FacesMessage("Login sucessfull: "+email));
 
 			// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
-			return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?faces-redirect=true";
+			return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?facesRedirect=true";
 
 		} catch (ServletException e){
 			this.context.addMessage(null, new FacesMessage("Login falhou."));
@@ -108,7 +109,7 @@ public class UserSessionManagement implements Serializable {
 			this.currentUser=new UserEntity();
 
 			// Encaminha para...
-			this.response.sendRedirect(request.getContextPath()+"/Index.xhtml?faces-redirect=true");
+			this.response.sendRedirect(request.getContextPath()+"/Index.xhtml");
 
 		} catch (ServletException e) {
 			this.context.addMessage(null, new FacesMessage("Logout falhou."));
@@ -141,7 +142,7 @@ public class UserSessionManagement implements Serializable {
 		return false;
 	}
 
-	public void newUser(String email, String password, String firstName, String lastName, String adress, String city,
+	public void newUser(String email, String password, String firstName, String lastName, Date birthday,  String adress, String city,
 			String homePhone, String mobilePhone, String country, String course, String school, String linkedin){
 
 		this.context = FacesContext.getCurrentInstance();
@@ -158,7 +159,7 @@ public class UserSessionManagement implements Serializable {
 			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);						
 
 			// Atributos do UserInfoEntity do respectivo UserEntity
-			UserInfoEntity newUserInfo= new UserInfoEntity(adress, city, homePhone, mobilePhone, country, course, school, null);
+			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, adress, city, homePhone, mobilePhone, country, course, school, null);
 			this.testUserInfoBean.save(newUserInfo);
 
 			newUser.setUserInfo(newUserInfo);
@@ -185,6 +186,7 @@ public class UserSessionManagement implements Serializable {
 		this.currentUser.getUserInfo().setCourse(course);
 		this.currentUser.getUserInfo().setSchool(school);
 		this.currentUser.getUserInfo().setLinkedin(linkedin);
+			
 		this.testUserInfoBean.update(this.currentUser.getUserInfo());
 	}
 

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -178,7 +179,10 @@ public class PositionEntity implements Serializable {
 
 //	@ManyToMany(mappedBy="positions", cascade=CascadeType.ALL)
 //	@ManyToMany(mappedBy = "positions")
-//	private List<SubmissionEntity> submissions;
+	
+	// Dudu
+	@OneToMany
+	private List<SubmissionEntity> submissions;
 
 	public PositionEntity() {
 	}

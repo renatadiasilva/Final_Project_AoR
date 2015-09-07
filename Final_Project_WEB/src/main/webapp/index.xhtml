@@ -14,32 +14,35 @@
 		</f:metadata>
 		<h:panelGrid columns="2">
 			<h:form id="header-login">
-				<h:panelGrid columns="5">
+				<h:panelGrid columns="5" style="margin-left: 5px">
 
 					<p:outputLabel value="Email: " for="login-email" />
-					<p:inputText id="login-email" value="#{loginCDI.email}" size="50"
-						required="true" style="margin-left: 5px"/>
+					<p:inputText id="login-email" value="#{loginCDI.email}" size="35"
+						required="true" />
 
 					<p:outputLabel value="Password: " for="login-password" />
 					<p:password id="login-password" value="#{loginCDI.password}"
-						size="50" required="true" style="margin-left: 5px" />
+						size="35" required="true" />
 
 					<p:commandButton value="Login" action="#{loginCDI.login()}"
-						ajax="false" icon="ui-icon-key"/>
+						ajax="false" icon="ui-icon-key" />
 
 				</h:panelGrid>
 			</h:form>
 			<h:form id="header-signup">
-				<p:commandButton value="Signup" action="Signup.xhtml" ajax="false" icon="ui-icon-person" />
+				<p:commandButton value="Signup" action="Signup.xhtml" ajax="false"
+					icon="ui-icon-person" />
 			</h:form>
 		</h:panelGrid>
 	</ui:define>
 
 	<ui:define name="contents">
-		<p:messages />
 		<h:form>
 			<p:commandButton value="Populate" action="#{loginCDI.populate()}" />
 		</h:form>
 	</ui:define>
+
+	<!-- Retira Pop-ups -->
+	<ui:define name="edit-user-info" />
 
 </ui:composition>

@@ -88,7 +88,8 @@ public class SubmissionEntity implements Serializable {
 //			inverseJoinColumns = @JoinColumn(name = "position_id"))
 //	private List<PositionEntity> positions;
 	
-	@Column(name = "position")
+	// Dudu
+	@ManyToOne(name = "position")
 	private PositionEntity position; 
 
 	@Column(name = "spontaneous")
