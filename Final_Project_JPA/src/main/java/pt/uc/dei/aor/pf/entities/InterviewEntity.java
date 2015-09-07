@@ -30,13 +30,13 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Interview.carriedOutInterviews",
 			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE AND"
 					+ " i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
-	@NamedQuery(name = "Interview.CarriedOutInterviewsByUser",
+	@NamedQuery(name = "Interview.carriedOutInterviewsByUser",
 			query = "SELECT i FROM InterviewEntity i JOIN i.interviewers u "
 					+ "WHERE i.carriedOut = TRUE AND u.id = :id ORDER BY i.date DESC"),
-	@NamedQuery(name = "Interview.ScheduledInterviewsByUser",
+	@NamedQuery(name = "Interview.scheduledInterviewsByUser",
 			query = "SELECT i FROM InterviewEntity i JOIN i.interviewers u "
 					+ "WHERE i.carriedOut = FALSE AND u.id = :id ORDER BY i.date"),
-	@NamedQuery(name = "Interview.ScheduledInterviewsByCandidate",
+	@NamedQuery(name = "Interview.scheduledInterviewsByCandidate",
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
 					+ "WHERE i.carriedOut = FALSE AND s.candidate = :id ORDER BY i.date"),
 })
@@ -64,7 +64,6 @@ public class InterviewEntity implements Serializable {
 	@Column(name = "date")
 	@Temporal(TemporalType.DATE)
 	private Date date;
-
 	
 	@Column(name = "carried_out")
 	private boolean carriedOut;

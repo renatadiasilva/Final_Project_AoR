@@ -22,12 +22,14 @@ public class AnswerEJBImp implements AnswerEJBInterface {
 	@Override
 	public void save(AnswerEntity answer) {
 		log.info("Saving answer in DB");
+		isAnswerComplete(answer);
 		answerDAO.save(answer);
 	}
 
 	@Override
 	public void update(AnswerEntity answer) {
 		log.info("Updating answer of DB");
+		isAnswerComplete(answer);
 		answerDAO.update(answer);
 	}
 
@@ -47,6 +49,18 @@ public class AnswerEJBImp implements AnswerEJBInterface {
 	public List<AnswerEntity> findAll() {
 		log.info("Creating Query for all answers");
 		return answerDAO.findAll();
+	}
+
+	private void isAnswerComplete(AnswerEntity answer) {
+		boolean hasError = false;
+		
+		if (answer == null) hasError = true;
+		else if (answer.getInterview() == null) hasError = true;
+		else if (answer.getQuestion() == null) hasError = true;
+
+		if (hasError)
+			throw new IllegalArgumentException("The interview is missing data. "
+					+ "Check the notnull attributes.");
 	}
 
 }

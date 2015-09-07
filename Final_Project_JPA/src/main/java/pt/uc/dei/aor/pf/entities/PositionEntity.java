@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,13 +23,72 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "positions")
+@NamedQueries({
+	@NamedQuery(name = "Position.positionsByDate",
+			query = "SELECT p FROM PositionEntity p WHERE p.openingDate "
+					+ "BETWEEN :date1 AND :date2 ORDER BY p.openingDate"),
+	@NamedQuery(name = "Position.positionsByCode",
+			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.positionCode) LIKE :c"
+					+ " ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.positionsByTitle",
+			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.title) LIKE :t"
+					+ " ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.positionsByLocation",
+			query = "SELECT p FROM PositionEntity p JOIN p.locations l WHERE l LIKE :loc"
+					+ " ORDER BY p.positionCode"),
+//			query = "SELECT p FROM PositionEntity p WHERE :loc MEMBER OF p.locations ORDER BY p.positionCode"), //(TESTAR)
+	@NamedQuery(name = "Position.positionsByStatus",
+			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.status) LIKE :s "
+					+ "ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.positionsByCompany",
+			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.company) LIKE :c"
+					+ " ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.positionsByTechArea",
+			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.technicalArea) LIKE :ta"
+					+ " ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.positionsBySeveralAttributes",
+			query = "SELECT p FROM PositionEntity p WHERE p.openingDate BETWEEN :date1 AND :date2"
+					+ " AND UPPER(p.positionCode) LIKE :c AND UPPER(p.title) LIKE :t"
+					+ " AND :loc MEMBER OF p.locations AND UPPER(p.status) LIKE :s"
+					+ " AND UPPER(p.company) LIKE :comp"
+					+ " AND UPPER(p.technicalArea) LIKE :ta ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.positionsBySeveralAttributesByManager",
+			query = "SELECT p FROM PositionEntity p WHERE p.openingDate BETWEEN :date1 AND :date2"
+					+ " AND UPPER(p.positionCode) LIKE :c AND UPPER(p.title) LIKE :t"
+					+ " AND :loc MEMBER OF p.locations AND UPPER(p.status) LIKE :s"
+					+ " AND UPPER(p.company) LIKE :comp"
+					+ " AND UPPER(p.technicalArea) LIKE :ta AND p.positionManager = :id"
+					+ " ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.closeToSLAPositions",
+			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate AND p.status = 'OPEN'"),
+	@NamedQuery(name = "Position.positionsByKeyword",
+			query = "SELECT p FROM PositionEntity p WHERE"
+					+ " UPPER(p.positionCode) LIKE :keyword OR"
+					+ " UPPER(p.title) LIKE :keyword OR"
+					+ " :keyword MEMBER OF p.locations OR"
+					+ " UPPER(p.company) LIKE :keyword OR"
+					+ " UPPER(p.technicalArea) LIKE :keyword OR"
+					+ " UPPER(p.description) LIKE :keyword ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.positionsByKeywordByManager",
+			query = "SELECT p FROM PositionEntity p WHERE"
+					+ " (UPPER(p.positionCode) LIKE :keyword OR"
+					+ " UPPER(p.title) LIKE :keyword OR"
+					+ " :keyword MEMBER OF p.locations OR"
+					+ " UPPER(p.company) LIKE :keyword OR"
+					+ " UPPER(p.technicalArea) LIKE :keyword OR"
+					+ " UPPER(p.description) LIKE :keyword) "
+					+ " AND p.positionManager = :id ORDER BY p.positionCode"),
+	@NamedQuery(name = "Position.positionsByCandidate",
+			query = "SELECT p FROM PositionEntity p JOIN p.submissions s"
+					+ " WHERE s.candidate = :id ORDER BY p.positionCode"),	
+})
 public class PositionEntity implements Serializable {
 
 	private static final long serialVersionUID = -2368658385927790368L;
 
-	public static final String LISBOA="Lisboa";
-	public static final String PORTO="Porto";
-	public static final String COIMBRA="Coimbra";
+	public static final String LISBOA="LISBOA";
+	public static final String PORTO="PORTO";
+	public static final String COIMBRA="COIMBRA";
 
 	public static final String OPEN="Open";
 	public static final String CLOSED="Closed";
@@ -61,6 +122,10 @@ public class PositionEntity implements Serializable {
 	@Column(name = "code", nullable = false, unique = true)
 	private String positionCode;
 
+	@NotNull
+	@Column(name = "title", nullable = false)
+	private String title;
+
 	@ElementCollection
 	@CollectionTable(name = "locations",
 		joinColumns=@JoinColumn(name="position_id"))
@@ -79,9 +144,10 @@ public class PositionEntity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date closingDate;
 
-	// weeks??? DAYS!
-	@Column(name = "sla")
-	private int sla;
+	// compute using days in the web
+	@Column(name = "sla_date")
+	@Temporal(TemporalType.DATE)
+	private Date slaDate;
 
 	@NotNull
 	@ManyToOne
@@ -123,7 +189,7 @@ public class PositionEntity implements Serializable {
 
 	public PositionEntity(Date openingDate, String positionCode,
 			List<String> locations, String currentState, int openings,
-			Date closingDate, int sla, UserEntity positionManager,
+			Date closingDate, Date slaDate, UserEntity positionManager,
 			UserEntity positionCreator, String company, String technicalArea,
 			String description, List<String> advertisingChannels,
 			ScriptEntity defaultScript) {
@@ -132,8 +198,8 @@ public class PositionEntity implements Serializable {
 		this.locations = locations;
 		this.status = currentState;
 		this.openings = openings;
-		this.closingDate = closingDate;
-		this.sla = sla;
+		this.closingDate = closingDate; 
+		this.slaDate = slaDate;
 		this.positionManager = positionManager;
 		this.positionCreator = positionCreator;
 		this.company = company;
@@ -165,6 +231,14 @@ public class PositionEntity implements Serializable {
 
 	public void setPositionCode(String positionCode) {
 		this.positionCode = positionCode;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public List<String> getLocations() {
@@ -199,12 +273,12 @@ public class PositionEntity implements Serializable {
 		this.closingDate = closingDate;
 	}
 
-	public int getSla() {
-		return sla;
+	public Date getSlaDate() {
+		return slaDate;
 	}
 
-	public void setSla(int sla) {
-		this.sla = sla;
+	public void setSlaDate(Date slaDate) {
+		this.slaDate = slaDate;
 	}
 
 	public UserEntity getPositionManager() {

@@ -27,6 +27,7 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	@Override
 	public void save(InterviewEntity interview) {
 		log.info("Saving interview in DB");
+		isInterviewComplete(interview);
 		interviewDAO.save(interview);
 	}
 
@@ -34,6 +35,7 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	public void update(InterviewEntity interview) {
 		//validations here????
 		log.info("Updating interview of DB");
+		isInterviewComplete(interview);
 		interviewDAO.update(interview);
 	}
 
@@ -109,12 +111,8 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	private void isInterviewComplete(InterviewEntity interview) {
 		boolean hasError = false;
 		
-		// is empty??? more anotations? more validations?
 		if (interview == null) hasError = true;
-		else if (interview.getDate() == null) hasError = true;
-		else if (interview.getInterviewers() == null) hasError = true;
 		else if (interview.getScheduledBy() == null) hasError = true;
-		else if (interview.getScript() == null) hasError = true;
 		else if (interview.getSubmission() == null) hasError = true;
 
 		if (hasError)

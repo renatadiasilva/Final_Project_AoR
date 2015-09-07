@@ -29,21 +29,21 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("id", interviewer);
-		return super.findSomeResults("Interview.CarriedOutInterviewsByUser", parameters);
+		return super.findSomeResults("Interview.carriedOutInterviewsByUser", parameters);
 	}
 	
 	public List<InterviewEntity> findScheduledInterviewsByUser(
 			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("id", interviewer);
-		return super.findSomeResults("Interview.ScheduledInterviewsByUser", parameters);
+		return super.findSomeResults("Interview.scheduledInterviewsByUser", parameters);
 	}
 
 	public List<InterviewEntity> findScheduledInterviewsByCandidate(
 			UserEntity candidate) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("id", candidate);
-		return super.findSomeResults("Interview.ScheduledInterviewsByCandidate", parameters);
+		return super.findSomeResults("Interview.scheduledInterviewsByCandidate", parameters);
 	}
 	
 }
