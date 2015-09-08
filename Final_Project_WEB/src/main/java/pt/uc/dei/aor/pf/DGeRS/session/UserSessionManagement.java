@@ -162,11 +162,12 @@ public class UserSessionManagement implements Serializable {
 			
 
 			// Atributos do UserInfoEntity do respectivo UserEntity
-			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, adress, city, homePhone, mobilePhone, country, course, school, null);
-
+			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, adress, city, homePhone, mobilePhone, country, course, school, null, newUser);
+			
 			newUser.setUserInfo(newUserInfo);
 			
-			this.userBean.save(newUser);						
+			// Grava o UserEntity
+			this.userBean.save(newUser);
 
 			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
 
@@ -181,7 +182,10 @@ public class UserSessionManagement implements Serializable {
 
 	public void updateUserInfo(String firstName, String lastName, String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
 		
-		if(this.getCurrentUser().getUserInfo()==null) this.currentUser.setUserInfo(new UserInfoEntity());
+		if(this.getCurrentUser().getUserInfo()==null){
+			this.currentUser.setUserInfo(new UserInfoEntity());
+			this.currentUser.getUserInfo().setOwner(this.currentUser);
+		}
 		
 		this.currentUser.getUserInfo().setAddress(address);
 		this.currentUser.getUserInfo().setCity(city);

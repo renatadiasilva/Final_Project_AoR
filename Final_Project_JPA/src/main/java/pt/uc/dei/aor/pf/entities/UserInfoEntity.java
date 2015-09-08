@@ -3,6 +3,7 @@ package pt.uc.dei.aor.pf.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -65,14 +66,18 @@ public class UserInfoEntity implements Serializable {
 	@Column(name = "linkedin")
 	private String linkedin;
 	
-	@OneToOne(mappedBy="userInfo")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "owner", unique = true, updatable = false)
 	private UserEntity owner;
+	
+//	@OneToOne(mappedBy="userInfo")
+//	private UserEntity owner;
 	
 	public UserInfoEntity() {
 	}
 
 	public UserInfoEntity(Date birthday, String adress, String city, String telephone,
-			String mobilePhone, String country, String course, String school, String cv) {
+			String mobilePhone, String country, String course, String school, String cv, UserEntity owner) {
 		super();
 		this.birthday = birthday;
 		this.address = adress;
@@ -83,6 +88,7 @@ public class UserInfoEntity implements Serializable {
 		this.course = course;
 		this.school = school;
 		this.cv=cv;
+		this.owner=owner;
 	}
 
 	public Long getId() {
