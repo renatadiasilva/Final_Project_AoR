@@ -36,7 +36,8 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 	@Override
 	public void delete(ScriptEntity script) {
 		log.info("Deleting script from DB");
-		scriptDAO.delete(script.getId(), ScriptEntity.class);
+		// change something (visibility?)
+		scriptDAO.update(script);
 	}
 
 	@Override

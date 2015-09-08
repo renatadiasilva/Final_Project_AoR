@@ -36,7 +36,8 @@ public class AnswerEJBImp implements AnswerEJBInterface {
 	@Override
 	public void delete(AnswerEntity answer) {
 		log.info("Deleting answer from DB");
-		answerDAO.delete(answer.getId(), AnswerEntity.class);
+		// change something (visibility?)
+		answerDAO.update(answer);
 	}
 
 	@Override

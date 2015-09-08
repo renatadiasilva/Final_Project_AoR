@@ -38,7 +38,8 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	@Override
 	public void delete(SubmissionEntity submission) {
 		log.info("Deleting submission from DB");
-		submissionDAO.delete(submission.getId(), SubmissionEntity.class);
+		// change something (visibility?)
+		submissionDAO.update(submission);
 	}
 
 	@Override

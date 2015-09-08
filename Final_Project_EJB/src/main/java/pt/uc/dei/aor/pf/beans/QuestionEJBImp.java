@@ -36,7 +36,8 @@ public class QuestionEJBImp implements QuestionEJBInterface {
 	@Override
 	public void delete(QuestionEntity question) {
 		log.info("Deleting question from DB");
-		questionDAO.delete(question.getId(), QuestionEntity.class);
+		// change something (visibility?)
+		questionDAO.update(question);
 	}
 
 	@Override
