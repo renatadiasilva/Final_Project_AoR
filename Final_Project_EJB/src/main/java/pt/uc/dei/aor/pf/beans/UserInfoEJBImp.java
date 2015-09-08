@@ -106,7 +106,6 @@ public class UserInfoEJBImp implements UserInfoEJBInterface {
 		else if (u.getCity() == null) hasError = true;
 		else if (u.getCountry() == null) hasError = true;
 		else if (u.getCourse() == null) hasError = true;
-		else if (u.getCv() == null) hasError = true;
 		else if (u.getMobilePhone() == null) hasError = true;
 		else if (u.getOwner() == null) hasError = true;
 		else if (u.getSchool() == null) hasError = true;
