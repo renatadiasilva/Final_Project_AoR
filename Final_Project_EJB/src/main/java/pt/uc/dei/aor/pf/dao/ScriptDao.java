@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.Stateless;
+
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 
+@Stateless
 public class ScriptDao extends GenericDao<ScriptEntity> {
 
 	public ScriptDao() {
