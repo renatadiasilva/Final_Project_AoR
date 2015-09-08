@@ -13,17 +13,31 @@
 
 			<p:megaMenu orientation="horizontal">
 
-				<p:submenu label="Admin" icon="ui-icon-wrench"
+				<p:submenu label="Administrador" icon="ui-icon-wrench"
 					rendered="#{userSessionManagement.admin}">
 					<p:column>
-						<p:submenu label="Admin.1">
-							<p:menuitem value="Admin.1.1" url="#" />
-							<p:menuitem value="Admin.1.2" url="#" />
+						<p:submenu label="Utilizadores">
+							<p:menuitem value="Registar novo Utilizador" url="../../role/admin/NewUser.xhtml" />
+							<p:menuitem value="Editar Utilizador" url="#" />
 						</p:submenu>
-						<p:submenu label="Admin.2">
-							<p:menuitem value="Admin.2.1" url="#" />
-							<p:menuitem value="Admin.2.2" url="#" />
-							<p:menuitem value="Admin.2.3" url="#" />
+						<p:submenu label="Posições">
+							<p:menuitem value="Nova Posição" url="#" />
+							<p:menuitem value="Editar Posição" url="#" />
+						</p:submenu>
+						<p:submenu label="Candidaturas">
+							<p:menuitem value="Nova Candidatura" url="#" />
+							<p:menuitem value="Editar Candidatura" url="#" />
+						</p:submenu>
+					</p:column>
+
+					<p:column>
+						<p:submenu label="Entrevistas">
+							<p:menuitem value="Agendar Entrevista" url="#" />
+							<p:menuitem value="Editar Entrevista" url="#" />
+						</p:submenu>
+						<p:submenu label="Guiões">
+							<p:menuitem value="Novo Guião" url="#" />
+							<p:menuitem value="Editar Guião" url="#" />
 						</p:submenu>
 						<p:submenu label="Área Inicial"
 							rendered="#{!userSessionManagement.checkDefault('ADMIN')}">
@@ -32,31 +46,16 @@
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
-
-					<p:column>
-						<p:submenu label="Admin.4">
-							<p:menuitem value="Admin.4.1" url="#" />
-							<p:menuitem value="Admin.4.2" url="#" />
-						</p:submenu>
-						<p:submenu label="Admin.5">
-							<p:menuitem value="Admin.5.1" url="#" />
-							<p:menuitem value="Admin.5.2" url="#" />
-							<p:menuitem value="Admin.5.3" url="#" />
-						</p:submenu>
-					</p:column>
 				</p:submenu>
 
 				<p:submenu label="Gestor" icon="ui-icon-wrench"
 					rendered="#{userSessionManagement.manager}">
 					<p:column>
-						<p:submenu label="Gestor.1">
-							<p:menuitem value="Gestor.1.1" url="#" />
-							<p:menuitem value="Gestor.1.2" url="#" />
+						<p:submenu label="Posições">
+							<p:menuitem value="As minhas Posições" url="#" />
 						</p:submenu>
-						<p:submenu label="Gestor.2">
-							<p:menuitem value="Gestor.2.1" url="#" />
-							<p:menuitem value="Gestor.2.2" url="#" />
-							<p:menuitem value="Gestor.2.3" url="#" />
+						<p:submenu label="Candidaturas">
+							<p:menuitem value="Ver candidaturas Espontâneas" url="#" />
 						</p:submenu>
 
 						<p:submenu label="Área Inicial"
@@ -66,38 +65,14 @@
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
-
-					<p:column>
-						<p:submenu label="Gestor.4">
-							<p:menuitem value="Gestor.4.1" url="#" />
-							<p:menuitem value="Gestor.4.2" url="#" />
-						</p:submenu>
-						<p:submenu label="Gestor.5">
-							<p:menuitem value="Gestor.5.1" url="#" />
-							<p:menuitem value="Gestor.5.2" url="#" />
-							<p:menuitem value="Gestor.5.3" url="#" />
-						</p:submenu>
-					</p:column>
-					<p:column>
-						<p:submenu label="Gestor.7">
-							<p:menuitem value="Gestor.7.1" url="#" />
-							<p:menuitem value="Gestor.7.2" url="#" />
-						</p:submenu>
-					</p:column>
-
 				</p:submenu>
 
 				<p:submenu label="Entrevistador" icon="ui-icon-wrench"
 					rendered="#{userSessionManagement.interviewer}">
 					<p:column>
-						<p:submenu label="Entrevistador.1">
-							<p:menuitem value="Entrevistador.1.1" url="#" />
-							<p:menuitem value="Entrevistador.1.2" url="#" />
-						</p:submenu>
-						<p:submenu label="Entrevistador.2">
-							<p:menuitem value="Entrevistador.2.1" url="#" />
-							<p:menuitem value="Entrevistador.2.2" url="#" />
-							<p:menuitem value="Entrevistador.2.3" url="#" />
+						<p:submenu label="Entrevistas">
+							<p:menuitem value="Entrevistas Agendadas" url="#" />
+							<p:menuitem value="Entrevistas Realizadas" url="#" />
 						</p:submenu>
 						<p:submenu label="Área Inicial"
 							rendered="#{!userSessionManagement.checkDefault('INTERVIEWER')}">
@@ -106,44 +81,19 @@
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
-
-					<p:column>
-						<p:submenu label="Entrevistador.4">
-							<p:menuitem value="Entrevistador.4.1" url="#" />
-							<p:menuitem value="Entrevistador.4.2" url="#" />
-						</p:submenu>
-						<p:submenu label="Entrevistador.5">
-							<p:menuitem value="Entrevistador.5.1" url="#" />
-							<p:menuitem value="Entrevistador.5.2" url="#" />
-							<p:menuitem value="Entrevistador.5.3" url="#" />
-						</p:submenu>
-					</p:column>
 				</p:submenu>
 
 				<p:submenu label="Candidato" icon="ui-icon-wrench"
 					rendered="#{userSessionManagement.candidate}">
 					<p:column>
-						<p:submenu label="Candidato.1">
-							<p:menuitem value="Candidato.1.1" url="#" />
-							<p:menuitem value="Candidato.1.2" url="#" />
-						</p:submenu>
-						<p:submenu label="Candidato.2">
-							<p:menuitem value="Candidato.2.1" url="#" />
-							<p:menuitem value="Candidato.2.2" url="#" />
-							<p:menuitem value="Candidato.2.3" url="#" />
+						<p:submenu label="Candidaturas">
+							<p:menuitem value="As minhas Candidaturas" url="#" />
 						</p:submenu>
 						<p:submenu label="Área Inicial"
 							rendered="#{!userSessionManagement.checkDefault('CANDIDATE')}">
 							<p:menuitem value="Definir por defeito"
 								actionListener="#{userSessionManagement.defaultRole('CANDIDATE')}"
 								update="@form" icon="ui-icon-home" />
-						</p:submenu>
-					</p:column>
-
-					<p:column>
-						<p:submenu label="Candidato.4">
-							<p:menuitem value="Candidato.4.1" url="#" />
-							<p:menuitem value="Candidato.4.2" url="#" />
 						</p:submenu>
 					</p:column>
 
@@ -159,18 +109,6 @@
 								actionListener="#{editUserInfoCDI.init()}"
 								update="editUserInfoForm"
 								oncomplete="PF('editUserInfo').show();" />
-						</p:submenu>
-						<p:submenu label="Candidato.2">
-							<p:menuitem value="Utilizador.2.1" url="#" />
-							<p:menuitem value="Utilizador.2.2" url="#" />
-							<p:menuitem value="Utilizador.2.3" url="#" />
-						</p:submenu>
-					</p:column>
-
-					<p:column>
-						<p:submenu label="Utilizador.4">
-							<p:menuitem value="Utilizador.4.1" url="#" />
-							<p:menuitem value="Utilizador.4.2" url="#" />
 						</p:submenu>
 					</p:column>
 				</p:submenu>

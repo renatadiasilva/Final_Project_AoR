@@ -9,8 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pt.uc.dei.aor.pf.beans.TestUserInfoInterface;
-import pt.uc.dei.aor.pf.beans.TestUserInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -174,13 +172,9 @@ public class UserSessionManagement implements Serializable {
 		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
 	}
 
-	public void updateUser(String firstName, String lastName){
+	public void updateUserInfo(String firstName, String lastName, String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
 		this.currentUser.setFirstName(firstName);
 		this.currentUser.setLastName(lastName);
-		this.userBean.update(this.currentUser);
-	}
-
-	public void updateUserInfo(String firstName, String lastName, String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
 		
 		if(this.getCurrentUser().getUserInfo()==null){
 			this.currentUser.setUserInfo(new UserInfoEntity());

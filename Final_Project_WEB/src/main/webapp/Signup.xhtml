@@ -71,7 +71,7 @@
 				<p:calendar id="signup-birthday" value="#{signupCDI.birthday}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 					yearRange="c-100:c+0" maxdate="#{signupCDI.maxDate}" locale="pt"
-					size="35" />
+					size="35" required="true" />
 
 				<p:outputLabel value="Telefone: " for="signup-homePhone" />
 				<p:inputMask mask="999 999 999" id="signup-homePhone"
@@ -91,17 +91,17 @@
 				<h:panelGroup>
 					<p:inputTextarea id="signup-adress" value="#{signupCDI.address}"
 						cols="35" rows="3" maxlength="200" counter="maxAdress"
-						counterTemplate=" - {0}" />
+						counterTemplate=" - {0}" required="true" />
 					<h:outputText id="maxAdress" />
 				</h:panelGroup>
 
 				<p:outputLabel value="Cidade: " for="signup-city" />
 				<p:inputText id="signup-city" value="#{signupCDI.city}" size="35"
-					maxlength="40" />
+					maxlength="40" required="true" />
 
 				<p:outputLabel value="País: " for="signup-country" />
 				<p:inputText id="signup-country" value="#{signupCDI.country}"
-					size="35" maxlength="40" />
+					size="35" maxlength="40" required="true" />
 
 				<p:outputLabel />
 				<p:outputLabel />
@@ -110,11 +110,11 @@
 
 				<p:outputLabel value="Curso: " for="signup-course" />
 				<p:inputText id="signup-course" value="#{signupCDI.course}"
-					size="35" maxlength="40" />
+					size="35" maxlength="40" required="true" />
 
 				<p:outputLabel value="Escola: " for="signup-school" />
-				<p:inputText id="signup-school" value="#{signupCDI.course}"
-					size="35" maxlength="40" />
+				<p:inputText id="signup-school" value="#{signupCDI.school}"
+					size="35" maxlength="40" required="true" />
 
 				<p:outputLabel value="LinkedIn: " for="signup-linkedin" />
 				<p:inputText id="signup-linkedin" value="#{signupCDI.linkedin}"

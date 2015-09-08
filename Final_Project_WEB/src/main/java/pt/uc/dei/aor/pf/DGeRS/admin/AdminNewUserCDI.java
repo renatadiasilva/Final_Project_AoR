@@ -1,12 +1,10 @@
-package pt.uc.dei.aor.pf.DGeRS;
+package pt.uc.dei.aor.pf.DGeRS.admin;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -14,45 +12,45 @@ import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
 
 @Named
 @RequestScoped
-public class EditUserInfoCDI {
+public class AdminNewUserCDI {
 	
 	@Inject
 	UserSessionManagement userSessionManagement;
 	
 	// UserEntity
-	private String firstName, lastName;
+	private String email, password, firstName, lastName;
 	
 	// UserInfoEntity
 	private String address, city, homePhone, mobilePhone, country, course, school, linkedin;
 
 	private Date birthday;
 	
-	public EditUserInfoCDI() {
-
+	private boolean admin, manager, interviewer, candidate;
+	
+	public AdminNewUserCDI() {
 	}
 	
-	public void init() {
-		if(this.userSessionManagement.getCurrentUser().getFirstName()!=null)this.firstName=this.userSessionManagement.getCurrentUser().getFirstName();
-		if(this.userSessionManagement.getCurrentUser().getLastName()!=null)this.lastName=this.userSessionManagement.getCurrentUser().getLastName();
-
-		if(this.userSessionManagement.getCurrentUser().getUserInfo()!=null){
-			this.address=this.userSessionManagement.getCurrentUser().getUserInfo().getAddress();
-			this.birthday=this.userSessionManagement.getCurrentUser().getUserInfo().getBirthday();
-			this.city=this.userSessionManagement.getCurrentUser().getUserInfo().getCity();
-			this.homePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getHomePhone();
-			this.mobilePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getMobilePhone();
-			this.country=this.userSessionManagement.getCurrentUser().getUserInfo().getCountry();
-			this.course=this.userSessionManagement.getCurrentUser().getUserInfo().getCourse();
-			this.school=this.userSessionManagement.getCurrentUser().getUserInfo().getSchool();
-			this.linkedin=this.userSessionManagement.getCurrentUser().getUserInfo().getLinkedin();
-		}
-
-	}
-	
-	public void update(){
-		this.userSessionManagement.updateUserInfo(firstName, lastName, address, city, homePhone, mobilePhone, country, course, school, linkedin);
+	public String adminNewUser(){
+		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, 
+				city, homePhone,mobilePhone, country, course, school, linkedin);
 		
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dados Actualizados."));
+		return("/Index.xhtml");
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email.trim();
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password.trim();
 	}
 
 	public String getFirstName() {
@@ -75,8 +73,8 @@ public class EditUserInfoCDI {
 		return address;
 	}
 
-	public void setAddress(String address) {
-		this.address = address.trim();
+	public void setAddress(String adress) {
+		this.address = adress.trim();
 	}
 
 	public String getCity() {
@@ -150,6 +148,38 @@ public class EditUserInfoCDI {
 	
 	public Date getMaxDate() {
 		return new Date();
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	public boolean isManager() {
+		return manager;
+	}
+
+	public void setManager(boolean manager) {
+		this.manager = manager;
+	}
+
+	public boolean isInterviewer() {
+		return interviewer;
+	}
+
+	public void setInterviewer(boolean interviewer) {
+		this.interviewer = interviewer;
+	}
+
+	public boolean isCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(boolean candidate) {
+		this.candidate = candidate;
 	}
 	
 }

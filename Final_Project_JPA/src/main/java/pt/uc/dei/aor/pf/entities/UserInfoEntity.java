@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "usersInfo")
@@ -67,7 +68,7 @@ public class UserInfoEntity implements Serializable {
 	private String linkedin;
 	
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "owner", unique = true, updatable = false)
+	@JoinColumn(name = "user_id", unique = true, updatable = false)
 	private UserEntity owner;
 	
 //	@OneToOne(mappedBy="userInfo")
