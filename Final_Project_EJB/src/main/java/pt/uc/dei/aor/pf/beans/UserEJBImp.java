@@ -135,47 +135,108 @@ public class UserEJBImp implements UserEJBInterface {
 		return userDAO.findUsers(keyword, role);
 	}
 
+	@Override
+	public List<UserEntity> findCandidatesByEmail(String email) {
+		log.info("Finding candidates by email");
+		return userDAO.findCandidates(email, "%", "%", "%", "%", "%", "%", "%", null);
+	}
+
 	public List<UserEntity> findCandidatesByFirstName(String firstName) {
 		log.info("Finding candidates by first name");
-		return userDAO.findCandidates("%", firstName, "%", null);
+		return userDAO.findCandidates("%", firstName, "%", "%", "%", "%", "%", "%", null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByLastName(String lastName) {
 		log.info("Finding candidates by last name");
-		return userDAO.findCandidates("%", "%", lastName, null);
+		return userDAO.findCandidates("%", "%", lastName, "%", "%", "%", "%", "%", null);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByEmail(String email) {
-		log.info("Finding candidates by email");
-		return userDAO.findCandidates(email, "%", "%", null);
+	public List<UserEntity> findCandidatesByAddress(String address) {
+		log.info("Finding candidates by address");
+		return userDAO.findCandidates("%", "%", "%", address, "%", "%", "%", "%", null);
 	}
 
 	@Override
-	public List<UserEntity> findCandidates(String email,
-			String firstName, String lastName) {
-		log.info("Finding candidates by several attributes");
-		return userDAO.findCandidates(email, firstName, lastName, null);
+	public List<UserEntity> findCandidatesByCity(String city) {
+		log.info("Finding candidates by city");
+		return userDAO.findCandidates("%", "%", "%", "%", city, "%", "%", "%", null);
+	}
+
+	@Override
+	public List<UserEntity> findCandidatesByPhone(String phone) {
+		log.info("Finding candidates by (home) phone");
+		return userDAO.findCandidatesByPhone(phone, "%");
+	}
+
+	@Override
+	public List<UserEntity> findCandidatesByMobile(String mobilePhone) {
+		log.info("Finding candidates by (mobile) phone");
+		return userDAO.findCandidatesByPhone("%", mobilePhone);
+	}
+
+	@Override
+	public List<UserEntity> findCandidatesByCountry(String country) {
+		log.info("Finding candidates by country");
+		return userDAO.findCandidates("%", "%", "%", "%", "%", country, "%", "%", null);
+	}
+
+	@Override
+	public List<UserEntity> findCandidatesByCourse(String course) {
+		log.info("Finding candidates by country");
+		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", course, "%", null);
+	}
+
+	@Override
+	public List<UserEntity> findCandidatesBySchool(String school) {
+		log.info("Finding candidates by school");
+		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", "%", school, null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByPosition(PositionEntity position) {
 		log.info("Finding candidates by position");
-		return userDAO.findCandidates("%", "%", "%", position);
+		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", "%", "%", position);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByPosition(String email, String firstName,
 			String lastName, PositionEntity position) {
-		log.info("Finding candidates of a given position by several attributes");
-		return userDAO.findCandidates(email, firstName, lastName, position);
+		log.info("Finding candidates of a given position by email or name");
+		return userDAO.findCandidates(email, firstName, lastName, "%", "%", "%", "%",
+				"%", position);
 	}
 
 	@Override
-	public List<UserEntity> findCandidates(String keyword) {
+	public List<UserEntity> findCandidatesByPosition(String email, String firstName,
+			String lastName, String address, String city, 
+			String country, String course, String school,
+			PositionEntity position) {
+		log.info("Finding candidates of a given position by several attributes");
+		return userDAO.findCandidates(email, firstName, lastName, address, city, 
+				country, course, school, position);
+	}
+	
+	@Override
+	public List<UserEntity> findCandidates(String email, String firstName,
+			String lastName, String address, String city, String country,
+			String course, String school) {
+		log.info("Finding candidates by several attributes");
+		return userDAO.findCandidates(email, firstName, lastName, 
+				address, city, country, course, school, null);
+	}
+
+	@Override
+	public List<UserEntity> findCandidatesByKeywordShort(String keyword) {
 		log.info("Finding candidates by keyword");
 		return userDAO.findUsers(keyword, UserEntity.ROLE_CANDIDATE);
+	}
+
+	@Override
+	public List<UserEntity> findCandidatesByKeyword(String keyword) {
+		log.info("Finding candidates by keyword");
+		return userDAO.findCandidatesByKeyword(keyword);
 	}
 
 	private String securePass(String pass) throws NoSuchAlgorithmException, UnsupportedEncodingException {

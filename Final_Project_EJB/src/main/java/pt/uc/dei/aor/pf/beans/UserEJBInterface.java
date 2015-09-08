@@ -20,13 +20,26 @@ public interface UserEJBInterface {
 	public abstract List<UserEntity> findAllInterviewers();
 	public abstract List<UserEntity> findAllCandidates();
 	public abstract List<UserEntity> findInternalUsers(String keyword, String role);
-	public abstract List<UserEntity> findCandidates(String keyword);
 	public abstract List<UserEntity> findCandidatesByFirstName(String firstName);
 	public abstract List<UserEntity> findCandidatesByLastName(String lastName); 
 	public abstract List<UserEntity> findCandidatesByEmail(String email);
-	public abstract List<UserEntity> findCandidates(String email, String firstName, String lastName);
+	public abstract List<UserEntity> findCandidatesByAddress(String address);
+	public abstract List<UserEntity> findCandidatesByCity(String city);
+	public abstract List<UserEntity> findCandidatesByPhone(String homePhone);
+	public abstract List<UserEntity> findCandidatesByMobile(String mobilePhone);
+	public abstract List<UserEntity> findCandidatesByCountry(String country);
+	public abstract List<UserEntity> findCandidatesByCourse(String course);
+	public abstract List<UserEntity> findCandidatesBySchool(String school);	
 	public abstract List<UserEntity> findCandidatesByPosition(PositionEntity position);
 	public abstract List<UserEntity> findCandidatesByPosition(String email, 
 			String firstName, String lastName, PositionEntity position);
+	public abstract List<UserEntity> findCandidatesByPosition(String email, String firstName,
+			String lastName, String address, String city, String country, 
+			String course, String school, PositionEntity position);
+	public abstract List<UserEntity> findCandidates(String email, String firstName, 
+			String lastName, String address, String city, 
+			String country, String course, String school);
+	public abstract List<UserEntity> findCandidatesByKeyword(String keyword);
+	public abstract List<UserEntity> findCandidatesByKeywordShort(String keyword);
 	
 }

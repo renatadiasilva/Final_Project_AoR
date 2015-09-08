@@ -10,5 +10,5 @@ public class UserInfoDao extends GenericDao<UserInfoEntity> {
 	public UserInfoDao() {
 		super(UserInfoEntity.class);
 	}
-
+	
 }

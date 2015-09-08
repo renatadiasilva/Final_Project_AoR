@@ -37,16 +37,36 @@ public class UserDao extends GenericDao<UserEntity> {
 	}
 
 	public List<UserEntity> findCandidates(String email, String fname, 
-			String lname, PositionEntity position) {
+			String lname, String address, String city, 
+			String country, String course, String school, 
+			PositionEntity position) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);
 		parameters.put("fname", fname);
 		parameters.put("lname", lname);
+		parameters.put("address", address);
+		parameters.put("city", city);
+		parameters.put("country", country);
+		parameters.put("course", course);
+		parameters.put("school", school);
 		if (position != null) {
 			parameters.put("id", position);
 			return super.findSomeResults("User.findCandidatesByPosition", parameters);
 		}
 		return super.findSomeResults("User.findCandidatesBySeveralAttributes", parameters);
+	}
+
+	public List<UserEntity> findCandidatesByPhone(String hPhone, String mPhone) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("hphone", hPhone);
+		parameters.put("mphone", mPhone);
+		return super.findSomeResults("User.findCandidatesByPhone", parameters);
+	}
+
+	public List<UserEntity> findCandidatesByKeyword(String keyword) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("keyword", keyword);
+		return super.findSomeResults("User.findCandidatesByKeyword", parameters);
 	}
 
 }
