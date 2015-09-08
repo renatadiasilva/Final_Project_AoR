@@ -89,7 +89,8 @@ public class SubmissionEntity implements Serializable {
 //	private List<PositionEntity> positions;
 	
 	// Dudu
-	@ManyToOne(name = "position")
+	@ManyToOne
+	@JoinColumn(name = "position", nullable = false)
 	private PositionEntity position; 
 
 	@Column(name = "spontaneous")
