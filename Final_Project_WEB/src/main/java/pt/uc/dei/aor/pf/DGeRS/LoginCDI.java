@@ -64,14 +64,10 @@ public class LoginCDI {
 		roles.add(UserEntity.ROLE_ADMIN);
 		roles.add(UserEntity.ROLE_MANAGER);
 		roles.add(UserEntity.ROLE_INTERVIEWER);
+		roles.add(UserEntity.ROLE_CANDIDATE);
 
 		newUser=new UserEntity("admin@mail.com", "12345", "Admin", "Admin", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
-		
-		UserInfoEntity newUserInfo= new UserInfoEntity(null, null, null, null, null, null, null, null, null);
-		this.testUserInfoBean.save(newUserInfo);
-
-		newUser.setUserInfo(newUserInfo);
 
 		this.testUserBean.save(newUser);
 
@@ -85,11 +81,6 @@ public class LoginCDI {
 
 		newUser=new UserEntity("manager@mail.com", "12345", "Manager", "Manager", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
-		
-		newUserInfo= new UserInfoEntity(null, null, null, null, null, null, null, null, null);
-		this.testUserInfoBean.save(newUserInfo);
-
-		newUser.setUserInfo(newUserInfo);
 
 		this.testUserBean.save(newUser);
 
@@ -102,11 +93,6 @@ public class LoginCDI {
 
 		newUser=new UserEntity("interviewer@mail.com", "12345", "Interviewer", "Interviewer", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
-		
-		newUserInfo= new UserInfoEntity(null, null, null, null, null, null, null, null, null);
-		this.testUserInfoBean.save(newUserInfo);
-
-		newUser.setUserInfo(newUserInfo);
 
 		this.testUserBean.save(newUser);
 
@@ -119,11 +105,6 @@ public class LoginCDI {
 
 		newUser=new UserEntity("candidate@mail.com", "12345", "Candidate", "Candidate", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
-		
-		newUserInfo= new UserInfoEntity(null, null, null, null, null, null, null, null, null);
-		this.testUserInfoBean.save(newUserInfo);
-
-		newUser.setUserInfo(newUserInfo);
 
 		this.testUserBean.save(newUser);
 	}

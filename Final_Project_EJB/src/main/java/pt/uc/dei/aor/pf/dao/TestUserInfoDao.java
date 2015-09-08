@@ -13,16 +13,16 @@ public class TestUserInfoDao extends GenericDao<UserInfoEntity> {
 		super(UserInfoEntity.class);
 	}
 
-//	public UserEntity findUserByEmail(String email) {
-//		Query q = em.createQuery("select u from UserEntity u where u.email= :mailParam");
-//		q.setParameter("mailParam", email);
-//		
-//		try {
-//			UserEntity userInfo = (UserEntity) q.getSingleResult();
-//			return userInfo;
-//		} catch (NoResultException e) {
-//			return null;
-//		}
-//	}
+	public UserInfoEntity findUserInfoByUserID(Long userID) {
+		Query q = em.createQuery("select ui from UserInfoEntity ui where ui.owner = :userID");
+		q.setParameter("userID", userID);
+		
+		try {
+			UserInfoEntity userInfo = (UserInfoEntity) q.getSingleResult();
+			return userInfo;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 
 }

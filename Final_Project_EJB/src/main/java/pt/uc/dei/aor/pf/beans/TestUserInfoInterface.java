@@ -10,4 +10,6 @@ public interface TestUserInfoInterface {
 
 	public void delete(UserInfoEntity userInfo);
 
+	public UserInfoEntity findUserInfoByUserID(Long userID);
+
 }

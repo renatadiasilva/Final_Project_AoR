@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import pt.uc.dei.aor.pf.beans.TestUserInfoInterface;
 import pt.uc.dei.aor.pf.beans.TestUserInterface;
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
@@ -30,10 +32,10 @@ public class UserSessionManagement implements Serializable {
 	private static final long serialVersionUID = 2527354852846254610L;
 
 	@Inject
-	TestUserInterface testUserBean;
+	UserEJBInterface userBean;
 
 	@Inject
-	TestUserInfoInterface testUserInfoBean;
+	UserInfoEJBInterface userInfoBean;
 
 	private UserEntity currentUser;
 
@@ -80,7 +82,7 @@ public class UserSessionManagement implements Serializable {
 			this.request.login(email, password);
 
 			// Se o servidor consegue logar o utilizador não cria a excepção e chega aqui: logo a password está correcta
-			this.currentUser = testUserBean.findUserByEmail(email);
+			this.currentUser = userBean.findUserByEmail(email);
 
 			// Roles para mostrar na web
 			this.setAvailableRoles();
@@ -134,7 +136,7 @@ public class UserSessionManagement implements Serializable {
 		if(role.equals(UserEntity.ROLE_INTERVIEWER)) this.currentUser.setDefaultRole(role);
 		if(role.equals(UserEntity.ROLE_CANDIDATE)) this.currentUser.setDefaultRole(role);
 
-		this.testUserBean.update(this.currentUser);	
+		this.userBean.update(this.currentUser);	
 	}
 
 	public boolean checkDefault(String role){
@@ -150,21 +152,21 @@ public class UserSessionManagement implements Serializable {
 		this.response = (HttpServletResponse) context.getExternalContext().getResponse();
 
 		// Verifica primeiro se o email já está a uso
-		if(this.testUserBean.findUserByEmail(email)==null){
+		if(this.userBean.findUserByEmail(email)==null){
 			List<String> roles = new ArrayList<String>();
 			roles.add(UserEntity.ROLE_CANDIDATE);
 
 			// Atributos do UserEntity
 			UserEntity newUser=new UserEntity(email, password, firstName, lastName, roles);
-			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);						
+			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);	
+			
 
 			// Atributos do UserInfoEntity do respectivo UserEntity
 			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, adress, city, homePhone, mobilePhone, country, course, school, null);
-			this.testUserInfoBean.save(newUserInfo);
 
 			newUser.setUserInfo(newUserInfo);
-
-			this.testUserBean.save(newUser);			
+			
+			this.userBean.save(newUser);						
 
 			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
 
@@ -174,10 +176,13 @@ public class UserSessionManagement implements Serializable {
 	public void updateUser(String firstName, String lastName){
 		this.currentUser.setFirstName(firstName);
 		this.currentUser.setLastName(lastName);
-		this.testUserBean.update(this.currentUser);
+		this.userBean.update(this.currentUser);
 	}
 
-	public void updateUserInfo(String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
+	public void updateUserInfo(String firstName, String lastName, String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
+		
+		if(this.getCurrentUser().getUserInfo()==null) this.currentUser.setUserInfo(new UserInfoEntity());
+		
 		this.currentUser.getUserInfo().setAddress(address);
 		this.currentUser.getUserInfo().setCity(city);
 		this.currentUser.getUserInfo().setHomePhone(homePhone);
@@ -187,7 +192,7 @@ public class UserSessionManagement implements Serializable {
 		this.currentUser.getUserInfo().setSchool(school);
 		this.currentUser.getUserInfo().setLinkedin(linkedin);
 			
-		this.testUserInfoBean.update(this.currentUser.getUserInfo());
+		this.userBean.update(this.currentUser);
 	}
 
 	public UserEntity getCurrentUser() {

@@ -28,4 +28,9 @@ public class TestUserInfoBean implements TestUserInfoInterface {
 		this.testUserInfoDao.update(userInfo);
 	}
 	
+	@Override
+	public UserInfoEntity findUserInfoByUserID(Long userID) {
+		return this.testUserInfoDao.findUserInfoByUserID(userID);
+	}
+	
 }

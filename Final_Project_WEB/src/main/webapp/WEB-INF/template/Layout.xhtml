@@ -14,6 +14,10 @@
 </h:head>
 
 <h:body>
+	<!-- Pop-ups comuns -->
+	<ui:insert name="edit-user-info">
+		<ui:include src="edit-user-info.xhtml" />
+	</ui:insert>
 
 	<header> <!-- Logótipo -->
 	<div id="header-link">
@@ -52,13 +56,6 @@
 		<div id="footer">IT Jobs - Projecto Final | Programação Avançada
 			em JAVA | Duarte Gonçalves | Renata Silva</div>
 	</div>
-
-	<!-- Pop-ups comuns -->
-	<ui:insert name="edit-user-info">
-		<ui:include src="edit-user-info.xhtml" />
-	</ui:insert>
-
-
 
 </h:body>
 </html>
