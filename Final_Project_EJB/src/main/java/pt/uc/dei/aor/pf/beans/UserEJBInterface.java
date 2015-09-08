@@ -6,7 +6,7 @@ import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
-public interface UserEJBInterfaceRENATA {
+public interface UserEJBInterface {
 	public abstract void save(UserEntity user);
 	public abstract void update(UserEntity user);
 	public abstract void delete(UserEntity user);

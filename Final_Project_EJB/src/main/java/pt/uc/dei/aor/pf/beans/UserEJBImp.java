@@ -5,30 +5,30 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import pt.uc.dei.aor.pf.dao.TestUserDao;
+import pt.uc.dei.aor.pf.dao.UserDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
-public class UserEJBImpRENATA implements UserEJBInterfaceRENATA {
+public class UserEJBImp implements UserEJBInterface {
 
 	@EJB
-	private TestUserDao loginTestsDao;
+	private UserDao userDAO;
 
 	@Override
 	public void save(UserEntity user){
-		loginTestsDao.save(user);
+		userDAO.save(user);
 	}
 
 	@Override
 	public void update(UserEntity user){
-		loginTestsDao.update(user);
+		userDAO.update(user);
 	}
 
 	@Override
 	public void delete(UserEntity user) {
-		loginTestsDao.update(user);
+		userDAO.update(user);
 	}
 
 	@Override
