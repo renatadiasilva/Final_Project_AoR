@@ -8,6 +8,7 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 public interface UserEJBInterface {
 	public abstract void save(UserEntity user);
 	public abstract void update(UserEntity user);
+	public abstract void updatePassword(UserEntity user);
 	public abstract void delete(UserEntity user);
 	public abstract UserEntity find(Long id);
 	public abstract List<UserEntity> findAll();

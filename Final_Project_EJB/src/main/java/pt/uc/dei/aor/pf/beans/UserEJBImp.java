@@ -21,7 +21,7 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 public class UserEJBImp implements UserEJBInterface {
 
 	private static final Logger log = LoggerFactory.getLogger(UserEJBImp.class);
-	
+
 	@EJB
 	private UserDao userDAO;
 
@@ -32,9 +32,11 @@ public class UserEJBImp implements UserEJBInterface {
 		try {
 			user.setPassword(securePass(user.getPassword()));
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			log.error("Error encrypting password");
+			//e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			log.error("Error encrypting password");
+			//e.printStackTrace();
 		}
 		userDAO.save(user);
 	}
@@ -45,6 +47,21 @@ public class UserEJBImp implements UserEJBInterface {
 		isUserComplete(user);
 		userDAO.update(user);
 	}
+
+	@Override
+	public void updatePassword(UserEntity user) {
+		log.info("Updating password of user");
+		try {
+			user.setPassword(securePass(user.getPassword()));
+		} catch (NoSuchAlgorithmException e) {
+			log.error("Error encrypting password");
+			//e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			log.error("Error encrypting password");
+			//e.printStackTrace();
+		}
+		userDAO.update(user);
+	}		
 
 	@Override
 	public void delete(UserEntity user) {
@@ -146,7 +163,7 @@ public class UserEJBImp implements UserEJBInterface {
 		log.info("Finding candidates by position");
 		return userDAO.findCandidates("%", "%", "%", position);
 	}
-	
+
 	@Override
 	public List<UserEntity> findCandidatesByPosition(String email, String firstName,
 			String lastName, PositionEntity position) {
@@ -177,10 +194,10 @@ public class UserEJBImp implements UserEJBInterface {
 
 		return securedPassword;
 	}
-	
+
 	private void isUserComplete(UserEntity u) {
 		boolean hasError = false;
-		
+
 		if (u == null) hasError = true;
 		else if (u.getEmail() == null) hasError = true;
 		else if (u.getPassword() == null) hasError = true;
@@ -193,4 +210,34 @@ public class UserEJBImp implements UserEJBInterface {
 					+ "Check the notnull attributes.");
 	}
 
+	//Cloning... Think about it...
+	
+//	@Override
+//	public List<Utilizador> findAllWS() {
+//		List<Utilizador> novos= new ArrayList<Utilizador>();
+//		List<Utilizador> list=userDao.findAll();
+//		for (Utilizador u:list){
+//			Utilizador user2=new Utilizador();
+//			user2.setId(u.getId());
+//			user2.setNome(u.getNome());
+//			user2.setMail(u.getMail());
+//			user2.setPassword("");	
+//			novos.add(user2);
+//		}
+//		return novos;
+//		
+//	}
+//
+//	@Override
+//	public Utilizador findSimpleUser(int id) {
+//		Utilizador user=userDao.find(id);
+//		Utilizador user2=new Utilizador();
+//		user2.setId(user.getId());
+//		user2.setNome(user.getNome());
+//		user2.setMail(user.getMail());
+//		user2.setPassword("");
+//		return user2;
+//	}
+
+	
 }
