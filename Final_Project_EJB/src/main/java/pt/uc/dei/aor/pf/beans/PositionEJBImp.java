@@ -56,16 +56,25 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
+	public PositionEntity findPositionByCode(String positionCode) {
+		log.info("Finding position by exact code");
+		// code is unique
+		List<PositionEntity> pos = positionDAO.findPositionsByCode(positionCode.toUpperCase());
+		if (pos.size() == 1) return pos.get(0); // 1 result: code found
+		return null; // 0 results: code not found
+	}
+
+	@Override
+	public List<PositionEntity> findPositionsByCode(String codePattern) {
+		log.info("Finding positions by code pattern");
+		return positionDAO.findPositionsByCode(codePattern);
+	}
+
+	@Override
 	public List<PositionEntity> findPositionsByDate(Date openingDate1,
 			Date openingDate2) {
 		log.info("Finding all positions opened between two dates");
 		return positionDAO.findPositionsByDate(openingDate1, openingDate2);
-	}
-
-	@Override
-	public List<PositionEntity> findPositionsByCode(String positionCode) {
-		log.info("Finding positions by code");
-		return positionDAO.findPositionsByCode(positionCode);
 	}
 
 	@Override

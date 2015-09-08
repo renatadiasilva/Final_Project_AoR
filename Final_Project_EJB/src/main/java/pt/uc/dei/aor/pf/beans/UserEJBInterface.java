@@ -2,7 +2,6 @@ package pt.uc.dei.aor.pf.beans;
 
 import java.util.List;
 
-import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
@@ -12,20 +11,21 @@ public interface UserEJBInterface {
 	public abstract void delete(UserEntity user);
 	public abstract UserEntity find(Long id);
 	public abstract List<UserEntity> findAll();
-	public abstract UserEntity findUsersByEmail(String email);  //list? 
-	public abstract List<UserEntity> findUsersByFirstName(String firstName);
-	public abstract List<UserEntity> findUsersByLastName(String lastName); 
-	public abstract List<UserEntity> findUsersByRole(String role); // list of roles!!!
-	public abstract List<UserEntity> findUsers(String email, String firstName, String lastName,
-			String role);
+	public abstract UserEntity findUserByEmail(String email); 
+	public abstract List<UserEntity> findUsersByEmail(String emailPattern); 
+	public abstract List<UserEntity> findUsersByName(String name);
+	public abstract List<UserEntity> findAllAdmins();
+	public abstract List<UserEntity> findAllManagers();
+	public abstract List<UserEntity> findAllInterviewers();
+	public abstract List<UserEntity> findAllCandidates();
+	public abstract List<UserEntity> findInternalUsers(String keyword, String role);
+	public abstract List<UserEntity> findCandidates(String keyword);
 	public abstract List<UserEntity> findCandidatesByFirstName(String firstName);
 	public abstract List<UserEntity> findCandidatesByLastName(String lastName); 
 	public abstract List<UserEntity> findCandidatesByEmail(String email);
-//	public abstract List<UserEntity> findCandidates(String email, String firstName, String lastName);
-	public abstract List<UserEntity> findCandidatesByPosition(String email, String firstName, String lastName,
-			PositionEntity position); // position can be null
-	// ordenar pesquisas por data/ordem alfabética??
+	public abstract List<UserEntity> findCandidates(String email, String firstName, String lastName);
+	public abstract List<UserEntity> findCandidatesByPosition(PositionEntity position);
+	public abstract List<UserEntity> findCandidatesByPosition(String email, 
+			String firstName, String lastName, PositionEntity position);
 	
-	public abstract List<UserEntity> findInterviewers(InterviewEntity interview);  //crazy??? get???
-		
 }

@@ -27,26 +27,26 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "submissions")
 @NamedQueries({
-	@NamedQuery(name = "Submission.spontaneousSubmissions",
+	@NamedQuery(name = "Submission.findSpontaneousSubmissions",
 			query = "SELECT s FROM SubmissionEntity s WHERE s.spontaneous = TRUE"
 					+ " ORDER BY s.date DESC"),
-	@NamedQuery(name = "Submission.submissionsByDate",
+	@NamedQuery(name = "Submission.findSubmissionsByDate",
 			query = "SELECT s FROM SubmissionEntity s WHERE "
 					+ " s.date BETWEEN :date1 AND :date2"),
-	@NamedQuery(name = "Submission.spontaneousSubmissionsByDate",
+	@NamedQuery(name = "Submission.findSpontaneousSubmissionsByDate",
 			query = "SELECT s FROM SubmissionEntity s WHERE "
 					+ " s.spontaneous = TRUE AND s.date BETWEEN :date1 AND :date2"),
-	@NamedQuery(name = "Submission.rejectedSubmissionsByDate",
+	@NamedQuery(name = "Submission.findRejectedSubmissionsByDate",
 			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) = 'REJECTED'"
 					+ " AND s.date BETWEEN :date1 AND :date2"),
-	@NamedQuery(name = "Submission.presentedProposalsByDate",
+	@NamedQuery(name = "Submission.findPresentedProposalsByDate",
 			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) = '%PROPOSAL'"
 					+ " AND s.date BETWEEN :date1 AND :date2"),
-	@NamedQuery(name = "Submission.submissionsBySource",
+	@NamedQuery(name = "Submission.findSubmissionsBySource",
 			query = "SELECT s FROM SubmissionEntity s JOIN s.sources so WHERE so = :source"
 					+ " AND s.date BETWEEN :date1 AND :date2"),
 //			query = "SELECT s SubmissionEntity s WHERE :source MEMBER OF s.sources"), //(TESTAR)
-	@NamedQuery(name = "Submission.submissionByPosition",
+	@NamedQuery(name = "Submission.findSubmissionByPosition",
 			query = "SELECT s FROM SubmissionEntity s WHERE s.position = :id"),
 })
 public class SubmissionEntity implements Serializable {

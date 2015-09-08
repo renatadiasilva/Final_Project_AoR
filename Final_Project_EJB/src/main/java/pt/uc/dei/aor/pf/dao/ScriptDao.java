@@ -16,13 +16,13 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 	}
 	
 	public List<ScriptEntity> findReusableScripts() {
-		return super.findSomeResults("Script.reusableScripts", null);
+		return super.findSomeResults("Script.findReusableScripts", null);
 	}
 
 	public List<ScriptEntity> findScriptsByTitle(String title) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("t", title);
-		return super.findSomeResults("Script.scriptsByTitle", parameters);
+		return super.findSomeResults("Script.findScriptsByTitle", parameters);
 	}
 
 }

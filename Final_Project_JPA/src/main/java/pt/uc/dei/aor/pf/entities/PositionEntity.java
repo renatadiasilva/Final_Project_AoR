@@ -23,44 +23,44 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "positions")
 @NamedQueries({
-	@NamedQuery(name = "Position.positionsByDate",
+	@NamedQuery(name = "Position.findPositionsByDate",
 			query = "SELECT p FROM PositionEntity p WHERE p.openingDate "
 					+ "BETWEEN :date1 AND :date2 ORDER BY p.openingDate"),
-	@NamedQuery(name = "Position.positionsByCode",
+	@NamedQuery(name = "Position.findPositionsByCode",
 			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.positionCode) LIKE :c"
 					+ " ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.positionsByTitle",
+	@NamedQuery(name = "Position.findPositionsByTitle",
 			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.title) LIKE :t"
 					+ " ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.positionsByLocation",
+	@NamedQuery(name = "Position.findPositionsByLocation",
 			query = "SELECT p FROM PositionEntity p JOIN p.locations l WHERE l LIKE :loc"
 					+ " ORDER BY p.positionCode"),
 //			query = "SELECT p FROM PositionEntity p WHERE :loc MEMBER OF p.locations ORDER BY p.positionCode"), //(TESTAR)
-	@NamedQuery(name = "Position.positionsByStatus",
+	@NamedQuery(name = "Position.findPositionsByStatus",
 			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.status) LIKE :s "
 					+ "ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.positionsByCompany",
+	@NamedQuery(name = "Position.findPositionsByCompany",
 			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.company) LIKE :c"
 					+ " ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.positionsByTechArea",
+	@NamedQuery(name = "Position.findPositionsByTechArea",
 			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.technicalArea) LIKE :ta"
 					+ " ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.positionsBySeveralAttributes",
+	@NamedQuery(name = "Position.findPositionsBySeveralAttributes",
 			query = "SELECT p FROM PositionEntity p WHERE p.openingDate BETWEEN :date1 AND :date2"
 					+ " AND UPPER(p.positionCode) LIKE :c AND UPPER(p.title) LIKE :t"
 					+ " AND :loc MEMBER OF p.locations AND UPPER(p.status) LIKE :s"
 					+ " AND UPPER(p.company) LIKE :comp"
 					+ " AND UPPER(p.technicalArea) LIKE :ta ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.positionsBySeveralAttributesByManager",
+	@NamedQuery(name = "Position.findPositionsBySeveralAttributesByManager",
 			query = "SELECT p FROM PositionEntity p WHERE p.openingDate BETWEEN :date1 AND :date2"
 					+ " AND UPPER(p.positionCode) LIKE :c AND UPPER(p.title) LIKE :t"
 					+ " AND :loc MEMBER OF p.locations AND UPPER(p.status) LIKE :s"
 					+ " AND UPPER(p.company) LIKE :comp"
 					+ " AND UPPER(p.technicalArea) LIKE :ta AND p.positionManager = :id"
 					+ " ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.closeToSLAPositions",
+	@NamedQuery(name = "Position.findCloseToSLAPositions",
 			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate AND p.status = 'OPEN'"),
-	@NamedQuery(name = "Position.positionsByKeyword",
+	@NamedQuery(name = "Position.findPositionsByKeyword",
 			query = "SELECT p FROM PositionEntity p WHERE"
 					+ " UPPER(p.positionCode) LIKE :keyword OR"
 					+ " UPPER(p.title) LIKE :keyword OR"
@@ -68,7 +68,7 @@ import javax.validation.constraints.NotNull;
 					+ " UPPER(p.company) LIKE :keyword OR"
 					+ " UPPER(p.technicalArea) LIKE :keyword OR"
 					+ " UPPER(p.description) LIKE :keyword ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.positionsByKeywordByManager",
+	@NamedQuery(name = "Position.findPositionsByKeywordByManager",
 			query = "SELECT p FROM PositionEntity p WHERE"
 					+ " (UPPER(p.positionCode) LIKE :keyword OR"
 					+ " UPPER(p.title) LIKE :keyword OR"

@@ -23,43 +23,43 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);  //formato!!
-		return super.findSomeResults("Position.positionsByDate", parameters);
+		return super.findSomeResults("Position.findPositionsByDate", parameters);
 	}
 
 	public List<PositionEntity> findPositionsByCode(String code) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("c", code);
-		return super.findSomeResults("Position.positionsByCode", parameters);
+		return super.findSomeResults("Position.findPositionsByCode", parameters);
 	}
 		
 	public List<PositionEntity> findPositionsByTitle(String title) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("t", title);
-		return super.findSomeResults("Position.positionsByTitle", parameters);
+		return super.findSomeResults("Position.findPositionsByTitle", parameters);
 	}
 
 	public List<PositionEntity> findPositionsByLocation(String location) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("loc", location);
-		return super.findSomeResults("Position.positionsByLocation", parameters);
+		return super.findSomeResults("Position.findPositionsByLocation", parameters);
 	}
 
 	public List<PositionEntity> findPositionsByStatus(String status) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("s", status);
-		return super.findSomeResults("Position.positionsByStatus", parameters);
+		return super.findSomeResults("Position.findPositionsByStatus", parameters);
 	}
 
 	public List<PositionEntity> findPositionsByCompany(String company) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("c", company);
-		return super.findSomeResults("Position.positionsByCompany", parameters);
+		return super.findSomeResults("Position.findPositionsByCompany", parameters);
 	}
 
 	public List<PositionEntity> findPositionsByTechArea(String technicalArea) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("ta", technicalArea);
-		return super.findSomeResults("Position.positionsByTechArea", parameters);
+		return super.findSomeResults("Position.findPositionsByTechArea", parameters);
 	}
 
 	public List<PositionEntity> findPositions(Date openingDate1, Date openingDate2, String positionCode,
@@ -76,8 +76,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		parameters.put("ta", technicalArea);
 		if (positionManager != null) {
 			parameters.put("id", positionManager);
-			return super.findSomeResults("Position.positionsBySeveralAttributesByManager", parameters);
-		} else return super.findSomeResults("Position.positionsBySeveralAttributes", parameters);
+			return super.findSomeResults("Position.findPositionsBySeveralAttributesByManager", parameters);
+		} else return super.findSomeResults("Position.findPositionsBySeveralAttributes", parameters);
 	}
 
 	public List<PositionEntity> findCloseToSLAPositions(int daysBefore) {
@@ -85,7 +85,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		Calendar cal = Calendar.getInstance(); // today
 		cal.add(Calendar.DAY_OF_YEAR, daysBefore); // today plus the given days before SLA
 		parameters.put("date", cal.getTime());
-		return super.findSomeResults("Position.closeToSLAPositions", parameters);
+		return super.findSomeResults("Position.findCloseToSLAPositions", parameters);
 	}
 
 	public List<PositionEntity> findPositionsByKeyword(String keyword,
@@ -94,8 +94,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		parameters.put("keyword", keyword);
 		if (positionManager != null) {
 			parameters.put("id", positionManager);
-			return super.findSomeResults("Position.positionsByKeywordByManager", parameters);
-		} else return super.findSomeResults("Position.positionsByKeyword", parameters);		
+			return super.findSomeResults("Position.findPositionsByKeywordByManager", parameters);
+		} else return super.findSomeResults("Position.findPositionsByKeyword", parameters);		
 	}
 
 }

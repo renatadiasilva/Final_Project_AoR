@@ -18,13 +18,13 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 	}
 	
 	public List<SubmissionEntity> findSpontaneousSubmissions() {
-		return super.findSomeResults("Submission.spontaneousSubmissions", null);
+		return super.findSomeResults("Submission.findSpontaneousSubmissions", null);
 	}
 	
 	public List<SubmissionEntity> findSubmissionsByPosition(PositionEntity position) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("id", position);
-		return super.findSomeResults("Submission.submissionByPosition", parameters);
+		return super.findSomeResults("Submission.findSubmissionByPosition", parameters);
 	}
 
 	
@@ -32,7 +32,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findSomeResults("Submission.submissionsByDate", parameters);
+		return super.findSomeResults("Submission.findSubmissionsByDate", parameters);
 	}
 	
 	public List<SubmissionEntity> findSpontaneousSubmissionsByDate(
@@ -40,7 +40,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findSomeResults("Submission.spontaneousSubmissionsByDate", parameters);
+		return super.findSomeResults("Submission.findSpontaneousSubmissionsByDate", parameters);
 	}
 	
 	public List<SubmissionEntity> findRejectSubmissionsByDate(
@@ -48,7 +48,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findSomeResults("Submission.rejectedSubmissionsByDate", parameters);
+		return super.findSomeResults("Submission.findRejectedSubmissionsByDate", parameters);
 	}
 	
 	public List<SubmissionEntity> findPresentedProposalByDate(
@@ -56,7 +56,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findSomeResults("Submission.presentedProposalsByDate", parameters);
+		return super.findSomeResults("Submission.findPresentedProposalsByDate", parameters);
 	}
 
 	public List<SubmissionEntity> findSubmissionsBySource(String source,
@@ -65,7 +65,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		parameters.put("source", source);
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findSomeResults("Submission.submissionsBySource", parameters);
+		return super.findSomeResults("Submission.findSubmissionsBySource", parameters);
 	}
 	
 }

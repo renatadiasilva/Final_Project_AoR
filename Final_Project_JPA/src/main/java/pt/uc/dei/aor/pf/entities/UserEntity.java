@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -24,6 +26,26 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
+// compare to positions...
+@NamedQueries({
+	@NamedQuery(name = "User.findUsersByEmail",
+			query = "SELECT u FROM UserEntity u WHERE UPPER(u.email) LIKE :email ORDER BY u.email"),
+	@NamedQuery(name = "User.findUsersByName",
+			query = "SELECT u FROM UserEntity u WHERE UPPER(u.firstName) LIKE :name "
+					+ "OR UPPER(u.lastName) LIKE :name ORDER BY u.email"),
+	@NamedQuery(name = "User.findUsersByKeywordByRole",
+			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
+					+ " UPPER(u.firstName) LIKE :keyword"
+					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r = :role)  ORDER BY u.email"),  // order by name??
+	@NamedQuery(name = "User.findCandidatesBySeveralAttributes",
+			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE UPPER(u.email) LIKE :email AND"
+					+ " UPPER(u.firstName) LIKE :fname AND UPPER(u.lastName) LIKE :lname AND"
+					+ " r = 'CANDIDATE' ORDER BY u.email"),
+	@NamedQuery(name = "User.findCandidatesByPosition",
+			query = "SELECT u FROM UserEntity u JOIN u.submissions s WHERE UPPER(u.email) LIKE :email AND"
+					+ " UPPER(u.firstName) LIKE :fname AND UPPER(u.lastName) LIKE :lname AND"
+					+ " s.position = :id ORDER BY u.email"),
+})
 public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 2911048822662162612L;

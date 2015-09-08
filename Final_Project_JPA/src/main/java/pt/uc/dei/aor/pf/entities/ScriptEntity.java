@@ -29,10 +29,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="scripts")
 @NamedQueries({
-	@NamedQuery(name = "Script.reusableScripts",
+	@NamedQuery(name = "Script.findReusableScripts",
 			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
 					+ " ORDER BY s.creationDate DESC"),
-	@NamedQuery(name = "Script.scriptsByTitle",
+	@NamedQuery(name = "Script.findScriptsByTitle",
 			query = "SELECT s FROM ScriptEntity s WHERE UPPER(s.title) LIKE :t"
 					+ " ORDER BY s.title"),
 })

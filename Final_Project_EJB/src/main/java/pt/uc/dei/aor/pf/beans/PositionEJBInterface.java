@@ -19,7 +19,8 @@ public interface PositionEJBInterface {
 	public abstract List<PositionEntity> findOpenPositions();  //Closed?? onHold??
 	public abstract List<PositionEntity> findCloseToSLAPositions(int daysBefore);
 	public abstract List<PositionEntity> findPositionsByDate(Date openingDate1, Date openingDate2);
-	public abstract List<PositionEntity> findPositionsByCode(String positionCode);
+	public abstract PositionEntity findPositionByCode(String positionCode);
+	public abstract List<PositionEntity> findPositionsByCode(String codePattern);
 	public abstract List<PositionEntity> findPositionsByTitle(String title);
 	public abstract List<PositionEntity> findPositionsByLocation(List<String> location);
 	public abstract List<PositionEntity> findPositionsByStatus(String currentState);

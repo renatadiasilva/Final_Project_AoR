@@ -1,107 +1,196 @@
 package pt.uc.dei.aor.pf.beans;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.sun.syndication.io.impl.Base64;
+
 import pt.uc.dei.aor.pf.dao.UserDao;
-import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
 public class UserEJBImp implements UserEJBInterface {
 
+	private static final Logger log = LoggerFactory.getLogger(UserEJBImp.class);
+	
 	@EJB
 	private UserDao userDAO;
 
 	@Override
-	public void save(UserEntity user){
+	public void save(UserEntity user) {
+		log.info("Saving user in DB");
+		isUserComplete(user);
+		try {
+			user.setPassword(securePass(user.getPassword()));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		userDAO.save(user);
 	}
 
 	@Override
-	public void update(UserEntity user){
+	public void update(UserEntity user) {
+		log.info("Updating user of DB");
+		isUserComplete(user);
 		userDAO.update(user);
 	}
 
 	@Override
 	public void delete(UserEntity user) {
-		userDAO.update(user);
+		log.info("Deleting user from DB");
+		userDAO.delete(user.getId(), UserEntity.class);
 	}
 
 	@Override
 	public UserEntity find(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("Finding user by ID");
+		return userDAO.find(id);
 	}
 
 	@Override
 	public List<UserEntity> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("Creating Query for all users");
+		return userDAO.findAll();
 	}
 
 	@Override
-	public UserEntity findUsersByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserEntity findUserByEmail(String email) {
+		log.info("Finding user by exact email");
+		// email is unique
+		List<UserEntity> u = userDAO.findUsersByEmail(email.toUpperCase());
+		if (u.size() == 1) return u.get(0); // 1 result: email found
+		return null; // 0 results: email not found
 	}
 
 	@Override
-	public List<UserEntity> findUsersByRole(String role) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserEntity> findUsersByEmail(String emailPattern) {
+		log.info("Finding users by email pattern");
+		return userDAO.findUsersByEmail(emailPattern);
+	}
+
+	// pattern like "%"+string.toUpperCase()+"%"
+	@Override
+	public List<UserEntity> findUsersByName(String name) {
+		log.info("Finding users by name");
+		return userDAO.findUsersByName(name);
 	}
 
 	@Override
-	public List<UserEntity> findUsers(String email, String firstName,
-			String lastName, String role) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserEntity> findAllAdmins() {
+		log.info("Finding all administrators");
+		return userDAO.findUsers("%", UserEntity.ROLE_ADMIN);
 	}
 
 	@Override
-	public List<UserEntity> findInterviewers(InterviewEntity interview) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserEntity> findAllManagers() {
+		log.info("Finding all managers");
+		return userDAO.findUsers("%", UserEntity.ROLE_MANAGER);
 	}
 
 	@Override
-	public List<UserEntity> findUsersByFirstName(String firstName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserEntity> findAllInterviewers() {
+		log.info("Finding all interviewers");
+		return userDAO.findUsers("%", UserEntity.ROLE_INTERVIEWER);
 	}
 
 	@Override
-	public List<UserEntity> findUsersByLastName(String lastName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserEntity> findAllCandidates() {
+		log.info("Finding all candidates");
+		return userDAO.findUsers("%", UserEntity.ROLE_CANDIDATE);
 	}
 
 	@Override
+	public List<UserEntity> findInternalUsers(String keyword, String role) {
+		log.info("Finding internal users by keyword and role");
+		// role != CANDIDATE
+		return userDAO.findUsers(keyword, role);
+	}
+
 	public List<UserEntity> findCandidatesByFirstName(String firstName) {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("Finding candidates by first name");
+		return userDAO.findCandidates("%", firstName, "%", null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByLastName(String lastName) {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("Finding candidates by last name");
+		return userDAO.findCandidates("%", "%", lastName, null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("Finding candidates by email");
+		return userDAO.findCandidates(email, "%", "%", null);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByPosition(String email,
-			String firstName, String lastName, PositionEntity position) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserEntity> findCandidates(String email,
+			String firstName, String lastName) {
+		log.info("Finding candidates by several attributes");
+		return userDAO.findCandidates(email, firstName, lastName, null);
 	}
+
+	@Override
+	public List<UserEntity> findCandidatesByPosition(PositionEntity position) {
+		log.info("Finding candidates by position");
+		return userDAO.findCandidates("%", "%", "%", position);
+	}
+	
+	@Override
+	public List<UserEntity> findCandidatesByPosition(String email, String firstName,
+			String lastName, PositionEntity position) {
+		log.info("Finding candidates of a given position by several attributes");
+		return userDAO.findCandidates(email, firstName, lastName, position);
+	}
+
+	@Override
+	public List<UserEntity> findCandidates(String keyword) {
+		log.info("Finding candidates by keyword");
+		return userDAO.findUsers(keyword, UserEntity.ROLE_CANDIDATE);
+	}
+
+	private String securePass(String pass) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		String securedPassword = "";
+
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(pass.getBytes());
+
+			byte byteData[] = md.digest();
+			byte[] data2 = Base64.encode(byteData);
+			securedPassword = new String(data2);
+			return securedPassword;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		return securedPassword;
+	}
+	
+	private void isUserComplete(UserEntity u) {
+		boolean hasError = false;
+		
+		if (u == null) hasError = true;
+		else if (u.getEmail() == null) hasError = true;
+		else if (u.getPassword() == null) hasError = true;
+		else if (u.getFirstName() == null) hasError = true;
+		else if (u.getLastName() == null) hasError = true;
+		else if (u.getDefaultRole() == null) hasError = true;
+
+		if (hasError)
+			throw new IllegalArgumentException("The user is missing data. "
+					+ "Check the notnull attributes.");
+	}
+
 }
