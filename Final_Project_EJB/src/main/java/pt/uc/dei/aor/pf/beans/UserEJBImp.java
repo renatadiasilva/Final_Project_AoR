@@ -61,7 +61,21 @@ public class UserEJBImp implements UserEJBInterface {
 			//e.printStackTrace();
 		}
 		userDAO.update(user);
-	}		
+	}
+	
+	@Override
+	public boolean checkPassword(UserEntity user, String password){
+		try {
+			if(user.getPassword()==this.securePass(password)) return true;
+		} catch (NoSuchAlgorithmException e) {
+			log.error("Error checking password");
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			log.error("Error checking password");
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	@Override
 	public void delete(UserEntity user) {

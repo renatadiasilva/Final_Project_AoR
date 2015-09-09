@@ -4,18 +4,26 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang.RandomStringUtils;
 
 import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
+import java.io.Serializable;
 
 
 @Named
-@RequestScoped
-public class AdminNewUserCDI {
+@SessionScoped
+public class AdminNewUserCDI implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3820646905248877606L;
 
 	@Inject
 	UserSessionManagement userSessionManagement;
@@ -33,14 +41,25 @@ public class AdminNewUserCDI {
 	public AdminNewUserCDI() {
 	}
 
+	public void init(){
+		this.password=RandomStringUtils.randomAlphanumeric(8);
+		email=password=firstName=lastName="";
+		address=city=homePhone=mobilePhone=country=course=school=linkedin="";
+		admin=manager=interviewer=candidate=false;
+	}
+
 	public void newUser(){
 		System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+birthday+" "+address+" "+city+" "+homePhone+" "+mobilePhone+" "+country+" "+course+" "+school+" "+linkedin+" "+true+" "+admin+" "+manager+" "+interviewer);
 		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, city, homePhone, mobilePhone, country, course, school, linkedin, true, admin, manager, interviewer);
+		this.init();
 	}
 
 	public void newUserNC(){
-		System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+admin+" "+manager+" "+interviewer);
-		this.userSessionManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer);
+		if(admin||manager||interviewer){
+			System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+admin+" "+manager+" "+interviewer);
+			this.userSessionManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer);
+			this.init();
+		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Defina o tipo de utilizador."));
 	}
 
 	public String getEmail() {

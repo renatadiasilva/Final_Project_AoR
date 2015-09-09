@@ -8,6 +8,11 @@
 	<ui:define name="Título">Admin - Novo Utilizador - IT Jobs</ui:define>
 
 	<ui:define name="contents">
+
+		<f:metadata>
+			<f:viewAction actionListener="#{adminNewUserCDI.init()}" />
+		</f:metadata>
+
 		<h1>Novo Registo</h1>
 
 		<h:form id="adminNewUserFormRoles">
@@ -45,19 +50,19 @@
 
 				<p:outputLabel value="Password Temporária: " />
 				<p:outputLabel value="#{adminNewUserCDI.password}" />
-				
-				<p:outputLabel value="Email: " for="signup-email" />
-				<p:inputText id="signup-email" value="#{adminNewUserCDI.email}"
+
+				<p:outputLabel value="Email: " for="adminSignup-email" />
+				<p:inputText id="adminSignup-email" value="#{adminNewUserCDI.email}"
 					size="35" required="true" />
 
-				<p:outputLabel value="Primeiro Nome: " for="signup-firstName" />
-				<p:inputText id="signup-firstName"
+				<p:outputLabel value="Primeiro Nome: " for="adminSignup-firstName" />
+				<p:inputText id="adminSignup-firstName"
 					value="#{adminNewUserCDI.firstName}" size="35" required="true" />
 
-				<p:outputLabel value="Sobrenome: " for="signup-lastName" />
-				<p:inputText id="signup-lastName"
+				<p:outputLabel value="Sobrenome: " for="adminSignup-lastName" />
+				<p:inputText id="adminSignup-lastName"
 					value="#{adminNewUserCDI.lastName}" size="35" required="true" />
-				
+
 				<p:commandButton value="Novo Utilizador"
 					action="#{adminNewUserCDI.newUserNC()}" update="@form, messages"
 					icon="ui-icon-person" />
@@ -75,60 +80,64 @@
 				<p:outputLabel value="Password Temporária: " />
 				<p:outputLabel value="#{adminNewUserCDI.password}" />
 
-				<p:outputLabel value="Email: " for="signup-email" />
-				<p:inputText id="signup-email" value="#{adminNewUserCDI.email}"
+				<p:outputLabel value="Email: " for="adminSignup-email" />
+				<p:inputText id="adminSignup-email" value="#{adminNewUserCDI.email}"
 					size="35" required="true" />
 
-				<p:outputLabel value="Primeiro Nome: " for="signup-firstName" />
-				<p:inputText id="signup-firstName"
+				<p:outputLabel value="Primeiro Nome: " for="adminSignup-firstName" />
+				<p:inputText id="adminSignup-firstName"
 					value="#{adminNewUserCDI.firstName}" size="35" required="true" />
 
-				<p:outputLabel value="Último Nome: " for="signup-lastName" />
-				<p:inputText id="signup-lastName"
+				<p:outputLabel value="Último Nome: " for="adminSignup-lastName" />
+				<p:inputText id="adminSignup-lastName"
 					value="#{adminNewUserCDI.lastName}" size="35" required="true" />
 
-				<p:outputLabel value="Data de Nascimento: " for="signup-birthday" />
-				<p:calendar id="signup-birthday" value="#{adminNewUserCDI.birthday}"
-					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+0" maxdate="#{adminNewUserCDI.maxDate}"
-					locale="pt" size="35" />
+				<p:outputLabel value="Data de Nascimento: "
+					for="adminSignup-birthday" />
+				<p:calendar id="adminSignup-birthday"
+					value="#{adminNewUserCDI.birthday}" pattern="dd/MM/yyyy"
+					readonlyInput="true" navigator="true" yearRange="c-100:c+0"
+					maxdate="#{adminNewUserCDI.maxDate}" locale="pt" size="35" />
 
-				<p:outputLabel value="Telefone: " for="signup-homePhone" />
-				<p:inputMask mask="999 999 999" id="signup-homePhone"
+				<p:outputLabel value="Telefone: " for="adminSignup-homePhone" />
+				<p:inputMask mask="999 999 999" id="adminSignup-homePhone"
 					value="#{adminNewUserCDI.homePhone}" size="35" maxlength="20" />
 
-				<p:outputLabel value="Telemóvel: " for="signup-mobilePhone" />
-				<p:inputMask mask="999 999 999" id="signup-mobilePhone"
+				<p:outputLabel value="Telemóvel: " for="adminSignup-mobilePhone" />
+				<p:inputMask mask="999 999 999" id="adminSignup-mobilePhone"
 					value="#{adminNewUserCDI.mobilePhone}" size="35" maxlength="20"
 					required="true" />
 
-				<p:outputLabel value="Morada: " for="signup-adress" />
+				<p:outputLabel value="Morada: " for="adminSignup-adress" />
 				<h:panelGroup>
-					<p:inputTextarea id="signup-adress"
+					<p:inputTextarea id="adminSignup-adress"
 						value="#{adminNewUserCDI.address}" cols="35" rows="3"
 						maxlength="200" counter="maxAdress" counterTemplate=" - {0}"
 						required="true" />
 					<h:outputText id="maxAdress" />
 				</h:panelGroup>
 
-				<p:outputLabel value="Cidade: " for="signup-city" />
-				<p:inputText id="signup-city" value="#{adminNewUserCDI.city}"
+				<p:outputLabel value="Cidade: " for="adminSignup-city" />
+				<p:inputText id="adminSignup-city" value="#{adminNewUserCDI.city}"
 					size="35" maxlength="40" required="true" />
 
-				<p:outputLabel value="País: " for="signup-country" />
-				<p:inputText id="signup-country" value="#{adminNewUserCDI.country}"
-					size="35" maxlength="40" required="true" />
+				<p:outputLabel value="País: " for="adminSignup-country" />
+				<p:inputText id="adminSignup-country"
+					value="#{adminNewUserCDI.country}" size="35" maxlength="40"
+					required="true" />
 
-				<p:outputLabel value="Curso: " for="signup-course" />
-				<p:inputText id="signup-course" value="#{adminNewUserCDI.course}"
-					size="35" maxlength="40" required="true" />
+				<p:outputLabel value="Curso: " for="adminSignup-course" />
+				<p:inputText id="adminSignup-course"
+					value="#{adminNewUserCDI.course}" size="35" maxlength="40"
+					required="true" />
 
-				<p:outputLabel value="Escola: " for="signup-school" />
-				<p:inputText id="signup-school" value="#{adminNewUserCDI.school}"
-					size="35" maxlength="40" required="true" />
+				<p:outputLabel value="Escola: " for="adminSignup-school" />
+				<p:inputText id="adminSignup-school"
+					value="#{adminNewUserCDI.school}" size="35" maxlength="40"
+					required="true" />
 
-				<p:outputLabel value="LinkedIn: " for="signup-linkedin" />
-				<p:inputText id="signup-linkedin"
+				<p:outputLabel value="LinkedIn: " for="adminSignup-linkedin" />
+				<p:inputText id="adminSignup-linkedin"
 					value="#{adminNewUserCDI.linkedin}" size="35" maxlength="40" />
 
 				<p:commandButton value="Novo Utilizador"

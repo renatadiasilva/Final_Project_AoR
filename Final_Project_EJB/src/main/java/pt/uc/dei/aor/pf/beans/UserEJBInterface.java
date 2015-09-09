@@ -41,5 +41,6 @@ public interface UserEJBInterface {
 			String country, String course, String school);
 	public abstract List<UserEntity> findCandidatesByKeyword(String keyword);
 	public abstract List<UserEntity> findCandidatesByKeywordShort(String keyword);
+	public abstract boolean checkPassword(UserEntity user, String password);
 	
 }
