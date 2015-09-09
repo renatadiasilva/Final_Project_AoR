@@ -27,49 +27,39 @@
 				<p:outputLabel value="Candidato " for="candidateCheck" />
 				<p:selectBooleanCheckbox id="candidateCheck"
 					value="#{adminNewUserCDI.candidate}">
-					<p:ajax update=""/>
+					<p:ajax update="@all" />
 				</p:selectBooleanCheckbox>
-				
+
 				<p:outputLabel />
 				<p:outputLabel />
 				<p:outputLabel />
 				<p:outputLabel />
-				
+
 			</h:panelGrid>
 		</h:form>
 
 		<h:form id="adminNewUserFormNonCandidate"
 			rendered="#{!adminNewUserCDI.candidate}">
 
-			<h:panelGrid columns="2">
+			<h:panelGrid id="gridNonCandidate" columns="2">
 
 				<p:outputLabel value="Password Temporária: " />
 				<p:outputLabel value="#{adminNewUserCDI.password}" />
 				
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-
 				<p:outputLabel value="Email: " for="signup-email" />
 				<p:inputText id="signup-email" value="#{adminNewUserCDI.email}"
 					size="35" required="true" />
-
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
 
 				<p:outputLabel value="Primeiro Nome: " for="signup-firstName" />
 				<p:inputText id="signup-firstName"
 					value="#{adminNewUserCDI.firstName}" size="35" required="true" />
 
-				<p:outputLabel value="Último Nome: " for="signup-lastName" />
+				<p:outputLabel value="Sobrenome: " for="signup-lastName" />
 				<p:inputText id="signup-lastName"
 					value="#{adminNewUserCDI.lastName}" size="35" required="true" />
-
+				
 				<p:commandButton value="Novo Utilizador"
-					action="#{adminNewUserCDI.adminNewUser()}" update="@form, messages"
+					action="#{adminNewUserCDI.newUserNC()}" update="@form, messages"
 					icon="ui-icon-person" />
 
 			</h:panelGrid>
@@ -80,7 +70,7 @@
 		<h:form id="adminNewUserFormCandidate"
 			rendered="#{adminNewUserCDI.candidate}">
 
-			<h:panelGrid columns="2">
+			<h:panelGrid id="gridCandidate" columns="2">
 
 				<p:outputLabel value="Password Temporária: " />
 				<p:outputLabel value="#{adminNewUserCDI.password}" />
@@ -88,11 +78,6 @@
 				<p:outputLabel value="Email: " for="signup-email" />
 				<p:inputText id="signup-email" value="#{adminNewUserCDI.email}"
 					size="35" required="true" />
-
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
 
 				<p:outputLabel value="Primeiro Nome: " for="signup-firstName" />
 				<p:inputText id="signup-firstName"
@@ -106,21 +91,16 @@
 				<p:calendar id="signup-birthday" value="#{adminNewUserCDI.birthday}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 					yearRange="c-100:c+0" maxdate="#{adminNewUserCDI.maxDate}"
-					locale="pt" size="35" required="true" />
+					locale="pt" size="35" />
 
 				<p:outputLabel value="Telefone: " for="signup-homePhone" />
 				<p:inputMask mask="999 999 999" id="signup-homePhone"
 					value="#{adminNewUserCDI.homePhone}" size="35" maxlength="20" />
 
-				<p:outputLabel value="Telefone móvel: " for="signup-mobilePhone" />
+				<p:outputLabel value="Telemóvel: " for="signup-mobilePhone" />
 				<p:inputMask mask="999 999 999" id="signup-mobilePhone"
 					value="#{adminNewUserCDI.mobilePhone}" size="35" maxlength="20"
 					required="true" />
-
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
 
 				<p:outputLabel value="Morada: " for="signup-adress" />
 				<h:panelGroup>
@@ -139,11 +119,6 @@
 				<p:inputText id="signup-country" value="#{adminNewUserCDI.country}"
 					size="35" maxlength="40" required="true" />
 
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-
 				<p:outputLabel value="Curso: " for="signup-course" />
 				<p:inputText id="signup-course" value="#{adminNewUserCDI.course}"
 					size="35" maxlength="40" required="true" />
@@ -157,7 +132,7 @@
 					value="#{adminNewUserCDI.linkedin}" size="35" maxlength="40" />
 
 				<p:commandButton value="Novo Utilizador"
-					action="#{adminNewUserCDI.adminNewUser()}" update="@form, messages"
+					action="#{adminNewUserCDI.newUser()}" update="@form, messages"
 					icon="ui-icon-person" />
 
 			</h:panelGrid>

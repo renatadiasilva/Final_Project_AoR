@@ -8,33 +8,39 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
+
 
 @Named
 @RequestScoped
 public class AdminNewUserCDI {
-	
+
 	@Inject
 	UserSessionManagement userSessionManagement;
-	
+
 	// UserEntity
 	private String email, password, firstName, lastName;
-	
+
 	// UserInfoEntity
 	private String address, city, homePhone, mobilePhone, country, course, school, linkedin;
 
 	private Date birthday;
-	
+
 	private boolean admin, manager, interviewer, candidate;
-	
+
 	public AdminNewUserCDI() {
 	}
-	
-	public String adminNewUser(){
-		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, 
-				city, homePhone,mobilePhone, country, course, school, linkedin);
-		
-		return("/Index.xhtml");
+
+	public void newUser(){
+		System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+birthday+" "+address+" "+city+" "+homePhone+" "+mobilePhone+" "+country+" "+course+" "+school+" "+linkedin+" "+true+" "+admin+" "+manager+" "+interviewer);
+		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, city, homePhone, mobilePhone, country, course, school, linkedin, true, admin, manager, interviewer);
+	}
+
+	public void newUserNC(){
+		System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+admin+" "+manager+" "+interviewer);
+		this.userSessionManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer);
 	}
 
 	public String getEmail() {
@@ -46,6 +52,7 @@ public class AdminNewUserCDI {
 	}
 
 	public String getPassword() {
+		this.password=RandomStringUtils.randomAlphanumeric(8);
 		return password;
 	}
 
@@ -145,7 +152,7 @@ public class AdminNewUserCDI {
 		Calendar minDate=new GregorianCalendar(1900,0,1);
 		return minDate.getTime();
 	}
-	
+
 	public Date getMaxDate() {
 		return new Date();
 	}
@@ -181,5 +188,5 @@ public class AdminNewUserCDI {
 	public void setCandidate(boolean candidate) {
 		this.candidate = candidate;
 	}
-	
+
 }

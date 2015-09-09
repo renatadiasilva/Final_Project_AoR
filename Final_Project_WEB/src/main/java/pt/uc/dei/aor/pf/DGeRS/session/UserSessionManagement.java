@@ -88,7 +88,15 @@ public class UserSessionManagement implements Serializable {
 			this.context.addMessage(null, new FacesMessage("Login sucessfull: "+email));
 
 			// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
-			return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?facesRedirect=true";
+			// return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?facesRedirect=true";
+
+			// Encaminha para...
+			this.response = (HttpServletResponse) context.getExternalContext().getResponse();
+			try {
+				this.response.sendRedirect(request.getContextPath()+"/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing.xhtml");
+			} catch (IOException e) {
+				this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
+			}
 
 		} catch (ServletException e){
 			this.context.addMessage(null, new FacesMessage("Login falhou."));
@@ -118,6 +126,7 @@ public class UserSessionManagement implements Serializable {
 		}
 	}
 
+	// Para exibição do menu de navegação (rendered)
 	private void setAvailableRoles() {
 		for (String s: this.currentUser.getRoles()){
 			if(s.equals(UserEntity.ROLE_ADMIN)) this.admin=true;
@@ -142,32 +151,68 @@ public class UserSessionManagement implements Serializable {
 		return false;
 	}
 
-	public void newUser(String email, String password, String firstName, String lastName, Date birthday,  String adress, String city,
-			String homePhone, String mobilePhone, String country, String course, String school, String linkedin){
+	// Novo utilizador com ROLE_CANDIDATE. Se vem do signup: boolean createdByAdmin=false. Se é criado por admin: boolean createdByAdmin=true
+	public void newUser(String email, String password, String firstName, String lastName, Date birthday,  String address, String city,
+			String homePhone, String mobilePhone, String country, String course, String school, String linkedin, boolean createdByAdmin,
+			boolean admin, boolean manager, boolean interviewer){
 
 		this.context = FacesContext.getCurrentInstance();
-		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
-		this.response = (HttpServletResponse) context.getExternalContext().getResponse();
 
 		// Verifica primeiro se o email já está a uso
 		if(this.userBean.findUserByEmail(email)==null){
 			List<String> roles = new ArrayList<String>();
 			roles.add(UserEntity.ROLE_CANDIDATE);
 
+			if(admin)roles.add(UserEntity.ROLE_ADMIN);
+			if(manager)roles.add(UserEntity.ROLE_MANAGER);
+			if(interviewer)roles.add(UserEntity.ROLE_INTERVIEWER);
+
 			// Atributos do UserEntity
 			UserEntity newUser=new UserEntity(email, password, firstName, lastName, roles);
 			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);	
-			
 
 			// Atributos do UserInfoEntity do respectivo UserEntity
-			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, adress, city, homePhone, mobilePhone, country, course, school, null, newUser);
-			
+			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, address, city, homePhone, mobilePhone, country, course, school, null, newUser);
+
 			newUser.setUserInfo(newUserInfo);
-			
+
+			// Se for criado por um admin, esse admin é o currentUser
+			if(createdByAdmin)newUser.setCreatedBy(this.currentUser);
+
 			// Grava o UserEntity
 			this.userBean.save(newUser);
 
 			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
+			if(createdByAdmin)this.context.addMessage(null, new FacesMessage("Anote a password temporária: "+password));
+
+		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+	}
+
+	// Novo utilizador criado por um admin sem o ROLE_CANDIDATE
+	public void newUserNC (String email, String password, String firstName, String lastName, boolean admin, boolean manager, boolean interviewer) {
+		// Verifica primeiro se o email já está a uso
+		if(this.userBean.findUserByEmail(email)==null){
+
+			UserEntity newUser=new UserEntity();
+			List<String> roles = new ArrayList<String>();
+
+			if(admin)roles.add(UserEntity.ROLE_ADMIN);
+			if(manager)roles.add(UserEntity.ROLE_MANAGER);
+			if(interviewer)roles.add(UserEntity.ROLE_INTERVIEWER);
+
+			newUser=new UserEntity(email, password, firstName, lastName, roles);
+
+			// Role por default
+			if(interviewer)newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
+			if(manager)newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
+			if(admin)newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
+
+			// Foi criado por um admin, esse admin é o currentUser
+			newUser.setCreatedBy(this.currentUser);
+
+			this.userBean.save(newUser);
+
+			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email+" Anote a password temporária: "+password));
 
 		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
 	}
@@ -175,12 +220,12 @@ public class UserSessionManagement implements Serializable {
 	public void updateUserInfo(String firstName, String lastName, String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
 		this.currentUser.setFirstName(firstName);
 		this.currentUser.setLastName(lastName);
-		
+
 		if(this.getCurrentUser().getUserInfo()==null){
 			this.currentUser.setUserInfo(new UserInfoEntity());
 			this.currentUser.getUserInfo().setOwner(this.currentUser);
 		}
-		
+
 		this.currentUser.getUserInfo().setAddress(address);
 		this.currentUser.getUserInfo().setCity(city);
 		this.currentUser.getUserInfo().setHomePhone(homePhone);
@@ -189,7 +234,7 @@ public class UserSessionManagement implements Serializable {
 		this.currentUser.getUserInfo().setCourse(course);
 		this.currentUser.getUserInfo().setSchool(school);
 		this.currentUser.getUserInfo().setLinkedin(linkedin);
-			
+
 		this.userBean.update(this.currentUser);
 	}
 

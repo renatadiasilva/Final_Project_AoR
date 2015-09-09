@@ -63,7 +63,7 @@
 				<p:inputText id="signup-firstName" value="#{signupCDI.firstName}"
 					size="35" required="true" />
 
-				<p:outputLabel value="Último Nome: " for="signup-lastName" />
+				<p:outputLabel value="Sobrenome: " for="signup-lastName" />
 				<p:inputText id="signup-lastName" value="#{signupCDI.lastName}"
 					size="35" required="true" />
 
@@ -71,13 +71,13 @@
 				<p:calendar id="signup-birthday" value="#{signupCDI.birthday}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 					yearRange="c-100:c+0" maxdate="#{signupCDI.maxDate}" locale="pt"
-					size="35" required="true" />
+					size="35" />
 
 				<p:outputLabel value="Telefone: " for="signup-homePhone" />
 				<p:inputMask mask="999 999 999" id="signup-homePhone"
 					value="#{signupCDI.homePhone}" size="35" maxlength="20" />
 
-				<p:outputLabel value="Telefone móvel: " for="signup-mobilePhone" />
+				<p:outputLabel value="Telemóvel: " for="signup-mobilePhone" />
 				<p:inputMask mask="999 999 999" id="signup-mobilePhone"
 					value="#{signupCDI.mobilePhone}" size="35" maxlength="20"
 					required="true" />
