@@ -52,9 +52,9 @@ import javax.validation.constraints.NotNull;
 public class SubmissionEntity implements Serializable {
 
 	private static final long serialVersionUID = -2164233391673103244L;
-
+	
 	public static final String STATUS_SUBMITED  = "Submited";
-	public static final String STATUS_REJECTED  = "Rejected";
+	public static final String STATUS_REJECTED  = "Rejected Submission";
 	public static final String STATUS_ACCEPTED  = "Accepted to Interview";
 	public static final String STATUS_SPROPOSAL = "Presented Proposal";  // automatismo????
 	public static final String STATUS_RPROPOSAL = "Rejected Proposal";
@@ -124,7 +124,9 @@ public class SubmissionEntity implements Serializable {
 	private List<InterviewEntity> interviews;
 
 	@Column(name = "rejected_reason", length = 100)
-	private String rejectReason;		
+	private String rejectReason;
+
+	//hiredDate??
 	
 	public SubmissionEntity() {
 	}

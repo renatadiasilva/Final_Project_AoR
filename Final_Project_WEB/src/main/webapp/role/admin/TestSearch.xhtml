@@ -1,0 +1,39 @@
+<ui:composition template="../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">Admin - Pesquisas Várias - IT Jobs</ui:define>
+
+	<ui:define name="contents">
+		<h1>Pesquisas teste</h1>
+
+		<h:form id="testSearch">
+
+			<p:commandButton value="Pesquisar"
+				action="#{usersSearchCDI.search()}" update="@form, messages"
+				icon="ui-icon-person" />
+
+			<p:dataTable var="u" value="#{usersSearchCDI.ulist}">
+				<f:facet name="header">Listagem users</f:facet>
+				<p:column headerText="Email">
+					<h:outputText value="#{u.email}" />
+				</p:column>
+				<p:column headerText="Primeiro nome">
+					<h:outputText value="#{u.firstName}" />
+				</p:column>
+				<p:column headerText="Sobrenome">
+					<h:outputText value="#{u.lastName}" />
+				</p:column>
+				<p:column headerText="Role por defeito">
+					<h:outputText value="#{u.defaultRole}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
