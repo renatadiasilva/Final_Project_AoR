@@ -37,14 +37,40 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
 					+ " UPPER(u.firstName) LIKE :keyword"
 					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r = :role)  ORDER BY u.email"),  // order by name??
+	@NamedQuery(name = "User.findCandidatesByPhone",
+			query = "SELECT u.owner FROM UserInfoEntity u WHERE u.homePhone LIKE :hphone AND"
+					+ " u.mobilePhone LIKE :mphone"),
+//	@NamedQuery(name = "User.findCandidatesBySeveralAttributes",
+//			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE UPPER(u.email) LIKE :email AND"
+//					+ " UPPER(u.firstName) LIKE :fname AND UPPER(u.lastName) LIKE :lname AND"
+//					+ " r = 'CANDIDATE' ORDER BY u.email"),
+//	@NamedQuery(name = "User.findCandidatesByPosition",
+//			query = "SELECT u FROM UserEntity u JOIN u.submissions s WHERE UPPER(u.email) LIKE :email AND"
+//					+ " UPPER(u.firstName) LIKE :fname AND UPPER(u.lastName) LIKE :lname AND"
+//					+ " s.position = :id ORDER BY u.email"),
+	@NamedQuery(name = "User.findCandidatesByKeyword",
+			query = "SELECT u.owner FROM UserInfoEntity u WHERE (UPPER(u.address) LIKE :keyword OR"
+					+ " UPPER(u.city) LIKE :keyword OR UPPER(u.country) LIKE :keyword OR"
+					+ " UPPER(u.course) LIKE :keyword OR UPPER(u.school) LIKE :keyword)"
+					+ " ORDER BY u.owner.email"),  // order by name?? funciona assim??
 	@NamedQuery(name = "User.findCandidatesBySeveralAttributes",
-			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE UPPER(u.email) LIKE :email AND"
-					+ " UPPER(u.firstName) LIKE :fname AND UPPER(u.lastName) LIKE :lname AND"
-					+ " r = 'CANDIDATE' ORDER BY u.email"),
-	@NamedQuery(name = "User.findCandidatesByPosition",
-			query = "SELECT u FROM UserEntity u JOIN u.submissions s WHERE UPPER(u.email) LIKE :email AND"
-					+ " UPPER(u.firstName) LIKE :fname AND UPPER(u.lastName) LIKE :lname AND"
-					+ " s.position = :id ORDER BY u.email"),
+			query = "SELECT u.owner FROM UserInfoEntity u WHERE"
+					+ " UPPER(u.owner.email) LIKE :email AND"
+					+ " UPPER(u.owner.firstName) LIKE :fname AND"
+					+ " UPPER(u.owner.lastName) LIKE :lname AND"
+					+ " UPPER(u.address) LIKE :address AND"
+					+ " UPPER(u.city) LIKE :city AND UPPER(u.country) LIKE :country AND"
+					+ " UPPER(u.course) LIKE :course AND UPPER(u.school) LIKE :school"
+					+ " ORDER BY u.owner.email"),
+	@NamedQuery(name = "UserInfo.findCandidatesByPosition",
+			query = "SELECT u.owner FROM UserInfoEntity u JOIN u.owner.submissions s WHERE"
+					+ " UPPER(u.owner.email) LIKE :email AND"
+					+ " UPPER(u.owner.firstName) LIKE :fname AND"
+					+ " UPPER(u.owner.lastName) LIKE :lname AND"
+					+ " UPPER(u.address) LIKE :address AND"
+					+ " UPPER(u.city) LIKE :city AND UPPER(u.country) LIKE :country AND"
+					+ " UPPER(u.course) LIKE :course AND UPPER(u.school) LIKE :school AND"
+					+ " s.position = :id ORDER BY u.owner.email"),
 })
 public class UserEntity implements Serializable {
 
@@ -92,10 +118,6 @@ public class UserEntity implements Serializable {
 	@Column(name = "role")
 	private List<String> roles;
 
-//	@OneToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//	@JoinColumn(name = "userInfo", unique = true, updatable = false)
-//	private UserInfoEntity userInfo;
-	
 	@OneToOne(mappedBy="owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private UserInfoEntity userInfo;
 

@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "usersInfo")
+@Table(name = "users_info")
 public class UserInfoEntity implements Serializable {
 	
 	private static final long serialVersionUID = 5226638137102796213L;
@@ -32,10 +32,12 @@ public class UserInfoEntity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
 	
-	@Column(name = "address", length = 200)
+	@NotNull
+	@Column(name = "address", nullable = false, length = 200)
 	private String address;
 	
-	@Column(name = "city", length = 40)
+	@NotNull
+	@Column(name = "city", nullable = false, length = 40)
 	private String city;
 	
 //	check pattern
@@ -47,16 +49,20 @@ public class UserInfoEntity implements Serializable {
 //	check pattern
 //	@Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
 //  	message="{invalid.mobilephone}")
-	@Column(name = "mobile_phone", length = 20)
+	@NotNull
+	@Column(name = "mobile_phone", nullable = false, length = 20)
 	private String mobilePhone;
 	
-	@Column(name = "country", length = 40)
+	@NotNull
+	@Column(name = "country", nullable = false, length = 40)
 	private String country;
 	
-	@Column(name = "course", length = 40)
+	@NotNull
+	@Column(name = "course", nullable = false, length = 40)
 	private String course;
 	
-	@Column(name = "school", length = 40)
+	@NotNull
+	@Column(name = "school", nullable = false, length = 40)
 	private String school;
 	
 	// Link
@@ -70,9 +76,6 @@ public class UserInfoEntity implements Serializable {
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", unique = true, updatable = false)
 	private UserEntity owner;
-	
-//	@OneToOne(mappedBy="userInfo")
-//	private UserEntity owner;
 	
 	public UserInfoEntity() {
 	}
