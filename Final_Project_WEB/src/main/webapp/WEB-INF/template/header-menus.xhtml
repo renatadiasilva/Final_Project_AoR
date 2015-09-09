@@ -9,6 +9,9 @@
 
 	<ui:composition>
 
+		<ui:include src="change-password.xhtml" />
+		<ui:include src="edit-user-info.xhtml" />
+
 		<h:form>
 
 			<p:megaMenu orientation="horizontal">
@@ -17,8 +20,10 @@
 					rendered="#{userSessionManagement.admin}">
 					<p:column>
 						<p:submenu label="Utilizadores">
-							<p:menuitem value="Registar novo Utilizador" url="../../role/admin/NewUser.xhtml" />
-							<p:menuitem value="Editar Utilizador" url="../../role/admin/TestSearch.xhtml" />
+							<p:menuitem value="Registar novo Utilizador"
+								url="../../role/admin/NewUser.xhtml" />
+							<p:menuitem value="Editar Utilizador"
+								url="../../role/admin/TestSearch.xhtml" />
 						</p:submenu>
 						<p:submenu label="Posições">
 							<p:menuitem value="Nova Posição" url="#" />
@@ -104,7 +109,9 @@
 					icon="ui-icon-person">
 					<p:column>
 						<p:submenu label="Utilizador">
-							<p:menuitem value="Mudar a passord" url="#" />
+							<p:menuitem value="Mudar a passord"
+								onclick="PF('changePassword').show();" />
+
 							<p:menuitem value="Editar dados Pessoais"
 								actionListener="#{editUserInfoCDI.init()}"
 								update="editUserInfoForm"

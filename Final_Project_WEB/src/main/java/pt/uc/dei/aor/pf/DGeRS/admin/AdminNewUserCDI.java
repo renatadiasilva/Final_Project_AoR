@@ -4,26 +4,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.commons.lang.RandomStringUtils;
-
 import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
-import java.io.Serializable;
 
 
 @Named
-@SessionScoped
-public class AdminNewUserCDI implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3820646905248877606L;
+@RequestScoped
+public class AdminNewUserCDI {
 
 	@Inject
 	UserSessionManagement userSessionManagement;
@@ -41,24 +34,22 @@ public class AdminNewUserCDI implements Serializable {
 	public AdminNewUserCDI() {
 	}
 
-	public void init(){
-		this.password=RandomStringUtils.randomAlphanumeric(8);
-		email=password=firstName=lastName="";
-		address=city=homePhone=mobilePhone=country=course=school=linkedin="";
-		admin=manager=interviewer=candidate=false;
-	}
-
 	public void newUser(){
+		this.password=this.userSessionManagement.getRandomPass();
+		
 		System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+birthday+" "+address+" "+city+" "+homePhone+" "+mobilePhone+" "+country+" "+course+" "+school+" "+linkedin+" "+true+" "+admin+" "+manager+" "+interviewer);
 		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, city, homePhone, mobilePhone, country, course, school, linkedin, true, admin, manager, interviewer);
-		this.init();
 	}
 
 	public void newUserNC(){
-		if(admin||manager||interviewer){
-			System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+admin+" "+manager+" "+interviewer);
-			this.userSessionManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer);
-			this.init();
+		if(this.admin||this.manager||this.interviewer){
+			this.password=this.userSessionManagement.getRandomPass();
+			
+			if(this.userSessionManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer)){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+			}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+			
 		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Defina o tipo de utilizador."));
 	}
 
@@ -68,15 +59,6 @@ public class AdminNewUserCDI implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email.trim();
-	}
-
-	public String getPassword() {
-		this.password=RandomStringUtils.randomAlphanumeric(8);
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password.trim();
 	}
 
 	public String getFirstName() {

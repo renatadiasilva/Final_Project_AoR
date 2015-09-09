@@ -53,6 +53,7 @@ public class UserEJBImp implements UserEJBInterface {
 		log.info("Updating password of user");
 		try {
 			user.setPassword(securePass(user.getPassword()));
+			user.setTemporaryPassword(false);
 		} catch (NoSuchAlgorithmException e) {
 			log.error("Error encrypting password");
 			//e.printStackTrace();
@@ -66,7 +67,11 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public boolean checkPassword(UserEntity user, String password){
 		try {
-			if(user.getPassword()==this.securePass(password)) return true;
+			log.info("Checking password");
+			if(user.getPassword().equals(this.securePass(password))){
+				log.info("Right Password");
+				return true;
+			}
 		} catch (NoSuchAlgorithmException e) {
 			log.error("Error checking password");
 			e.printStackTrace();
@@ -74,6 +79,7 @@ public class UserEJBImp implements UserEJBInterface {
 			log.error("Error checking password");
 			e.printStackTrace();
 		}
+		log.info("Wrong Password");
 		return false;
 	}
 

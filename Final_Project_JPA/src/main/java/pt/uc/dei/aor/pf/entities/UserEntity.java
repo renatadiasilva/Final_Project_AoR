@@ -107,6 +107,9 @@ public class UserEntity implements Serializable {
 	@NotNull
 	@Column(name ="password", nullable = false, length = 64)
 	private String password;
+	
+	@Column(name ="temporary_password", nullable = false)
+	private boolean temporaryPassword;
 
 	@NotNull
 	//@NotBlank??
@@ -169,7 +172,8 @@ public class UserEntity implements Serializable {
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.roles=roles;
+		this.roles = roles;
+		this.temporaryPassword = false;
 	}
 
 	public Long getId() {
@@ -194,6 +198,14 @@ public class UserEntity implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public boolean isTemporaryPassword() {
+		return temporaryPassword;
+	}
+
+	public void setTemporaryPassword(boolean temporaryPassword) {
+		this.temporaryPassword = temporaryPassword;
 	}
 
 	public String getFirstName() {

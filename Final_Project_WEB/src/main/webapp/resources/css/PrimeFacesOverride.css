@@ -54,6 +54,11 @@ input .ui-widget-content{
 	padding: 5px;
 }
 
+.ui-messages-warn-icon {
+	/* Esconde o ícone */
+	visibility: hidden;
+}
+
 .ui-messages-error-icon {
 	/* Esconde o ícone */
 	visibility: hidden;

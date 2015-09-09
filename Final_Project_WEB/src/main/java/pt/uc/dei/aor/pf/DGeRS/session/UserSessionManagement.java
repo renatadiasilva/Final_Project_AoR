@@ -9,6 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.primefaces.context.RequestContext;
+
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -45,6 +48,8 @@ public class UserSessionManagement implements Serializable {
 
 	private HttpServletResponse response;
 
+	private String randomPass, password, newPassword;
+
 
 	public UserSessionManagement() {		
 		this.currentUser=new UserEntity();
@@ -64,6 +69,15 @@ public class UserSessionManagement implements Serializable {
 			} catch (IOException e) {
 				this.context.addMessage(null, new FacesMessage("Redirect falhou."));
 			}
+		}
+	}
+
+	public void checkTemporaryPassword(){
+		System.out.println("Ninja Manuel");
+		if(this.currentUser.isTemporaryPassword()){
+			RequestContext requestContext = RequestContext.getCurrentInstance();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Por favor mude a sua password temporária.", ""));
+			requestContext.execute("PF('changePassword').show();");
 		}
 	}
 
@@ -151,21 +165,27 @@ public class UserSessionManagement implements Serializable {
 		return false;
 	}
 
+	public void changePassword (){
+		if(this.userBean.checkPassword(this.currentUser, password)){
+			this.currentUser.setPassword(newPassword);
+			this.userBean.updatePassword(currentUser);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Password alterada com sucesso."));
+		}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Password errada", ""));
+	}
+
 	// Novo utilizador com ROLE_CANDIDATE. Se vem do signup: boolean createdByAdmin=false. Se é criado por admin: boolean createdByAdmin=true
 	public void newUser(String email, String password, String firstName, String lastName, Date birthday,  String address, String city,
 			String homePhone, String mobilePhone, String country, String course, String school, String linkedin, boolean createdByAdmin,
 			boolean admin, boolean manager, boolean interviewer){
-
-		this.context = FacesContext.getCurrentInstance();
 
 		// Verifica primeiro se o email já está a uso
 		if(this.userBean.findUserByEmail(email)==null){
 			List<String> roles = new ArrayList<String>();
 			roles.add(UserEntity.ROLE_CANDIDATE);
 
-			if(admin)roles.add(UserEntity.ROLE_ADMIN);
-			if(manager)roles.add(UserEntity.ROLE_MANAGER);
-			if(interviewer)roles.add(UserEntity.ROLE_INTERVIEWER);
+			if(admin&&createdByAdmin)roles.add(UserEntity.ROLE_ADMIN);
+			if(manager&&createdByAdmin)roles.add(UserEntity.ROLE_MANAGER);
+			if(interviewer&&createdByAdmin)roles.add(UserEntity.ROLE_INTERVIEWER);
 
 			// Atributos do UserEntity
 			UserEntity newUser=new UserEntity(email, password, firstName, lastName, roles);
@@ -176,20 +196,24 @@ public class UserSessionManagement implements Serializable {
 
 			newUser.setUserInfo(newUserInfo);
 
-			// Se for criado por um admin, esse admin é o currentUser
-			if(createdByAdmin)newUser.setCreatedBy(this.currentUser);
+			// Se for criado por um admin, esse admin é o currentUser e a temporaryPassword=true
+			if(createdByAdmin){
+				newUser.setCreatedBy(this.currentUser);
+				newUser.setTemporaryPassword(true);
+			}
 
 			// Grava o UserEntity
 			this.userBean.save(newUser);
 
-			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
-			if(createdByAdmin)this.context.addMessage(null, new FacesMessage("Anote a password temporária: "+password));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
+			if(createdByAdmin)FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 
-		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+		}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
 	}
 
 	// Novo utilizador criado por um admin sem o ROLE_CANDIDATE
-	public void newUserNC (String email, String password, String firstName, String lastName, boolean admin, boolean manager, boolean interviewer) {
+	public boolean newUserNC (String email, String password, String firstName, String lastName, boolean admin, boolean manager, boolean interviewer) {
+		
 		// Verifica primeiro se o email já está a uso
 		if(this.userBean.findUserByEmail(email)==null){
 
@@ -207,14 +231,15 @@ public class UserSessionManagement implements Serializable {
 			if(manager)newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
 			if(admin)newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
 
-			// Foi criado por um admin, esse admin é o currentUser
+			// Foi criado por um admin, esse admin é o currentUser, e a temporaryPassword=true
 			newUser.setCreatedBy(this.currentUser);
+			newUser.setTemporaryPassword(true);
 
 			this.userBean.save(newUser);
 
-			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email+" Anote a password temporária: "+password));
+			return true;
 
-		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+		}else return false;
 	}
 
 	public void updateUserInfo(String firstName, String lastName, String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
@@ -276,6 +301,31 @@ public class UserSessionManagement implements Serializable {
 
 	public void setCandidate(boolean candidate) {
 		this.candidate = candidate;
+	}
+
+	public String getRandomPass() {
+		this.randomPass=RandomStringUtils.randomAlphanumeric(8);
+		return randomPass;
+	}
+
+	public void setRandomPass(String randomPass) {
+		this.randomPass = randomPass;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 
 }

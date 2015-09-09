@@ -11,7 +11,6 @@ import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
 import pt.uc.dei.aor.pf.beans.TestUserInfoInterface;
 import pt.uc.dei.aor.pf.beans.TestUserInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
 @Named
 @RequestScoped
