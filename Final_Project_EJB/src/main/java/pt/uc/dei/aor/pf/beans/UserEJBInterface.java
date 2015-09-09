@@ -19,7 +19,8 @@ public interface UserEJBInterface {
 	public abstract List<UserEntity> findAllManagers();
 	public abstract List<UserEntity> findAllInterviewers();
 	public abstract List<UserEntity> findAllCandidates();
-	public abstract List<UserEntity> findInternalUsers(String keyword, String role);
+	public abstract List<UserEntity> findUsersByKeywordAndRole(String keyword, String role);
+	public abstract List<UserEntity> findUsersByKeyword(String keyword);
 	public abstract List<UserEntity> findCandidatesByFirstName(String firstName);
 	public abstract List<UserEntity> findCandidatesByLastName(String lastName); 
 	public abstract List<UserEntity> findCandidatesByEmail(String email);
@@ -42,5 +43,8 @@ public interface UserEJBInterface {
 	public abstract List<UserEntity> findCandidatesByKeyword(String keyword);
 	public abstract List<UserEntity> findCandidatesByKeywordShort(String keyword);
 	public abstract boolean checkPassword(UserEntity user, String password);
+	
+	// tirar
+	public abstract List<UserEntity> findTest();
 	
 }

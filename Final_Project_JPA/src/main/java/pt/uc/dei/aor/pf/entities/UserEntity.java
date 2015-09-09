@@ -28,15 +28,24 @@ import javax.validation.constraints.NotNull;
 @Table(name = "users")
 // compare to positions...
 @NamedQueries({
+	@NamedQuery(name = "User.findTest", 
+			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
+					+ " UPPER(u.firstName) LIKE :keyword"
+					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r = :role) ORDER BY u.email" ),
 	@NamedQuery(name = "User.findUsersByEmail",
-			query = "SELECT u FROM UserEntity u WHERE UPPER(u.email) LIKE :email ORDER BY u.email"),
+			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE UPPER(u.email) LIKE :email"
+					+ " AND (r <> 'CANDIDATE') ORDER BY u.email"),
 	@NamedQuery(name = "User.findUsersByName",
-			query = "SELECT u FROM UserEntity u WHERE UPPER(u.firstName) LIKE :name "
-					+ "OR UPPER(u.lastName) LIKE :name ORDER BY u.email"),
+			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.firstName) LIKE :name "
+					+ "OR UPPER(u.lastName) LIKE :name) AND (r <> 'CANDIDATE') ORDER BY u.email"),
 	@NamedQuery(name = "User.findUsersByKeywordByRole",
 			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
 					+ " UPPER(u.firstName) LIKE :keyword"
-					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r = :role)  ORDER BY u.email"),  // order by name??
+					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r = :role) ORDER BY u.email"),  // order by name??
+	@NamedQuery(name = "User.findUsersByKeyword",
+			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
+					+ " UPPER(u.firstName) LIKE :keyword"
+					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r <> 'CANDIDATE') ORDER BY u.email"),  // order by name??
 	@NamedQuery(name = "User.findCandidatesByPhone",
 			query = "SELECT u.owner FROM UserInfoEntity u WHERE u.homePhone LIKE :hphone AND"
 					+ " u.mobilePhone LIKE :mphone"),

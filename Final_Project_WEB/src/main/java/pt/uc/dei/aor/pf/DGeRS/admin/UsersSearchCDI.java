@@ -18,7 +18,7 @@ public class UsersSearchCDI {
 	private UserEJBInterface userEJB;
 	
 	// search fields
-	private String email, fname, lname;
+	private String email, fname, lname, keyword;
 
 	private UserEntity user;
 	
@@ -27,10 +27,50 @@ public class UsersSearchCDI {
 	public UsersSearchCDI() {
 	}
 	
-	public void search() {
-		//all users
+	// ALL
+	
+	public void searchTest() {
+		this.ulist = userEJB.findTest();
+	}	
+	
+	public void searchAll() {
 		this.ulist = userEJB.findAll();
 	}
+
+	public void searchAllAdmins() {
+		this.ulist = userEJB.findAllAdmins();
+	}
+
+	public void searchAllManagers() {
+		this.ulist = userEJB.findAllManagers();
+	}
+
+	public void searchAllInterviewers() {
+		this.ulist = userEJB.findAllInterviewers();
+	}
+
+	public void searchAllCandidates() {
+		this.ulist = userEJB.findAllCandidates();
+	}
+
+	// INNER USERS
+	
+	public void searchByEmail() {
+		//search by email pattern		
+		this.ulist = userEJB.findUsersByEmail(preparePattern(email));
+	}
+
+	public void searchByName() {
+		//seach by Name (first/last)
+		this.ulist = userEJB.findUsersByName(preparePattern(fname));
+	}
+	
+	public void searchByKeyword() {
+		//seach by Name (first/last)
+		this.ulist = userEJB.findUsersByKeyword(preparePattern(keyword));
+	}
+	
+	// CANDIDATES
 
 	public String getEmail() {
 		return email;
@@ -70,6 +110,18 @@ public class UsersSearchCDI {
 
 	public void setUlist(List<UserEntity> ulist) {
 		this.ulist = ulist;
+	}
+	
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	private String preparePattern(String searchWord) {
+		return "%"+searchWord.toUpperCase()+"%";
 	}
 
 }

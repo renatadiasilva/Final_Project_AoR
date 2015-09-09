@@ -111,7 +111,6 @@ public class UserEJBImp implements UserEJBInterface {
 		return userDAO.findUsersByEmail(emailPattern);
 	}
 
-	// pattern like "%"+string.toUpperCase()+"%"
 	@Override
 	public List<UserEntity> findUsersByName(String name) {
 		log.info("Finding users by name");
@@ -121,32 +120,37 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findAllAdmins() {
 		log.info("Finding all administrators");
-		return userDAO.findUsers("%", UserEntity.ROLE_ADMIN);
+		return userDAO.findUsersByRole("%", UserEntity.ROLE_ADMIN);
 	}
 
 	@Override
 	public List<UserEntity> findAllManagers() {
 		log.info("Finding all managers");
-		return userDAO.findUsers("%", UserEntity.ROLE_MANAGER);
+		return userDAO.findUsersByRole("%", UserEntity.ROLE_MANAGER);
 	}
 
 	@Override
 	public List<UserEntity> findAllInterviewers() {
 		log.info("Finding all interviewers");
-		return userDAO.findUsers("%", UserEntity.ROLE_INTERVIEWER);
+		return userDAO.findUsersByRole("%", UserEntity.ROLE_INTERVIEWER);
 	}
 
 	@Override
 	public List<UserEntity> findAllCandidates() {
 		log.info("Finding all candidates");
-		return userDAO.findUsers("%", UserEntity.ROLE_CANDIDATE);
+		return userDAO.findUsersByRole("%", UserEntity.ROLE_CANDIDATE);
 	}
 
 	@Override
-	public List<UserEntity> findInternalUsers(String keyword, String role) {
+	public List<UserEntity> findUsersByKeywordAndRole(String keyword,
+			String role) {
 		log.info("Finding internal users by keyword and role");
-		// role != CANDIDATE
-		return userDAO.findUsers(keyword, role);
+		return userDAO.findUsersByRole(keyword, role);
+	}
+
+	public List<UserEntity> findUsersByKeyword(String keyword) {
+		log.info("Finding internal users by keyword and role");
+		return userDAO.findUsersByKeyword(keyword);	
 	}
 
 	@Override
@@ -244,7 +248,7 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findCandidatesByKeywordShort(String keyword) {
 		log.info("Finding candidates by keyword");
-		return userDAO.findUsers(keyword, UserEntity.ROLE_CANDIDATE);
+		return userDAO.findUsersByRole(keyword, UserEntity.ROLE_CANDIDATE);
 	}
 
 	@Override
@@ -284,6 +288,13 @@ public class UserEJBImp implements UserEJBInterface {
 		if (hasError)
 			throw new IllegalArgumentException("The user is missing data. "
 					+ "Check the notnull attributes.");
+	}
+
+	// tirar
+	@Override
+	public List<UserEntity> findTest() {
+		log.info("Finding test");
+		return userDAO.findTest(UserEntity.ROLE_ADMIN, "%");
 	}
 
 	//Cloning... Think about it...

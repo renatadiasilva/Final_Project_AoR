@@ -29,11 +29,17 @@ public class UserDao extends GenericDao<UserEntity> {
 	}
 	
 	// pesquisar por várias cenas (cada atributo com sua pattern???)
-	public List<UserEntity> findUsers(String keyword, String role) {
+	public List<UserEntity> findUsersByRole(String keyword, String role) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("keyword", keyword);
 		parameters.put("role", role);
 		return super.findSomeResults("User.findUsersByKeywordByRole", parameters);
+	}
+
+	public List<UserEntity> findUsersByKeyword(String keyword) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("keyword", keyword);
+		return super.findSomeResults("User.findUsersByKeyword", parameters);
 	}
 
 	public List<UserEntity> findCandidates(String email, String fname, 
@@ -68,5 +74,13 @@ public class UserDao extends GenericDao<UserEntity> {
 		parameters.put("keyword", keyword);
 		return super.findSomeResults("User.findCandidatesByKeyword", parameters);
 	}
-
+	
+	// tirar
+	public List<UserEntity> findTest(String role, String keyword) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("role", UserEntity.ROLE_MANAGER);
+		parameters.put("keyword", keyword);
+		return super.findSomeResults("User.findTest", parameters);
+	}
+	
 }
