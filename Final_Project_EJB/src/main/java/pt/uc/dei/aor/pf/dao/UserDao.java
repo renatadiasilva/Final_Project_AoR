@@ -5,21 +5,33 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
 public class UserDao extends GenericDao<UserEntity> {
-
+	
+	final String ACCENT_LETTERS = "\'àáâãäåāăąÀÁÂÃÄÅĀĂĄèééêëēĕėęěÉÊĒĔĖĘĚ"
+			+ "ìíîïìĩīĭÌÍÎÏÌĨĪĬóôõöōŏőÒÓÔÕÖŌŎŐùúûüũūŭůÙÚÛÜŨŪŬŮÇç\'";
+	final String NO_ACCENT_LETTERS = "\'aaaaaaaaaAAAAAAAAAeeeeeeeeeeEEEEEEE"
+			+ "iiiiiiiiIIIIIIIIoooooooOOOOOOOOuuuuuuuuUUUUUUUUcc\'";
+			
 	public UserDao() {
 		super(UserEntity.class);
 	}
 
-	public List<UserEntity> findUsersByEmail(String email) {
+	public List<UserEntity> findUserByEmail(String email) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);
-		return super.findSomeResults("User.findUsersByEmail", parameters);
+		return super.findSomeResults("User.findUserByEmail", parameters);
+	}
+	
+	public List<UserEntity> findUsersByEmailPattern(String email) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("email", email);
+		return super.findSomeResults("User.findUsersByEmailPattern", parameters);
 	}
 	
 	public List<UserEntity> findUsersByName(String name) {
@@ -76,11 +88,15 @@ public class UserDao extends GenericDao<UserEntity> {
 	}
 	
 	// tirar
-	public List<UserEntity> findTest(String role, String keyword) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("role", UserEntity.ROLE_MANAGER);
-		parameters.put("keyword", keyword);
-		return super.findSomeResults("User.findTest", parameters);
+	@SuppressWarnings("unchecked")
+	public List<UserEntity> findTest() {
+		String pattern = "jose";
+		String queryS = "select * from users"
+				+ " where translate(first_name, "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+")"
+				+ " like :pattern";
+        Query query = em.createNativeQuery(queryS, UserEntity.class);
+        query.setParameter("pattern", pattern);
+        return (List<UserEntity>) query.getResultList();
 	}
 	
 }

@@ -106,7 +106,7 @@ public class UserEJBImp implements UserEJBInterface {
 	public UserEntity findUserByEmail(String email) {
 		log.info("Finding user by exact email");
 		// email is unique
-		List<UserEntity> u = userDAO.findUsersByEmail(email.toUpperCase());
+		List<UserEntity> u = userDAO.findUserByEmail(email.toUpperCase());
 		if (u.size() == 1) return u.get(0); // 1 result: email found
 		return null; // 0 results: email not found
 	}
@@ -114,7 +114,7 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findUsersByEmail(String emailPattern) {
 		log.info("Finding users by email pattern");
-		return userDAO.findUsersByEmail(emailPattern);
+		return userDAO.findUsersByEmailPattern(emailPattern);
 	}
 
 	@Override
@@ -300,7 +300,7 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findTest() {
 		log.info("Finding test");
-		return userDAO.findTest(UserEntity.ROLE_ADMIN, "%");
+		return userDAO.findTest();
 	}
 
 	//Cloning... Think about it...
