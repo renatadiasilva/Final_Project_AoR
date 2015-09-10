@@ -64,7 +64,7 @@ public class UserInfoEntity implements Serializable {
 	private String course;
 	
 	@NotNull
-	@Column(name = "school", nullable = false, length = 40)
+	@Column(name = "school", nullable = false, length = 100)
 	private String school;
 	
 	// Link

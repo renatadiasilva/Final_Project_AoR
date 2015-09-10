@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.DGeRS.admin;
 
+import java.text.Normalizer;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -121,7 +122,29 @@ public class UsersSearchCDI {
 	}
 
 	private String preparePattern(String searchWord) {
-		return "%"+searchWord.toUpperCase()+"%";
+
+		// removes all non-word characters of the word
+//		String pattern = searchWord.replaceAll("\\W", "");
+		// removes all whitespaces of the word
+		String pattern = searchWord.replaceAll("\\s", "");
+		System.out.println(pattern);
+		
+		// adds % because of database search
+		pattern = "%"+pattern.toUpperCase()+"%";
+		System.out.println(pattern);
+		
+		// separates all of the accent marks from the characters
+		pattern = Normalizer.normalize(pattern, Normalizer.Form.NFD);
+		System.out.println(pattern);
+
+//		string = string.replaceAll("[^\\p{ASCII}]", "");
+
+		// compares each character against being a letter and 
+		// throw out the ones that aren't.
+		pattern = pattern.replaceAll("\\p{M}", "");
+		System.out.println(pattern);
+
+		return pattern;
 	}
 
 }

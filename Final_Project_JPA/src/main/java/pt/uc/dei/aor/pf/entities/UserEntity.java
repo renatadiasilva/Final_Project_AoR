@@ -42,10 +42,17 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
 					+ " UPPER(u.firstName) LIKE :keyword"
 					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r = :role) ORDER BY u.email"),  // order by name??
-	@NamedQuery(name = "User.findUsersByKeyword",
-			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
-					+ " UPPER(u.firstName) LIKE :keyword"
-					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r <> 'CANDIDATE') ORDER BY u.email"),  // order by name??
+//					@NamedQuery(name = "User.findUsersByKeyword",
+//					query = "SELECT u FROM UserEntity u WHERE u.email COLLATE Latin1_General_CI_AI LIKE :k "
+//							+ "COLLATE Latin1_general_CI_AI"),
+//							query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE "
+//									+ "(UPPER(u.email) LIKE :keyword"),
+//	@NamedQuery(name = "User.findUsersByKeyword",
+//			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE "
+//					+ "((UPPER(u.email) LIKE :keyword COLLATE Latin1_General_CI_AI) OR"
+//					+ " UPPER(u.firstName) LIKE :keyword"
+//					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r <> 'CANDIDATE') ORDER BY u.email"),  // order by name??
+//					Name COLLATE Latin1_general_CI_AI Like '%cafe%' COLLATE Latin1_general_CI_AI
 	@NamedQuery(name = "User.findCandidatesByPhone",
 			query = "SELECT u.owner FROM UserInfoEntity u WHERE u.homePhone LIKE :hphone AND"
 					+ " u.mobilePhone LIKE :mphone"),
