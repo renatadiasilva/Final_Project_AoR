@@ -13,10 +13,8 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @Stateless
 public class UserDao extends GenericDao<UserEntity> {
 	
-	final String ACCENT_LETTERS = "\'àáâãäåāăąÀÁÂÃÄÅĀĂĄèééêëēĕėęěÉÊĒĔĖĘĚ"
-			+ "ìíîïìĩīĭÌÍÎÏÌĨĪĬóôõöōŏőÒÓÔÕÖŌŎŐùúûüũūŭůÙÚÛÜŨŪŬŮÇç\'";
-	final String NO_ACCENT_LETTERS = "\'aaaaaaaaaAAAAAAAAAeeeeeeeeeeEEEEEEE"
-			+ "iiiiiiiiIIIIIIIIoooooooOOOOOOOOuuuuuuuuUUUUUUUUcc\'";
+	final String ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
+	final String NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";
 			
 	public UserDao() {
 		super(UserEntity.class);
@@ -48,10 +46,23 @@ public class UserDao extends GenericDao<UserEntity> {
 		return super.findSomeResults("User.findUsersByKeywordByRole", parameters);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<UserEntity> findUsersByKeyword(String keyword) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("keyword", keyword);
-		return super.findSomeResults("User.findUsersByKeyword", parameters);
+		String queryS = "SELECT DISTINCT users.* FROM users, roles"
+				+ " WHERE (TRANSLATE(UPPER(email), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+")"
+				+ " like :pattern"
+				+ " OR TRANSLATE(UPPER(REPLACE(first_name,\' \',\'\')), "
+				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :pattern"
+				+ " OR TRANSLATE(UPPER(REPLACE(last_name,\' \',\'\')), "
+				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :pattern)"
+				+ " AND users.id = roles.user_id"
+				+ " AND roles.role <> \'CANDIDATE\' ORDER BY email";
+        Query query = em.createNativeQuery(queryS, UserEntity.class);
+        query.setParameter("pattern", keyword);
+        return (List<UserEntity>) query.getResultList();
+//		Map<String, Object> parameters = new HashMap<String, Object>();
+//		parameters.put("keyword", keyword);
+//		return super.findSomeResults("User.findUsersByKeyword", parameters);
 	}
 
 	public List<UserEntity> findCandidates(String email, String fname, 
@@ -89,11 +100,16 @@ public class UserDao extends GenericDao<UserEntity> {
 	
 	// tirar
 	@SuppressWarnings("unchecked")
-	public List<UserEntity> findTest() {
-		String pattern = "jose";
-		String queryS = "select * from users"
-				+ " where translate(first_name, "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+")"
-				+ " like :pattern";
+	public List<UserEntity> findTest(String pattern) {
+		String queryS = "SELECT DISTINCT users.* FROM users, roles"
+				+ " WHERE (TRANSLATE(UPPER(email), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+")"
+				+ " like :pattern"
+				+ " OR TRANSLATE(UPPER(REPLACE(first_name,\' \',\'\')), "
+				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :pattern"
+				+ " OR TRANSLATE(UPPER(REPLACE(last_name,\' \',\'\')), "
+				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :pattern)"
+				+ " AND users.id = roles.user_id"
+				+ " AND roles.role <> \'CANDIDATE\' ORDER BY email";
         Query query = em.createNativeQuery(queryS, UserEntity.class);
         query.setParameter("pattern", pattern);
         return (List<UserEntity>) query.getResultList();

@@ -43,7 +43,7 @@ public class InitDB {
 		roles.clear();
 		roles.add(UserEntity.ROLE_ADMIN);
 
-		newUser = new UserEntity("jlopes@gmail.com", "12345", "José", "Lopes", roles);
+		newUser = new UserEntity("jlopes@gmail.com", "12345", "José Pedro", "Lopes", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
 
 		this.userEJB.save(newUser);

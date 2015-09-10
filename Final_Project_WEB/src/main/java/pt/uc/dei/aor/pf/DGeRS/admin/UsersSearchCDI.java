@@ -31,7 +31,7 @@ public class UsersSearchCDI {
 	// ALL
 	
 	public void searchTest() {
-		this.ulist = userEJB.findTest();
+		this.ulist = userEJB.findTest(preparePattern(keyword));
 	}	
 	
 	public void searchAll() {
@@ -124,9 +124,9 @@ public class UsersSearchCDI {
 	private String preparePattern(String searchWord) {
 
 		// removes all non-word characters of the word
-//		String pattern = searchWord.replaceAll("\\W", "");
+		String pattern = searchWord.replaceAll("\\W", "");
 		// removes all whitespaces of the word
-		String pattern = searchWord.replaceAll("\\s", "");
+//		String pattern = searchWord.replaceAll("\\s", "");
 		System.out.println(pattern);
 		
 		// adds % because of database search

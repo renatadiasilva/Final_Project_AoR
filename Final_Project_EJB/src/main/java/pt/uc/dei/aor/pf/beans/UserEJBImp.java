@@ -298,9 +298,9 @@ public class UserEJBImp implements UserEJBInterface {
 
 	// tirar
 	@Override
-	public List<UserEntity> findTest() {
+	public List<UserEntity> findTest(String pattern) {
 		log.info("Finding test");
-		return userDAO.findTest();
+		return userDAO.findTest(pattern);
 	}
 
 	//Cloning... Think about it...

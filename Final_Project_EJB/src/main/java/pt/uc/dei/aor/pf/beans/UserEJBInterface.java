@@ -45,6 +45,6 @@ public interface UserEJBInterface {
 	public abstract boolean checkPassword(UserEntity user, String password);
 	
 	// tirar
-	public abstract List<UserEntity> findTest();
+	public abstract List<UserEntity> findTest(String pattern);
 	
 }
