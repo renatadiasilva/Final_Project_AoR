@@ -48,35 +48,36 @@
 				<p:outputLabel value="Telemóvel: " for="adminSignup-mobilePhone" />
 				<p:inputMask mask="999 999 999" id="adminSignup-mobilePhone"
 					value="#{adminNewUserCDI.mobilePhone}" size="35" maxlength="20"
-					required="true" />
+					required="true" requiredMessage="Insira o telemóvel." />
 
 				<p:outputLabel value="Morada: " for="adminSignup-adress" />
 				<h:panelGroup>
 					<p:inputTextarea id="adminSignup-adress"
 						value="#{adminNewUserCDI.address}" cols="35" rows="3"
 						maxlength="200" counter="maxAdress" counterTemplate=" - {0}"
-						required="true" />
+						required="true" requiredMessage="Insira a morada." />
 					<h:outputText id="maxAdress" />
 				</h:panelGroup>
 
 				<p:outputLabel value="Cidade: " for="adminSignup-city" />
 				<p:inputText id="adminSignup-city" value="#{adminNewUserCDI.city}"
-					size="35" maxlength="40" required="true" />
+					size="35" maxlength="40" required="true"
+					requiredMessage="Insira a cidade." />
 
 				<p:outputLabel value="País: " for="adminSignup-country" />
 				<p:inputText id="adminSignup-country"
 					value="#{adminNewUserCDI.country}" size="35" maxlength="40"
-					required="true" />
+					required="true" requiredMessage="Insira o país" />
 
 				<p:outputLabel value="Curso: " for="adminSignup-course" />
 				<p:inputText id="adminSignup-course"
 					value="#{adminNewUserCDI.course}" size="35" maxlength="40"
-					required="true" />
+					required="true" requiredMessage="Insira o curso." />
 
 				<p:outputLabel value="Escola: " for="adminSignup-school" />
 				<p:inputText id="adminSignup-school"
 					value="#{adminNewUserCDI.school}" size="35" maxlength="40"
-					required="true" />
+					required="true" requiredMessage="Insira a escola." />
 
 				<p:outputLabel value="LinkedIn: " for="adminSignup-linkedin" />
 				<p:inputText id="adminSignup-linkedin"

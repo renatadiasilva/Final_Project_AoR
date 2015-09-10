@@ -28,11 +28,9 @@ public class SignupCDI {
 	public SignupCDI() {
 	}
 	
-	public String signUp(){
+	public void signUp(){
 		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, 
 				city, homePhone,mobilePhone, country, course, school, linkedin, false, false, false, false);
-		
-		return("/Index.xhtml");
 	}
 
 	public String getEmail() {

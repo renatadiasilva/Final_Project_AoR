@@ -5,13 +5,18 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.primefaces.context.RequestContext;
 
+import pt.uc.dei.aor.pf.DGeRS.credentials.CredentialsCatchFilter;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -47,13 +52,19 @@ public class UserSessionManagement implements Serializable {
 	private HttpServletRequest request;
 
 	private HttpServletResponse response;
+	
+	private HttpSession session;
 
 	private String randomPass, password, newPassword;
+
+	private boolean newPasswordCheck;
 
 
 	public UserSessionManagement() {		
 		this.currentUser=new UserEntity();
 		this.admin=this.manager=this.interviewer=this.candidate=false;
+
+		this.newPasswordCheck=true;
 	}
 
 	public void checkForUser(){
@@ -73,15 +84,15 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public void checkTemporaryPassword(){
-		System.out.println("Ninja Manuel");
-		if(this.currentUser.isTemporaryPassword()){
+		if(this.currentUser.isTemporaryPassword()&&this.newPasswordCheck){
 			RequestContext requestContext = RequestContext.getCurrentInstance();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Por favor mude a sua password temporária.", ""));
 			requestContext.execute("PF('changePassword').show();");
+			this.newPasswordCheck=false;
 		}
 	}
 
-	public String login(String email, String password){
+	public void login(String email, String password){
 
 		this.context = FacesContext.getCurrentInstance();
 		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -106,7 +117,9 @@ public class UserSessionManagement implements Serializable {
 
 			// Encaminha para...
 			this.response = (HttpServletResponse) context.getExternalContext().getResponse();
+
 			try {
+				// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
 				this.response.sendRedirect(request.getContextPath()+"/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing.xhtml");
 			} catch (IOException e) {
 				this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
@@ -115,12 +128,10 @@ public class UserSessionManagement implements Serializable {
 		} catch (ServletException e){
 			this.context.addMessage(null, new FacesMessage("Login falhou."));
 		}
-
-		return "#";
 	}
 
 	public void logout(){
-
+		
 		this.context = FacesContext.getCurrentInstance();
 		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
 		this.response = (HttpServletResponse) context.getExternalContext().getResponse();
@@ -130,8 +141,13 @@ public class UserSessionManagement implements Serializable {
 			this.admin=this.manager=this.interviewer=this.candidate=false;
 			this.currentUser=new UserEntity();
 
+			// Invalida a sessão
+			this.session = request.getSession();
+			this.session.invalidate();
+
 			// Encaminha para...
 			this.response.sendRedirect(request.getContextPath()+"/Index.xhtml");
+
 
 		} catch (ServletException e) {
 			this.context.addMessage(null, new FacesMessage("Logout falhou."));
@@ -201,10 +217,16 @@ public class UserSessionManagement implements Serializable {
 				newUser.setCreatedBy(this.currentUser);
 				newUser.setTemporaryPassword(true);
 			}
+			// Se foi criado à mão, fecha o dialog (Index.xhtml)
+			else {
+				RequestContext requestContext = RequestContext.getCurrentInstance();
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Por favor mude a sua password temporária.", ""));
+				requestContext.execute("PF('signup').hide();");
+			}
 
 			// Grava o UserEntity
 			this.userBean.save(newUser);
-
+			
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
 			if(createdByAdmin)FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 
@@ -213,7 +235,7 @@ public class UserSessionManagement implements Serializable {
 
 	// Novo utilizador criado por um admin sem o ROLE_CANDIDATE
 	public boolean newUserNC (String email, String password, String firstName, String lastName, boolean admin, boolean manager, boolean interviewer) {
-		
+
 		// Verifica primeiro se o email já está a uso
 		if(this.userBean.findUserByEmail(email)==null){
 
@@ -261,6 +283,19 @@ public class UserSessionManagement implements Serializable {
 		this.currentUser.getUserInfo().setLinkedin(linkedin);
 
 		this.userBean.update(this.currentUser);
+	}
+
+	@SuppressWarnings("unused")
+	private void redirect(String path){
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+
+		try {
+			response.sendRedirect(request.getContextPath()+path);
+		} catch (IOException e) {
+			// Erro a redireccionar
+			e.printStackTrace();
+		}
 	}
 
 	public UserEntity getCurrentUser() {

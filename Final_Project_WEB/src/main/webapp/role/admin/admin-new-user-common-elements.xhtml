@@ -34,15 +34,17 @@
 
 		<p:outputLabel value="Email: " for="adminSignup-email" />
 		<p:inputText id="adminSignup-email" value="#{adminNewUserCDI.email}"
-			size="35" required="true" />
+			size="35" required="true" requiredMessage="Insira o email." />
 
 		<p:outputLabel value="Primeiro Nome: " for="adminSignup-firstName" />
 		<p:inputText id="adminSignup-firstName"
-			value="#{adminNewUserCDI.firstName}" size="35" required="true" />
+			value="#{adminNewUserCDI.firstName}" size="35" required="true"
+			requiredMessage="Insira o primeiro nome." />
 
 		<p:outputLabel value="Sobrenome: " for="adminSignup-lastName" />
 		<p:inputText id="adminSignup-lastName"
-			value="#{adminNewUserCDI.lastName}" size="35" required="true" />
+			value="#{adminNewUserCDI.lastName}" size="35" required="true"
+			requiredMessage="Insira o sobrenome" />
 
 	</ui:composition>
 

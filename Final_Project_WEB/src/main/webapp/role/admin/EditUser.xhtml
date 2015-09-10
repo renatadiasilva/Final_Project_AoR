@@ -1,0 +1,100 @@
+<ui:composition template="../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">Admin - Editar Utilizador - IT Jobs</ui:define>
+
+	<ui:define name="contents">
+
+		<h1>Editar Utilizador</h1>
+		<h:form id="testSearch" style="width: 100%">
+
+			<h:panelGrid id="buttonsTestSearch" columns="6">
+
+				<p:commandButton value="Pesquisa teste"
+					action="#{usersSearchCDI.searchTest()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Pesquisar todos"
+					action="#{usersSearchCDI.searchAll()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Pesquisar todos admin"
+					action="#{usersSearchCDI.searchAllAdmins()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+				<p:commandButton value="Pesquisar todos gestores"
+					action="#{usersSearchCDI.searchAllManagers()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+				<p:commandButton value="Pesquisar todos entervistadores"
+					action="#{usersSearchCDI.searchAllInterviewers()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+				<p:commandButton value="Pesquisar todos candidatos"
+					action="#{usersSearchCDI.searchAllCandidates()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+				<p:commandButton value="Pesquisar por email"
+					action="#{usersSearchCDI.searchByEmail()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Pesquisar por nome"
+					action="#{usersSearchCDI.searchByName()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Pesquisar por keyword"
+					action="#{usersSearchCDI.searchByKeyword()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+			</h:panelGrid>
+
+
+
+			<p:dataTable var="u" value="#{usersSearchCDI.ulist}">
+				<f:facet name="header">Utilizadores</f:facet>
+
+				<p:column footerText="Email">
+					<f:facet name="header">
+						<p:inputText id="search-email" value="#{usersSearchCDI.email}" />
+						<p:watermark for="search-email" value="Pesquisar por email" />
+					</f:facet>
+					<h:outputText value="#{u.email}" />
+				</p:column>
+
+				<p:column footerText="Primeiro nome">
+					<f:facet name="header">
+						<p:inputText id="search-firstName" value="#{usersSearchCDI.fname}" />
+						<p:watermark for="search-firstName"
+							value="Pesquisar por primeiro nome" />
+					</f:facet>
+					<h:outputText value="#{u.firstName}" />
+				</p:column>
+
+				<p:column footerText="Sobrenome">
+					<f:facet name="header">
+						<p:inputText id="search-lastName" value="#{usersSearchCDI.lname}" />
+						<p:watermark for="search-lastName" value="Pesquisar por Sobrenome" />
+					</f:facet>
+					<h:outputText value="#{u.lastName}" />
+				</p:column>
+
+				<p:column footerText="Role por defeito">
+					<f:facet name="header">
+						<p:inputText id="search-keyword" value="#{usersSearchCDI.keyword}" />
+						<p:watermark for="search-keyword" value="Pesquisa aberta" />
+					</f:facet>
+					<h:outputText value="#{u.defaultRole}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+
+	</ui:define>
+
+</ui:composition>

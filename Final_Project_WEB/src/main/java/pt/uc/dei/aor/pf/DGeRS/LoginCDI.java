@@ -20,8 +20,8 @@ public class LoginCDI {
 	public LoginCDI() {
 	}
 
-	public String login() {
-		return this.userSessionManagement.login(this.email, this.password);
+	public void login() {
+		this.userSessionManagement.login(this.email, this.password);
 	}
 
 	public String getEmail() {

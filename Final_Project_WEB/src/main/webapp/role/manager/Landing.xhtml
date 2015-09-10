@@ -8,6 +8,10 @@
 	<ui:define name="Título">Welcome! - IT Jobs</ui:define>
 
 	<ui:define name="contents">
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{userSessionManagement.checkTemporaryPassword()}" />
+		</f:metadata>
 		<br />
 		<br />
 		<br />MANAGER<br />
