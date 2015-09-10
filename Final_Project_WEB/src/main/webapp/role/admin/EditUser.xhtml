@@ -10,88 +10,85 @@
 	<ui:define name="contents">
 
 		<h1>Editar Utilizador</h1>
-		<h:form id="testSearch" style="width: 100%">
-
-			<h:panelGrid id="buttonsTestSearch" columns="6">
-
-				<p:commandButton value="Pesquisa teste"
-					action="#{usersSearchCDI.searchTest()}" update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Pesquisar todos"
-					action="#{usersSearchCDI.searchAll()}" update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Pesquisar todos admin"
-					action="#{usersSearchCDI.searchAllAdmins()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Pesquisar todos gestores"
-					action="#{usersSearchCDI.searchAllManagers()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Pesquisar todos entervistadores"
-					action="#{usersSearchCDI.searchAllInterviewers()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Pesquisar todos candidatos"
-					action="#{usersSearchCDI.searchAllCandidates()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Pesquisar por email"
-					action="#{usersSearchCDI.searchByEmail()}" update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Pesquisar por nome"
-					action="#{usersSearchCDI.searchByName()}" update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Pesquisar por keyword"
-					action="#{usersSearchCDI.searchByKeyword()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-			</h:panelGrid>
-
-
+		<h:form id="editUserForm">
 
 			<p:dataTable var="u" value="#{usersSearchCDI.ulist}">
 				<f:facet name="header">Utilizadores</f:facet>
 
 				<p:column footerText="Email">
 					<f:facet name="header">
-						<p:inputText id="search-email" value="#{usersSearchCDI.email}" />
-						<p:watermark for="search-email" value="Pesquisar por email" />
+						<h:panelGroup>
+							<p:inputText id="search-email" value="#{usersSearchCDI.email}"
+								style="width: 85%; border: none;" />
+							<p:watermark for="search-email" value="Pesquisar por email" />
+							<p:commandButton actionListener="#{usersSearchCDI.searchTest()}"
+								update="@form, messages" icon="ui-icon-search" style="width:10%" />
+						</h:panelGroup>
 					</f:facet>
-					<h:outputText value="#{u.email}" />
+					<h:outputText value=" #{u.email}" />
 				</p:column>
 
 				<p:column footerText="Primeiro nome">
 					<f:facet name="header">
-						<p:inputText id="search-firstName" value="#{usersSearchCDI.fname}" />
+						<p:inputText id="search-firstName" value="#{usersSearchCDI.fname}"
+							style="width: 85%; border: none" />
 						<p:watermark for="search-firstName"
 							value="Pesquisar por primeiro nome" />
+						<p:commandButton for="search-firstName"
+							actionListener="#{usersSearchCDI.searchByName()}"
+							update="@form, messages" icon="ui-icon-search" style="width:10%" />
 					</f:facet>
 					<h:outputText value="#{u.firstName}" />
 				</p:column>
 
 				<p:column footerText="Sobrenome">
 					<f:facet name="header">
-						<p:inputText id="search-lastName" value="#{usersSearchCDI.lname}" />
+						<p:inputText id="search-lastName" value="#{usersSearchCDI.lname}"
+							style="width: 85%; border: none" />
 						<p:watermark for="search-lastName" value="Pesquisar por Sobrenome" />
+						<p:commandButton actionListener="#{usersSearchCDI.searchByName()}"
+							update="@form, messages" icon="ui-icon-search" style="width:10%" />
 					</f:facet>
 					<h:outputText value="#{u.lastName}" />
 				</p:column>
 
 				<p:column footerText="Role por defeito">
 					<f:facet name="header">
-						<p:inputText id="search-keyword" value="#{usersSearchCDI.keyword}" />
-						<p:watermark for="search-keyword" value="Pesquisa aberta" />
+						<p:commandButton value="Adm."
+							actionListener="#{usersSearchCDI.searchAllAdmins()}"
+							update="@form, messages" icon="ui-icon-search" style="width:24%" />
+						<p:commandButton value="Ges."
+							actionListener="#{usersSearchCDI.searchAllManagers()}"
+							update="@form, messages" icon="ui-icon-search" style="width:24%" />
+						<p:commandButton value="Int."
+							actionListener="#{usersSearchCDI.searchAllInterviewers()}"
+							update="@form, messages" icon="ui-icon-search" style="width:24%" />
+						<p:commandButton value="Can."
+							actionListener="#{usersSearchCDI.searchAllCandidates()}"
+							update="@form, messages" icon="ui-icon-search" style="width:24%" />
 					</f:facet>
 					<h:outputText value="#{u.defaultRole}" />
 				</p:column>
 
-			</p:dataTable>
+				<p:column footerText="Opções">
+					<f:facet name="header">
+						<p:inputText id="search-keyword" value="#{usersSearchCDI.keyword}"
+							style="width: 85%; border: none" />
+						<p:watermark for="search-keyword" value="Pesquisa aberta" />
+						<p:commandButton
+							actionListener="#{usersSearchCDI.searchByKeyword()}"
+							update="@form, messages" icon="ui-icon-search" style="width:10%" />
+					</f:facet>
+					<h:panelGroup>
+						<p:commandButton value="Editar" style="width: 49%;"
+							icon="ui-icon-pencil" />
+						<p:commandButton value="Eliminar" style="width: 49%;"
+							icon="ui-icon-trash" />
+					</h:panelGroup>
+				</p:column>
 
+			</p:dataTable>
+			
 		</h:form>
 
 

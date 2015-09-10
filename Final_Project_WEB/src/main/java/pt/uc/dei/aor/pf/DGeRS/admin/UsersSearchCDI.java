@@ -17,23 +17,23 @@ public class UsersSearchCDI {
 
 	@EJB
 	private UserEJBInterface userEJB;
-	
+
 	// search fields
 	private String email, fname, lname, keyword;
 
 	private UserEntity user;
-	
+
 	private List<UserEntity> ulist;
 
 	public UsersSearchCDI() {
 	}
-	
+
 	// ALL
-	
+
 	public void searchTest() {
 		this.ulist = userEJB.findTest(preparePattern(keyword));
 	}	
-	
+
 	public void searchAll() {
 		this.ulist = userEJB.findAll();
 	}
@@ -55,7 +55,7 @@ public class UsersSearchCDI {
 	}
 
 	// INNER USERS
-	
+
 	public void searchByEmail() {
 		//search by email pattern		
 		this.ulist = userEJB.findUsersByEmail(preparePattern(email));
@@ -65,12 +65,12 @@ public class UsersSearchCDI {
 		//seach by Name (first/last)
 		this.ulist = userEJB.findUsersByName(preparePattern(fname));
 	}
-	
+
 	public void searchByKeyword() {
 		//seach by Name (first/last)
 		this.ulist = userEJB.findUsersByKeyword(preparePattern(keyword));
 	}
-	
+
 	// CANDIDATES
 
 	public String getEmail() {
@@ -112,7 +112,7 @@ public class UsersSearchCDI {
 	public void setUlist(List<UserEntity> ulist) {
 		this.ulist = ulist;
 	}
-	
+
 	public String getKeyword() {
 		return keyword;
 	}
@@ -126,18 +126,18 @@ public class UsersSearchCDI {
 		// removes all non-word characters of the word
 		String pattern = searchWord.replaceAll("\\W", "");
 		// removes all whitespaces of the word
-//		String pattern = searchWord.replaceAll("\\s", "");
+		//		String pattern = searchWord.replaceAll("\\s", "");
 		System.out.println(pattern);
-		
+
 		// adds % because of database search
 		pattern = "%"+pattern.toUpperCase()+"%";
 		System.out.println(pattern);
-		
+
 		// separates all of the accent marks from the characters
 		pattern = Normalizer.normalize(pattern, Normalizer.Form.NFD);
 		System.out.println(pattern);
 
-//		string = string.replaceAll("[^\\p{ASCII}]", "");
+		//		string = string.replaceAll("[^\\p{ASCII}]", "");
 
 		// compares each character against being a letter and 
 		// throw out the ones that aren't.
@@ -145,6 +145,10 @@ public class UsersSearchCDI {
 		System.out.println(pattern);
 
 		return pattern;
+	}
+
+	public void meh() {
+		// Deal with it
 	}
 
 }

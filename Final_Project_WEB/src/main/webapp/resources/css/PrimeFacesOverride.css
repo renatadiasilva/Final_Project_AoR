@@ -124,3 +124,18 @@ input .ui-widget-content{
 .ui-dialog-titlebar-close {
 	visibility: hidden;
 }
+
+/* Data Table */
+.ui-datatable thead th{
+	padding: 0px
+}
+
+.ui-state-default, .ui-widget-content {
+	background: none;
+	background-color: #fff;
+}
+
+.ui-datatable tbody td {
+	text-align: center;
+	border: none;
+}
