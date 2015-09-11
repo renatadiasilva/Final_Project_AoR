@@ -13,6 +13,7 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @Stateless
 public class UserDao extends GenericDao<UserEntity> {
 	
+	// used in accent insensitive searchs
 	final String ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
 	final String NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";
 			

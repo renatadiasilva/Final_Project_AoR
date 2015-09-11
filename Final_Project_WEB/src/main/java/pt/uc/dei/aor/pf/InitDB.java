@@ -8,6 +8,9 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -17,6 +20,8 @@ import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 @RequestScoped
 public class InitDB {
 
+	private static final Logger log = LoggerFactory.getLogger(InitDB.class);
+	
 	@EJB
 	UserEJBInterface userEJB;
 
@@ -25,7 +30,7 @@ public class InitDB {
 
 	public void populate() {
 
-		System.out.println("Populate...");
+		log.info("Populate...");
 
 		UserEntity newUser = new UserEntity();
 		List<String> roles = new ArrayList<String>();

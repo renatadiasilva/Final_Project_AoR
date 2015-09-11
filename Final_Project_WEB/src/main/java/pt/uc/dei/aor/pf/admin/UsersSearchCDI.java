@@ -7,6 +7,9 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
@@ -15,6 +18,8 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @RequestScoped
 public class UsersSearchCDI {
 
+	private static final Logger log = LoggerFactory.getLogger(UsersSearchCDI.class);
+	
 	@EJB
 	private UserEJBInterface userEJB;
 
@@ -31,47 +36,63 @@ public class UsersSearchCDI {
 	// ALL
 
 	public void searchTest() {
+		log.info("Test searching");
 		this.ulist = userEJB.findTest(preparePattern(keyword));
 	}	
 
 	public void searchAll() {
+		log.info("Searching for all users");
 		this.ulist = userEJB.findAll();
 	}
 
 	public void searchAllAdmins() {
+		log.info("Searching for all administrators");
 		this.ulist = userEJB.findAllAdmins();
 	}
 
 	public void searchAllManagers() {
+		log.info("Searching for all managers");
 		this.ulist = userEJB.findAllManagers();
 	}
 
 	public void searchAllInterviewers() {
+		log.info("Searching for all interviwers");
 		this.ulist = userEJB.findAllInterviewers();
 	}
 
 	public void searchAllCandidates() {
+		log.info("Searching for all candidates");
 		this.ulist = userEJB.findAllCandidates();
 	}
 
-	// INNER USERS
+	// INTERNAL USERS
 
 	public void searchByEmail() {
-		//search by email pattern		
-		this.ulist = userEJB.findUsersByEmail(preparePattern(email));
+		log.info("Searching for internal users by email");
+		String pattern = preparePattern(email);
+		log.debug("Search word: "+pattern);
+		this.ulist = userEJB.findUsersByEmail(pattern);
 	}
 
 	public void searchByName() {
-		//seach by Name (first/last)
-		this.ulist = userEJB.findUsersByName(preparePattern(fname));
+		log.info("Searching for internal users by name (first/second)");
+		String pattern = preparePattern(fname);
+		log.debug("Search word: "+pattern);
+		this.ulist = userEJB.findUsersByName(pattern);
 	}
 
 	public void searchByKeyword() {
-		//seach by Name (first/last)
-		this.ulist = userEJB.findUsersByKeyword(preparePattern(keyword));
+		log.info("Searching for internal users by keyword");
+		String pattern = preparePattern(keyword);
+		log.debug("Search word: "+pattern);
+		this.ulist = userEJB.findUsersByKeyword(pattern);
 	}
 
 	// CANDIDATES
+	
+	
+	
+	// getters e setters
 
 	public String getEmail() {
 		return email;
