@@ -5,10 +5,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.FilterChain;
+//import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+//import javax.servlet.ServletRequest;
+//import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,9 +16,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.RandomStringUtils;
 import org.primefaces.context.RequestContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+//import pt.uc.dei.aor.pf.beans.InterviewEJBImp;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
-import pt.uc.dei.aor.pf.credentials.CredentialsCatchFilter;
+//import pt.uc.dei.aor.pf.credentials.CredentialsCatchFilter;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
@@ -32,9 +36,8 @@ import java.util.List;
 @SessionScoped
 public class UserSessionManagement implements Serializable {
 
-	/**
-	 * 
-	 */
+	private static final Logger log = LoggerFactory.getLogger(UserSessionManagement.class);
+	
 	private static final long serialVersionUID = 2527354852846254610L;
 
 	@Inject
@@ -68,6 +71,10 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public void checkForUser(){
+		
+		log.info("Checking for logged user");
+		log.debug("User: "+ currentUser.getEmail());
+		
 		// ActionListener para as páginas Index.xhtml e Signup.xhtml
 		// Se já existe um user logado reencaminha para o respectivo Landing.xhtml
 		if(this.currentUser.getEmail()!=null){
@@ -78,12 +85,15 @@ public class UserSessionManagement implements Serializable {
 				// Encaminha para...
 				this.response.sendRedirect(request.getContextPath()+"/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing.xhtml");
 			} catch (IOException e) {
-				this.context.addMessage(null, new FacesMessage("Redirect falhou."));
+				log.error("Redirect failure");
+				this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
 			}
 		}
 	}
 
 	public void checkTemporaryPassword(){
+		log.info("Checking if the password is temporary");
+
 		if(this.currentUser.isTemporaryPassword()&&this.newPasswordCheck){
 			RequestContext requestContext = RequestContext.getCurrentInstance();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Por favor mude a sua password temporária.", ""));
@@ -93,6 +103,9 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public void login(String email, String password){
+		
+		log.info("Doing login");
+		log.debug("Login email: "+ email);
 
 		this.context = FacesContext.getCurrentInstance();
 		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -110,6 +123,7 @@ public class UserSessionManagement implements Serializable {
 			// Roles para mostrar na web
 			this.setAvailableRoles();
 
+			log.info("Login sucessfull");
 			this.context.addMessage(null, new FacesMessage("Login sucessfull: "+email));
 
 			// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
@@ -122,16 +136,21 @@ public class UserSessionManagement implements Serializable {
 				// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
 				this.response.sendRedirect(request.getContextPath()+"/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing.xhtml");
 			} catch (IOException e) {
+				log.error("Redirect failure");
 				this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
 			}
 
 		} catch (ServletException e){
+			log.error("Login failure");
 			this.context.addMessage(null, new FacesMessage("Login falhou."));
 		}
 	}
 
 	public void logout(){
 		
+		log.info("Doing logout");
+		log.debug("User: "+ currentUser.getEmail());
+
 		this.context = FacesContext.getCurrentInstance();
 		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
 		this.response = (HttpServletResponse) context.getExternalContext().getResponse();
@@ -150,9 +169,11 @@ public class UserSessionManagement implements Serializable {
 
 
 		} catch (ServletException e) {
+			log.error("Logout failure");
 			this.context.addMessage(null, new FacesMessage("Logout falhou."));
 		} catch (IOException e) {
-			this.context.addMessage(null, new FacesMessage("Redirect falhou."));
+			log.error("Redirect failure");
+			this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
 		}
 	}
 
@@ -182,17 +203,31 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public void changePassword (){
+		log.info("Changing password");
+		log.debug("User: "+ currentUser.getEmail());
+
 		if(this.userBean.checkPassword(this.currentUser, password)){
 			this.currentUser.setPassword(newPassword);
 			this.userBean.updatePassword(currentUser);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Password alterada com sucesso."));
-		}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Password errada", ""));
+			FacesContext.getCurrentInstance()
+				.addMessage(null, new FacesMessage("Password alterada com sucesso."));
+			log.info("Successfully changed password");
+		}else {
+			log.error("Wrong password");
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Password errada", ""));
+		}
 	}
 
-	// Novo utilizador com ROLE_CANDIDATE. Se vem do signup: boolean createdByAdmin=false. Se é criado por admin: boolean createdByAdmin=true
-	public void newUser(String email, String password, String firstName, String lastName, Date birthday,  String address, String city,
-			String homePhone, String mobilePhone, String country, String course, String school, String linkedin, boolean createdByAdmin,
+	// Novo utilizador com ROLE_CANDIDATE. Se vem do signup: boolean createdByAdmin=false.
+	// Se é criado por admin: boolean createdByAdmin=true
+	public void newUser(String email, String password, String firstName, String lastName,
+			Date birthday, String address, String city,
+			String homePhone, String mobilePhone, String country, String course, String school, 
+			String linkedin, boolean createdByAdmin,
 			boolean admin, boolean manager, boolean interviewer){
+		
+		log.info("Creating new user (candidate)");
 
 		// Verifica primeiro se o email já está a uso
 		if(this.userBean.findUserByEmail(email)==null){
@@ -208,7 +243,8 @@ public class UserSessionManagement implements Serializable {
 			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);	
 
 			// Atributos do UserInfoEntity do respectivo UserEntity
-			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, address, city, homePhone, mobilePhone, country, course, school, null, newUser);
+			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, address, city, homePhone, mobilePhone, 
+					country, course, school, null, newUser);
 
 			newUser.setUserInfo(newUserInfo);
 
@@ -219,22 +255,36 @@ public class UserSessionManagement implements Serializable {
 			}
 			// Se foi criado à mão, fecha o dialog (Index.xhtml)
 			else {
+				log.error("Open pop-up to change temporary password");
 				RequestContext requestContext = RequestContext.getCurrentInstance();
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Por favor mude a sua password temporária.", ""));
+				FacesContext.getCurrentInstance().addMessage(null, 
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Por favor mude a sua password temporária.", ""));
 				requestContext.execute("PF('signup').hide();");
 			}
 
 			// Grava o UserEntity
 			this.userBean.save(newUser);
 			
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
-			if(createdByAdmin)FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+			log.info("Successfully created new user (candidate)");
+			log.debug("New user: "+ newUser.getEmail());
 
-		}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+			FacesContext.getCurrentInstance().addMessage(null, 
+					new FacesMessage("Novo Utilizador criado com sucesso: "+email));
+			if(createdByAdmin)FacesContext.getCurrentInstance().
+					addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+
+		}else {
+			log.info("Registration failure: the email already exists");
+			FacesContext.getCurrentInstance().
+				addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+		}
 	}
 
 	// Novo utilizador criado por um admin sem o ROLE_CANDIDATE
-	public boolean newUserNC (String email, String password, String firstName, String lastName, boolean admin, boolean manager, boolean interviewer) {
+	public boolean newUserNC (String email, String password, String firstName,
+			String lastName, boolean admin, boolean manager, boolean interviewer) {
+
+		log.info("Creating new user (internal)");
 
 		// Verifica primeiro se o email já está a uso
 		if(this.userBean.findUserByEmail(email)==null){
@@ -264,7 +314,13 @@ public class UserSessionManagement implements Serializable {
 		}else return false;
 	}
 
-	public void updateUserInfo(String firstName, String lastName, String address, String city, String homePhone, String mobilePhone, String country, String course, String school, String linkedin) {
+	public void updateUserInfo(String firstName, String lastName, String address, 
+			String city, String homePhone, String mobilePhone, String country, 
+			String course, String school, String linkedin) {
+
+		log.info("Updating user info");
+		log.debug("New user: "+ currentUser.getEmail());
+
 		this.currentUser.setFirstName(firstName);
 		this.currentUser.setLastName(lastName);
 
