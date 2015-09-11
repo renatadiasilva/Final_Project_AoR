@@ -6,7 +6,7 @@ import java.util.List;
 
 import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
+//import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import javax.ejb.EJB;
@@ -61,6 +61,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 		log.info("Finding position by exact code");
 		// code is unique
 		List<PositionEntity> pos = positionDAO.findPositionsByCode(positionCode.toUpperCase());
+		if (pos == null) return null; // 0 results: code not found
 		if (pos.size() == 1) return pos.get(0); // 1 result: code found
 		return null; // 0 results: code not found
 	}
@@ -139,18 +140,36 @@ public class PositionEJBImp implements PositionEJBInterface {
 		return positionDAO.findPositionsByStatus("open");
 	}
 
-	//tirar daqui
 	@Override
 	public List<PositionEntity> findPositionsByCandidate(
 			UserEntity candidate) {
 		log.info("Finding positions associated to a given candidate");
 		// colocar isto fora...
-		List<PositionEntity> listP = new ArrayList<PositionEntity>();
-		List<SubmissionEntity> listS = candidate.getSubmissions();
-		for (SubmissionEntity s : listS)
-			listP.add(s.getPosition());
-		return listP; //order by??
-//		return positionDAO.findPositionsByCandidate(candidate);
+//		List<PositionEntity> listP = new ArrayList<PositionEntity>();
+//		List<SubmissionEntity> listS = candidate.getSubmissions();
+//		for (SubmissionEntity s : listS)
+//			listP.add(s.getPosition());
+//		return listP; //order by??
+		return positionDAO.findPositionsByCandidate(candidate);
+		
+	}
+
+	@Override
+	public boolean alreadyCandidateOfPosition(
+			UserEntity candidate, PositionEntity position) {
+		log.info("Find if a positions is already associated to a given candidate");
+		// colocar isto fora...
+//		List<SubmissionEntity> listS = candidate.getSubmissions();
+//		for (SubmissionEntity s : listS)
+//			if (s.getPosition().equals(position)) return true;
+//		return false;
+
+		// ou então usar query
+		List<PositionEntity> pos = positionDAO.findByPositionAndCandidate(candidate, position);
+		if (pos == null) return false; // no previouse submission exists
+		if (pos.size() == 1) return true; // the candidate is already associated to the position
+		return false; // no previouse submission exists
+		
 	}
 
 	@Override

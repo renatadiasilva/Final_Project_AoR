@@ -34,5 +34,6 @@ public interface PositionEJBInterface {
 	public abstract List<PositionEntity> findPositionsByKeyword(String keyword);
 	public abstract List<PositionEntity> findPositionsByKeywordByManager(String keyword, UserEntity positionManager);
 	public abstract List<PositionEntity> findPositionsByCandidate(UserEntity candidate); //??submission SIIIIM
+	public abstract boolean alreadyCandidateOfPosition(UserEntity candidate, PositionEntity position);
 	
 }

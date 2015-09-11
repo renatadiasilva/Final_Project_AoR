@@ -107,6 +107,7 @@ public class UserEJBImp implements UserEJBInterface {
 		log.info("Finding user by exact email");
 		// email is unique
 		List<UserEntity> u = userDAO.findUserByEmail(email.toUpperCase());
+		if (u == null) return null; // 0 results: email not found
 		if (u.size() == 1) return u.get(0); // 1 result: email found
 		return null; // 0 results: email not found
 	}
