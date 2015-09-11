@@ -22,7 +22,7 @@ public class AdminNewUserCDI {
 	UserSessionManagement userSessionManagement;
 
 	// UserEntity
-	private String email, password, firstName, lastName;
+	private String email, firstName, lastName;
 
 	// UserInfoEntity
 	private String address, city, homePhone, mobilePhone, country, course, school, linkedin;
@@ -34,21 +34,14 @@ public class AdminNewUserCDI {
 	public AdminNewUserCDI() {
 	}
 
-	public void newUser(){
-		this.password=this.userSessionManagement.getRandomPass();
-		
-		System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+birthday+" "+address+" "+city+" "+homePhone+" "+mobilePhone+" "+country+" "+course+" "+school+" "+linkedin+" "+true+" "+admin+" "+manager+" "+interviewer);
-		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, city, homePhone, mobilePhone, country, course, school, linkedin, true, admin, manager, interviewer);
+	public void newUser(){		
+		this.userSessionManagement.newUser(email, userSessionManagement.getRandomPass(), firstName, lastName, birthday, address, city, homePhone, mobilePhone, country, course, school, linkedin, true, admin, manager, interviewer);
 	}
 
 	public void newUserNC(){
 		if(this.admin||this.manager||this.interviewer){
-			this.password=this.userSessionManagement.getRandomPass();
 			
-			if(this.userSessionManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer)){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
-			}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+			this.userSessionManagement.newUserNC(email, userSessionManagement.getRandomPass(), firstName, lastName, admin, manager, interviewer);
 			
 		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Defina o tipo de utilizador."));
 	}

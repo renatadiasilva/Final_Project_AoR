@@ -124,7 +124,7 @@ public class PositionEntity implements Serializable {
 	private String positionCode;
 
 	@NotNull
-	@Column(name = "title", nullable = false)
+	@Column(name = "title", nullable = false, length = 40)
 	private String title;
 
 	@ElementCollection

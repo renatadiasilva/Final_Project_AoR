@@ -39,12 +39,14 @@
 		<p:outputLabel value="Primeiro Nome: " for="adminSignup-firstName" />
 		<p:inputText id="adminSignup-firstName"
 			value="#{adminNewUserCDI.firstName}" size="35" required="true"
-			requiredMessage="Insira o primeiro nome." />
+			requiredMessage="Insira o primeiro nome."
+			maxlength="#{max.length.userFirstName()}" />
 
 		<p:outputLabel value="Sobrenome: " for="adminSignup-lastName" />
 		<p:inputText id="adminSignup-lastName"
 			value="#{adminNewUserCDI.lastName}" size="35" required="true"
-			requiredMessage="Insira o sobrenome" />
+			requiredMessage="Insira o sobrenome"
+			maxlength="#{max.length.userLastName()}" />
 
 	</ui:composition>
 
