@@ -252,6 +252,7 @@ public class UserEJBImp implements UserEJBInterface {
 				address, city, country, course, school, null);
 	}
 
+	// tirar?
 	@Override
 	public List<UserEntity> findCandidatesByKeywordShort(String keyword) {
 		log.info("Finding candidates by keyword");

@@ -166,7 +166,7 @@ public class InitDB {
 		cal.set(Calendar.YEAR, 1985);
 		
 		newUserInfo = new UserInfoEntity(cal.getTime(), "Avenida Sá da Bandeira", "Coimbra",
-				null, "912993207", "Portugal", "Direito", "Universidade de Porto Alegre, Brasil",
+				null, "912993207", "Brasil", "Direito", "Universidade de Porto Alegre, Brasil",
 				null, newUser);
 		
 		newUser.setUserInfo(newUserInfo);
