@@ -70,26 +70,32 @@ public class UsersSearchCDI {
 	public void searchByEmail() {
 		log.info("Searching for internal users by email");
 		String pattern = preparePattern(email);
-		log.debug("Search word: "+pattern);
+		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findUsersByEmail(pattern);
 	}
 
 	public void searchByName() {
 		log.info("Searching for internal users by name (first/second)");
 		String pattern = preparePattern(fname);
-		log.debug("Search word: "+pattern);
+		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findUsersByName(pattern);
 	}
 
 	public void searchByKeyword() {
 		log.info("Searching for internal users by keyword");
 		String pattern = preparePattern(keyword);
-		log.debug("Search word: "+pattern);
+		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findUsersByKeyword(pattern);
 	}
 
 	// CANDIDATES
 	
+	public void searchCandidateByKeyword() {
+		log.info("Searching for internal users by keyword");
+		String pattern = preparePattern(keyword);
+		log.debug("Internal search string: "+pattern);
+		this.ulist = userEJB.findUsersByKeyword(pattern);
+	}
 	
 	
 	// getters e setters
