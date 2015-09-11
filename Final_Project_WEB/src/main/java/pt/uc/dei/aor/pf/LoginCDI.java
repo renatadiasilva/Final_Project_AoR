@@ -1,10 +1,10 @@
-package pt.uc.dei.aor.pf.DGeRS;
+package pt.uc.dei.aor.pf;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
+import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 @Named
 @RequestScoped

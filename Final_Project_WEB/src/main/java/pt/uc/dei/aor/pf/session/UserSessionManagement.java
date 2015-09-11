@@ -1,4 +1,4 @@
-package pt.uc.dei.aor.pf.DGeRS.session;
+package pt.uc.dei.aor.pf.session;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -16,9 +16,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.RandomStringUtils;
 import org.primefaces.context.RequestContext;
 
-import pt.uc.dei.aor.pf.DGeRS.credentials.CredentialsCatchFilter;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
+import pt.uc.dei.aor.pf.credentials.CredentialsCatchFilter;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 

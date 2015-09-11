@@ -1,4 +1,4 @@
-package pt.uc.dei.aor.pf.DGeRS.credentials;
+package pt.uc.dei.aor.pf.credentials;
 
 import java.io.IOException;
 

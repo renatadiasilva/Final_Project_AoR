@@ -1,4 +1,4 @@
-package pt.uc.dei.aor.pf.DGeRS;
+package pt.uc.dei.aor.pf;
 
 import java.util.ArrayList;
 import java.util.Calendar;

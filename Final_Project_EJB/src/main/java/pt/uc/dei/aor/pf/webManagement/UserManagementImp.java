@@ -1,27 +1,28 @@
 package pt.uc.dei.aor.pf.webManagement;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+//import javax.ejb.Stateless;
+//import javax.faces.application.FacesMessage;
+//import javax.faces.context.FacesContext;
+//import javax.servlet.ServletException;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
 
-import pt.uc.dei.aor.pf.beans.TestUserInterface;
+
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.entities.UserInfoEntity;
+//import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+//import java.io.IOException;
+//import java.util.ArrayList;
+//import java.util.List;
 
 
 //@Stateless
 public class UserManagementImp implements UserManagementInterface {
 
 	@EJB
-	TestUserInterface testUserBean;
+	UserEJBInterface testUserBean;
 	
 	protected UserEntity currentUser;
 
@@ -92,6 +93,7 @@ public class UserManagementImp implements UserManagementInterface {
 //		}
 	}
 
+	@SuppressWarnings("unused")
 	private void setAvailableRoles() {
 		for (String s: this.currentUser.getRoles()){
 			if(s.equals(UserEntity.ROLE_ADMIN)) this.admin=true;

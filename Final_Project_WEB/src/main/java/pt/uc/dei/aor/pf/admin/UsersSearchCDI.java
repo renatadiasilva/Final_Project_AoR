@@ -1,4 +1,4 @@
-package pt.uc.dei.aor.pf.DGeRS.admin;
+package pt.uc.dei.aor.pf.admin;
 
 import java.text.Normalizer;
 import java.util.List;

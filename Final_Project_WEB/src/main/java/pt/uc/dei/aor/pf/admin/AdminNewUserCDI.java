@@ -1,36 +1,56 @@
-package pt.uc.dei.aor.pf.DGeRS;
+package pt.uc.dei.aor.pf.admin;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import pt.uc.dei.aor.pf.DGeRS.session.UserSessionManagement;
+import pt.uc.dei.aor.pf.session.UserSessionManagement;
+
 
 @Named
 @RequestScoped
-public class SignupCDI {
-	
+public class AdminNewUserCDI {
+
 	@Inject
 	UserSessionManagement userSessionManagement;
-	
+
 	// UserEntity
 	private String email, password, firstName, lastName;
-	
+
 	// UserInfoEntity
 	private String address, city, homePhone, mobilePhone, country, course, school, linkedin;
 
 	private Date birthday;
-	
-	public SignupCDI() {
+
+	private boolean admin, manager, interviewer, candidate;
+
+	public AdminNewUserCDI() {
 	}
-	
-	public void signUp(){
-		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, 
-				city, homePhone,mobilePhone, country, course, school, linkedin, false, false, false, false);
+
+	public void newUser(){
+		this.password=this.userSessionManagement.getRandomPass();
+		
+		System.out.println(email+" "+password+" "+firstName+" "+lastName+" "+birthday+" "+address+" "+city+" "+homePhone+" "+mobilePhone+" "+country+" "+course+" "+school+" "+linkedin+" "+true+" "+admin+" "+manager+" "+interviewer);
+		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, city, homePhone, mobilePhone, country, course, school, linkedin, true, admin, manager, interviewer);
+	}
+
+	public void newUserNC(){
+		if(this.admin||this.manager||this.interviewer){
+			this.password=this.userSessionManagement.getRandomPass();
+			
+			if(this.userSessionManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer)){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+			}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+			
+		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Defina o tipo de utilizador."));
 	}
 
 	public String getEmail() {
@@ -39,14 +59,6 @@ public class SignupCDI {
 
 	public void setEmail(String email) {
 		this.email = email.trim();
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password.trim();
 	}
 
 	public String getFirstName() {
@@ -141,9 +153,41 @@ public class SignupCDI {
 		Calendar minDate=new GregorianCalendar(1900,0,1);
 		return minDate.getTime();
 	}
-	
+
 	public Date getMaxDate() {
 		return new Date();
 	}
-	
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	public boolean isManager() {
+		return manager;
+	}
+
+	public void setManager(boolean manager) {
+		this.manager = manager;
+	}
+
+	public boolean isInterviewer() {
+		return interviewer;
+	}
+
+	public void setInterviewer(boolean interviewer) {
+		this.interviewer = interviewer;
+	}
+
+	public boolean isCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(boolean candidate) {
+		this.candidate = candidate;
+	}
+
 }
