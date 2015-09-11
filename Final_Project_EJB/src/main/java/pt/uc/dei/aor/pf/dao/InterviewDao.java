@@ -46,4 +46,18 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		return super.findSomeResults("Interview.findScheduledInterviewsByCandidate", parameters);
 	}
 	
+	public List<InterviewEntity> findByDateAndInterviewer(Date date, UserEntity interviewer) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date", date); // format date!!!
+		parameters.put("id", interviewer);
+		return super.findSomeResults("Interview.findByDateAndInterviewer", parameters);
+	}
+	
+	public List<InterviewEntity> findByDateAndCandidate(Date date, UserEntity interviewer) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date", date);
+		parameters.put("id", interviewer);
+		return super.findSomeResults("Interview.findByDateAndCandidate", parameters);
+	}
+
 }

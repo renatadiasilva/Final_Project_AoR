@@ -19,5 +19,7 @@ public interface InterviewEJBInterface {
 	public abstract List<InterviewEntity> findCarriedOutInterviews(Date date1, Date date2);
 	public abstract List<InterviewEntity> findScheduledInterviewsByCandidate(UserEntity candidate);
 	public abstract List<InterviewEntity> findInterviewsByPosition(PositionEntity position); //needed?? gestor
+	boolean interviewerHasDateConflit(Date date, UserEntity interviewer);
+	boolean candidateHasDateConflit(Date date, UserEntity candidate);
 
 }
