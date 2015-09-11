@@ -23,12 +23,14 @@
 						<p:outputLabel value="Primeiro Nome: " for="signup-firstName" />
 						<p:inputText id="signup-firstName"
 							value="#{editUserInfoCDI.firstName}" size="35" required="true"
-							requiredMessage="Insira o primeiro nome." />
+							requiredMessage="Insira o primeiro nome."
+							maxlength="#{max.length.userFirstName()}" />
 
 						<p:outputLabel value="Último Nome: " for="signup-lastName" />
 						<p:inputText id="signup-lastName"
 							value="#{editUserInfoCDI.lastName}" size="35" required="true"
-							requiredMessage="Insira o sobrenome" />
+							requiredMessage="Insira o sobrenome"
+							maxlength="#{max.length.userLastName()}" />
 
 						<p:outputLabel value="Data de Nascimento: " for="signup-birthday" />
 						<p:calendar id="signup-birthday"
@@ -38,7 +40,7 @@
 
 						<p:outputLabel value="Telefone: " for="signup-homePhone" />
 						<p:inputMask mask="999 999 999" id="signup-homePhone"
-							value="#{editUserInfoCDI.homePhone}" size="35" maxlength="20" />
+							value="#{editUserInfoCDI.homePhone}" size="35" />
 
 						<p:outputLabel value="Telefone móvel: " for="signup-mobilePhone" />
 						<p:inputMask mask="999 999 999" id="signup-mobilePhone"
@@ -54,20 +56,22 @@
 						<h:panelGroup>
 							<p:inputTextarea id="signup-adress"
 								value="#{editUserInfoCDI.address}" cols="35" rows="3"
-								maxlength="200" counter="maxAdress" counterTemplate=" - {0}"
-								required="true" requiredMessage="Insira a morada." />
+								counter="maxAdress" counterTemplate=" - {0}" required="true"
+								requiredMessage="Insira a morada."
+								maxlength="#{max.length.userInfoAddress()}" />
 							<h:outputText id="maxAdress" />
 						</h:panelGroup>
 
 						<p:outputLabel value="Cidade: " for="signup-city" />
 						<p:inputText id="signup-city" value="#{editUserInfoCDI.city}"
-							size="35" maxlength="40" required="true"
-							requiredMessage="Insira a cidade." />
+							size="35" required="true" requiredMessage="Insira a cidade."
+							maxlength="#{max.length.userInfoCity()}" />
 
 						<p:outputLabel value="País: " for="signup-country" />
 						<p:inputText id="signup-country"
-							value="#{editUserInfoCDI.country}" size="35" maxlength="40"
-							required="true" requiredMessage="Insira o país." />
+							value="#{editUserInfoCDI.country}" size="35" required="true"
+							requiredMessage="Insira o país."
+							maxlength="#{max.length.userInfoCountry()}" />
 
 						<p:outputLabel />
 						<p:outputLabel />
@@ -76,17 +80,17 @@
 
 						<p:outputLabel value="Curso: " for="signup-course" />
 						<p:inputText id="signup-course" value="#{editUserInfoCDI.course}"
-							size="35" maxlength="40" required="true"
-							requiredMessage="Insira o curso." />
+							size="35" required="true" requiredMessage="Insira o curso."
+							maxlength="#{max.length.userInfoCourse()}" />
 
 						<p:outputLabel value="Escola: " for="signup-school" />
-						<p:inputText id="signup-school" value="#{editUserInfoCDI.course}"
-							size="35" maxlength="40" required="true"
-							requiredMessage="Insira a escola." />
+						<p:inputText id="signup-school" value="#{editUserInfoCDI.school}"
+							size="35" required="true" requiredMessage="Insira a escola."
+							maxlength="#{max.length.userInfoSchool()}" />
 
 						<p:outputLabel value="LinkedIn: " for="signup-linkedin" />
 						<p:inputText id="signup-linkedin"
-							value="#{editUserInfoCDI.linkedin}" size="35" maxlength="40" />
+							value="#{editUserInfoCDI.linkedin}" size="35" />
 
 					</h:panelGrid>
 

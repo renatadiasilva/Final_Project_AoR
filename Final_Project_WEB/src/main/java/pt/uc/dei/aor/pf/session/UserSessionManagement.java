@@ -37,7 +37,7 @@ import java.util.List;
 public class UserSessionManagement implements Serializable {
 
 	private static final Logger log = LoggerFactory.getLogger(UserSessionManagement.class);
-	
+
 	private static final long serialVersionUID = 2527354852846254610L;
 
 	@Inject
@@ -55,7 +55,7 @@ public class UserSessionManagement implements Serializable {
 	private HttpServletRequest request;
 
 	private HttpServletResponse response;
-	
+
 	private HttpSession session;
 
 	private String randomPass, password, newPassword;
@@ -71,10 +71,10 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public void checkForUser(){
-		
+
 		log.info("Checking for logged user");
 		log.debug("User: "+ currentUser.getEmail());
-		
+
 		// ActionListener para as páginas Index.xhtml e Signup.xhtml
 		// Se já existe um user logado reencaminha para o respectivo Landing.xhtml
 		if(this.currentUser.getEmail()!=null){
@@ -103,7 +103,7 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public void login(String email, String password){
-		
+
 		log.info("Doing login");
 		log.debug("Login email: "+ email);
 
@@ -147,7 +147,7 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public void logout(){
-		
+
 		log.info("Doing logout");
 		log.debug("User: "+ currentUser.getEmail());
 
@@ -166,7 +166,6 @@ public class UserSessionManagement implements Serializable {
 
 			// Encaminha para...
 			this.response.sendRedirect(request.getContextPath()+"/Index.xhtml");
-
 
 		} catch (ServletException e) {
 			log.error("Logout failure");
@@ -210,12 +209,12 @@ public class UserSessionManagement implements Serializable {
 			this.currentUser.setPassword(newPassword);
 			this.userBean.updatePassword(currentUser);
 			FacesContext.getCurrentInstance()
-				.addMessage(null, new FacesMessage("Password alterada com sucesso."));
+			.addMessage(null, new FacesMessage("Password alterada com sucesso."));
 			log.info("Successfully changed password");
 		}else {
 			log.error("Wrong password");
 			FacesContext.getCurrentInstance()
-					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Password errada", ""));
+			.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Password errada", ""));
 		}
 	}
 
@@ -226,7 +225,7 @@ public class UserSessionManagement implements Serializable {
 			String homePhone, String mobilePhone, String country, String course, String school, 
 			String linkedin, boolean createdByAdmin,
 			boolean admin, boolean manager, boolean interviewer){
-		
+
 		log.info("Creating new user (candidate)");
 
 		// Verifica primeiro se o email já está a uso
@@ -264,24 +263,24 @@ public class UserSessionManagement implements Serializable {
 
 			// Grava o UserEntity
 			this.userBean.save(newUser);
-			
+
 			log.info("Successfully created new user (candidate)");
 			log.debug("New user: "+ newUser.getEmail());
 
 			FacesContext.getCurrentInstance().addMessage(null, 
 					new FacesMessage("Novo Utilizador criado com sucesso: "+email));
 			if(createdByAdmin)FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+			addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 
 		}else {
 			log.info("Registration failure: the email already exists");
 			FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+			addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
 		}
 	}
 
 	// Novo utilizador criado por um admin sem o ROLE_CANDIDATE
-	public boolean newUserNC (String email, String password, String firstName,
+	public void newUserNC (String email, String password, String firstName,
 			String lastName, boolean admin, boolean manager, boolean interviewer) {
 
 		log.info("Creating new user (internal)");
@@ -309,9 +308,10 @@ public class UserSessionManagement implements Serializable {
 
 			this.userBean.save(newUser);
 
-			return true;
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 
-		}else return false;
+		}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));;
 	}
 
 	public void updateUserInfo(String firstName, String lastName, String address, 
