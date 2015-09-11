@@ -21,7 +21,7 @@
 							<p:inputText id="search-email" value="#{usersSearchCDI.email}"
 								style="width: 85%; border: none;" />
 							<p:watermark for="search-email" value="Pesquisar por email" />
-							<p:commandButton actionListener="#{usersSearchCDI.searchTest()}"
+							<p:commandButton actionListener="#{usersSearchCDI.searchByEmail()}"
 								update="@form, messages" icon="ui-icon-search" style="width:10%" />
 						</h:panelGroup>
 					</f:facet>
