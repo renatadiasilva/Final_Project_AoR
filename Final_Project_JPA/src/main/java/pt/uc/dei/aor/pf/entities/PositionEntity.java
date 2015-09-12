@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.entities;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -87,15 +88,15 @@ public class PositionEntity implements Serializable {
 
 	private static final long serialVersionUID = -2368658385927790368L;
 
-	public static final String LISBOA="LISBOA";
-	public static final String PORTO="PORTO";
-	public static final String COIMBRA="COIMBRA";
+	public static final String LOCATION_LISBOA="LISBOA";
+	public static final String LOCATION_PORTO="PORTO";
+	public static final String LOCATION_COIMBRA="COIMBRA";
 
-	public static final String OPEN="Open";
-	public static final String CLOSED="Closed";
-	public static final String ONHOLD="on Hold";
+	public static final String STATUS_OPEN="Open";
+	public static final String STATUS_CLOSED="Closed";
+	public static final String STATUS_ONHOLD="on Hold";
 	// closed with hired people (just internal??)
-	public static final String FULFILLED="Closed and Fulfilled";
+	public static final String STATUS_FULFILLED="Closed and Fulfilled";
 
 	public static final String TECH_SSPA="SSPA";
 	public static final String TECH_DOTNET=".Net Development";
@@ -181,28 +182,28 @@ public class PositionEntity implements Serializable {
 	@JoinColumn(name = "default_script")
 	private ScriptEntity defaultScript;
 
-//	@ManyToMany(mappedBy="positions", cascade=CascadeType.ALL)
-//	@ManyToMany(mappedBy = "positions")
-	
-	// Dudu
 	@OneToMany
 	private List<SubmissionEntity> submissions;
 
 	public PositionEntity() {
 	}
 
-	public PositionEntity(Date openingDate, String positionCode,
-			List<String> locations, String currentState, int openings,
+	public PositionEntity(String title, List<String> locations, int openings,
 			Date closingDate, Date slaDate, UserEntity positionManager,
 			UserEntity positionCreator, String company, String technicalArea,
 			String description, List<String> advertisingChannels,
 			ScriptEntity defaultScript) {
-		this.openingDate = openingDate;
-		this.positionCode = positionCode;
+		this.title = title;
+		this.openingDate = new Date(); // today
+		Calendar cal = Calendar.getInstance();
+		this.positionCode = title.substring(0, (int) Math.min(3,title.length()))+
+				 cal.get(Calendar.DAY_OF_MONTH)+
+				(cal.get(Calendar.MONTH)+1)+cal.get(Calendar.YEAR); // do generation!
 		this.locations = locations;
-		this.status = currentState;
+		this.status = STATUS_OPEN;
 		this.openings = openings;
 		this.closingDate = closingDate; 
+		// use with days??
 		this.slaDate = slaDate;
 		this.positionManager = positionManager;
 		this.positionCreator = positionCreator;

@@ -87,13 +87,12 @@ public class ScriptEntity implements Serializable{
 	public ScriptEntity() {
 	}
 
-	public ScriptEntity(long id, ScriptEntity derivedFrom, String title,
-			Date creationDate, List<QuestionEntity> questions, String comments,
-			boolean reusable, UserEntity scriptCreator) {
-		this.id = id;
+	public ScriptEntity(ScriptEntity derivedFrom, String title,
+			List<QuestionEntity> questions, 
+			String comments, boolean reusable, UserEntity scriptCreator) {
 		this.derivedFrom = derivedFrom;
 		this.title = title;
-		this.creationDate = creationDate;
+		this.creationDate = new Date();
 		this.questions = questions;
 		this.comments = comments;
 		this.reusable = reusable;

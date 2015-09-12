@@ -109,8 +109,6 @@ public class CandidateSearchCDI {
 	
 	// acentos!!!!
 	
-	// phone
-
 	//	public void searchCandidatesByPositionOnly() {
 	//		log.info("Searching for candidates by position");
 	//		log.debug("Position: "+position.getPositionCode());
@@ -177,7 +175,6 @@ public class CandidateSearchCDI {
 				pattern7, pattern8);
 	}	
 	
-	//falta no test
 	public void searchCandidatesByKeyword() {
 		log.info("Searching for candidates by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);

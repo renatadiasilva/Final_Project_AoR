@@ -56,7 +56,7 @@ public class SubmissionEntity implements Serializable {
 	public static final String STATUS_SUBMITED  = "Submited";
 	public static final String STATUS_REJECTED  = "Rejected Submission";
 	public static final String STATUS_ACCEPTED  = "Accepted to Interview";
-	public static final String STATUS_SPROPOSAL = "Presented Proposal";  // automatismo????
+	public static final String STATUS_SPROPOSAL = "Submited Proposal";  // automatismo????
 	public static final String STATUS_RPROPOSAL = "Rejected Proposal";
 	public static final String STATUS_APROPOSAL = "Accepted Proposal";
 	public static final String STATUS_OPROPOSAL = "On Negotiation Proposal"; //"Offer Process (Negotiation)";
@@ -124,7 +124,7 @@ public class SubmissionEntity implements Serializable {
 
 	public SubmissionEntity(UserEntity candidate,
 			String motivationLetter, List<String> sources, boolean spontaneous) {
-		this.date = new Date();
+		this.date = new Date();  // yes??
 		this.candidate = candidate;
 		this.motivationLetter = motivationLetter;
 		this.sources = sources;
