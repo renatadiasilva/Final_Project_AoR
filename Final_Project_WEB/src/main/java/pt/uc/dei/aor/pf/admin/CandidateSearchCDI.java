@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.SearchPattern;
+import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
@@ -23,14 +25,15 @@ public class CandidateSearchCDI {
 	@EJB
 	private UserEJBInterface userEJB;
 
+	@EJB
+	private PositionEJBInterface positionEJB;
+
 	// search fields
 	private String email, fname, lname, keyword;
 	private String address, city, phone, country;
 	private String course, school;
 
-	//	PositionEntity position;  // testar (dado)
-
-	private UserEntity user;
+	private Long idPos;   // id=18, id=19
 
 	private List<UserEntity> ulist;
 
@@ -106,75 +109,84 @@ public class CandidateSearchCDI {
 		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findCandidatesBySchool(pattern);
 	}	
-	
+
 	// acentos!!!!
-	
-	//	public void searchCandidatesByPositionOnly() {
-	//		log.info("Searching for candidates by position");
-	//		log.debug("Position: "+position.getPositionCode());
-	//		this.ulist = userEJB.findCandidatesByPosition(position);
-	//	}	
 
-	//	public void searchCandidatesByPositionShort() {
-	//		log.info("Searching for candidates by position and email/name");
-	//		log.debug("Position: "+position.getPositionCode());
-	// 		String pattern1 = SearchPattern.preparePattern(email);
-	//		log.debug("Internal search string (1): "+pattern1);
-	//		String pattern2 = SearchPattern.preparePattern(fname);
-	//		log.debug("Internal search string (2): "+pattern2);
-	//		String pattern3 = SearchPattern.preparePattern(lname);
-	//		log.debug("Internal search string (3): "+pattern3);
-	//		this.ulist = userEJB.findCandidatesByPosition(pattern1, 
-	//			pattern2, partern3, position);
-	//	}	
+	public void searchCandidatesByPositionOnly() {
+		log.info("Searching for candidates by position");
+		PositionEntity pos = positionEJB.find(idPos);
+		if (pos != null) {
+			log.debug("Position: "+pos.getPositionCode());
+			this.ulist = userEJB.findCandidatesByPosition(pos);
+		} else log.error("No position with id "+idPos);
+	}	
 
-	//	public void searchCandidatesByPositionLong() {
-	//		log.info("Searching for candidates by position and more attributes");
-	//		log.debug("Position: "+position.getPositionCode());
-	//		String pattern1 = SearchPattern.preparePattern(email);
-	//		log.debug("Internal search string (1): "+pattern1);
-	//		String pattern2 = SearchPattern.preparePattern(fname);
-	//		log.debug("Internal search string (2): "+pattern2);
-	//		String pattern3 = SearchPattern.preparePattern(lname);
-	//		log.debug("Internal search string (3): "+pattern3);
-	//		String pattern4 = SearchPattern.preparePattern(address);
-	//		log.debug("Internal search string (4): "+pattern4);
-	//		String pattern5 = SearchPattern.preparePattern(city);
-	//		log.debug("Internal search string (5): "+pattern5);
-	//		String pattern6 = SearchPattern.preparePattern(country);
-	//		log.debug("Internal search string (6): "+pattern6);
-	//		String pattern7 = SearchPattern.preparePattern(course);
-	//		log.debug("Internal search string (7): "+pattern7);
-	//		String pattern8 = SearchPattern.preparePattern(school);
-	//		log.debug("Internal search string (8): "+pattern8);
-	//		this.ulist = userEJB.findCandidatesByPosition(pattern1, 
-	//			pattern2, pattern3, pattern4, pattern5, pattern6,
-	//			pattern7, pattern8, position);
-	//}	
+	public void searchCandidatesByPositionShort() {
+		log.info("Searching for candidates by position and email/name");
+		PositionEntity pos = positionEJB.find(idPos);
+		if (pos != null) {
+			log.debug("Position: "+pos.getPositionCode());
+			String pattern1 = SearchPattern.preparePattern(email);
+			log.debug("Internal search string (email): "+pattern1);
+			String pattern2 = SearchPattern.preparePattern(fname);
+			log.debug("Internal search string (first name): "+pattern2);
+			String pattern3 = SearchPattern.preparePattern(lname);
+			log.debug("Internal search string (last name): "+pattern3);
+			this.ulist = userEJB.findCandidatesByPosition(pattern1, 
+					pattern2, pattern3, pos);
+		}		
+	}	
+
+	public void searchCandidatesByPositionLong() {
+		log.info("Searching for candidates by position and more attributes");
+		PositionEntity pos = positionEJB.find(idPos);
+		if (pos != null) {
+			log.debug("Position: "+pos.getPositionCode());
+			String pattern1 = SearchPattern.preparePattern(email);
+			log.debug("Internal search string (email): "+pattern1);
+			String pattern2 = SearchPattern.preparePattern(fname);
+			log.debug("Internal search string (first name): "+pattern2);
+			String pattern3 = SearchPattern.preparePattern(lname);
+			log.debug("Internal search string (last name): "+pattern3);
+			String pattern4 = SearchPattern.preparePattern(address);
+			log.debug("Internal search string (address): "+pattern4);
+			String pattern5 = SearchPattern.preparePattern(city);
+			log.debug("Internal search string (city): "+pattern5);
+			String pattern6 = SearchPattern.preparePattern(country);
+			log.debug("Internal search string (country): "+pattern6);
+			String pattern7 = SearchPattern.preparePattern(course);
+			log.debug("Internal search string (course): "+pattern7);
+			String pattern8 = SearchPattern.preparePattern(school);
+			log.debug("Internal search string (school): "+pattern8);
+			this.ulist = userEJB.findCandidatesByPosition(pattern1, 
+					pattern2, pattern3, pattern4, pattern5, pattern6,
+					pattern7, pattern8, pos);
+		}		
+	}	
 
 	public void searchCandidates() {
 		log.info("Searching for candidates by several attributes");
 		String pattern1 = SearchPattern.preparePattern(email);
-		log.debug("Internal search string (1): "+pattern1);
+		log.debug("Internal search string (email): "+pattern1);
 		String pattern2 = SearchPattern.preparePattern(fname);
-		log.debug("Internal search string (2): "+pattern2);
+		log.debug("Internal search string (first name): "+pattern2);
 		String pattern3 = SearchPattern.preparePattern(lname);
-		log.debug("Internal search string (3): "+pattern3);
+		log.debug("Internal search string (last name): "+pattern3);
 		String pattern4 = SearchPattern.preparePattern(address);
-		log.debug("Internal search string (4): "+pattern4);
+		log.debug("Internal search string (address): "+pattern4);
 		String pattern5 = SearchPattern.preparePattern(city);
-		log.debug("Internal search string (5): "+pattern5);
+		log.debug("Internal search string (city): "+pattern5);
 		String pattern6 = SearchPattern.preparePattern(country);
-		log.debug("Internal search string (6): "+pattern6);
+		log.debug("Internal search string (country): "+pattern6);
 		String pattern7 = SearchPattern.preparePattern(course);
-		log.debug("Internal search string (7): "+pattern7);
+		log.debug("Internal search string (course): "+pattern7);
 		String pattern8 = SearchPattern.preparePattern(school);
-		log.debug("Internal search string (8): "+pattern8);
+		log.debug("Internal search string (school): "+pattern8);
 		this.ulist = userEJB.findCandidates(pattern1, 
 				pattern2, pattern3, pattern4, pattern5, pattern6,
 				pattern7, pattern8);
 	}	
-	
+
 	public void searchCandidatesByKeyword() {
 		log.info("Searching for candidates by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);
@@ -206,14 +218,6 @@ public class CandidateSearchCDI {
 
 	public void setLname(String lname) {
 		this.lname = lname;
-	}
-
-	public UserEntity getUser() {
-		return user;
-	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
 	}
 
 	public List<UserEntity> getUlist() {
@@ -278,6 +282,14 @@ public class CandidateSearchCDI {
 
 	public void setSchool(String school) {
 		this.school = school;
+	}
+
+	public Long getIdPos() {
+		return idPos;
+	}
+
+	public void setIdPos(Long idPos) {
+		this.idPos = idPos;
 	}
 
 }

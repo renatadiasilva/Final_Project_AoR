@@ -18,48 +18,60 @@
 					action="#{candidateSearchCDI.searchAllCandidates()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (email))"
+				<p:commandButton value="Candidatos (email)"
 					action="#{candidateSearchCDI.searchCandidatesByEmail()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (1º nome))"
+				<p:commandButton value="Candidatos (1º nome)"
 					action="#{candidateSearchCDI.searchCandidatesByFirstName()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (sobrenome))"
+				<p:commandButton value="Candidatos (sobrenome)"
 					action="#{candidateSearchCDI.searchCandidatesByLastName()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (morada))"
+				<p:commandButton value="Candidatos (morada)"
 					action="#{candidateSearchCDI.searchCandidatesByAddress()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (cidade))"
+				<p:commandButton value="Candidatos (cidade)"
 					action="#{candidateSearchCDI.searchCandidatesByCity()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (tlf/tlm))"
+				<p:commandButton value="Candidatos (tlf/tlm)"
 					action="#{candidateSearchCDI.searchCandidatesByPhone()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (país))"
+				<p:commandButton value="Candidatos (país)"
 					action="#{candidateSearchCDI.searchCandidatesByCountry()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (curso))"
+				<p:commandButton value="Candidatos (curso)"
 					action="#{candidateSearchCDI.searchCandidatesByCourse()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (escola))"
+				<p:commandButton value="Candidatos (escola)"
 					action="#{candidateSearchCDI.searchCandidatesBySchool()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (todos os campos))"
+				<p:commandButton value="Candidatos (todos os campos)"
 					action="#{candidateSearchCDI.searchCandidates()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (keyword))"
+				<p:commandButton value="Candidatos (keyword)"
 					action="#{candidateSearchCDI.searchCandidatesByKeyword()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Candidatos (posição)"
+					action="#{candidateSearchCDI.searchCandidatesByPositionOnly()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Candidatos (posição e atributos short)"
+					action="#{candidateSearchCDI.searchCandidatesByPositionShort()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Candidatos (posição e atributos)"
+					action="#{candidateSearchCDI.searchCandidatesByPositionLong()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 			</h:panelGrid>
@@ -106,6 +118,10 @@
 				<p:inputText id="search-keyword" value="#{candidateSearchCDI.keyword}"
 					size="35" />
 
+				<p:outputLabel value="Id da posição: " for="search-idP" />
+				<p:inputText id="search-idP" value="#{candidateSearchCDI.idPos}"
+					size="35" />
+
 			</h:panelGrid>
 
 			<p:dataTable var="u" value="#{candidateSearchCDI.ulist}">
@@ -120,7 +136,7 @@
 					<h:outputText value="#{u.lastName}" />
 				</p:column>
 				<p:column headerText="Data N">
-					<h:outputText value="#{u.userInfo.birthday}" />
+					<h:outputText value="#{u.userInfo.birthDate}" />
 				</p:column>
 				<p:column headerText="Morada">
 					<h:outputText value="#{u.userInfo.address}" />

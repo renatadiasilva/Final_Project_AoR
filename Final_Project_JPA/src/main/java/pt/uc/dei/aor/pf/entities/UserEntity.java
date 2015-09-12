@@ -65,7 +65,7 @@ import javax.validation.constraints.NotNull;
 					+ " UPPER(u.city) LIKE :city AND UPPER(u.country) LIKE :country AND"
 					+ " UPPER(u.course) LIKE :course AND UPPER(u.school) LIKE :school"
 					+ " ORDER BY u.owner.email"),
-	@NamedQuery(name = "UserInfo.findCandidatesByPosition",
+	@NamedQuery(name = "User.findCandidatesByPosition",
 			query = "SELECT u.owner FROM UserInfoEntity u JOIN u.owner.submissions s WHERE"
 					+ " UPPER(u.owner.email) LIKE :email AND"
 					+ " UPPER(u.owner.firstName) LIKE :fname AND"
