@@ -86,10 +86,9 @@ public class UserDao extends GenericDao<UserEntity> {
 		return super.findSomeResults("User.findCandidatesBySeveralAttributes", parameters);
 	}
 
-	public List<UserEntity> findCandidatesByPhone(String hPhone, String mPhone) {
+	public List<UserEntity> findCandidatesByPhone(String phone) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("hphone", hPhone);
-		parameters.put("mphone", mPhone);
+		parameters.put("phone", phone);
 		return super.findSomeResults("User.findCandidatesByPhone", parameters);
 	}
 

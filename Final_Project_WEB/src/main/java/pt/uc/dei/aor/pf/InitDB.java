@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
@@ -34,6 +35,8 @@ public class InitDB {
 
 		UserEntity newUser = new UserEntity();
 		List<String> roles = new ArrayList<String>();
+		SubmissionEntity newSub = new SubmissionEntity();
+		List<String> sources = new ArrayList<String>();
 
 		roles.add(UserEntity.ROLE_ADMIN);
 		roles.add(UserEntity.ROLE_MANAGER);
@@ -72,7 +75,6 @@ public class InitDB {
 
 		this.userEJB.save(newUser);
 
-		
 		roles.clear();
 		roles.add(UserEntity.ROLE_CANDIDATE);
 
@@ -92,6 +94,21 @@ public class InitDB {
 
 		this.userEJB.save(newUser);
 
+		sources.add(SubmissionEntity.SOURCE_EXPRESSO);
+		sources.add(SubmissionEntity.SOURCE_FACEBOOK);
+
+		newSub = new SubmissionEntity(newUser, "\\path\\ml.pdf", sources, false);
+//		newSub.setPosition(position);
+//		newSub.setAssociatedBy(admin/gestor);
+		cal = Calendar.getInstance();
+		cal.set(2015, 0, 15);
+		newSub.setDate(cal.getTime());
+		newSub.setStatus(SubmissionEntity.STATUS_ACCEPTED);
+		
+		// faltam cenas pesquisas...
+		// guardar tudo em listas 
+		
+		this.userEJB.save(newUser);
 		
 		newUser = new UserEntity("duarte.m.a.goncalves@gmail.com ", "12345", "Duarte", "Gonçalves",
 				roles);
@@ -124,6 +141,9 @@ public class InitDB {
 
 		this.userEJB.save(newUser);
 
+		sources.clear();
+		sources.add(SubmissionEntity.SOURCE_EXPRESSO);
+		sources.add(SubmissionEntity.SOURCE_FACEBOOK);
 
 		newUser = new UserEntity("leitaosilva@gmail.com", "12345", "Fátima", "Leitão", roles);
 		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
@@ -166,12 +186,13 @@ public class InitDB {
 		cal.set(Calendar.YEAR, 1985);
 		
 		newUserInfo = new UserInfoEntity(cal.getTime(), "Avenida Sá da Bandeira", "Coimbra",
-				null, "912993207", "Brasil", "Direito", "Universidade de Porto Alegre, Brasil",
-				null, newUser);
+				null, "912993207", "Brasil", "Direito", "Centro Universitário Ritter dos Reis, "
+						+ "Canoas, Rio Grande do Sul, Brasil", null, newUser);
 		
 		newUser.setUserInfo(newUserInfo);
 
 		this.userEJB.save(newUser);
+		
 	}
 
 }

@@ -192,13 +192,7 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findCandidatesByPhone(String phone) {
 		log.info("Finding candidates by (home) phone");
-		return userDAO.findCandidatesByPhone(phone, "%");
-	}
-
-	@Override
-	public List<UserEntity> findCandidatesByMobile(String mobilePhone) {
-		log.info("Finding candidates by (mobile) phone");
-		return userDAO.findCandidatesByPhone("%", mobilePhone);
+		return userDAO.findCandidatesByPhone(phone);
 	}
 
 	@Override

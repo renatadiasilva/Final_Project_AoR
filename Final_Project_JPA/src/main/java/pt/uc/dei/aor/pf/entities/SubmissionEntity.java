@@ -80,17 +80,8 @@ public class SubmissionEntity implements Serializable {
 	@JoinColumn(name = "candidate", nullable = false)
 	private UserEntity candidate;
 
-	// NÃO DÁ!!! tem de se clonar a candidatura se for associada a mais posições
-	// Se a list estiver vazia é uma candidatura espontanea
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(name = "submissions_positions",
-//			joinColumns = @JoinColumn(name = "submission_id"),
-//			inverseJoinColumns = @JoinColumn(name = "position_id"))
-//	private List<PositionEntity> positions;
-	
-	// Dudu
 	@ManyToOne
-	@JoinColumn(name = "position", nullable = false)
+	@JoinColumn(name = "position")
 	private PositionEntity position; 
 
 	@Column(name = "spontaneous")
@@ -133,10 +124,12 @@ public class SubmissionEntity implements Serializable {
 
 	public SubmissionEntity(UserEntity candidate,
 			String motivationLetter, List<String> sources, boolean spontaneous) {
+		this.date = new Date();
 		this.candidate = candidate;
 		this.motivationLetter = motivationLetter;
 		this.sources = sources;
 		this.spontaneous = spontaneous;
+		this.status = STATUS_SUBMITED;
 	}
 
 	public Long getId() {

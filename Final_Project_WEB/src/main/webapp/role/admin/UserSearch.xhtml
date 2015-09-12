@@ -1,0 +1,99 @@
+<ui:composition template="../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">Admin - Pesquisas de Utilizadores - IT Jobs</ui:define>
+
+	<ui:define name="contents">
+		<h1>Pesquisas de Utilizadores</h1>
+
+		<h:form id="testSearch">
+
+			<h:panelGrid id="buttonsTestSearch" columns="5">
+
+				<p:commandButton value="Teste"
+					action="#{usersSearchCDI.searchTest()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Todos users"
+					action="#{usersSearchCDI.searchAll()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Todos admin"
+					action="#{usersSearchCDI.searchAllAdmins()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Todos gestores"
+					action="#{usersSearchCDI.searchAllManagers()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Todos entervistadores"
+					action="#{usersSearchCDI.searchAllInterviewers()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Todos por keyword/role)"
+					action="#{usersSearchCDI.searchByKeywordAndRole()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Users internos (email)"
+					action="#{usersSearchCDI.searchByEmail()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Users internos (nome)"
+					action="#{usersSearchCDI.searchByName()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Users internos (keyword)"
+					action="#{usersSearchCDI.searchByKeyword()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+			</h:panelGrid>
+
+			<h:panelGrid id="gridTestSearch" columns="4">
+
+				<p:outputLabel value="Email: " for="search-email" />
+				<p:inputText id="search-email" value="#{usersSearchCDI.email}"
+					size="35" />
+
+				<p:outputLabel value="Primeiro nome: " for="search-firstName" />
+				<p:inputText id="search-firstName" value="#{usersSearchCDI.fname}"
+					size="35" />
+
+				<p:outputLabel value="Sobrenome: " for="search-lastName" />
+				<p:inputText id="search-lastName" value="#{usersSearchCDI.lname}"
+					size="35" />
+
+				<p:outputLabel value="Role (escrever mesmo): " for="search-role" />
+				<p:inputText id="search-role" value="#{usersSearchCDI.role}"
+					size="35" />
+
+				<p:outputLabel value="Keyword: " for="search-keyword" />
+				<p:inputText id="search-keyword" value="#{usersSearchCDI.keyword}"
+					size="35" />
+
+			</h:panelGrid>
+
+			<p:dataTable var="u" value="#{usersSearchCDI.ulist}">
+				<f:facet name="header">Listagem users</f:facet>
+				<p:column headerText="Email">
+					<h:outputText value="#{u.email}" />
+				</p:column>
+				<p:column headerText="Primeiro nome">
+					<h:outputText value="#{u.firstName}" />
+				</p:column>
+				<p:column headerText="Sobrenome">
+					<h:outputText value="#{u.lastName}" />
+				</p:column>
+				<p:column headerText="Role por defeito">
+					<h:outputText value="#{u.defaultRole}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

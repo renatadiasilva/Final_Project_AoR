@@ -26,8 +26,7 @@ public interface UserEJBInterface {
 	public abstract List<UserEntity> findCandidatesByEmail(String email);
 	public abstract List<UserEntity> findCandidatesByAddress(String address);
 	public abstract List<UserEntity> findCandidatesByCity(String city);
-	public abstract List<UserEntity> findCandidatesByPhone(String homePhone);
-	public abstract List<UserEntity> findCandidatesByMobile(String mobilePhone);
+	public abstract List<UserEntity> findCandidatesByPhone(String phone);
 	public abstract List<UserEntity> findCandidatesByCountry(String country);
 	public abstract List<UserEntity> findCandidatesByCourse(String course);
 	public abstract List<UserEntity> findCandidatesBySchool(String school);	
