@@ -37,7 +37,7 @@ public class EditUserInfoCDI {
 
 		if(this.userSessionManagement.getCurrentUser().getUserInfo()!=null){
 			this.address=this.userSessionManagement.getCurrentUser().getUserInfo().getAddress();
-			this.birthday=this.userSessionManagement.getCurrentUser().getUserInfo().getBirthday();
+			this.birthday=this.userSessionManagement.getCurrentUser().getUserInfo().getBirthDate();
 			this.city=this.userSessionManagement.getCurrentUser().getUserInfo().getCity();
 			this.homePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getHomePhone();
 			this.mobilePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getMobilePhone();

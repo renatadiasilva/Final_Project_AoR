@@ -279,17 +279,36 @@ public class UserEJBImp implements UserEJBInterface {
 
 	private void isUserComplete(UserEntity u) {
 		boolean hasError = false;
+		String error = "";
 
-		if (u == null) hasError = true;
-		else if (u.getEmail() == null) hasError = true;
-		else if (u.getPassword() == null) hasError = true;
-		else if (u.getFirstName() == null) hasError = true;
-		else if (u.getLastName() == null) hasError = true;
-		else if (u.getDefaultRole() == null) hasError = true;
+		if (u == null) {
+			hasError = true;
+			error = "1";
+		}
+		else if (u.getEmail() == null) {
+			hasError = true;
+			error = "2";
+		}
+		else if (u.getPassword() == null) {
+			hasError = true;
+			error = "3";
+		}
+		else if (u.getFirstName() == null) {
+			hasError = true;
+			error = "4";
+		}
+		else if (u.getLastName() == null) {
+			hasError = true;
+			error = "5";
+		}
+		else if (u.getDefaultRole() == null) {
+			hasError = true;
+			error = "6";
+		}
 
 		if (hasError)
 			throw new IllegalArgumentException("The user is missing data. "
-					+ "Check the notnull attributes.");
+					+ "Check the notnull attributes. "+error);
 	}
 
 	// tirar

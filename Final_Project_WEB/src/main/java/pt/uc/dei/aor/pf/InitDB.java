@@ -1,7 +1,9 @@
 package pt.uc.dei.aor.pf;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
+//import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
@@ -29,170 +31,93 @@ public class InitDB {
 	@EJB
 	UserInfoEJBInterface userInfoEJB;
 
-	public void populate() {
+	public void populate() throws ParseException {
 
 		log.info("Populate...");
 
-		UserEntity newUser = new UserEntity();
-		List<String> roles = new ArrayList<String>();
-		SubmissionEntity newSub = new SubmissionEntity();
-		List<String> sources = new ArrayList<String>();
+		SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd"); 
 
-		roles.add(UserEntity.ROLE_ADMIN);
-		roles.add(UserEntity.ROLE_MANAGER);
-		roles.add(UserEntity.ROLE_INTERVIEWER);
-		roles.add(UserEntity.ROLE_CANDIDATE);
-
-		newUser = new UserEntity("admin@mail.com", "12345", "Maria", "Poderosa", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
-
-		this.userEJB.save(newUser);
-
-		roles.clear();
-		roles.add(UserEntity.ROLE_ADMIN);
-
-		newUser = new UserEntity("jlopes@gmail.com", "12345", "José Pedro", "Lopes", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
-
-		this.userEJB.save(newUser);
-
-
-		roles.clear();
-		roles.add(UserEntity.ROLE_MANAGER);
-		roles.add(UserEntity.ROLE_CANDIDATE);
-
-		newUser = new UserEntity("ssst@hotmail.com", "12345", "Susana", "Teodóro", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
-
-		this.userEJB.save(newUser);
-
+		UserEntity [] users = {
+			new UserEntity("admin@mail.com", "12345", "Maria", "Poderosa", null),
+			new UserEntity("jlopes@gmail.com", "12345", "José Pedro", "Lopes", null),
+			new UserEntity("ssst@hotmail.com", "12345", "Susana", "Teodóro", null),
+			new UserEntity("mafaldinhas@sapo.pt", "12345", "Mafalda", "Santos", null),
+			new UserEntity("sera1960@sapo.pt", "12345", "Serafim", "Simões", null),
+			new UserEntity("duarte.m.a.goncalves@gmail.com ", "12345", "Duarte", "Gonçalves",
+					null),
+			new UserEntity("renatadiasilva@gmail.com", "12345", "Renata", "Silva", null),
+			new UserEntity("leitaosilva@gmail.com", "12345", "Fátima", "Leitão", null),
+			new UserEntity("dvdleitaods@gmail.com", "12345", "David", "Leitão", null),
+			new UserEntity("jackerozeno@hotmail.com", "12345", "Jackeline", "Rozeno", null),
+		};
 		
-		roles.clear();
-		roles.add(UserEntity.ROLE_INTERVIEWER);
+		UserInfoEntity [] usersI = {
+			new UserInfoEntity(ft.parse("1960-05-11"), "Avenida da Liberdade",
+						"Lisboa", null, "969362531", "Portugal",
+						"Engenharia Informática","Universidade do Porto, Portugal", null, users[4]),
+			new UserInfoEntity(ft.parse("1985-01-15"), "Rua de Cima", "Proença-a-Nova",
+						null, "968302615", "Portugal", "Arquitetura", "Universidade de Mundo",
+						null, users[5]),
+			new UserInfoEntity(ft.parse("1977-10-24"), "Ladeira Seminário", "Coimbra",
+						"239716625", "918927181", "Portugal", "Matemática", "Universidade de Coimbra, Portugal",
+						null, users[6]),
+			new UserInfoEntity(ft.parse("1953-02-27"), "Ladeira Seminário", "Coimbra",
+						"239716625", "917801254", "Portugal", "Medicina", "Universidade de Coimbra, Portugal",
+						null, users[7]),
+			new UserInfoEntity(ft.parse("1989-05-17"), "Ladeira Seminário", "Coimbra",
+						"239716625", "912847967", "Portugal", "Engenharia Informática",
+						"Instituto Superior de Engenharias de Coimbra, Portugal",
+						null, users[8]),
+			new UserInfoEntity(ft.parse("1985-09-02"), "Avenida Sá da Bandeira", "Coimbra",
+						null, "912993207", "Brasil", "Direito", "Centro Universitário Ritter dos Reis, "
+						+ "Canoas, Rio Grande do Sul, Brasil", null, users[9]),
+		};
+		  
+		List<String> roles = Arrays.asList(UserEntity.ROLE_ADMIN, UserEntity.ROLE_MANAGER,
+				UserEntity.ROLE_INTERVIEWER, UserEntity.ROLE_CANDIDATE);
+		users[0].setDefaultRole(UserEntity.ROLE_ADMIN);
+		users[0].setRoles(roles);
 
-		newUser = new UserEntity("mafaldinhas@sapo.pt", "12345", "Mafalda", "Santos", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
+		roles = Arrays.asList(UserEntity.ROLE_ADMIN);
+		users[1].setDefaultRole(UserEntity.ROLE_ADMIN);
+		users[1].setRoles(roles);
 
-		this.userEJB.save(newUser);
+		roles = Arrays.asList(UserEntity.ROLE_MANAGER, UserEntity.ROLE_CANDIDATE);
+		users[2].setDefaultRole(UserEntity.ROLE_MANAGER);
+		users[2].setRoles(roles);
 
-		roles.clear();
-		roles.add(UserEntity.ROLE_CANDIDATE);
+		roles = Arrays.asList(UserEntity.ROLE_INTERVIEWER);
+		users[3].setDefaultRole(UserEntity.ROLE_INTERVIEWER);
+		users[3].setRoles(roles);
 
-		newUser = new UserEntity("sera1960@sapo.pt", "12345", "Serafim", "Simões", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
+		roles = Arrays.asList(UserEntity.ROLE_CANDIDATE);
 
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.DAY_OF_MONTH, 11);
-		cal.set(Calendar.MONTH, 4);
-		cal.set(Calendar.YEAR, 1960);
+		for(int i = 0; i < 6; i++) {
+			users[i+4].setDefaultRole(UserEntity.ROLE_CANDIDATE);
+			users[i+4].setRoles(roles);
+			users[i+4].setUserInfo(usersI[i]);
+		}
 		
-		UserInfoEntity newUserInfo = new UserInfoEntity(cal.getTime(), "Avenida da Liberdade",
-				"Lisboa", null, "969362531", "Portugal",
-				"Engenharia Informática","Universidade do Porto, Portugal", null, newUser);
-		
-		newUser.setUserInfo(newUserInfo);
+		for (UserEntity u : users) {
+			this.userEJB.save(u);
+		}
 
-		this.userEJB.save(newUser);
-
-		sources.add(SubmissionEntity.SOURCE_EXPRESSO);
-		sources.add(SubmissionEntity.SOURCE_FACEBOOK);
-
-		newSub = new SubmissionEntity(newUser, "\\path\\ml.pdf", sources, false);
-//		newSub.setPosition(position);
-//		newSub.setAssociatedBy(admin/gestor);
-		cal = Calendar.getInstance();
-		cal.set(2015, 0, 15);
-		newSub.setDate(cal.getTime());
-		newSub.setStatus(SubmissionEntity.STATUS_ACCEPTED);
-		
-		// faltam cenas pesquisas...
-		// guardar tudo em listas 
-		
-		this.userEJB.save(newUser);
-		
-		newUser = new UserEntity("duarte.m.a.goncalves@gmail.com ", "12345", "Duarte", "Gonçalves",
-				roles);
-		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
-
-		cal.set(Calendar.DAY_OF_MONTH, 15);
-		cal.set(Calendar.MONTH, 0);
-		cal.set(Calendar.YEAR, 1985);
-		
-		newUserInfo = new UserInfoEntity(cal.getTime(), "Rua de Cima", "Proença-a-Nova",
-				null, "968302615", "Portugal", "Arquitetura", "Universidade de Mundo",
-				null, newUser);
-		
-		newUser.setUserInfo(newUserInfo);
-
-		this.userEJB.save(newUser);
-
-		newUser = new UserEntity("renatadiasilva@gmail.com", "12345", "Renata", "Silva", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
-
-		cal.set(Calendar.DAY_OF_MONTH, 24);
-		cal.set(Calendar.MONTH, 9);
-		cal.set(Calendar.YEAR, 1977);
-		
-		newUserInfo = new UserInfoEntity(cal.getTime(), "Ladeira Seminário", "Coimbra",
-				"239716625", "918927181", "Portugal", "Matemática", "Universidade de Coimbra, Portugal",
-				null, newUser);
-		
-		newUser.setUserInfo(newUserInfo);
-
-		this.userEJB.save(newUser);
-
-		sources.clear();
-		sources.add(SubmissionEntity.SOURCE_EXPRESSO);
-		sources.add(SubmissionEntity.SOURCE_FACEBOOK);
-
-		newUser = new UserEntity("leitaosilva@gmail.com", "12345", "Fátima", "Leitão", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
-
-		cal.set(Calendar.DAY_OF_MONTH, 27);
-		cal.set(Calendar.MONTH, 1);
-		cal.set(Calendar.YEAR, 1953);
-		
-		newUserInfo = new UserInfoEntity(cal.getTime(), "Ladeira Seminário", "Coimbra",
-				"239716625", "917801254", "Portugal", "Medicina", "Universidade de Coimbra, Portugal",
-				null, newUser);
-		
-		newUser.setUserInfo(newUserInfo);
-
-		this.userEJB.save(newUser);
-
-
-		newUser=new UserEntity("dvdleitaods@gmail.com", "12345", "David", "Leitão", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
-
-		cal.set(Calendar.DAY_OF_MONTH, 7);
-		cal.set(Calendar.MONTH, 4);
-		cal.set(Calendar.YEAR, 1989);
-		
-		newUserInfo = new UserInfoEntity(cal.getTime(), "Ladeira Seminário", "Coimbra",
-				"239716625", "912847967", "Portugal", "Engenharia Informática",
-				"Instituto Superior de Engenharias de Coimbra, Portugal",
-				null, newUser);
-		
-		newUser.setUserInfo(newUserInfo);
-
-		this.userEJB.save(newUser);
-
-		
-		newUser=new UserEntity("jackerozeno@hotmail.com", "12345", "Jackeline", "Rozeno", roles);
-		newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
-
-		cal.set(Calendar.DAY_OF_MONTH, 2);
-		cal.set(Calendar.MONTH, 8);
-		cal.set(Calendar.YEAR, 1985);
-		
-		newUserInfo = new UserInfoEntity(cal.getTime(), "Avenida Sá da Bandeira", "Coimbra",
-				null, "912993207", "Brasil", "Direito", "Centro Universitário Ritter dos Reis, "
-						+ "Canoas, Rio Grande do Sul, Brasil", null, newUser);
-		
-		newUser.setUserInfo(newUserInfo);
-
-		this.userEJB.save(newUser);
-		
+//		sources.add(SubmissionEntity.SOURCE_EXPRESSO);
+//		sources.add(SubmissionEntity.SOURCE_FACEBOOK);
+//
+//		newSub = new SubmissionEntity(newUser, "\\path\\ml.pdf", sources, false);
+////		newSub.setPosition(position);
+////		newSub.setAssociatedBy(admin/gestor);
+//		cal = Calendar.getInstance();
+//		cal.set(2015, 0, 15);
+//		newSub.setDate(cal.getTime());
+//		newSub.setStatus(SubmissionEntity.STATUS_ACCEPTED);
+//		
+//		// faltam cenas pesquisas...
+//		// guardar tudo em listas 
+//		
+//		SubmissionEntity newSub = new SubmissionEntity();
+//		List<String> sources = new ArrayList<String>();
 	}
 
 }

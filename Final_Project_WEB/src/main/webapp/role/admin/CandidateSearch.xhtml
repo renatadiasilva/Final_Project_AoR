@@ -113,11 +113,14 @@
 				<p:column headerText="Email">
 					<h:outputText value="#{u.email}" />
 				</p:column>
-				<p:column headerText="Primeiro nome">
+				<p:column headerText="Nome">
 					<h:outputText value="#{u.firstName}" />
 				</p:column>
 				<p:column headerText="Sobrenome">
 					<h:outputText value="#{u.lastName}" />
+				</p:column>
+				<p:column headerText="Data N">
+					<h:outputText value="#{u.userInfo.birthday}" />
 				</p:column>
 				<p:column headerText="Morada">
 					<h:outputText value="#{u.userInfo.address}" />

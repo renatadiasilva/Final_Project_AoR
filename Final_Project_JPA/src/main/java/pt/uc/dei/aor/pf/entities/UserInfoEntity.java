@@ -30,9 +30,9 @@ public class UserInfoEntity implements Serializable {
 	private Long id;
 	
 	@Past
-	@Column(name = "birthday")
+	@Column(name = "birth_date")
 	@Temporal(TemporalType.DATE)
-	private Date birthday;
+	private Date birthDate;
 	
 	@NotNull
 	@Column(name = "address", nullable = false, length = 200)
@@ -85,7 +85,7 @@ public class UserInfoEntity implements Serializable {
 	public UserInfoEntity(Date birthday, String adress, String city, String telephone,
 			String mobilePhone, String country, String course, String school, String cv, UserEntity owner) {
 		super();
-		this.birthday = birthday;
+		this.birthDate = birthday;
 		this.address = adress;
 		this.city = city;
 		this.homePhone = telephone;
@@ -105,12 +105,12 @@ public class UserInfoEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Date getBirthday() {
-		return birthday;
+	public Date getBirthDate() {
+		return birthDate;
 	}
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
+	public void setBirthDate(Date birthday) {
+		this.birthDate = birthday;
 	}
 
 	public String getAddress() {

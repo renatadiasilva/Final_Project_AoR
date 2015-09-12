@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.reports;
 
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,6 +24,9 @@ import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 public class StatisticalReports {
 
 	private static final Logger log = LoggerFactory.getLogger(StatisticalReports.class);
+
+//	SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd"); 
+//	ft.parse("1960-05-11")
 	
 	@EJB
 	private InterviewEJBInterface interviewEJB;
