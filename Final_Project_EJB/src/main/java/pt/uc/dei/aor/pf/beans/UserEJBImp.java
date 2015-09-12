@@ -203,7 +203,7 @@ public class UserEJBImp implements UserEJBInterface {
 
 	@Override
 	public List<UserEntity> findCandidatesByCourse(String course) {
-		log.info("Finding candidates by country");
+		log.info("Finding candidates by course");
 		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", course, "%", null);
 	}
 
@@ -290,13 +290,6 @@ public class UserEJBImp implements UserEJBInterface {
 		if (hasError)
 			throw new IllegalArgumentException("The user is missing data. "
 					+ "Check the notnull attributes.");
-	}
-
-	// tirar
-	@Override
-	public List<UserEntity> findTest(String pattern) {
-		log.info("Finding test");
-		return userDAO.findTest(pattern);
 	}
 
 	//Cloning... Think about it...

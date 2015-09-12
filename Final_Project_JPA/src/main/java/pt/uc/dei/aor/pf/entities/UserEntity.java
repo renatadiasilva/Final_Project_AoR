@@ -28,52 +28,50 @@ import javax.validation.constraints.NotNull;
 @Table(name = "users")
 // compare to positions...
 @NamedQueries({
-	@NamedQuery(name = "User.findTest", 
-			query = "SELECT u FROM UserEntity u WHERE UPPER(u.email) LIKE :keyword "),
 	@NamedQuery(name = "User.findUserByEmail",
 			query = "SELECT u FROM UserEntity u WHERE UPPER(u.email) LIKE :email"),
 	@NamedQuery(name = "User.findUsersByEmailPattern",
 			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE UPPER(u.email) LIKE :email"
 					+ " AND (r <> 'CANDIDATE') ORDER BY u.email"),
-	@NamedQuery(name = "User.findUsersByName",
-			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.firstName) LIKE :name "
-					+ "OR UPPER(u.lastName) LIKE :name) AND (r <> 'CANDIDATE') ORDER BY u.email"),
-	@NamedQuery(name = "User.findUsersByKeywordByRole",
-			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
-					+ " UPPER(u.firstName) LIKE :keyword"
-					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r = :role) ORDER BY u.email"),  // order by name??
-	@NamedQuery(name = "User.findUsersByKeyword",
-			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE "
-					+ "(UPPER(u.email) LIKE :keyword OR"
-					+ " UPPER(u.firstName) LIKE :keyword"
-					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r <> 'CANDIDATE') ORDER BY u.email"),  // order by name??
 	@NamedQuery(name = "User.findCandidatesByPhone",
 			query = "SELECT u.owner FROM UserInfoEntity u WHERE"
 					+ " u.homePhone LIKE :phone OR u.mobilePhone LIKE :phone"
 					+ " ORDER BY u.owner.email"),
-	@NamedQuery(name = "User.findCandidatesByKeyword",
-			query = "SELECT u.owner FROM UserInfoEntity u WHERE (UPPER(u.address) LIKE :keyword OR"
-					+ " UPPER(u.city) LIKE :keyword OR UPPER(u.country) LIKE :keyword OR"
-					+ " UPPER(u.course) LIKE :keyword OR UPPER(u.school) LIKE :keyword)"
-					+ " ORDER BY u.owner.email"),  // order by name??
-	@NamedQuery(name = "User.findCandidatesBySeveralAttributes",
-			query = "SELECT u.owner FROM UserInfoEntity u WHERE"
-					+ " UPPER(u.owner.email) LIKE :email AND"
-					+ " UPPER(u.owner.firstName) LIKE :fname AND"
-					+ " UPPER(u.owner.lastName) LIKE :lname AND"
-					+ " UPPER(u.address) LIKE :address AND"
-					+ " UPPER(u.city) LIKE :city AND UPPER(u.country) LIKE :country AND"
-					+ " UPPER(u.course) LIKE :course AND UPPER(u.school) LIKE :school"
-					+ " ORDER BY u.owner.email"),
-	@NamedQuery(name = "User.findCandidatesByPosition",
-			query = "SELECT u.owner FROM UserInfoEntity u JOIN u.owner.submissions s WHERE"
-					+ " UPPER(u.owner.email) LIKE :email AND"
-					+ " UPPER(u.owner.firstName) LIKE :fname AND"
-					+ " UPPER(u.owner.lastName) LIKE :lname AND"
-					+ " UPPER(u.address) LIKE :address AND"
-					+ " UPPER(u.city) LIKE :city AND UPPER(u.country) LIKE :country AND"
-					+ " UPPER(u.course) LIKE :course AND UPPER(u.school) LIKE :school AND"
-					+ " s.position = :id ORDER BY u.owner.email"),
+//	@NamedQuery(name = "User.findUsersByName",
+//			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.firstName) LIKE :name "
+//					+ "OR UPPER(u.lastName) LIKE :name) AND (r <> 'CANDIDATE') ORDER BY u.email"),
+//	@NamedQuery(name = "User.findUsersByKeywordByRole",
+//			query = "SELECT u FROM UserEntity u JOIN u.roles r WHERE (UPPER(u.email) LIKE :keyword OR"
+//					+ " UPPER(u.firstName) LIKE :keyword"
+//					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r = :role) ORDER BY u.email"),  // order by name??
+//	@NamedQuery(name = "User.findUsersByKeyword",
+//			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE "
+//					+ "(UPPER(u.email) LIKE :keyword OR"
+//					+ " UPPER(u.firstName) LIKE :keyword"
+//					+ " OR UPPER(u.lastName) LIKE :keyword) AND (r <> 'CANDIDATE') ORDER BY u.email"),  // order by name??
+//	@NamedQuery(name = "User.findCandidatesByKeyword",
+//			query = "SELECT u.owner FROM UserInfoEntity u WHERE UPPER(u.address) LIKE :keyword OR"
+//					+ " UPPER(u.city) LIKE :keyword OR UPPER(u.country) LIKE :keyword OR"
+//					+ " UPPER(u.course) LIKE :keyword OR UPPER(u.school) LIKE :keyword"
+//					+ " ORDER BY u.owner.email"),  // order by name??
+//	@NamedQuery(name = "User.findCandidatesBySeveralAttributes",
+//			query = "SELECT u.owner FROM UserInfoEntity u WHERE"
+//					+ " UPPER(u.owner.email) LIKE :email AND"
+//					+ " UPPER(u.owner.firstName) LIKE :fname AND"
+//					+ " UPPER(u.owner.lastName) LIKE :lname AND"
+//					+ " UPPER(u.address) LIKE :address AND"
+//					+ " UPPER(u.city) LIKE :city AND UPPER(u.country) LIKE :country AND"
+//					+ " UPPER(u.course) LIKE :course AND UPPER(u.school) LIKE :school"
+//					+ " ORDER BY u.owner.email"),
+//	@NamedQuery(name = "User.findCandidatesByPosition",
+//			query = "SELECT u.owner FROM UserInfoEntity u JOIN u.owner.submissions s WHERE"
+//					+ " UPPER(u.owner.email) LIKE :email AND"
+//					+ " UPPER(u.owner.firstName) LIKE :fname AND"
+//					+ " UPPER(u.owner.lastName) LIKE :lname AND"
+//					+ " UPPER(u.address) LIKE :address AND"
+//					+ " UPPER(u.city) LIKE :city AND UPPER(u.country) LIKE :country AND"
+//					+ " UPPER(u.course) LIKE :course AND UPPER(u.school) LIKE :school AND"
+//					+ " s.position = :id ORDER BY u.owner.email"),
 })
 public class UserEntity implements Serializable {
 

@@ -43,7 +43,4 @@ public interface UserEJBInterface {
 	public abstract List<UserEntity> findCandidatesByKeywordShort(String keyword);
 	public abstract boolean checkPassword(UserEntity user, String password);
 	
-	// tirar
-	public abstract List<UserEntity> findTest(String pattern);
-	
 }

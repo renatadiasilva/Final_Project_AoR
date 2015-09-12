@@ -15,6 +15,10 @@ public abstract class GenericDao<E> {
 	protected EntityManager em;
 
 	private Class<E> entityClass;
+	
+	// used in accent insensitive searchs
+	public static final String ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
+	public static final String NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";
 
 	public GenericDao(Class<E> entityClass) {
 		this.entityClass = entityClass;

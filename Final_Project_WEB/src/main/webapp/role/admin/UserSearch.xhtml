@@ -14,10 +14,6 @@
 
 			<h:panelGrid id="buttonsTestSearch" columns="5">
 
-				<p:commandButton value="Teste"
-					action="#{usersSearchCDI.searchTest()}" update="@form, messages"
-					icon="ui-icon-search" />
-
 				<p:commandButton value="Todos users"
 					action="#{usersSearchCDI.searchAll()}" update="@form, messages"
 					icon="ui-icon-search" />
@@ -78,14 +74,14 @@
 
 			<p:dataTable var="u" value="#{usersSearchCDI.ulist}">
 				<f:facet name="header">Listagem users</f:facet>
-				<p:column headerText="Email">
-					<h:outputText value="#{u.email}" />
-				</p:column>
 				<p:column headerText="Primeiro nome">
 					<h:outputText value="#{u.firstName}" />
 				</p:column>
 				<p:column headerText="Sobrenome">
 					<h:outputText value="#{u.lastName}" />
+				</p:column>
+				<p:column headerText="Email">
+					<h:outputText value="#{u.email}" />
 				</p:column>
 				<p:column headerText="Role por defeito">
 					<h:outputText value="#{u.defaultRole}" />

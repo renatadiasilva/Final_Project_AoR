@@ -5,10 +5,10 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="Título">Admin - Pesquisas Várias - IT Jobs</ui:define>
+	<ui:define name="Título">Admin - Pesquisas de Candidatos - IT Jobs</ui:define>
 
 	<ui:define name="contents">
-		<h1>Pesquisas teste</h1>
+		<h1>Pesquisas de Candidatos</h1>
 
 		<h:form id="testSearch">
 
@@ -126,14 +126,14 @@
 
 			<p:dataTable var="u" value="#{candidateSearchCDI.ulist}">
 				<f:facet name="header">Listagem users</f:facet>
-				<p:column headerText="Email">
-					<h:outputText value="#{u.email}" />
-				</p:column>
 				<p:column headerText="Nome">
 					<h:outputText value="#{u.firstName}" />
 				</p:column>
 				<p:column headerText="Sobrenome">
 					<h:outputText value="#{u.lastName}" />
+				</p:column>
+				<p:column headerText="Email">
+					<h:outputText value="#{u.email}" />
 				</p:column>
 				<p:column headerText="Data N">
 					<h:outputText value="#{u.userInfo.birthDate}" />

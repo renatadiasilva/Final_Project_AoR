@@ -35,11 +35,6 @@ public class UsersSearchCDI {
 
 	// ALL
 
-	public void searchTest() {
-		log.info("Test searching");
-		this.ulist = userEJB.findTest(SearchPattern.preparePattern(keyword));
-	}	
-
 	public void searchAll() {
 		log.info("Searching for all users");
 		this.ulist = userEJB.findAll();

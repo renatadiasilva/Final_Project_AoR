@@ -8,10 +8,8 @@ public class SearchPattern {
 	// word in upper case with no whitespaces, symbols, and accent letters
 	public static String preparePattern(String searchWord) {
 
-		// removes all non-word characters of the word
-		String pattern = searchWord.replaceAll("\\W", "");
 		// removes all whitespaces of the word
-		//		String pattern = searchWord.replaceAll("\\s", "");
+		String pattern = searchWord.replaceAll("\\s", "");
 		System.out.println(pattern);
 
 		// adds % because of database search
