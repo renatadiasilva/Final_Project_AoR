@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -28,36 +29,54 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 	public List<InterviewEntity> findCarriedOutInterviewsByUser(
 			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("id", interviewer);
+		parameters.put("user", interviewer);
 		return super.findSomeResults("Interview.findCarriedOutInterviewsByUser", parameters);
 	}
 	
 	public List<InterviewEntity> findScheduledInterviewsByUser(
 			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("id", interviewer);
+		parameters.put("user", interviewer);
 		return super.findSomeResults("Interview.findScheduledInterviewsByUser", parameters);
 	}
 
 	public List<InterviewEntity> findScheduledInterviewsByCandidate(
 			UserEntity candidate) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("id", candidate);
+		parameters.put("candidate", candidate);
 		return super.findSomeResults("Interview.findScheduledInterviewsByCandidate", parameters);
 	}
 	
 	public List<InterviewEntity> findByDateAndInterviewer(Date date, UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date", date); // format date!!!
-		parameters.put("id", interviewer);
+		parameters.put("user", interviewer);
 		return super.findSomeResults("Interview.findByDateAndInterviewer", parameters);
 	}
 	
 	public List<InterviewEntity> findByDateAndCandidate(Date date, UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date", date);
-		parameters.put("id", interviewer);
+		parameters.put("candidate", interviewer);
 		return super.findSomeResults("Interview.findByDateAndCandidate", parameters);
+	}
+
+	public List<InterviewEntity> findInterviewByPosition(PositionEntity position) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("position", position);
+		return super.findSomeResults("Interview.findInterviewByPosition", parameters);
+	}
+
+	public List<InterviewEntity> findCarriedOutInterviewByPosition(PositionEntity position) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("position", position);
+		return super.findSomeResults("Interview.findCarriedOutInterviewByPosition", parameters);
+	}
+
+	public List<InterviewEntity> findScheduledInterviewByPosition(PositionEntity position) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("position", position);
+		return super.findSomeResults("Interview.findScheduledInterviewByPosition", parameters);
 	}
 
 }

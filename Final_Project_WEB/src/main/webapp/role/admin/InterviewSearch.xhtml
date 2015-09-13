@@ -14,70 +14,97 @@
 
 			<h:panelGrid id="buttonsInterviewSearch" columns="7">
 
-				<p:commandButton value="Todos candidatos"
-					action="#{candidateSearchCDI.searchAllCandidates()}" update="@form, messages"
+				<p:commandButton value="Todas entrevistas"
+					action="#{interviewSearchCDI.searchAllInterviews()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (email)"
-					action="#{candidateSearchCDI.searchCandidatesByEmail()}" update="@form, messages"
+				<p:commandButton value="Entrevistas entre duas datas"
+					action="#{interviewSearchCDI.searchCarriedOutInterviews()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (todos os campos)"
-					action="#{candidateSearchCDI.searchCandidates()}" update="@form, messages"
+				<p:commandButton value="Entrevistas passadas (interv)"
+					action="#{interviewSearchCDI.searchCarriedOutInterviewsByUser()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (keyword)"
-					action="#{candidateSearchCDI.searchCandidatesByKeyword()}" update="@form, messages"
+				<p:commandButton value="Entrevistas agendadas (interv)"
+					action="#{interviewSearchCDI.searchScheduledInterviewsByUser()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (posição)"
-					action="#{candidateSearchCDI.searchCandidatesByPositionOnly()}" update="@form, messages"
+				<p:commandButton value="Data ocupada? (interv)"
+					action="#{interviewSearchCDI.checkInterviewerHasDateConflict()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Data ocupada? (candid)"
+					action="#{interviewSearchCDI.checkCandidateHasDateConflict()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Entrevistas (posição)"
+					action="#{interviewSearchCDI.searchInterviewsByPosition()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Entrevistas passadas (posição)"
+					action="#{interviewSearchCDI.searchCarriedOutInterviewsByPosition()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Entrevistas agendadas (posição)"
+					action="#{interviewSearchCDI.searchScheduledInterviewsByPosition()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Entrevistas agendadas (candid)"
+					action="#{interviewSearchCDI.searchScheduledInterviewsByCandidate()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 			</h:panelGrid>
 
-			<h:panelGrid id="gridCandidateSearch" columns="8">
+			<h:panelGrid id="gridInterviewSearch" columns="8">
 
-				<p:outputLabel value="Email: " for="search-emailc" />
-				<p:inputText id="search-emailc" value="#{candidateSearchCDI.email}"
+				<p:outputLabel value="Primeira Data: " for="search-date1i" />
+				<p:calendar id="search-date1i"
+					value="#{interviewSearchCDI.date1}" pattern="dd/MM/yyyy"
+					readonlyInput="true" navigator="true" yearRange="c-100:c+100"
+					locale="pt" size="35" />
+
+				<p:outputLabel value="Segunda Data: " for="search-date2i" />
+				<p:calendar id="search-date2i"
+					value="#{interviewSearchCDI.date1}" pattern="dd/MM/yyyy"
+					readonlyInput="true" navigator="true" yearRange="c-100:c+100"
+					locale="pt" size="35" />
+
+				<p:outputLabel value="Id (user/posição): " for="search-idi" />
+				<p:inputText id="search-idi" value="#{interviewSearchCDI.id}"
+					size="35" />
+
+				<p:outputLabel value="Data ocupada: " for="search-resulti" />
+				<p:inputText id="search-resulti" value="#{interviewSearchCDI.result}"
 					size="35" />
 
 			</h:panelGrid>
 
-			<p:dataTable var="u" value="#{candidateSearchCDI.ulist}">
-				<f:facet name="header">Listagem users</f:facet>
-				<p:column headerText="Nome">
-					<h:outputText value="#{u.firstName}" />
+			<p:dataTable var="i" value="#{interviewSearchCDI.ilist}">
+				<f:facet name="header">Listagem entervistas</f:facet>
+				<p:column headerText="Data">
+					<h:outputText value="#{i.date}" />
 				</p:column>
-				<p:column headerText="Sobrenome">
-					<h:outputText value="#{u.lastName}" />
+				<p:column headerText="Passada?">
+					<h:outputText value="#{i.carriedOut}" />
 				</p:column>
-				<p:column headerText="Email">
-					<h:outputText value="#{u.email}" />
+				<p:column headerText="Aprovada?">
+					<h:outputText value="#{i.approved}" />
 				</p:column>
-				<p:column headerText="Data N">
-					<h:outputText value="#{u.userInfo.birthDate}" />
+				<p:column headerText="Feedback">
+					<h:outputText value="#{i.feedback}" />
 				</p:column>
-				<p:column headerText="Morada">
-					<h:outputText value="#{u.userInfo.address}" />
+				<p:column headerText="Agendada por">
+					<h:outputText value="#{i.scheduledBy.firstName}" />
 				</p:column>
-				<p:column headerText="Cidade">
-					<h:outputText value="#{u.userInfo.city}" />
+				<p:column headerText="Guião">
+					<h:outputText value="#{i.script.title}" />
 				</p:column>
-				<p:column headerText="Telefone">
-					<h:outputText value="#{u.userInfo.homePhone}" />
+				<p:column headerText="Candidatura">
+					<h:outputText value="#{i.submission.candidate.firstName}" />
 				</p:column>
-				<p:column headerText="Telemóvel">
-					<h:outputText value="#{u.userInfo.mobilePhone}" />
-				</p:column>
-				<p:column headerText="País">
-					<h:outputText value="#{u.userInfo.country}" />
-				</p:column>
-				<p:column headerText="Curso">
-					<h:outputText value="#{u.userInfo.course}" />
-				</p:column>
-				<p:column headerText="Escola">
-					<h:outputText value="#{u.userInfo.school}" />
+				<p:column headerText="Entrevistador">
+					<h:outputText value="#{i.interviewers.get(0).firstName}" />
 				</p:column>
 			</p:dataTable>
 

@@ -1,6 +1,5 @@
 package pt.uc.dei.aor.pf.beans;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import pt.uc.dei.aor.pf.dao.InterviewDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -103,25 +101,22 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	@Override
 	public List<InterviewEntity> findInterviewsByPosition(
 			PositionEntity position) {
-		
-		// needed????
-		
-		// carried out and scheduled
-		
-		// dá???? (meter no CDIBean)
-		List<InterviewEntity> l = new ArrayList<InterviewEntity>();
-		
-		// submission list of position
-		List<SubmissionEntity> list = submissionDAO.findSubmissionsByPosition(position);
-		
-		// collect all interviews for all submissions
-		for (SubmissionEntity s : list) {
-			List<InterviewEntity> listI = s.getInterviews();
-			l.addAll(listI);
-		}
-		
-		return l; // order by???
-		
+		log.info("Finding all interviews of a position");
+		return interviewDAO.findInterviewByPosition(position);	
+	}
+
+	@Override
+	public List<InterviewEntity> findCarriedOutInterviewsByPosition(
+			PositionEntity position) {
+		log.info("Finding all interviews of a position");
+		return interviewDAO.findCarriedOutInterviewByPosition(position);	
+	}
+
+	@Override
+	public List<InterviewEntity> findScheduledInterviewsByPosition(
+			PositionEntity position) {
+		log.info("Finding all interviews of a position");
+		return interviewDAO.findScheduledInterviewByPosition(position);	
 	}
 
 	@Override

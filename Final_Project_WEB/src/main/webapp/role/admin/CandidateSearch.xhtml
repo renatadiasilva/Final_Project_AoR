@@ -76,7 +76,7 @@
 
 			</h:panelGrid>
 
-			<h:panelGrid id="gridTestSearch" columns="8">
+			<h:panelGrid id="gridCandidatesSearch" columns="8">
 
 				<p:outputLabel value="Email: " for="search-emailc" />
 				<p:inputText id="search-emailc" value="#{candidateSearchCDI.email}"
@@ -125,7 +125,7 @@
 			</h:panelGrid>
 
 			<p:dataTable var="u" value="#{candidateSearchCDI.ulist}">
-				<f:facet name="header">Listagem users</f:facet>
+				<f:facet name="header">Listagem candidatos</f:facet>
 				<p:column headerText="Nome">
 					<h:outputText value="#{u.firstName}" />
 				</p:column>
