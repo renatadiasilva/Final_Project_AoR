@@ -16,9 +16,9 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Named
 @RequestScoped
-public class UsersSearchCDI {
+public class UserSearchCDI {
 
-	private static final Logger log = LoggerFactory.getLogger(UsersSearchCDI.class);
+	private static final Logger log = LoggerFactory.getLogger(UserSearchCDI.class);
 
 	@EJB
 	private UserEJBInterface userEJB;
@@ -30,7 +30,7 @@ public class UsersSearchCDI {
 
 	private List<UserEntity> ulist;
 
-	public UsersSearchCDI() {
+	public UserSearchCDI() {
 	}
 
 	// ALL

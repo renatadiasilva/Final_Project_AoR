@@ -10,9 +10,9 @@
 	<ui:define name="contents">
 		<h1>Pesquisas de Utilizadores</h1>
 
-		<h:form id="testSearch">
+		<h:form id="userSearch">
 
-			<h:panelGrid id="buttonsTestSearch" columns="5">
+			<h:panelGrid id="buttonsUserSearch" columns="5">
 
 				<p:commandButton value="Todos users"
 					action="#{usersSearchCDI.searchAll()}" update="@form, messages"
@@ -48,7 +48,7 @@
 
 			</h:panelGrid>
 
-			<h:panelGrid id="gridTestSearch" columns="4">
+			<h:panelGrid id="gridUserSearch" columns="4">
 
 				<p:outputLabel value="Email: " for="search-email" />
 				<p:inputText id="search-email" value="#{usersSearchCDI.email}"

@@ -10,9 +10,9 @@
 	<ui:define name="contents">
 		<h1>Pesquisas de Candidatos</h1>
 
-		<h:form id="testSearch">
+		<h:form id="candidateSearch">
 
-			<h:panelGrid id="buttonsTestSearch" columns="7">
+			<h:panelGrid id="buttonsCandidateSearch" columns="7">
 
 				<p:commandButton value="Todos candidatos"
 					action="#{candidateSearchCDI.searchAllCandidates()}" update="@form, messages"
@@ -78,16 +78,16 @@
 
 			<h:panelGrid id="gridTestSearch" columns="8">
 
-				<p:outputLabel value="Email: " for="search-email" />
-				<p:inputText id="search-email" value="#{candidateSearchCDI.email}"
+				<p:outputLabel value="Email: " for="search-emailc" />
+				<p:inputText id="search-emailc" value="#{candidateSearchCDI.email}"
 					size="35" />
 
-				<p:outputLabel value="Primeiro nome: " for="search-firstName" />
-				<p:inputText id="search-firstName" value="#{candidateSearchCDI.fname}"
+				<p:outputLabel value="Primeiro nome: " for="search-firstNamec" />
+				<p:inputText id="search-firstNamec" value="#{candidateSearchCDI.fname}"
 					size="35" />
 
-				<p:outputLabel value="Sobrenome: " for="search-lastName" />
-				<p:inputText id="search-lastName" value="#{candidateSearchCDI.lname}"
+				<p:outputLabel value="Sobrenome: " for="search-lastNamec" />
+				<p:inputText id="search-lastNamec" value="#{candidateSearchCDI.lname}"
 					size="35" />
 
 				<p:outputLabel value="Morada: " for="search-address" />
@@ -114,8 +114,8 @@
 				<p:inputText id="search-school" value="#{candidateSearchCDI.school}"
 					size="35" />
 
-				<p:outputLabel value="Keyword: " for="search-keyword" />
-				<p:inputText id="search-keyword" value="#{candidateSearchCDI.keyword}"
+				<p:outputLabel value="Keyword: " for="search-keywordc" />
+				<p:inputText id="search-keywordc" value="#{candidateSearchCDI.keyword}"
 					size="35" />
 
 				<p:outputLabel value="Id da posição: " for="search-idP" />
