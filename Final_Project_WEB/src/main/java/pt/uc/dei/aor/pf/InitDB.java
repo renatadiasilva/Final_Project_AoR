@@ -95,8 +95,10 @@ public class InitDB {
 		};
 
 		ScriptEntity [] sclist = {
-				new ScriptEntity(null, "Guião Geral", null, "Primeira versão", true,
+				new ScriptEntity(null, "Guião Geral v1", null, "Primeira versão", false,
 						ulist[1]), // sclist[0]
+				new ScriptEntity(null, "Guião Geral v2", null, "Segunda versão", true,
+								ulist[1]), // sclist[1]
 			};
 
 		PositionEntity [] plist = {
@@ -153,6 +155,10 @@ public class InitDB {
 			ulist[i+4].setRoles(roles);
 			ulist[i+4].setUserInfo(uilist[i]);  // tirar para ver se dá
 		}
+		
+		// SCRIPT ATTRIBUTES
+		
+		sclist[1].setDerivedFrom(sclist[0]);
 				
 
 		// POSITION ATTRIBUTES

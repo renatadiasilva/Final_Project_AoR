@@ -17,9 +17,9 @@ public abstract class GenericDao<E> {
 	private Class<E> entityClass;
 	
 	// used in accent insensitive searchs
-	public static final String ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
-	public static final String NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";
-
+	static final String ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
+	static final String NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";	
+	
 	public GenericDao(Class<E> entityClass) {
 		this.entityClass = entityClass;
 	}
@@ -46,6 +46,24 @@ public abstract class GenericDao<E> {
 		CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));
 		return em.createQuery(cq).getResultList();
+	}
+	
+	protected static String makeQuery(String selectPart, String fromPart,
+			String extraPart, String[] attributesPart, String wherePart, String AND_OR,
+			String orderbyPart) {
+		String query = "SELECT "+selectPart+" FROM "+fromPart+" WHERE "
+			+ extraPart+"(TRANSLATE(UPPER(REPLACE("+attributesPart[0]
+			+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
+			+") LIKE :"+attributesPart[0];
+		
+		for (int i = 1; i < attributesPart.length; i++) 
+			query += AND_OR+"TRANSLATE(UPPER(REPLACE("+attributesPart[i]
+				+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
+				+") LIKE :"+attributesPart[i];
+		query += ")";
+		if (!wherePart.isEmpty()) query +=" AND "+wherePart;
+		if (!orderbyPart.isEmpty()) query +=" ORDER BY "+orderbyPart;
+		return query;
 	}
 
 	@SuppressWarnings("unchecked")

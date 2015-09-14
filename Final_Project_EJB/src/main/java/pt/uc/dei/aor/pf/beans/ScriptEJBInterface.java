@@ -12,6 +12,4 @@ public interface ScriptEJBInterface {
 	public abstract List<ScriptEntity> findAll();
 	public abstract List<ScriptEntity> findReusableScripts();
 	public abstract List<ScriptEntity> findScriptsByTitle(String title); // needed??
-	
-//	public abstract List<ScriptEntity> findScriptByQuestion(QuestionEntity question);  //GET!!! reports???
 }
