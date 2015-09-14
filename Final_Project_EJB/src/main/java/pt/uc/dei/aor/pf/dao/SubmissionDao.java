@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.ejb.Stateless;
 
-import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 
 @Stateless
@@ -20,13 +19,6 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 	public List<SubmissionEntity> findSpontaneousSubmissions() {
 		return super.findSomeResults("Submission.findSpontaneousSubmissions", null);
 	}
-	
-	public List<SubmissionEntity> findSubmissionsByPosition(PositionEntity position) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("id", position);
-		return super.findSomeResults("Submission.findSubmissionByPosition", parameters);
-	}
-
 	
 	public List<SubmissionEntity> findSubmissionsByDate(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();

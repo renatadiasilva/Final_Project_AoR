@@ -197,7 +197,8 @@ public class PositionEntity implements Serializable {
 		this.openingDate = new Date(); // today
 		Calendar cal = Calendar.getInstance();
 		this.positionCode = title.substring(0, (int) Math.min(3,title.length()))+
-				 cal.get(Calendar.DAY_OF_MONTH)+
+				technicalArea.substring(0,(int) Math.min(3,title.length()))+ 
+				cal.get(Calendar.DAY_OF_MONTH)+
 				(cal.get(Calendar.MONTH)+1)+cal.get(Calendar.YEAR); // do generation!
 		this.locations = locations;
 		this.status = STATUS_OPEN;
@@ -340,6 +341,14 @@ public class PositionEntity implements Serializable {
 
 	public void setDefaultScript(ScriptEntity defaultScript) {
 		this.defaultScript = defaultScript;
+	}
+
+	public List<SubmissionEntity> getSubmissions() {
+		return submissions;
+	}
+
+	public void setSubmissions(List<SubmissionEntity> submissions) {
+		this.submissions = submissions;
 	}
 
 }

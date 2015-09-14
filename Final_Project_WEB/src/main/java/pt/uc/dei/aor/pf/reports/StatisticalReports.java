@@ -25,9 +25,6 @@ public class StatisticalReports {
 
 	private static final Logger log = LoggerFactory.getLogger(StatisticalReports.class);
 
-//	SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd"); 
-//	ft.parse("1960-05-11")
-	
 	@EJB
 	private InterviewEJBInterface interviewEJB;
 
@@ -39,7 +36,7 @@ public class StatisticalReports {
 		log.info("Creating report with submissions of a position");
 		log.debug("Position ", position.getPositionCode());
 
-		List<SubmissionEntity> listS = submissionEJB.findSubmissionByPosition(position);
+		List<SubmissionEntity> listS = position.getSubmissions();
 		System.out.println("\n\nPosição :"+position.getTitle()+
 				" ("+position.getPositionCode()+")"); //truncate title??"
 		for (SubmissionEntity s : listS) 			

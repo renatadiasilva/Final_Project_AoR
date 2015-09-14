@@ -70,6 +70,7 @@ public class InitDB {
 			new UserEntity("leitaosilva@gmail.com", "12345", "Fátima", "Leitão", null), // ulist[7]
 			new UserEntity("dvdleitaods@gmail.com", "12345", "David", "Leitão", null), // ulist[8]
 			new UserEntity("jackerozeno@hotmail.com", "12345", "Jackeline", "Rozeno", null), // ulist[9]
+			new UserEntity("gestor1000@itgrow.pt", "12345", "Stephen", "Hawkings", null), // ulist[10]
 		};
 		
 		UserInfoEntity [] uilist = {
@@ -104,11 +105,16 @@ public class InitDB {
 		PositionEntity [] plist = {
 				// sla = 60 dias
 				new PositionEntity("Programadores Java", null, 4, null, ftDate.parse("2015-10-02"), 
-						ulist[2], ulist[1], "Critical Software", PositionEntity.TECH_JAVA, "Procuram-se programadores "
+						ulist[2], ulist[1], "Critical Software", PositionEntity.TECH_JAVA, "Procuram-se programadores java "
 								+ "bla bla bla", null, sclist[0]), // plist[0]
+				// sla = 60 dias
 				new PositionEntity("Técnico de Segurança", null, 1, null, ftDate.parse("2015-11-04"), 
 						ulist[2], ulist[1], "Critical Software", PositionEntity.TECH_SAFETY, "Procura-se técnico de segurança "
 								+ "bla bla bla", null, sclist[0]), // plist[1]
+				// sla = 150 dias
+				new PositionEntity("Programadores .NET", null, 3, null, ftDate.parse("2015-12-31"), 
+						ulist[10], ulist[1], "IT Grow", PositionEntity.TECH_DOTNET, "Procuram-se programadores .NET "
+								+ "bla bla bla", null, sclist[0]), // plist[2]
 			};
 			
 		SubmissionEntity [] slist = {
@@ -121,11 +127,25 @@ public class InitDB {
 			new SubmissionEntity(ulist[8], null, null, false), // slist[6]			
 			new SubmissionEntity(ulist[8], null, null, false), // slist[7]			
 			new SubmissionEntity(ulist[9], null, null, false), // slist[8]			
+			new SubmissionEntity(ulist[4], null, null, false), // slist[9]			
+			new SubmissionEntity(ulist[7], null, null, false), // slist[10]			
+			new SubmissionEntity(ulist[8], null, null, false), // slist[11]			
+			new SubmissionEntity(ulist[9], null, null, false), // slist[12]			
 		};
 		
 		InterviewEntity [] ilist = {
-				new InterviewEntity(slist[5], ftDateHour.parse("2015-09-20 10:00"), sclist[0], ulist[1]), // ilist[0]				
-				new InterviewEntity(slist[8], ftDateHour.parse("2015-09-01 17:30"), sclist[0], ulist[2]), // ilist[1]				
+				new InterviewEntity(slist[5], ftDateHour.parse("2015-09-20 10:00"), sclist[0],
+						ulist[1]), // ilist[0]				
+				new InterviewEntity(slist[8], ftDateHour.parse("2015-09-01 17:30"), sclist[0],
+						ulist[2]), // ilist[1]				
+				new InterviewEntity(slist[10], ftDateHour.parse("2015-08-21 12:00"), sclist[0],
+						ulist[10]), // ilist[2]				
+				new InterviewEntity(slist[11], ftDateHour.parse("2015-08-06 14:00"), sclist[0],
+						ulist[10]), // ilist[3]				
+				new InterviewEntity(slist[12], ftDateHour.parse("2015-08-06 15:00"), sclist[0],
+						ulist[10]), // ilist[4]				
+				new InterviewEntity(slist[12], ftDateHour.parse("2015-08-10 09:00"), sclist[0],
+						ulist[10]), // ilist[5]				
 		};
 		
 		
@@ -156,6 +176,10 @@ public class InitDB {
 			ulist[i+4].setUserInfo(uilist[i]);  // tirar para ver se dá
 		}
 		
+		roles = Arrays.asList(UserEntity.ROLE_MANAGER);
+		ulist[10].setDefaultRole(UserEntity.ROLE_MANAGER);
+		ulist[10].setRoles(roles);
+		
 		// SCRIPT ATTRIBUTES
 		
 		sclist[1].setDerivedFrom(sclist[0]);
@@ -178,6 +202,11 @@ public class InitDB {
 		plist[1].setAdvertisingChannels(channels);
 		plist[1].setOpeningDate(ftDate.parse("2015-09-02"));
 		
+		locations = Arrays.asList(PositionEntity.LOCATION_LISBOA);
+		channels = Arrays.asList(PositionEntity.SOCIAL_FACEBOOK);
+		plist[2].setLocations(locations);
+		plist[2].setAdvertisingChannels(channels);
+		plist[2].setOpeningDate(ftDate.parse("2015-07-31"));
 
 		// SUBMISSION ATTRIBUTES
 		
@@ -207,7 +236,8 @@ public class InitDB {
 		slist[6].setPosition(plist[0]);
 		slist[6].setSources(sources);
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK);
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
+				SubmissionEntity.SOURCE_NETEMPREGO);
 		slist[7].setPosition(plist[1]);
 		slist[7].setSources(sources);
 		slist[7].setDate(ftDate.parse("2015-09-09"));
@@ -217,15 +247,63 @@ public class InitDB {
 		slist[8].setStatus(SubmissionEntity.STATUS_SPROPOSAL);
 		slist[8].setDate(ftDate.parse("2015-08-10"));
 		
-//		// faltam cenas pesquisas... acentos
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
+				SubmissionEntity.SOURCE_EXPRESSO, SubmissionEntity.SOURCE_LINKEDIN);
+		slist[9].setPosition(plist[2]);
+		slist[9].setSources(sources);
+		slist[9].setStatus(SubmissionEntity.STATUS_REJECTED);
+		slist[9].setDate(ftDate.parse("2015-08-10"));
+		slist[9].setRejectReason("O candidato não tem currículo para a posição");
+		
+		sources = Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO);
+		slist[10].setPosition(plist[2]);
+		slist[10].setSources(sources);
+		slist[10].setStatus(SubmissionEntity.STATUS_OPROPOSAL);
+		slist[10].setDate(ftDate.parse("2015-08-20"));
+
+		slist[11].setPosition(plist[2]);
+		slist[11].setStatus(SubmissionEntity.STATUS_APROPOSAL);
+		slist[11].setDate(ftDate.parse("2015-08-01"));
+
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
+				SubmissionEntity.SOURCE_EXPRESSO);
+		slist[12].setPosition(plist[2]);
+		slist[12].setSources(sources);
+		slist[12].setStatus(SubmissionEntity.STATUS_SPROPOSAL);
+		slist[12].setDate(ftDate.parse("2015-08-01"));
+
+		// INTERVIEW ATTRIBUTES
 		
 		ilist[0].addInterviewer(ulist[3]);
 
-		ilist[1].addInterviewer(ulist[2]);  // pode ser gestor ou um admin a entrevistar
+		ilist[1].addInterviewer(ulist[2]);  // pode ser gestor ou um admin a entrevistar??
 		ilist[1].setCarriedOut(true);
 		ilist[1].setApproved(true);
 		ilist[1].setFeedback("O candidato mostrou-se muito dinâmico blablabla");
 
+		ilist[2].addInterviewer(ulist[10]);  // pode ser gestor ou um admin a entrevistar??
+		ilist[2].setCarriedOut(true);
+		ilist[2].setApproved(true);
+		ilist[2].setFeedback("O candidato correspondeu ao currículo apresentado blablabla");
+
+		ilist[3].addInterviewer(ulist[3]);
+		ilist[3].setCarriedOut(true);
+		ilist[3].setApproved(true);
+		ilist[3].setFeedback("O candidato tem uma criatividade impressionante blablabla");
+
+		ilist[4].addInterviewer(ulist[3]);
+		ilist[4].setCarriedOut(true);
+		ilist[4].setApproved(true);
+		ilist[4].setFeedback("O candidato foi aprovado mas precisa de realizar nova entrevista");
+
+		ilist[5].addInterviewer(ulist[3]);
+		ilist[5].addInterviewer(ulist[10]);
+		ilist[5].setCarriedOut(true);
+		ilist[5].setApproved(true);
+		ilist[5].setFeedback("O candidato satisfez plenamente blablabla");
+
+		// ENTITIES PRESISTENCE
+		
 		for (UserEntity u : ulist) {
 			this.userEJB.save(u);
 		}

@@ -24,44 +24,44 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+
+// pôr constantes das queries também como parâmetros para controlar de fora
 @Entity
 @Table(name = "submissions")
 @NamedQueries({
 	@NamedQuery(name = "Submission.findSpontaneousSubmissions",
 			query = "SELECT s FROM SubmissionEntity s WHERE s.spontaneous = TRUE"
 					+ " ORDER BY s.date DESC"),
-	@NamedQuery(name = "Submission.findSubmissionsByDate",
+	@NamedQuery(name = "Submission.findSubmissionsByDate",  // mais order by? ver reports
 			query = "SELECT s FROM SubmissionEntity s WHERE "
-					+ " s.date BETWEEN :date1 AND :date2"),
+					+ " s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSpontaneousSubmissionsByDate",
 			query = "SELECT s FROM SubmissionEntity s WHERE "
-					+ " s.spontaneous = TRUE AND s.date BETWEEN :date1 AND :date2"),
+					+ " s.spontaneous = TRUE AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findRejectedSubmissionsByDate",
-			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) = 'REJECTED'"
-					+ " AND s.date BETWEEN :date1 AND :date2"),
+			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) = 'REJECTED SUBMISSION'"
+					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findPresentedProposalsByDate",
-			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) = '%PROPOSAL'"
-					+ " AND s.date BETWEEN :date1 AND :date2"),
+			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) LIKE '%PROPOSAL'"
+					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSubmissionsBySource",
 			query = "SELECT s FROM SubmissionEntity s JOIN s.sources so WHERE so = :source"
-					+ " AND s.date BETWEEN :date1 AND :date2"),
+					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 //			query = "SELECT s SubmissionEntity s WHERE :source MEMBER OF s.sources"), //(TESTAR)
-	@NamedQuery(name = "Submission.findSubmissionByPosition",
-			query = "SELECT s FROM SubmissionEntity s WHERE s.position = :id"),
 })
 public class SubmissionEntity implements Serializable {
 
 	private static final long serialVersionUID = -2164233391673103244L;
 	
-	public static final String STATUS_SUBMITED  = "Submited";
-	public static final String STATUS_REJECTED  = "Rejected Submission";
-	public static final String STATUS_ACCEPTED  = "Accepted to Interview";
-	public static final String STATUS_SPROPOSAL = "Submited Proposal";  // automatismo????
-	public static final String STATUS_RPROPOSAL = "Rejected Proposal";
-	public static final String STATUS_APROPOSAL = "Accepted Proposal";
-	public static final String STATUS_OPROPOSAL = "On Negotiation Proposal"; //"Offer Process (Negotiation)";
-	public static final String STATUS_HIRED     = "Hired";
-	public static final String STATUS_NOTHIRED  = "Not Hired"; 
+	public static final String STATUS_SUBMITED  = "SUBMITED";
+	public static final String STATUS_REJECTED  = "REJECTED SUBMISSION";
+	public static final String STATUS_ACCEPTED  = "ACCEPTED TO INTERVIEW";
+	public static final String STATUS_SPROPOSAL = "SUBMITED PROPOSAL";  // automatismo????
+	public static final String STATUS_RPROPOSAL = "REJECTED PROPOSAL";
+	public static final String STATUS_APROPOSAL = "ACCEPTED PROPOSAL";
+	public static final String STATUS_OPROPOSAL = "ON NEGOTIATION PROPOSAL"; //"Offer Process (Negotiation)";
+	public static final String STATUS_HIRED     = "HIRED";
+	public static final String STATUS_NOTHIRED  = "NOT HIRED"; 
 
 	// outros??
 	public static final String SOURCE_EXPRESSO = "EXPRESSO";

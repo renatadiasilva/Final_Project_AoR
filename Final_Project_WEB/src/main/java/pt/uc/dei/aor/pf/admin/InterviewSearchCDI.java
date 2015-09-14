@@ -52,11 +52,13 @@ public class InterviewSearchCDI {
 
 	public void searchCarriedOutInterviews() {
 		log.info("Searching carried out interviews between two dates");
+		log.debug("Dates between "+date1+" and "+date2);
 		this.ilist = interviewEJB.findCarriedOutInterviews(date1, date2);
 	}
 
 	public void searchCarriedOutInterviewsByUser() {
 		log.info("Searching carried out interviews of a interviewer");
+		log.debug("Id "+id);
 		UserEntity interviewer = userEJB.find(id);
 //		if ( (interviewer != null) && (interviewer.getRoles().contains("INTERVIEWER"))) {
 		if ( interviewer != null) {
@@ -66,6 +68,7 @@ public class InterviewSearchCDI {
 
 	public void searchScheduledInterviewsByUser() {
 		log.info("Searching scheduled interviews of interviewer");
+		log.debug("Id "+id);
 		UserEntity interviewer = userEJB.find(id);
 		if ( interviewer != null) {
 			this.ilist = interviewEJB.findScheduledInterviewsByUser(interviewer);
@@ -74,6 +77,8 @@ public class InterviewSearchCDI {
 
 	public void checkInterviewerHasDateConflict() {
 		log.info("Checking if interviewer has date conflict");
+		log.debug("Id "+id);
+		log.debug("Date "+date1);
 		UserEntity interviewer = userEJB.find(id);
 		if ( interviewer != null) {
 			result = interviewEJB.interviewerHasDateConflict(date1, interviewer);
@@ -82,6 +87,8 @@ public class InterviewSearchCDI {
 
 	public void checkCandidateHasDateConflict() {
 		log.info("Checking if candidate has date conflict");
+		log.debug("Id "+id);
+		log.debug("Date "+date1);
 		UserEntity candidate = userEJB.find(id);
 		if ( (candidate != null) && (candidate.getRoles().contains("CANDIDATE"))) {
 			result = interviewEJB.candidateHasDateConflict(date1, candidate);
@@ -90,6 +97,7 @@ public class InterviewSearchCDI {
 
 	public void searchInterviewsByPosition() {
 		log.info("Searching interviews of position");
+		log.debug("Id "+id);
 		PositionEntity position = positionEJB.find(id);
 		if (position != null) {
 			this.ilist = interviewEJB.findInterviewsByPosition(position);
@@ -98,6 +106,7 @@ public class InterviewSearchCDI {
 
 	public void searchCarriedOutInterviewsByPosition() {
 		log.info("Searching carried out interviews of position");
+		log.debug("Id "+id);
 		PositionEntity position = positionEJB.find(id);
 		if (position != null) {
 			this.ilist = interviewEJB.findCarriedOutInterviewsByPosition(position);
@@ -106,6 +115,7 @@ public class InterviewSearchCDI {
 
 	public void searchScheduledInterviewsByPosition() {
 		log.info("Searching scheduled interviews of position");
+		log.debug("Id "+id);
 		PositionEntity position = positionEJB.find(id);
 		if (position != null) {
 			this.ilist = interviewEJB.findScheduledInterviewsByPosition(position);
@@ -114,6 +124,7 @@ public class InterviewSearchCDI {
 
 	public void searchScheduledInterviewsByCandidate() {
 		log.info("Searching scheduled interviews of candidate");
+		log.debug("Id "+id);
 		UserEntity candidate = userEJB.find(id);
 		if ( (candidate != null) && (candidate.getRoles().contains("CANDIDATE"))) {
 			this.ilist = interviewEJB.findScheduledInterviewsByCandidate(candidate);

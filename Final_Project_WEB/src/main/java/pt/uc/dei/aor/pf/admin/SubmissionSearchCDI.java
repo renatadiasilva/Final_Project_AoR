@@ -10,11 +10,8 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
-import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
-import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
 @Named
@@ -28,97 +25,71 @@ public class SubmissionSearchCDI {
 
 	// search fields
 	private Date date1, date2;
-	private String email, fname, lname, role, keyword;
+	
+	private String source;
 
 	private List<SubmissionEntity> slist;
 
 	public SubmissionSearchCDI() {
 	}
 
-	// ALL
-
 	public void searchAll() {
-		log.info("Searching for all users");
+		log.info("Searching for all submissions");
 		this.slist = submissionEJB.findAll();
 	}
+	
+	public void searchAllSponteanous() {
+		log.info("Searching for all spontaneouse submissions");
+		this.slist = submissionEJB.findSpontaneousSubmissions();
+	}
+	
+	public void searchByDate() {
+		log.info("Searching for submissions between two dates");
+		log.debug("Dates between "+date1+" and "+date2);
+		this.slist = submissionEJB.findSubmissionsByDate(date1, date2);
+	}	
 
-//	public void searchAllAdmins() {
-//		log.info("Searching for all administrators");
-//		this.ulist = submissionEJB.findAllAdmins();
-//	}
-//
-//	public void searchAllManagers() {
-//		log.info("Searching for all managers");
-//		this.ulist = submissionEJB.findAllManagers();
-//	}
-//
-//	public void searchAllInterviewers() {
-//		log.info("Searching for all interviwers");
-//		this.ulist = submissionEJB.findAllInterviewers();
-//	}
-//
-//	// INTERNAL USERS
-//
-//	public void searchByEmail() {
-//		log.info("Searching for internal users by email");
-//		String pattern = SearchPattern.preparePattern(email);
-//		log.debug("Internal search string: "+pattern);
-//		this.ulist = submissionEJB.findUsersByEmail(pattern);
-//	}
-//
-//	public void searchByName() {
-//		log.info("Searching for internal users by name (first/second)");
-//		String pattern = SearchPattern.preparePattern(fname);
-//		log.debug("Internal search string: "+pattern);
-//		this.ulist = submissionEJB.findUsersByName(pattern);
-//	}
-//
-//	public void searchByKeyword() {
-//		log.info("Searching for internal users by keyword");
-//		String pattern = SearchPattern.preparePattern(keyword);
-//		log.debug("Internal search string: "+pattern);
-//		this.ulist = submissionEJB.findUsersByKeyword(pattern);
-//	}
-//
-//	public void searchByKeywordAndRole() {
-//		log.info("Searching for internal users by keyword");
-//		String pattern = SearchPattern.preparePattern(keyword);
-//		log.debug("Internal search string: "+pattern);
-//		this.ulist = submissionEJB.findUsersByKeywordAndRole(pattern, role);
-//	}
+	public void searchSpontanouseByDate() {
+		log.info("Searching for spontaneous submissions between two dates");
+		log.debug("Dates between "+date1+" and "+date2);
+		this.slist = submissionEJB.findSpontaneousSubmissionsByDate(date1, date2);
+	}	
+
+	public void searchRejectedByDate() {
+		log.info("Searching for rejected submissions between two dates");
+		log.debug("Dates between "+date1+" and "+date2);
+		this.slist = submissionEJB.findRejectedSubmissions(date1, date2);
+	}	
+
+	public void searchProposalByDate() {
+		log.info("Searching for proposals presented between two dates");
+		log.debug("Dates between "+date1+" and "+date2);
+		this.slist = submissionEJB.findPresentedProposals(date1, date2);
+	}	
+
+	public void searchBySourceAndDate() {
+		log.info("Searching for submissions by source between two dates");
+		log.debug("Source "+source);
+		log.debug("Dates between "+date1+" and "+date2);
+		this.slist = submissionEJB.findSubmissionsBySource(source, date1, date2);
+	}	
 
 	// getters e setters
 
-	public String getEmail() {
-		return email;
+	public Date getDate1() {
+		return date1;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setDate1(Date date1) {
+		this.date1 = date1;
 	}
 
-	public String getFname() {
-		return fname;
+	public Date getDate2() {
+		return date2;
 	}
 
-	public void setFname(String fname) {
-		this.fname = fname;
-	}
-
-	public String getLname() {
-		return lname;
-	}
-
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
+	public void setDate2(Date date2) {
+		this.date2 = date2;
 	}
 
 	public List<SubmissionEntity> getSlist() {
@@ -129,17 +100,12 @@ public class SubmissionSearchCDI {
 		this.slist = slist;
 	}
 
-	public String getKeyword() {
-		return keyword;
+	public String getSource() {
+		return source;
 	}
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
-
-	// tirar
-	public void meh() {
-		// Deal with it
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 }
