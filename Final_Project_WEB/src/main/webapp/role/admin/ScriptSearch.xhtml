@@ -1,0 +1,68 @@
+<ui:composition template="../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">Admin - Pesquisas de Guiões - IT Jobs</ui:define>
+
+	<ui:define name="contents">
+		<h1>Pesquisas de Guiões</h1>
+
+		<h:form id="scriptSearch">
+
+			<h:panelGrid id="buttonsScriptSearch" columns="7">
+
+				<p:commandButton value="Todos guiões"
+					action="#{scriptSearchCDI.searchAllScripts()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Guiões reutilizáveis"
+					action="#{scriptSearchCDI.searchReusableScripts()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Guiões (título)"
+					action="#{scriptSearchCDI.searchByTitle()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+			</h:panelGrid>
+
+			<h:panelGrid id="gridScriptSearch" columns="8">
+
+				<p:outputLabel value="Título: " for="search-titlesc" />
+				<p:inputText id="search-titlesc" value="#{scriptSearchCDI.title}"
+					size="35" />
+
+			</h:panelGrid>
+
+			<p:dataTable var="sc" value="#{scriptSearchCDI.sclist}">
+				<f:facet name="header">Listagem guiões</f:facet>
+				<p:column headerText="Título">
+					<h:outputText value="#{sc.title}" />
+				</p:column>
+				<p:column headerText="Data">
+					<h:outputText value="#{sc.creationDate}" />
+				</p:column>
+				<p:column headerText="Comentários">
+					<h:outputText value="#{sc.comments}" />
+				</p:column>
+				<p:column headerText="Reutilizável?">
+					<h:outputText value="#{sc.reusable}" />
+				</p:column>
+				<p:column headerText="Criador">
+					<h:outputText value="#{sc.scriptCreator.firstName}" />
+				</p:column>
+				<p:column headerText="Derivado de">
+					<h:outputText value="#{sc.derivedFrom.title}" />
+				</p:column>
+				<p:column headerText="Posições">
+					<h:outputText value="#{sc.positionsWithScriptDefault.get(0).positionCode}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

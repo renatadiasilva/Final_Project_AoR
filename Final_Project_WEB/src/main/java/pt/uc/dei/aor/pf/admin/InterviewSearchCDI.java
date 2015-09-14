@@ -36,7 +36,7 @@ public class InterviewSearchCDI {
 	// search fields
 	private Date date1, date2;
 
-	private Long id;   // Users id=? Position id=?
+	private Long id;   // Users id=11,15 Position id=18
 
 	private boolean result;
 

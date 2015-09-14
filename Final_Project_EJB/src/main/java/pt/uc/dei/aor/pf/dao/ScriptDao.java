@@ -20,6 +20,7 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 	}
 
 	public List<ScriptEntity> findScriptsByTitle(String title) {
+		//accent
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("t", title);
 		return super.findSomeResults("Script.findScriptsByTitle", parameters);
