@@ -15,35 +15,35 @@
 			<h:panelGrid id="buttonsUserSearch" columns="5">
 
 				<p:commandButton value="Todos users"
-					action="#{usersSearchCDI.searchAll()}" update="@form, messages"
+					action="#{userSearchCDI.searchAll()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Todos admin"
-					action="#{usersSearchCDI.searchAllAdmins()}" update="@form, messages"
+					action="#{userSearchCDI.searchAllAdmins()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Todos gestores"
-					action="#{usersSearchCDI.searchAllManagers()}" update="@form, messages"
+					action="#{userSearchCDI.searchAllManagers()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Todos entervistadores"
-					action="#{usersSearchCDI.searchAllInterviewers()}" update="@form, messages"
+					action="#{userSearchCDI.searchAllInterviewers()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Todos por keyword/role)"
-					action="#{usersSearchCDI.searchByKeywordAndRole()}" update="@form, messages"
+					action="#{userSearchCDI.searchByKeywordAndRole()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Users internos (email)"
-					action="#{usersSearchCDI.searchByEmail()}" update="@form, messages"
+					action="#{userSearchCDI.searchByEmail()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Users internos (nome)"
-					action="#{usersSearchCDI.searchByName()}" update="@form, messages"
+					action="#{userSearchCDI.searchByName()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Users internos (keyword)"
-					action="#{usersSearchCDI.searchByKeyword()}" update="@form, messages"
+					action="#{userSearchCDI.searchByKeyword()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 			</h:panelGrid>
@@ -51,28 +51,28 @@
 			<h:panelGrid id="gridUserSearch" columns="4">
 
 				<p:outputLabel value="Email: " for="search-email" />
-				<p:inputText id="search-email" value="#{usersSearchCDI.email}"
+				<p:inputText id="search-email" value="#{userSearchCDI.email}"
 					size="35" />
 
 				<p:outputLabel value="Primeiro nome: " for="search-firstName" />
-				<p:inputText id="search-firstName" value="#{usersSearchCDI.fname}"
+				<p:inputText id="search-firstName" value="#{userSearchCDI.fname}"
 					size="35" />
 
 				<p:outputLabel value="Sobrenome: " for="search-lastName" />
-				<p:inputText id="search-lastName" value="#{usersSearchCDI.lname}"
+				<p:inputText id="search-lastName" value="#{userSearchCDI.lname}"
 					size="35" />
 
 				<p:outputLabel value="Role (escrever mesmo): " for="search-role" />
-				<p:inputText id="search-role" value="#{usersSearchCDI.role}"
+				<p:inputText id="search-role" value="#{userSearchCDI.role}"
 					size="35" />
 
 				<p:outputLabel value="Keyword: " for="search-keyword" />
-				<p:inputText id="search-keyword" value="#{usersSearchCDI.keyword}"
+				<p:inputText id="search-keyword" value="#{userSearchCDI.keyword}"
 					size="35" />
 
 			</h:panelGrid>
 
-			<p:dataTable var="u" value="#{usersSearchCDI.ulist}">
+			<p:dataTable var="u" value="#{userSearchCDI.ulist}">
 				<f:facet name="header">Listagem users</f:facet>
 				<p:column headerText="Primeiro nome">
 					<h:outputText value="#{u.firstName}" />

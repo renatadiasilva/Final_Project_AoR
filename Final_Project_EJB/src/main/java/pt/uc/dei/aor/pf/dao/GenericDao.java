@@ -49,10 +49,10 @@ public abstract class GenericDao<E> {
 	}
 	
 	protected static String makeQuery(String selectPart, String fromPart,
-			String extraPart, String[] attributesPart, String wherePart, String AND_OR,
+			String extraPart, String[] attributesPart, String AND_OR, String wherePart,
 			String orderbyPart) {
 		String query = "SELECT "+selectPart+" FROM "+fromPart+" WHERE "
-			+ extraPart+"(TRANSLATE(UPPER(REPLACE("+attributesPart[0]
+			+ extraPart+"TRANSLATE(UPPER(REPLACE("+attributesPart[0]
 			+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
 			+") LIKE :"+attributesPart[0];
 		

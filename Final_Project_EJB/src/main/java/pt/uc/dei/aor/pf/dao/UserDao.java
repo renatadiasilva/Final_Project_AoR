@@ -36,7 +36,7 @@ public class UserDao extends GenericDao<UserEntity> {
 	public List<UserEntity> findUsersByName(String name) {
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
-				"", attributes, " OR ", 
+				"(", attributes, " OR ", 
 				"users.id = roles.user_id AND roles.role <> \'CANDIDATE\'",
 				"email");
 //		String queryS = "SELECT DISTINCT users.* FROM users, roles"
@@ -46,7 +46,6 @@ public class UserDao extends GenericDao<UserEntity> {
 //				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :last_name)"
 //				+ " AND users.id = roles.user_id"
 //				+ " AND roles.role <> \'CANDIDATE\' ORDER BY email";
-		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("first_name", name);
 		query.setParameter("last_name", name);
@@ -62,19 +61,19 @@ public class UserDao extends GenericDao<UserEntity> {
 	public List<UserEntity> findUsersByRole(String keyword, String role) {
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
-				"UPPER(email) LIKE :email OR ", attributes, " OR ", 
-				"users.id = roles.user_id AND roles.role :role",
+				"(UPPER(email) LIKE :email OR ", attributes, " OR ", 
+				"users.id = roles.user_id AND roles.role = :role",
 				"email");
 //		String queryS = "SELECT DISTINCT users.* FROM users, roles"
-//				+ " WHERE (UPPER(email) LIKE :keyword"
+//				+ " WHERE (UPPER(email) LIKE :email"
 //				+ " OR TRANSLATE(UPPER(REPLACE(first_name,\' \',\'\')), "
 //				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :first_name"
 //				+ " OR TRANSLATE(UPPER(REPLACE(last_name,\' \',\'\')), "
 //				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :last_name)"
 //				+ " AND users.id = roles.user_id"
 //				+ " AND roles.role :role ORDER BY email";
-		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("email", keyword);
 		query.setParameter("first_name", keyword);
 		query.setParameter("last_name", keyword);
 		query.setParameter("role", role);
@@ -89,7 +88,7 @@ public class UserDao extends GenericDao<UserEntity> {
 	public List<UserEntity> findUsersByKeyword(String keyword) {
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
-				"UPPER(email) LIKE :email OR ", attributes, " OR ", 
+				"(UPPER(email) LIKE :email OR ", attributes, " OR ", 
 				"users.id = roles.user_id AND roles.role <> \'CANDIDATE\'",
 				"email");
 //		String queryS = "SELECT DISTINCT users.* FROM users, roles"
@@ -100,7 +99,6 @@ public class UserDao extends GenericDao<UserEntity> {
 //				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :last_name)"
 //				+ " AND users.id = roles.user_id"
 //				+ " AND roles.role <> \'CANDIDATE\' ORDER BY email";
-		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("email", keyword);
 		query.setParameter("first_name", keyword);
@@ -120,7 +118,7 @@ public class UserDao extends GenericDao<UserEntity> {
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findCandidatesByKeyword(String keyword) {
 		String[] attributes = {"address", "city", "country", "course", "school"};
-		String queryS = makeQuery("users.*", "users, users_info", "", attributes, " OR ",
+		String queryS = makeQuery("users.*", "users, users_info", "(", attributes, " OR ",
 				"users.id = users_info.user_id", "email");
 
 //		String queryS = "SELECT users.* FROM users, users_info"
@@ -135,7 +133,6 @@ public class UserDao extends GenericDao<UserEntity> {
 //				+ " OR TRANSLATE(UPPER(REPLACE(school,\' \',\'\')), "
 //				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :school)"
 //				+ " AND users.id = users_info.user_id ORDER BY email";
-		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("address", keyword);
 		query.setParameter("city", keyword);
@@ -165,15 +162,15 @@ public class UserDao extends GenericDao<UserEntity> {
 		String queryS;
 		Query query;
 		if (position != null) {
-			String[] attributes = {"email", "first_name", 
+			String[] attributes = {"first_name", 
 					"last_name", "address", "city", "country", "course", "school"};
-			queryS = makeQuery("users.*", "users, users_info", "", attributes, " AND ",
-					"users.id = users_info.user_id AND users.id = submission.candidate"
-					+ " AND submission.position = :id", "email");
+			queryS = makeQuery("users.*", "users, users_info, submissions", 
+					"(UPPER(email) LIKE :email AND ", attributes, " AND ",
+					"users.id = users_info.user_id AND users.id = submissions.candidate"
+					+ " AND submissions.position = :position", "email");
 
 //			queryS = "SELECT users.* FROM users, users_info, submissions"
-//					+ " WHERE TRANSLATE(UPPER(REPLACE(email,\' \',\'\')), "
-//					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :email"
+//					+ " WHERE *UPPER(email) LIKE :email"
 //					+ " AND TRANSLATE(UPPER(REPLACE(first_name,\' \',\'\')), "
 //					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :fname"
 //					+ " AND TRANSLATE(UPPER(REPLACE(last_name,\' \',\'\')), "
@@ -188,25 +185,23 @@ public class UserDao extends GenericDao<UserEntity> {
 //					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :course"
 //					+ " AND TRANSLATE(UPPER(REPLACE(school,\' \',\'\')), "
 //					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :school"
-//					+ " AND users.id = users_info.user_id AND users.id = submission.candidate"
-//					+ " AND submission.position = :id ORDER BY email";
-			System.out.println(queryS);
+//					+ " AND users.id = users_info.user_id AND users.id = submissions.candidate"
+//					+ " AND submissions.position = :position ORDER BY email";
 			query = em.createNativeQuery(queryS, UserEntity.class);
-			query.setParameter("id", position.getId());
+			query.setParameter("position", position);
 //			return super.findSomeResults("User.findCandidatesByPosition", parameters);
 		} else {
-			String[] attributes = {"email", "first_name", 
+			String[] attributes = {"first_name", 
 					"last_name", "address", "city", "country", "course", "school"};
-			queryS = makeQuery("users.*", "users, users_info", "", attributes, " AND ",
-					"users.id = users_info.user_id", "email");
+			queryS = makeQuery("users.*", "users, users_info", "(UPPER(email) LIKE :email AND ", 
+					attributes, " AND ", "users.id = users_info.user_id", "email");
 			
 //			queryS = "SELECT users.* FROM users, users_info"
-//					+ " WHERE TRANSLATE(UPPER(REPLACE(email,\' \',\'\')), "
-//					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :email"
+//					+ " WHERE (UPPER(email) LIKE :email"
 //					+ " AND TRANSLATE(UPPER(REPLACE(first_name,\' \',\'\')), "
-//					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :fname"
+//					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :first_name"
 //					+ " AND TRANSLATE(UPPER(REPLACE(last_name,\' \',\'\')), "
-//					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :lname"
+//					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :last_name"
 //					+ " AND TRANSLATE(UPPER(REPLACE(address,\' \',\'\')), "
 //					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :address"
 //					+ " AND TRANSLATE(UPPER(REPLACE(city,\' \',\'\')), "
@@ -218,7 +213,6 @@ public class UserDao extends GenericDao<UserEntity> {
 //					+ " AND TRANSLATE(UPPER(REPLACE(school,\' \',\'\')), "
 //					+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :school"
 //					+ " AND users.id = users_info.user_id ORDER BY email";
-			System.out.println(queryS);
 			query = em.createNativeQuery(queryS, UserEntity.class);
 		}
 		//		return super.findSomeResults("User.findCandidatesBySeveralAttributes", parameters);

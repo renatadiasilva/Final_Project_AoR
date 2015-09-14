@@ -21,7 +21,7 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 	@SuppressWarnings("unchecked")
 	public List<ScriptEntity> findScriptsByTitle(String title) {
 		String[] attributes = {"title"};
-		String queryS = makeQuery("*", "scripts", "", attributes, " OR ", "", "title");
+		String queryS = makeQuery("*", "scripts", "(", attributes, " OR ", "", "title");
 //		String queryS = "SELECT * FROM scripts"
 //				+ " WHERE (TRANSLATE(UPPER(REPLACE(title,\' \',\'\')), "
 //				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :title)"
