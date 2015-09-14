@@ -53,7 +53,8 @@ public class InitDB {
 
 		log.info("Populate...");
 
-		SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd"); 
+		SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
+		SimpleDateFormat ftDateHour = new SimpleDateFormat ("yyyy-MM-dd HH:mm"); 
 
 		// ENTITY LISTS
 		
@@ -72,23 +73,23 @@ public class InitDB {
 		};
 		
 		UserInfoEntity [] uilist = {
-			new UserInfoEntity(ft.parse("1960-05-11"), "Avenida da Liberdade",
+			new UserInfoEntity(ftDate.parse("1960-05-11"), "Avenida da Liberdade",
 						"Lisboa", null, "969362531", "Portugal",
 						"Engenharia Informática","Universidade do Porto, Portugal", null, ulist[4]),  // uilist[0]
-			new UserInfoEntity(ft.parse("1985-01-15"), "Rua de Cima", "Proença-a-Nova",
+			new UserInfoEntity(ftDate.parse("1985-01-15"), "Rua de Cima", "Proença-a-Nova",
 						null, "968302615", "Portugal", "Arquitetura", "Universidade de Mundo",
 						null, ulist[5]),  // uilist[2]
-			new UserInfoEntity(ft.parse("1977-10-24"), "Ladeira Seminário", "Coimbra",
+			new UserInfoEntity(ftDate.parse("1977-10-24"), "Ladeira Seminário", "Coimbra",
 						"239716625", "918927181", "Portugal", "Matemática", "Universidade de Coimbra, Portugal",
 						null, ulist[6]), // uilist[3]
-			new UserInfoEntity(ft.parse("1953-02-27"), "Ladeira Seminário", "Coimbra",
+			new UserInfoEntity(ftDate.parse("1953-02-27"), "Ladeira Seminário", "Coimbra",
 						"239716625", "917801254", "Portugal", "Medicina", "Universidade de Coimbra, Portugal",
 						null, ulist[7]), // uilist[4]
-			new UserInfoEntity(ft.parse("1989-05-17"), "Ladeira Seminário", "Coimbra",
+			new UserInfoEntity(ftDate.parse("1989-05-17"), "Ladeira Seminário", "Coimbra",
 						"239716625", "912847967", "Portugal", "Engenharia Informática",
 						"Instituto Superior de Engenharias de Coimbra, Portugal",
 						null, ulist[8]), // uilist[5]
-			new UserInfoEntity(ft.parse("1985-09-02"), "Avenida Sá da Bandeira", "Coimbra",
+			new UserInfoEntity(ftDate.parse("1985-09-02"), "Avenida Sá da Bandeira", "Coimbra",
 						null, "912993207", "Brasil", "Direito", "Centro Universitário Ritter dos Reis, "
 						+ "Canoas, Rio Grande do Sul, Brasil", null, ulist[9]), // uilist[6]
 		};
@@ -100,10 +101,10 @@ public class InitDB {
 
 		PositionEntity [] plist = {
 				// sla = 60 dias
-				new PositionEntity("Programadores Java", null, 4, null, ft.parse("2015-10-02"), 
+				new PositionEntity("Programadores Java", null, 4, null, ftDate.parse("2015-10-02"), 
 						ulist[2], ulist[1], "Critical Software", PositionEntity.TECH_JAVA, "Procuram-se programadores "
 								+ "bla bla bla", null, sclist[0]), // plist[0]
-				new PositionEntity("Técnico de Segurança", null, 1, null, ft.parse("2015-11-04"), 
+				new PositionEntity("Técnico de Segurança", null, 1, null, ftDate.parse("2015-11-04"), 
 						ulist[2], ulist[1], "Critical Software", PositionEntity.TECH_SAFETY, "Procura-se técnico de segurança "
 								+ "bla bla bla", null, sclist[0]), // plist[1]
 			};
@@ -121,8 +122,8 @@ public class InitDB {
 		};
 		
 		InterviewEntity [] ilist = {
-				new InterviewEntity(slist[5], ft.parse("2015-09-20"), sclist[0], ulist[1]), // ilist[0]				
-				new InterviewEntity(slist[8], ft.parse("2015-09-01"), sclist[0], ulist[2]), // ilist[1]				
+				new InterviewEntity(slist[5], ftDateHour.parse("2015-09-20 10:00"), sclist[0], ulist[1]), // ilist[0]				
+				new InterviewEntity(slist[8], ftDateHour.parse("2015-09-01 17:30"), sclist[0], ulist[2]), // ilist[1]				
 		};
 		
 		
@@ -162,14 +163,14 @@ public class InitDB {
 				PositionEntity.SOCIAL_FACEBOOK);
 		plist[0].setLocations(locations);
 		plist[0].setAdvertisingChannels(channels);
-		plist[0].setOpeningDate(ft.parse("2015-08-02"));
+		plist[0].setOpeningDate(ftDate.parse("2015-08-02"));
 
 		locations = Arrays.asList(PositionEntity.LOCATION_PORTO);
 		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
 				PositionEntity.SOCIAL_FACEBOOK, PositionEntity.SOCIAL_GLASSDOOR);
 		plist[1].setLocations(locations);
 		plist[1].setAdvertisingChannels(channels);
-		plist[1].setOpeningDate(ft.parse("2015-09-02"));
+		plist[1].setOpeningDate(ftDate.parse("2015-09-02"));
 		
 
 		// SUBMISSION ATTRIBUTES
@@ -178,24 +179,24 @@ public class InitDB {
 				SubmissionEntity.SOURCE_FACEBOOK);
 		slist[0].setPosition(plist[0]);
 		slist[0].setSources(sources);
-		slist[0].setDate(ft.parse("2015-08-20"));
+		slist[0].setDate(ftDate.parse("2015-08-20"));
 
 		slist[1].setPosition(plist[1]);
 		slist[1].setSources(sources);
 
 		// slist[2] e slist[3] são candidaturas espontâneas
-		slist[2].setDate(ft.parse("2015-08-15"));
-		slist[3].setDate(ft.parse("2015-08-28"));
+		slist[2].setDate(ftDate.parse("2015-08-15"));
+		slist[3].setDate(ftDate.parse("2015-08-28"));
 		
 		slist[4].setPosition(plist[0]);
 		slist[4].setAssociatedBy(ulist[2]);
-		slist[4].setDate(ft.parse("2015-08-28"));
+		slist[4].setDate(ftDate.parse("2015-08-28"));
 
 		Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO);
 		slist[5].setPosition(plist[0]);
 		slist[5].setSources(sources);
 		slist[5].setStatus(SubmissionEntity.STATUS_ACCEPTED);
-		slist[5].setDate(ft.parse("2015-08-05"));
+		slist[5].setDate(ftDate.parse("2015-08-05"));
 		
 		slist[6].setPosition(plist[0]);
 		slist[6].setSources(sources);
@@ -203,12 +204,12 @@ public class InitDB {
 		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK);
 		slist[7].setPosition(plist[1]);
 		slist[7].setSources(sources);
-		slist[7].setDate(ft.parse("2015-09-09"));
+		slist[7].setDate(ftDate.parse("2015-09-09"));
 		
 		slist[8].setPosition(plist[0]);
 		slist[8].setSources(sources);
 		slist[8].setStatus(SubmissionEntity.STATUS_SPROPOSAL);
-		slist[8].setDate(ft.parse("2015-08-10"));
+		slist[8].setDate(ftDate.parse("2015-08-10"));
 		
 //		// faltam cenas pesquisas... acentos
 		

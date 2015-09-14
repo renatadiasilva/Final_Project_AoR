@@ -77,7 +77,8 @@ public class InterviewEntity implements Serializable {
 	private SubmissionEntity submission;
 
 	@Column(name = "date")
-	@Temporal(TemporalType.DATE)
+//	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
 	@Column(name = "carried_out")
