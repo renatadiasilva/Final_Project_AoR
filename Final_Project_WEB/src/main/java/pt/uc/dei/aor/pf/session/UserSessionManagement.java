@@ -66,7 +66,7 @@ public class UserSessionManagement implements Serializable {
 
 			try {
 				// Encaminha para...
-				this.response.sendRedirect(request.getContextPath()+"/role/"+this.userManagement.getUserDefaultRole().toLowerCase()+"/Landing.xhtml");
+				this.response.sendRedirect(this.request.getContextPath()+"/role/"+this.userManagement.getUserDefaultRole().toLowerCase()+"/Landing.xhtml");
 			} catch (IOException e) {
 				log.error("Redirect failure");
 				this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));

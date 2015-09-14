@@ -53,7 +53,7 @@ public class UserManagementImp implements UserManagementInterface {
 		// a aplicação vai rebentar de propósito
 		if(!this.userBean.checkPassword(this.currentUser, password)){
 			this.currentUser=null;
-			// Pode ser gerada por algum problema de autenticação no servidor
+			// Pode ser gerada por algum problema de autenticação no servidor, mas...
 			log.warn("Possible security breach, heads up!");
 		}
 		

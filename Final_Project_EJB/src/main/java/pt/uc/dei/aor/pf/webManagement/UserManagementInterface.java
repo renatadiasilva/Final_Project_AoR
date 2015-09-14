@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.ejb.Local;
 
-import pt.uc.dei.aor.pf.entities.UserEntity;
-
 @Local
 public interface UserManagementInterface {
 

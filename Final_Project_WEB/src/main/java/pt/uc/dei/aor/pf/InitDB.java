@@ -75,23 +75,23 @@ public class InitDB {
 		
 		UserInfoEntity [] uilist = {
 			new UserInfoEntity(ftDate.parse("1960-05-11"), "Avenida da Liberdade",
-						"Lisboa", null, "969362531", "Portugal",
+						"Lisboa", null, "969 362 531", "Portugal",
 						"Engenharia Informática","Universidade do Porto, Portugal", null, ulist[4]),  // uilist[0]
 			new UserInfoEntity(ftDate.parse("1985-01-15"), "Rua de Cima", "Proença-a-Nova",
-						null, "968302615", "Portugal", "Arquitetura", "Universidade de Mundo",
+						null, "968 302 615", "Portugal", "Arquitetura", "Universidade de Mundo",
 						null, ulist[5]),  // uilist[2]
 			new UserInfoEntity(ftDate.parse("1977-10-24"), "Ladeira Seminário", "Coimbra",
-						"239716625", "918927181", "Portugal", "Matemática", "Universidade de Coimbra, Portugal",
+						"239 716 625", "918 927 181", "Portugal", "Matemática", "Universidade de Coimbra, Portugal",
 						null, ulist[6]), // uilist[3]
 			new UserInfoEntity(ftDate.parse("1953-02-27"), "Ladeira Seminário", "Coimbra",
-						"239716625", "917801254", "Portugal", "Medicina", "Universidade de Coimbra, Portugal",
+						"239 716 625", "917 801 254", "Portugal", "Medicina", "Universidade de Coimbra, Portugal",
 						null, ulist[7]), // uilist[4]
 			new UserInfoEntity(ftDate.parse("1989-05-17"), "Ladeira Seminário", "Coimbra",
-						"239716625", "912847967", "Portugal", "Engenharia Informática",
+						"239 716 625", "912 847 967", "Portugal", "Engenharia Informática",
 						"Instituto Superior de Engenharias de Coimbra, Portugal",
 						null, ulist[8]), // uilist[5]
 			new UserInfoEntity(ftDate.parse("1985-09-02"), "Avenida Sá da Bandeira", "Coimbra",
-						null, "912993207", "Brasil", "Direito", "Centro Universitário Ritter dos Reis, "
+						null, "912 993 207", "Brasil", "Direito", "Centro Universitário Ritter dos Reis, "
 						+ "Canoas, Rio Grande do Sul, Brasil", null, ulist[9]), // uilist[6]
 		};
 
