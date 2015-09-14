@@ -43,19 +43,17 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT i FROM UserEntity u JOIN u.interviews i "
 					+ "WHERE u = :user AND i.date = :date"),
 	@NamedQuery(name = "Interview.findByDateAndCandidate",
-			query = "SELECT i FROM UserEntity u JOIN u.submissions s JOIN s.interviews i"
-					+ " WHERE u = :candidate AND i.date = :date"),
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s"
+					+ " WHERE i.date = :date AND s.candidate = :candidate ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findInterviewByPosition",
-			query = "SELECT i FROM PositionEntity p, SubmissionEntity s, InterviewEntity i "
-					+ "WHERE p = :position AND p = s.position AND s = i.submission ORDER BY i.date"),
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
+					+ " WHERE s.position = :position ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findCarriedOutInterviewByPosition",
-			query = "SELECT i FROM PositionEntity p, SubmissionEntity s, InterviewEntity i"
-					+ " WHERE i.carriedOut = TRUE AND p = :position AND p = s.position"
-					+ " AND s = i.submission ORDER BY i.date DESC"),
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
+					+ " WHERE i.carriedOut = TRUE AND s.position = :position ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findScheduledInterviewByPosition",
-			query = "SELECT i FROM PositionEntity p, SubmissionEntity s, InterviewEntity i"
-					+ " WHERE i.carriedOut = FALSE AND p = :position AND p = s.position"
-					+ " AND s = i.submission ORDER BY i.date"),
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
+					+ " WHERE i.carriedOut = FALSE AND s.position = :position ORDER BY i.date"),
 })
 public class InterviewEntity implements Serializable {
 

@@ -20,9 +20,9 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 
 	public List<InterviewEntity> findCarriedOutInterviews(Date date1,
 			Date date2) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
+		Map<String, Object> parameters = new HashMap<String, Object>();		
 		parameters.put("date1", date1);
-		parameters.put("date2", date2);  //formato!!
+		parameters.put("date2", date2);
 		return super.findSomeResults("Interview.findCarriedOutInterviews", parameters);
 	}
 	
@@ -54,10 +54,10 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		return super.findSomeResults("Interview.findByDateAndInterviewer", parameters);
 	}
 	
-	public List<InterviewEntity> findByDateAndCandidate(Date date, UserEntity interviewer) {
+	public List<InterviewEntity> findByDateAndCandidate(Date date, UserEntity candidate) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date", date);
-		parameters.put("candidate", interviewer);
+		parameters.put("candidate", candidate);
 		return super.findSomeResults("Interview.findByDateAndCandidate", parameters);
 	}
 

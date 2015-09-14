@@ -67,7 +67,7 @@ public class InterviewSearchCDI {
 	public void searchScheduledInterviewsByUser() {
 		log.info("Searching scheduled interviews of interviewer");
 		UserEntity interviewer = userEJB.find(id);
-		if ( (interviewer != null) && (interviewer.getRoles().contains("INTERVIEWER"))) {
+		if ( interviewer != null) {
 			this.ilist = interviewEJB.findScheduledInterviewsByUser(interviewer);
 		} else log.error("No interviewer with id "+id);
 	}
@@ -75,7 +75,7 @@ public class InterviewSearchCDI {
 	public void checkInterviewerHasDateConflict() {
 		log.info("Checking if interviewer has date conflict");
 		UserEntity interviewer = userEJB.find(id);
-		if ( (interviewer != null) && (interviewer.getRoles().contains("INTERVIEWER"))) {
+		if ( interviewer != null) {
 			result = interviewEJB.interviewerHasDateConflict(date1, interviewer);
 		} else log.error("No interviewer with id "+id);
 	}

@@ -92,7 +92,8 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	@Override
 	public boolean candidateHasDateConflict(Date date, UserEntity candidate) {
 		log.info("Checking if candidate has date conflit");
-		List<InterviewEntity> inter = interviewDAO.findByDateAndInterviewer(date, candidate);
+		List<InterviewEntity> inter = interviewDAO.findByDateAndCandidate(date, candidate);
+		System.out.println(inter);
 		if (inter == null) return false;
 		if (inter.size() == 1) return true;
 		return false;

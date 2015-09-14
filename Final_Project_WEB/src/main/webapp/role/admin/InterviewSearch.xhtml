@@ -18,7 +18,7 @@
 					action="#{interviewSearchCDI.searchAllInterviews()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Entrevistas entre duas datas"
+				<p:commandButton value="Entrevistas passadas entre duas datas"
 					action="#{interviewSearchCDI.searchCarriedOutInterviews()}" update="@form, messages"
 					icon="ui-icon-search" />
 
@@ -66,7 +66,7 @@
 
 				<p:outputLabel value="Segunda Data: " for="search-date2i" />
 				<p:calendar id="search-date2i"
-					value="#{interviewSearchCDI.date1}" pattern="dd/MM/yyyy"
+					value="#{interviewSearchCDI.date2}" pattern="dd/MM/yyyy"
 					readonlyInput="true" navigator="true" yearRange="c-100:c+100"
 					locale="pt" size="35" />
 
