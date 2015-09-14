@@ -32,21 +32,20 @@ public class EditUserInfoCDI {
 	}
 	
 	public void init() {
-		if(this.userSessionManagement.getCurrentUser().getFirstName()!=null)this.firstName=this.userSessionManagement.getCurrentUser().getFirstName();
-		if(this.userSessionManagement.getCurrentUser().getLastName()!=null)this.lastName=this.userSessionManagement.getCurrentUser().getLastName();
-
-		if(this.userSessionManagement.getCurrentUser().getUserInfo()!=null){
-			this.address=this.userSessionManagement.getCurrentUser().getUserInfo().getAddress();
-			this.birthday=this.userSessionManagement.getCurrentUser().getUserInfo().getBirthDate();
-			this.city=this.userSessionManagement.getCurrentUser().getUserInfo().getCity();
-			this.homePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getHomePhone();
-			this.mobilePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getMobilePhone();
-			this.country=this.userSessionManagement.getCurrentUser().getUserInfo().getCountry();
-			this.course=this.userSessionManagement.getCurrentUser().getUserInfo().getCourse();
-			this.school=this.userSessionManagement.getCurrentUser().getUserInfo().getSchool();
-			this.linkedin=this.userSessionManagement.getCurrentUser().getUserInfo().getLinkedin();
-		}
-
+//		if(this.userSessionManagement.getCurrentUser().getFirstName()!=null)this.firstName=this.userSessionManagement.getCurrentUser().getFirstName();
+//		if(this.userSessionManagement.getCurrentUser().getLastName()!=null)this.lastName=this.userSessionManagement.getCurrentUser().getLastName();
+//
+//		if(this.userSessionManagement.getCurrentUser().getUserInfo()!=null){
+//			this.address=this.userSessionManagement.getCurrentUser().getUserInfo().getAddress();
+//			this.birthday=this.userSessionManagement.getCurrentUser().getUserInfo().getBirthDate();
+//			this.city=this.userSessionManagement.getCurrentUser().getUserInfo().getCity();
+//			this.homePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getHomePhone();
+//			this.mobilePhone=this.userSessionManagement.getCurrentUser().getUserInfo().getMobilePhone();
+//			this.country=this.userSessionManagement.getCurrentUser().getUserInfo().getCountry();
+//			this.course=this.userSessionManagement.getCurrentUser().getUserInfo().getCourse();
+//			this.school=this.userSessionManagement.getCurrentUser().getUserInfo().getSchool();
+//			this.linkedin=this.userSessionManagement.getCurrentUser().getUserInfo().getLinkedin();
+//		}
 	}
 	
 	public void update(){

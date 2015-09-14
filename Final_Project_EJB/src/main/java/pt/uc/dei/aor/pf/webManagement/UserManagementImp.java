@@ -1,99 +1,75 @@
 package pt.uc.dei.aor.pf.webManagement;
 
-import javax.ejb.EJB;
-//import javax.ejb.Stateless;
-//import javax.faces.application.FacesMessage;
-//import javax.faces.context.FacesContext;
-//import javax.servlet.ServletException;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.ejb.Stateful;
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-//import pt.uc.dei.aor.pf.entities.UserInfoEntity;
-
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.List;
+import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
 
-//@Stateless
+@Stateful
 public class UserManagementImp implements UserManagementInterface {
 
-	@EJB
-	UserEJBInterface testUserBean;
-	
-	protected UserEntity currentUser;
+	private static final Logger log = LoggerFactory.getLogger(UserManagementImp.class);
+
+	@Inject
+	UserEJBInterface userBean;
+
+	@Inject
+	UserInfoEJBInterface userInfoBean;
+
+	private UserEntity currentUser;
 
 	private boolean admin, manager, interviewer, candidate;
 
-	@Override
-	public void init() {		
+	private boolean newPasswordCheck;
+
+	public UserManagementImp() {		
 		this.currentUser=new UserEntity();
 		this.admin=this.manager=this.interviewer=this.candidate=false;
-	}
-	
-	@Override
-	public boolean isLogged(){
-		if(this.currentUser.getEmail()!=null) return true;
-		return false;
+
+		this.newPasswordCheck=true;
 	}
 
 	@Override
-	public String login(String email, String password){
+	public void login(String email, String password){
+		log.info("Loggin In "+email);
 
-//		this.context = FacesContext.getCurrentInstance();
-//		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
-//
-//		if(this.currentUser.getEmail()!=null) this.logout();
-//
-//		try{
-//			// Login no servidor - vai buscar os roles lá dentro
-//			// Se falha salta os passos seguintes - excepção
-//			this.request.login(email, password);
-//
-//			// Se o servidor consegue logar o utilizador não cria a excepção e chega aqui: logo a password está correcta
-//			//			this.currentUser = testUserBean.findUserByEmail(email);
-//
-//			// Roles para mostrar na web
-//			this.setAvailableRoles();
-//
-//			this.context.addMessage(null, new FacesMessage("Login sucessfull: "+email));
-//
-//			// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
-//			return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?faces-redirect=true";
-//
-//		} catch (ServletException e){
-//			this.context.addMessage(null, new FacesMessage("Login falhou."));
-//		}
-//
-		return "#";
+		// Se o servidor consegue logar o utilizador não cria a excepção 
+		// (vem do UserSessionManagement) e chega aqui: logo a password está correcta
+		this.currentUser = this.userBean.findUserByEmail(email);
+		
+		// Se houver um pirata que consiga chegar aqui com a 
+		// password errada o user vai para null e eventualmente
+		// a aplicação vai rebentar de propósito
+		if(!this.userBean.checkPassword(this.currentUser, password)){
+			this.currentUser=null;
+			// Pode ser gerada por algum problema de autenticação no servidor
+			log.warn("Possible security breach, heads up!");
+		}
+		
+		// Roles para mostrar na web
+		this.setAvailableRoles();
 	}
 
 	@Override
 	public void logout(){
-
-//		this.context = FacesContext.getCurrentInstance();
-//		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
-//		this.response = (HttpServletResponse) context.getExternalContext().getResponse();
-//
-//		try{
-//			this.request.logout();
-//			this.admin=this.manager=this.interviewer=this.candidate=false;
-//			this.currentUser=new UserEntity();
-//
-//			// Encaminha para...
-//			this.response.sendRedirect(request.getContextPath()+"/Index.xhtml");
-//
-//		} catch (ServletException e) {
-//			this.context.addMessage(null, new FacesMessage("Logout falhou."));
-//		} catch (IOException e) {
-//			this.context.addMessage(null, new FacesMessage("Redirect falhou."));
-//		}
+		log.info("Loggin Out "+this.currentUser.getEmail());
+		
+		this.admin=this.manager=this.interviewer=this.candidate=false;
+		this.currentUser=new UserEntity();
 	}
 
-	@SuppressWarnings("unused")
+	// Para exibição do menu de navegação (rendered)
 	private void setAvailableRoles() {
 		for (String s: this.currentUser.getRoles()){
 			if(s.equals(UserEntity.ROLE_ADMIN)) this.admin=true;
@@ -111,7 +87,7 @@ public class UserManagementImp implements UserManagementInterface {
 		if(role.equals(UserEntity.ROLE_INTERVIEWER)) this.currentUser.setDefaultRole(role);
 		if(role.equals(UserEntity.ROLE_CANDIDATE)) this.currentUser.setDefaultRole(role);
 
-		this.testUserBean.update(this.currentUser);	
+		this.userBean.update(this.currentUser);	
 	}
 
 	@Override
@@ -121,38 +97,139 @@ public class UserManagementImp implements UserManagementInterface {
 	}
 
 	@Override
-	public void newUser(String email, String password, String firstName, String lastName, String adress, String city,
-			String homePhone, String mobilePhone, String country, String course, String school, String linkedin){
-//
-//		this.context = FacesContext.getCurrentInstance();
-//		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
-//		this.response = (HttpServletResponse) context.getExternalContext().getResponse();
-//
-//		// Verifica primeiro se o email já está a uso
-//		if(this.testUserBean.findUserByEmail(email)==null){
-//			List<String> roles = new ArrayList<String>();
-//			roles.add(UserEntity.ROLE_CANDIDATE);
-//
-//			// Atributos do UserEntity
-//			UserEntity newUser=new UserEntity(email, password, firstName, lastName, roles);
-//			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);
-//
-//			// Atributos do UserInfoEntity do respectivo UserEntity
-//			UserInfoEntity newUserInfo= new UserInfoEntity(adress, city, homePhone, mobilePhone, country, course, school, null);
-//			newUser.setUserInfo(newUserInfo);
-//
-//			this.testUserBean.save(newUser);
-//
-//			try {
-//				this.response.sendRedirect(request.getContextPath()+"/Index.xhtml");
-//			} catch (IOException e) {
-//				this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email+" Redirect Falhou."));
-//			}
-//
-//			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
-//		}
-//
-//		this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+	public boolean changePassword (String password, String newPassword){
+		log.info("Changing password");
+		log.debug("User: "+ currentUser.getEmail());
+
+		// Verifica e altera se estiver tudo certo
+		if(this.userBean.checkPassword(this.currentUser, password)){
+			this.currentUser.setPassword(newPassword);
+			this.userBean.updatePassword(currentUser);
+			return true;
+		}else return false;
+	}
+
+	// Novo utilizador com ROLE_CANDIDATE. Se vem do signup: boolean createdByAdmin=false.
+	// Se é criado por admin: boolean createdByAdmin=true
+	@Override
+	public boolean newUser(String email, String password, String firstName, String lastName,
+			Date birthday, String address, String city,
+			String homePhone, String mobilePhone, String country, String course, String school, 
+			String linkedin, boolean createdByAdmin,
+			boolean admin, boolean manager, boolean interviewer){
+
+		log.info("Creating new user (candidate)");
+
+		// Verifica primeiro se o email já está a uso
+		if(this.userBean.findUserByEmail(email)==null){
+			List<String> roles = new ArrayList<String>();
+			roles.add(UserEntity.ROLE_CANDIDATE);
+
+			if(admin&&createdByAdmin)roles.add(UserEntity.ROLE_ADMIN);
+			if(manager&&createdByAdmin)roles.add(UserEntity.ROLE_MANAGER);
+			if(interviewer&&createdByAdmin)roles.add(UserEntity.ROLE_INTERVIEWER);
+
+			// Atributos do UserEntity
+			UserEntity newUser=new UserEntity(email, password, firstName, lastName, roles);
+			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);	
+
+			// Atributos do UserInfoEntity do respectivo UserEntity
+			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, address, city, homePhone, mobilePhone, 
+					country, course, school, null, newUser);
+
+			newUser.setUserInfo(newUserInfo);
+
+			// Se for criado por um admin, esse admin é o currentUser e a temporaryPassword=true
+			if(createdByAdmin){
+				newUser.setCreatedBy(this.currentUser);
+				newUser.setTemporaryPassword(true);
+			}
+			
+			// Grava o UserEntity
+			this.userBean.save(newUser);
+
+			log.info("Successfully created new user (candidate)");
+			if(createdByAdmin)log.info("New user: "+ newUser.getEmail()+" with temporary password "+password);
+			return true;
+
+		}else {
+			log.info("Registration failure: the email already exists");
+			return false;
+		}
+	}
+
+	// Novo utilizador criado por um admin sem o ROLE_CANDIDATE
+	@Override
+	public boolean newUserNC (String email, String password, String firstName,
+			String lastName, boolean admin, boolean manager, boolean interviewer) {
+
+		log.info("Creating new user (internal)");
+
+		// Verifica primeiro se o email já está a uso
+		if(this.userBean.findUserByEmail(email)==null){
+
+			UserEntity newUser=new UserEntity();
+			List<String> roles = new ArrayList<String>();
+
+			if(admin)roles.add(UserEntity.ROLE_ADMIN);
+			if(manager)roles.add(UserEntity.ROLE_MANAGER);
+			if(interviewer)roles.add(UserEntity.ROLE_INTERVIEWER);
+
+			newUser=new UserEntity(email, password, firstName, lastName, roles);
+
+			// Role por default
+			if(interviewer)newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
+			if(manager)newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
+			if(admin)newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
+
+			// Foi criado por um admin, esse admin é o currentUser, e a temporaryPassword=true
+			newUser.setCreatedBy(this.currentUser);
+			newUser.setTemporaryPassword(true);
+
+			this.userBean.save(newUser);
+
+			return true;
+			
+		}else return false;
+	}
+
+	@Override
+	public void updateUserInfo(String firstName, String lastName, String address, 
+			String city, String homePhone, String mobilePhone, String country, 
+			String course, String school, String linkedin) {
+
+		log.info("Updating user info");
+		log.debug("New user: "+ currentUser.getEmail());
+
+		this.currentUser.setFirstName(firstName);
+		this.currentUser.setLastName(lastName);
+
+		if(this.currentUser.getUserInfo()==null){
+			this.currentUser.setUserInfo(new UserInfoEntity());
+			this.currentUser.getUserInfo().setOwner(this.currentUser);
+		}
+
+		this.currentUser.getUserInfo().setAddress(address);
+		this.currentUser.getUserInfo().setCity(city);
+		this.currentUser.getUserInfo().setHomePhone(homePhone);
+		this.currentUser.getUserInfo().setMobilePhone(mobilePhone);
+		this.currentUser.getUserInfo().setCountry(country);
+		this.currentUser.getUserInfo().setCourse(course);
+		this.currentUser.getUserInfo().setSchool(school);
+		this.currentUser.getUserInfo().setLinkedin(linkedin);
+
+		this.userBean.update(this.currentUser);
+	}
+
+	@Override
+	public boolean isTemporaryPassword(){
+		// Verifica se o utilizador tem uma password temporária
+		if(this.currentUser.isTemporaryPassword()&&this.newPasswordCheck){
+			// Só chateia a primeira vez, não volta a chatear durante o resto da sessão
+			this.newPasswordCheck=false;
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -161,8 +238,18 @@ public class UserManagementImp implements UserManagementInterface {
 	}
 
 	@Override
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	@Override
 	public boolean isManager() {
 		return manager;
+	}
+
+	@Override
+	public void setManager(boolean manager) {
+		this.manager = manager;
 	}
 
 	@Override
@@ -171,18 +258,39 @@ public class UserManagementImp implements UserManagementInterface {
 	}
 
 	@Override
+	public void setInterviewer(boolean interviewer) {
+		this.interviewer = interviewer;
+	}
+
+	@Override
 	public boolean isCandidate() {
 		return candidate;
 	}
 
 	@Override
-	public String getUserFullName() {
-		return currentUser.getFirstName()+" "+currentUser.getLastName();
+	public void setCandidate(boolean candidate) {
+		this.candidate = candidate;
 	}
-	
+
 	@Override
-	public String getDefaultRole() {
+	public String getUserEmail(){
+		return this.currentUser.getEmail();
+	}
+
+	@Override
+	public String getUserDefaultRole(){
 		return this.currentUser.getDefaultRole();
+	}
+
+	@Override
+	public boolean isUserLogged(){
+		if(this.currentUser.getEmail()!=null) return true;
+		return false;
+	}
+
+	@Override
+	public String getUserFullName(){
+		return this.currentUser.getFirstName()+" "+this.currentUser.getLastName();
 	}
 	
 }

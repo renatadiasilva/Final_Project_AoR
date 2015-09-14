@@ -1,35 +1,65 @@
 package pt.uc.dei.aor.pf.webManagement;
 
+import java.util.Date;
+
 import javax.ejb.Local;
+
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Local
 public interface UserManagementInterface {
-	
-	public abstract void init();
-	
-	public abstract String login(String email, String password);
-	
-	public abstract void logout();
-	
-	public abstract void defaultRole(String role);
-	
-	public abstract boolean checkDefault(String role);
-	
-	public abstract void newUser(String email, String password, String firstName, String lastName, String adress, String city,
-			String homePhone, String mobilePhone, String country, String course, String school, String linkedin);
 
-	public abstract boolean isAdmin();
+	public abstract void login(String email, String password);
+
+	public abstract void logout();
+
+	public abstract void defaultRole(String role);
+
+	public abstract boolean checkDefault(String role);
+
+	public abstract boolean changePassword(String password, String newPassword);
+
+	public abstract boolean newUser(String email, String password, String firstName,
+			String lastName, Date birthday, String address, String city,
+			String homePhone, String mobilePhone, String country,
+			String course, String school, String linkedin,
+			boolean createdByAdmin, boolean admin, boolean manager,
+			boolean interviewer);
+
+	public abstract boolean newUserNC(String email, String password, String firstName,
+			String lastName, boolean admin, boolean manager, boolean interviewer);
+
+	public abstract void updateUserInfo(String firstName, String lastName, String address,
+			String city, String homePhone, String mobilePhone, String country,
+			String course, String school, String linkedin);
+
+	public abstract boolean isTemporaryPassword();
 	
+	
+	
+	// Set Get
+	public abstract boolean isAdmin();
+
+	public abstract void setAdmin(boolean admin);
+
 	public abstract boolean isManager();
+
+	public abstract void setManager(boolean manager);
 
 	public abstract boolean isInterviewer();
 
+	public abstract void setInterviewer(boolean interviewer);
+
 	public abstract boolean isCandidate();
 
-	public String getUserFullName();
+	public abstract void setCandidate(boolean candidate);
 
-	public boolean isLogged();
+	public abstract String getUserEmail();
 
-	public String getDefaultRole();
+	public abstract String getUserDefaultRole();
+	
+	public abstract boolean isUserLogged();
+
+	public abstract String getUserFullName();
 	
 }

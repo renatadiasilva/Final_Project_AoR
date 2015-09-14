@@ -74,7 +74,7 @@
 				<p:outputLabel value="Curso: " for="adminSignup-course" />
 				<p:inputText id="adminSignup-course"
 					value="#{adminNewUserCDI.course}" size="35" required="true"
-					requiredMessage="Insira o curso." maxlength="#{max.length}" />
+					requiredMessage="Insira o curso." maxlength="#{max.length.userInfoCourse()}" />
 
 				<p:outputLabel value="Escola: " for="adminSignup-school" />
 				<p:inputText id="adminSignup-school"
