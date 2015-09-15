@@ -45,9 +45,8 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) LIKE '%PROPOSAL'"
 					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSubmissionsBySource",
-			query = "SELECT s FROM SubmissionEntity s JOIN s.sources so WHERE so = :source"
+			query = "SELECT s FROM SubmissionEntity s WHERE :source MEMBER OF s.sources"
 					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
-//			query = "SELECT s SubmissionEntity s WHERE :source MEMBER OF s.sources"), //(TESTAR)
 })
 public class SubmissionEntity implements Serializable {
 

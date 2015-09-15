@@ -92,11 +92,11 @@ public class PositionEntity implements Serializable {
 	public static final String LOCATION_PORTO="PORTO";
 	public static final String LOCATION_COIMBRA="COIMBRA";
 
-	public static final String STATUS_OPEN="Open";
-	public static final String STATUS_CLOSED="Closed";
-	public static final String STATUS_ONHOLD="on Hold";
+	public static final String STATUS_OPEN="OPEN";
+	public static final String STATUS_CLOSED="CLOSED";
+	public static final String STATUS_ONHOLD="ON HOLD";
 	// closed with hired people (just internal??)
-	public static final String STATUS_FULFILLED="Closed and Fulfilled";
+	public static final String STATUS_FULFILLED="CLOSED AND FULFILLED";
 
 	public static final String TECH_SSPA="SSPA";
 	public static final String TECH_DOTNET=".Net Development";
