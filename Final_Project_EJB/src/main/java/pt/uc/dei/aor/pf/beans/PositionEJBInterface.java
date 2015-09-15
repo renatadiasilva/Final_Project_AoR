@@ -24,13 +24,13 @@ public interface PositionEJBInterface {
 	public abstract List<PositionEntity> findPositionsByCompany(String company);
 	public abstract List<PositionEntity> findPositionsByTechArea(String tecnhicalArea);
 	public abstract List<PositionEntity> findPositions(Date openingDate1, Date openingDate2, String positionCode,
-			String title, List<String> locations, String currentStatus, String company, String technicalArea);
+			String title, String location, String currentStatus, String company, String technicalArea);
 	public abstract List<PositionEntity> findPositionsByManager(Date openingDate1, Date openingDate2,
-			String positionCode, String title, List<String> locations, String currentStatus, String company, 
+			String positionCode, String title, String location, String currentStatus, String company, 
 			String technicalArea, UserEntity positionManager);
 	public abstract List<PositionEntity> findPositionsByKeyword(String keyword);
 	public abstract List<PositionEntity> findPositionsByKeywordAndManager(String keyword, UserEntity positionManager);
-	public abstract List<PositionEntity> findPositionsByCandidate(UserEntity candidate); //??submission SIIIIM
+	public abstract List<PositionEntity> findPositionsByCandidate(UserEntity candidate);
 	public abstract boolean alreadyCandidateOfPosition(UserEntity candidate, PositionEntity position);
 	
 }

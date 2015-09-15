@@ -82,9 +82,9 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		int sizel = locations.size(); 
 		String queryS = "SELECT * FROM (SELECT positions.*, count(positions.*) FROM"
 				+ " positions, locations WHERE positions.id = locations.position_id AND"
-				+ " (locations.location = \'"+locations.get(0)+"\'";
+				+ " (locations.location LIKE \'"+locations.get(0)+"\'";
 		for (int i = 1; i < sizel; i++) 
-			queryS += " OR locations.location = \'"+locations.get(i)+"\'";
+			queryS += " OR locations.location LIKE \'"+locations.get(i)+"\'";
 		queryS += ") GROUP BY id) AS c WHERE c.count = "+sizel+" ORDER BY c.code";
 		
 //		
@@ -136,10 +136,9 @@ public class PositionDao extends GenericDao<PositionEntity> {
 
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositions(String positionCode,
-			String title, List<String> locations, String currentStatus, 
+			String title, String location, String currentStatus, 
 			String company, String technicalArea, 
 			UserEntity positionManager) {
-		int sizel = locations.size(); 
 //		Map<String, Object> parameters = new HashMap<String, Object>();
 //		parameters.put("c", positionCode);
 //		parameters.put("t", title);
@@ -149,22 +148,11 @@ public class PositionDao extends GenericDao<PositionEntity> {
 //		parameters.put("ta", technicalArea);
 		String queryS;
 		Query query;
-		String[] attributes = new String[5+sizel];		
-		String[] values = new String[5+sizel];
-		String[] a1 = {"code", "title", "status", "company", 
+		String[] attributes = {"code", "title", "location", "status", "company", 
 			"technical_area"};		
-		String[] v1 = {positionCode, title, currentStatus,
+		String[] values = {positionCode, title, location, currentStatus,
 			company, technicalArea};
 
-		System.arraycopy(a1, 0, attributes, 0, 5);
-		System.arraycopy(v1, 0, values, 0, 5);
-		
-		int i = 5;
-		for (String l : locations) {
-			attributes[i] = "locations.location";
-			values[i] = l;
-			i++;
-		}
 		if (positionManager != null) {
 			// DISTINCT??
 			queryS = makeQuery("DISTINCT positions.*", "positions, locations",
@@ -199,9 +187,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositionsByDate(Date openingDate1, Date openingDate2, String positionCode,
-			String title, List<String> locations, String currentStatus, String company, String technicalArea, 
+			String title, String location, String currentStatus, String company, String technicalArea, 
 			UserEntity positionManager) {
-		int sizel = locations.size(); 
 //		Map<String, Object> parameters = new HashMap<String, Object>();
 //		parameters.put("date1", openingDate1);
 //		parameters.put("date2", openingDate2);
@@ -213,22 +200,10 @@ public class PositionDao extends GenericDao<PositionEntity> {
 //		parameters.put("ta", technicalArea);
 		String queryS;
 		Query query;
-		String[] attributes = new String[5+sizel];		
-		String[] values = new String[5+sizel];
-		String[] a1 = {"code", "title", "status", "company", 
+		String[] attributes = {"code", "title", "location", "status", "company", 
 			"technical_area"};		
-		String[] v1 = {positionCode, title, currentStatus,
+		String[] values = {positionCode, title, location, currentStatus,
 			company, technicalArea};
-
-		System.arraycopy(a1, 0, attributes, 0, 5);
-		System.arraycopy(v1, 0, values, 0, 5);
-		
-		int i = 5;
-		for (String l : locations) {
-			attributes[i] = "locations.location";
-			values[i] = l;
-			i++;
-		}
 
 		if (positionManager != null) {
 			queryS = makeQuery("DISTINCT positions.*", "positions, locations",

@@ -1,6 +1,5 @@
 package pt.uc.dei.aor.pf.beans;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByCode(String code) {
 		log.info("Finding positions by code");
-		return positionDAO.findPositions(code, "%", new ArrayList<String>(), "%", "%", "%", null);
+		return positionDAO.findPositions(code, "%", "%", "%", "%", "%", null);
 //		return positionDAO.findPositionsByCode(codePattern);
 	}
 
@@ -68,13 +67,13 @@ public class PositionEJBImp implements PositionEJBInterface {
 		log.info("Finding all positions opened between two dates");
 //		return positionDAO.findPositionsByDate(openingDate1, openingDate2);
 		return positionDAO.findPositionsByDate(openingDate1, openingDate2, "%", "%", 
-				new ArrayList<String>(), "%", "%", "%", null);
+				"%", "%", "%", "%", null);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByTitle(String title) {
 		log.info("Finding positions by title");
-		return positionDAO.findPositions("%", title, new ArrayList<String>(),
+		return positionDAO.findPositions("%", title, "%",
 				"%", "%", "%", null);
 //		return positionDAO.findPositionsByTitle(title);
 	}
@@ -94,7 +93,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByStatus(String currentStatus) {
 		log.info("Finding positions by status");
-		return positionDAO.findPositions("%", "%", new ArrayList<String>(),
+		return positionDAO.findPositions("%", "%", "%",
 				currentStatus, "%", "%", null);
 //		return positionDAO.findPositionsByStatus(currentStatus);
 	}
@@ -102,7 +101,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByCompany(String company) {
 		log.info("Finding positions by company");
-		return positionDAO.findPositions("%", "%", new ArrayList<String>(),
+		return positionDAO.findPositions("%", "%", "%",
 				"%", company, "%", null);
 //		return positionDAO.findPositionsByCompany(company);
 	}
@@ -110,36 +109,35 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByTechArea(String tecnhicalArea) {
 		log.info("Finding positions by technical area");
-		return positionDAO.findPositions("%", "%", new ArrayList<String>(),
-				"%", "%", tecnhicalArea, null);
+		return positionDAO.findPositions("%", "%", "%",	"%", "%", tecnhicalArea, null);
 //		return positionDAO.findPositionsByCompany(tecnhicalArea);
 	}
 
 	@Override
 	public List<PositionEntity> findPositions(Date openingDate1,
 			Date openingDate2, String positionCode, String title,
-			List<String> locations, String currentStatus, String company,
+			String location, String currentStatus, String company,
 			String technicalArea) {
 		log.info("Finding positions by several attributes");
 		return positionDAO.findPositionsByDate(openingDate1, openingDate2, positionCode, 
-				title, locations, currentStatus, company, technicalArea, null);
+				title, location, currentStatus, company, technicalArea, null);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByManager(Date openingDate1,
 			Date openingDate2, String positionCode, String title,
-			List<String> locations, String currentStatus, String company,
+			String location, String currentStatus, String company,
 			String technicalArea, UserEntity positionManager) {
 		log.info("Finding positions of given manager by several attributes");
 		return positionDAO.findPositionsByDate(openingDate1, openingDate2, positionCode, 
-				title, locations, currentStatus, company, technicalArea, 
+				title, location, currentStatus, company, technicalArea, 
 				positionManager);
 	}
 
 	@Override
 	public List<PositionEntity> findOpenPositions() {
 		log.info("Finding all open positions");
-		return positionDAO.findPositions("%", "%", new ArrayList<String>(),
+		return positionDAO.findPositions("%", "%", "%",
 				"OPEN", "%", "%", null);
 	}
 
