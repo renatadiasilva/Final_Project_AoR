@@ -80,7 +80,8 @@
 
 			</h:panelGrid>
 
-			<p:dataTable var="i" value="#{interviewSearchCDI.ilist}">
+			<p:dataTable emptyMessage="Não foram encontradas entrevistas." 
+				var="i" value="#{interviewSearchCDI.ilist}">
 				<f:facet name="header">Listagem entervistas</f:facet>
 				<p:column headerText="Data">
 					<h:outputText value="#{i.date}" />

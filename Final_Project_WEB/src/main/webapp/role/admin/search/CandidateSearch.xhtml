@@ -124,7 +124,8 @@
 
 			</h:panelGrid>
 
-			<p:dataTable var="u" value="#{candidateSearchCDI.ulist}">
+			<p:dataTable emptyMessage="Não foram encontrados candidatos." 
+				var="u" value="#{candidateSearchCDI.ulist}">
 				<f:facet name="header">Listagem candidatos</f:facet>
 				<p:column headerText="Nome">
 					<h:outputText value="#{u.firstName}" />

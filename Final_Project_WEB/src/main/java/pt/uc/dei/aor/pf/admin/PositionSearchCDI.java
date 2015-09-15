@@ -37,6 +37,7 @@ public class PositionSearchCDI {
 	private String company, tarea, keyword;
 
 	private String location;
+	private boolean coimbra, lisboa, porto, other;
 	private List<String> locations;
 
 	private Long idU;
@@ -79,6 +80,7 @@ public class PositionSearchCDI {
 
 	public void searchPositionsByLocationsOne() {
 		log.info("Searching for positions with one of the given locations");
+		addLocations();
 		log.debug("Locations: ");
 		for(String l : locations) log.debug(l); 
 		this.plist = positionEJB.findPositionsByLocationsOne(locations);
@@ -86,6 +88,7 @@ public class PositionSearchCDI {
 
 	public void searchPositionsByLocationsAll() {
 		log.info("Searching for positions with all the given locations");
+		addLocations();
 		log.debug("Locations: ");
 		for(String l : locations) log.debug(l); 
 		this.plist = positionEJB.findPositionsByLocationsAll(locations);
@@ -123,6 +126,7 @@ public class PositionSearchCDI {
 		log.debug("Internal search string (ccompany): "+pattern5);
 		String pattern6 = SearchPattern.preparePattern(tarea);
 		log.debug("Internal search string (tech area): "+pattern6);
+		addLocations();
 		List<String> pattern = new ArrayList<String>(locations.size());		
 		for (String l : locations) {
 			String p = SearchPattern.preparePattern(l);
@@ -149,6 +153,7 @@ public class PositionSearchCDI {
 			log.debug("Internal search string (ccompany): "+pattern5);
 			String pattern6 = SearchPattern.preparePattern(tarea);
 			log.debug("Internal search string (tech area): "+pattern6);
+			addLocations();
 			List<String> pattern = new ArrayList<String>(locations.size());		
 			for (String l : locations) {
 				String p = SearchPattern.preparePattern(l);
@@ -324,32 +329,52 @@ public class PositionSearchCDI {
 		this.result = result;
 	}
 	
-	public void addLocation() {
-		if (this.locations == null) this.locations = new ArrayList<String>();
-		this.locations.add(location);
-	}
-
-	public void addLocationCoimbra() {
-		if (this.locations == null) this.locations = new ArrayList<String>();
-		this.locations.add("COIMBRA");
-	}
-
-	public void addLocationPorto() {
-		if (this.locations == null) this.locations = new ArrayList<String>();
-		this.locations.add("PORTO");
-	}
-
-	public void addLocationLisboa() {
-		if (this.locations == null) this.locations = new ArrayList<String>();
-		this.locations.add("LISBOA");
-	}
-
 	public String getLocation() {
 		return location;
 	}
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public boolean isCoimbra() {
+		return coimbra;
+	}
+
+	public void setCoimbra(boolean coimbra) {
+		this.coimbra = coimbra;
+	}
+
+	public boolean isLisboa() {
+		return lisboa;
+	}
+
+	public void setLisboa(boolean lisboa) {
+		this.lisboa = lisboa;
+	}
+
+	public boolean isPorto() {
+		return porto;
+	}
+
+	public void setPorto(boolean porto) {
+		this.porto = porto;
+	}
+
+	public boolean isOther() {
+		return other;
+	}
+
+	public void setOther(boolean other) {
+		this.other = other;
 	}	
+
+	private void addLocations() {
+		this.locations = new ArrayList<String>();
+		if (coimbra) this.locations.add("COIMBRA");
+		if (lisboa) this.locations.add("LISBOA");
+		if (porto) this.locations.add("PORTO");
+		if (other) this.locations.add(location);
+	}
 
 }

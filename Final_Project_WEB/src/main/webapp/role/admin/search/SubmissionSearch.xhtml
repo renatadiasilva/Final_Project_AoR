@@ -64,7 +64,8 @@
 
 			</h:panelGrid>
 
-			<p:dataTable var="s" value="#{submissionSearchCDI.slist}">
+			<p:dataTable emptyMessage="Não foram encontradas candidaturas." 
+				var="s" value="#{submissionSearchCDI.slist}">
 				<f:facet name="header">Listagem entervistas</f:facet>
 				<p:column headerText="Data">
 					<h:outputText value="#{s.date}" />

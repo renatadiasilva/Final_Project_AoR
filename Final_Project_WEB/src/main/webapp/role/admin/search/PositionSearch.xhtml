@@ -150,28 +150,28 @@
 
 				<p:outputLabel value="Coimbra: " for="search-coimbra" />
 				<p:selectBooleanCheckbox id="search-coimbra"
-					value="#{positionSearchCDI.addLocationCoimbra()}" />
+					value="#{positionSearchCDI.coimbra}" />
 
 				<p:outputLabel value="Porto: " for="search-porto" />
 				<p:selectBooleanCheckbox id="search-porto"
-					value="#{positionSearchCDI.addLocationPorto()}" />
+					value="#{positionSearchCDI.porto}" />
 
 				<p:outputLabel value="Lisboa: " for="search-lisboa" />
 				<p:selectBooleanCheckbox id="search-lisboa"
-					value="#{positionSearchCDI.addLocationLisboa()}" />
+					value="#{positionSearchCDI.lisboa}" />
 
 				<p:outputLabel value="Outro local: " for="search-otherl" />
 				<p:selectBooleanCheckbox id="search-otherl"
-					value="#{positionSearchCDI.addLocation()}" />
+					value="#{positionSearchCDI.other}" />
 
 				<p:outputLabel value="Local: " for="search-location" />
 				<p:inputText id="search-location"
 					value="#{positionSearchCDI.location}" size="35" />
 
-				</p:selectBooleanCheckbox>
 			</h:panelGrid>
 
-			<p:dataTable var="p" value="#{positionSearchCDI.plist}">
+			<p:dataTable emptyMessage="Não foram encontradas posições." 
+				var="p" value="#{positionSearchCDI.plist}">
 				<f:facet name="header">Listagem posições</f:facet>
 				<p:column headerText="Código">
 					<h:outputText value="#{p.positionCode}" />

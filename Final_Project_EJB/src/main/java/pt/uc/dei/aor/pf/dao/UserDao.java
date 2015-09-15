@@ -56,14 +56,13 @@ public class UserDao extends GenericDao<UserEntity> {
 		//		return super.findSomeResults("User.findUsersByName", parameters);
 	}
 
-	// pesquisar por várias cenas (cada atributo com sua pattern???)
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findUsersByRole(String keyword, String role) {
 		String[] values = {keyword, keyword};
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
-				"(UPPER(email) LIKE "+keyword+" OR ", attributes, values, " OR ", 
-				"users.id = roles.user_id AND roles.role = "+role,
+				"(UPPER(email) LIKE \'"+keyword+"\' OR ", attributes, values, " OR ", 
+				"users.id = roles.user_id AND roles.role = \'"+role+"\'",
 				"email");
 //		String queryS = "SELECT DISTINCT users.* FROM users, roles"
 //				+ " WHERE (UPPER(email) LIKE :email"
@@ -91,7 +90,7 @@ public class UserDao extends GenericDao<UserEntity> {
 		String[] values = {keyword, keyword};
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
-				"(UPPER(email) LIKE "+keyword+" OR ", attributes, values, " OR ", 
+				"(UPPER(email) LIKE \'"+keyword+"\' OR ", attributes, values, " OR ", 
 				"users.id = roles.user_id AND roles.role <> \'CANDIDATE\'",
 				"email");
 //		String queryS = "SELECT DISTINCT users.* FROM users, roles"
@@ -171,10 +170,11 @@ public class UserDao extends GenericDao<UserEntity> {
 		String[] attributes = {"first_name", 
 				"last_name", "address", "city", "country", "course", "school"};
 		if (position != null) {
-			queryS = makeQuery("users.*", "users, users_info, submissions", 
-					"(UPPER(email) LIKE "+email+" AND ", attributes, values, " AND ",
+			queryS = makeQuery("users.*", "users, users_info, submissions, positions", 
+					"(UPPER(email) LIKE \'"+email+"\' AND ", attributes, values, " AND ",
 					"users.id = users_info.user_id AND users.id = submissions.candidate"
-					+ " AND submissions.position.id = "+position.getId(), "email");
+					+ " AND submissions.position = positions.id AND"
+					+ " positions.id = "+position.getId(), "email");
 
 //			queryS = "SELECT users.* FROM users, users_info, submissions"
 //					+ " WHERE *UPPER(email) LIKE :email"
@@ -197,7 +197,8 @@ public class UserDao extends GenericDao<UserEntity> {
 //			query.setParameter("position", position);
 //			return super.findSomeResults("User.findCandidatesByPosition", parameters);
 		} else {
-			queryS = makeQuery("users.*", "users, users_info", "(UPPER(email) LIKE "+email+" AND ", 
+			queryS = makeQuery("users.*", "users, users_info", 
+					"(UPPER(email) LIKE \'"+email+"\' AND ", 
 					attributes, values, " AND ", "users.id = users_info.user_id", "email");
 			
 //			queryS = "SELECT users.* FROM users, users_info"

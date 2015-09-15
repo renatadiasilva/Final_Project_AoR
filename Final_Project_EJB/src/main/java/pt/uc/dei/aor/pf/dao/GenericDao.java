@@ -62,12 +62,12 @@ public abstract class GenericDao<E> {
 		String query = "SELECT "+selectPart+" FROM "+fromPart+" WHERE "
 			+ extraPart+"TRANSLATE(UPPER(REPLACE("+attributesPart[0]
 			+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
-			+") LIKE "+valuesPart[0];
+			+") LIKE \'"+valuesPart[0]+"\'";
 		
 		for (int i = 1; i < attributesPart.length; i++) 
 			query += AND_OR+"TRANSLATE(UPPER(REPLACE("+attributesPart[i]
 				+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
-				+") LIKE "+valuesPart[i];
+				+") LIKE \'"+valuesPart[i]+"\'";
 		query += ")";
 		if (!wherePart.isEmpty()) query +=" AND "+wherePart;
 		if (!orderbyPart.isEmpty()) query +=" ORDER BY "+orderbyPart;

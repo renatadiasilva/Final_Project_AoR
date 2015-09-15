@@ -129,8 +129,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		String[] v1 = {positionCode, title, currentStatus,
 			company, technicalArea};
 
+		System.arraycopy(a1, 0, attributes, 0, 5);
 		System.arraycopy(v1, 0, values, 0, 5);
-		System.arraycopy(a1, 0, values, 0, 5);
 		
 		int i = 5;
 		for (String l : locations) {
@@ -142,7 +142,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			// DISTINCT??
 			queryS = makeQuery("DISTINCT positions.*", "positions, locations",
 					"(", attributes, values, " AND ", "positions.id = locations.position_id"
-							+ " AND submissions.position.id = "+positionManager.getId(), "code");
+							+ " AND positions.manager = "+positionManager.getId(), "code");
 //			parameters.put("id", positionManager);
 			
 //	query = "SELECT p FROM PositionEntity p WHERE "
@@ -192,8 +192,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		String[] v1 = {positionCode, title, currentStatus,
 			company, technicalArea};
 
+		System.arraycopy(a1, 0, attributes, 0, 5);
 		System.arraycopy(v1, 0, values, 0, 5);
-		System.arraycopy(a1, 0, values, 0, 5);
 		
 		int i = 5;
 		for (String l : locations) {
@@ -206,7 +206,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			queryS = makeQuery("DISTINCT positions.*", "positions, locations",
 					"(", attributes, values, " AND ", "positions.id = locations.position_id"
 							+ " AND positions.opening_date BETWEEN :date1 AND :date2 AND"
-							+ " submissions.position.id = "+positionManager.getId(), "opening_date");
+							+ " positions.manager = "+positionManager.getId(), "opening_date");
 			
 //			parameters.put("id", positionManager);
 //			@NamedQuery(name = "Position.findPositionsBySeveralAttributesByManager",
@@ -261,7 +261,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		if (positionManager != null) {
 			queryS = makeQuery("DISTINCT positions.*", "positions, locations",
 					"(", attributes, values, " OR ", "positions.id = locations.position_id"
-					+ " AND submissions.position.id = "+positionManager.getId(), "code");
+					+ " AND positions.manager = "+positionManager.getId(), "code");
 //			parameters.put("id", positionManager);
 //			@NamedQuery(name = "Position.findPositionsByKeywordByManager",
 //			query = "SELECT p FROM PositionEntity p WHERE"

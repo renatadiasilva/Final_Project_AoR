@@ -36,7 +36,8 @@
 
 			</h:panelGrid>
 
-			<p:dataTable var="sc" value="#{scriptSearchCDI.sclist}">
+			<p:dataTable emptyMessage="Não foram encontrados guiões." 
+				var="sc" value="#{scriptSearchCDI.sclist}">
 				<f:facet name="header">Listagem guiões</f:facet>
 				<p:column headerText="Título">
 					<h:outputText value="#{sc.title}" />
