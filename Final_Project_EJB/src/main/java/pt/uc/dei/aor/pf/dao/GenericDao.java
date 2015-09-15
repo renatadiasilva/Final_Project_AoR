@@ -48,30 +48,30 @@ public abstract class GenericDao<E> {
 		return em.createQuery(cq).getResultList();
 	}
 	
-	protected static String makeQuery(String selectPart, String fromPart,
-			String extraPart, String[] attributesPart, String AND_OR, String wherePart,
-			String orderbyPart) {
-		String query = "SELECT "+selectPart+" FROM "+fromPart+" WHERE "
-			+ extraPart+"TRANSLATE(UPPER(REPLACE("+attributesPart[0]
-			+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
-			+") LIKE :"+attributesPart[0];
-		
-		for (int i = 1; i < attributesPart.length; i++) 
-			query += AND_OR+"TRANSLATE(UPPER(REPLACE("+attributesPart[i]
-				+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
-				+") LIKE :"+attributesPart[i];
-		query += ")";
-		if (!wherePart.isEmpty()) query +=" AND "+wherePart;
-		if (!orderbyPart.isEmpty()) query +=" ORDER BY "+orderbyPart;
-		return query;
-	}
-
 	@SuppressWarnings("unchecked")
 	protected List<E> findSomeResults(String namedQuery, Map<String, Object> parameters) {
 		Query nq = em.createNamedQuery(namedQuery);
 		if (parameters != null && !parameters.isEmpty())
 			populateQueryParameters(nq, parameters);
 		return nq.getResultList();
+	}
+
+	protected static String makeQuery(String selectPart, String fromPart,
+			String extraPart, String[] attributesPart, String[] valuesPart,
+			String AND_OR, String wherePart, String orderbyPart) {
+		String query = "SELECT "+selectPart+" FROM "+fromPart+" WHERE "
+			+ extraPart+"TRANSLATE(UPPER(REPLACE("+attributesPart[0]
+			+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
+			+") LIKE "+valuesPart[0];
+		
+		for (int i = 1; i < attributesPart.length; i++) 
+			query += AND_OR+"TRANSLATE(UPPER(REPLACE("+attributesPart[i]
+				+",\' \',\'\')), "+ACCENT_LETTERS+","+NO_ACCENT_LETTERS
+				+") LIKE "+valuesPart[i];
+		query += ")";
+		if (!wherePart.isEmpty()) query +=" AND "+wherePart;
+		if (!orderbyPart.isEmpty()) query +=" ORDER BY "+orderbyPart;
+		return query;
 	}
 
 	private void populateQueryParameters(Query query, Map<String, Object> parameters) {

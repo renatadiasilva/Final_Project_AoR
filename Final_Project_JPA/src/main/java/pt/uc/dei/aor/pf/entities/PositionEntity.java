@@ -34,9 +34,9 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Position.findPositionsByTitle",
 			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.title) LIKE :t"
 					+ " ORDER BY p.positionCode"),
-	@NamedQuery(name = "Position.findPositionsByLocation",
-			query = "SELECT p FROM PositionEntity p JOIN p.locations l WHERE l LIKE :loc"
-					+ " ORDER BY p.positionCode"),
+//	@NamedQuery(name = "Position.findPositionsByLocation",
+//			query = "SELECT p FROM PositionEntity p JOIN p.locations l WHERE l LIKE :loc"
+//					+ " ORDER BY p.positionCode"),
 //			query = "SELECT p FROM PositionEntity p WHERE :loc MEMBER OF p.locations ORDER BY p.positionCode"), //(TESTAR)
 	@NamedQuery(name = "Position.findPositionsByStatus",
 			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.status) LIKE :s "

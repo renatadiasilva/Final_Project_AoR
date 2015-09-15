@@ -1,12 +1,10 @@
 package pt.uc.dei.aor.pf.beans;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-//import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import javax.ejb.EJB;
@@ -86,13 +84,15 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByLocation(List<String> locations) {
+	public List<PositionEntity> findPositionsByLocationsOne(List<String> locations) {
 		log.info("Finding positions by locations");
-		List<PositionEntity> list = new ArrayList<PositionEntity>();
-		for (String l : locations) {
-			list.addAll(positionDAO.findPositionsByLocation(l));
-		}
-		return list;  // order by??
+		return positionDAO.findPositionsByLocations(locations," OR ");
+	}
+
+	@Override
+	public List<PositionEntity> findPositionsByLocationsAll(List<String> locations) {
+		log.info("Finding positions by locations");
+		return positionDAO.findPositionsByLocations(locations," AND ");
 	}
 
 	@Override

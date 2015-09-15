@@ -33,14 +33,12 @@ public class CandidateSearchCDI {
 	private String address, city, phone, country;
 	private String course, school;
 
-	private Long idPos;   // id=18, id=19
+	private Long idPos;
 
 	private List<UserEntity> ulist;
 
 	public CandidateSearchCDI() {
 	}
-
-	// CANDIDATES
 
 	public void searchAllCandidates() {
 		log.info("Searching for all candidates");
@@ -109,8 +107,6 @@ public class CandidateSearchCDI {
 		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findCandidatesBySchool(pattern);
 	}	
-
-	// acentos!!!!
 
 	public void searchCandidatesByPositionOnly() {
 		log.info("Searching for candidates by position");

@@ -8,11 +8,8 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 
 public interface PositionEJBInterface {
 	
-	//validações?? passar atributos e não position inteira??)
-	//public abstract PositionEntity addPosition(........);
 	public abstract void save(PositionEntity position);
 	public abstract void update(PositionEntity position);
-	//public abstract void updatePositionTitle(PositionEntity position, ........);
 	public abstract void delete(PositionEntity position);
 	public abstract PositionEntity find(Long id);
 	public abstract List<PositionEntity> findAll();
@@ -22,7 +19,8 @@ public interface PositionEJBInterface {
 	public abstract PositionEntity findPositionByCode(String positionCode);
 	public abstract List<PositionEntity> findPositionsByCode(String codePattern);
 	public abstract List<PositionEntity> findPositionsByTitle(String title);
-	public abstract List<PositionEntity> findPositionsByLocation(List<String> location);
+	public abstract List<PositionEntity> findPositionsByLocationsOne(List<String> location);
+	public abstract List<PositionEntity> findPositionsByLocationsAll(List<String> location);
 	public abstract List<PositionEntity> findPositionsByStatus(String currentState);
 	public abstract List<PositionEntity> findPositionsByCompany(String company);
 	public abstract List<PositionEntity> findPositionsByTechArea(String tecnhicalArea);
