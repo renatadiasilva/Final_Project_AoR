@@ -82,13 +82,13 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByLocationsOne(List<String> locations) {
 		log.info("Finding positions by locations");
-		return positionDAO.findPositionsByLocations(locations," OR ");
+		return positionDAO.findPositionsByLocationsOne(locations);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByLocationsAll(List<String> locations) {
 		log.info("Finding positions by locations");
-		return positionDAO.findPositionsByLocations(locations," AND ");
+		return positionDAO.findPositionsByLocationsAll(locations);
 	}
 
 	@Override

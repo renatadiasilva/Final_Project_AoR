@@ -46,7 +46,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	//	}
 
 	@SuppressWarnings("unchecked")
-	public List<PositionEntity> findPositionsByLocations(List<String> locations, String AND_OR) {
+	public List<PositionEntity> findPositionsByLocationsOne(List<String> locations) {
+		int sizel = locations.size(); 
 //		String queryS = "SELECT * FROM positions, locations WHERE "
 //				+ "positions.id = locations.position_id AND (locations.location = "+locations.get(0);
 //		for (int i = 1; i < locations.size(); i++) 
@@ -56,8 +57,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 //		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 //		return (List<PositionEntity>) query.getResultList();
 	
-		String[] values = new String[locations.size()];
-		String[] attributes = new String[locations.size()];
+		String[] values = new String[sizel];
+		String[] attributes = new String[sizel];
 		int i = 0;
 		for (String l : locations) {
 			attributes[i] = "locations.location";
@@ -65,8 +66,33 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			i++;
 		}
 		String queryS = makeQuery("DISTINCT positions.*", "positions, locations",
-					"(", attributes, values, AND_OR, 
+					"(", attributes, values, " OR ", 
 					"positions.id = locations.position_id", "code");
+		System.out.println(queryS);
+		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+		return (List<PositionEntity>) query.getResultList();
+		
+//		Map<String, Object> parameters = new HashMap<String, Object>();
+//		parameters.put("loc", locations);
+//		return super.findSomeResults("Position.findPositionsByLocation", parameters);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PositionEntity> findPositionsByLocationsAll(List<String> locations) {
+		int sizel = locations.size(); 
+		String queryS = "SELECT * FROM (SELECT positions.*, count(positions.*) FROM"
+				+ " positions, locations WHERE positions.id = locations.position_id AND"
+				+ " (locations.location = "+locations.get(0);
+		for (int i = 1; i < sizel; i++) 
+			queryS += " OR locations.location = "+locations.get(i);
+		queryS += ") GROUP BY id) AS c WHERE c.count = "+sizel+" ORDER BY positions.code";
+		
+//		
+//		String queryS = "select * from (select positions.*, count(positions.*) "
+//				+ "from locations, positions where positions.id = locations.position_id "
+//				+ "and (locations.location = 'COIMBRA' or locations.location = 'PORTO') group by id) as c "
+//				+ "where c.count = 2";
+	
 		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		return (List<PositionEntity>) query.getResultList();
@@ -96,15 +122,15 @@ public class PositionDao extends GenericDao<PositionEntity> {
 //
 	public List<PositionEntity> findPositionsByCandidate(UserEntity candidate) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("id", candidate);
+		parameters.put("user", candidate);
 		return super.findSomeResults("Position.findPositionsByCandidate", parameters);
 	}
 
 	public List<PositionEntity> findByPositionAndCandidate(UserEntity candidate, 
 			PositionEntity position) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("id", candidate);
-		parameters.put("idP", position);
+		parameters.put("user", candidate);
+		parameters.put("position", position);
 		return super.findSomeResults("Position.findByPositionAndCandidate", parameters);
 	}
 
@@ -113,6 +139,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			String title, List<String> locations, String currentStatus, 
 			String company, String technicalArea, 
 			UserEntity positionManager) {
+		int sizel = locations.size(); 
 //		Map<String, Object> parameters = new HashMap<String, Object>();
 //		parameters.put("c", positionCode);
 //		parameters.put("t", title);
@@ -122,8 +149,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 //		parameters.put("ta", technicalArea);
 		String queryS;
 		Query query;
-		String[] attributes = new String[5+locations.size()];		
-		String[] values = new String[5+locations.size()];
+		String[] attributes = new String[5+sizel];		
+		String[] values = new String[5+sizel];
 		String[] a1 = {"code", "title", "status", "company", 
 			"technical_area"};		
 		String[] v1 = {positionCode, title, currentStatus,
@@ -174,6 +201,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	public List<PositionEntity> findPositionsByDate(Date openingDate1, Date openingDate2, String positionCode,
 			String title, List<String> locations, String currentStatus, String company, String technicalArea, 
 			UserEntity positionManager) {
+		int sizel = locations.size(); 
 //		Map<String, Object> parameters = new HashMap<String, Object>();
 //		parameters.put("date1", openingDate1);
 //		parameters.put("date2", openingDate2);
@@ -185,8 +213,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 //		parameters.put("ta", technicalArea);
 		String queryS;
 		Query query;
-		String[] attributes = new String[5+locations.size()];		
-		String[] values = new String[5+locations.size()];
+		String[] attributes = new String[5+sizel];		
+		String[] values = new String[5+sizel];
 		String[] a1 = {"code", "title", "status", "company", 
 			"technical_area"};		
 		String[] v1 = {positionCode, title, currentStatus,

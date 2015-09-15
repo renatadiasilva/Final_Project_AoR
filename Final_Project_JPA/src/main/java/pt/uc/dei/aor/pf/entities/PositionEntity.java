@@ -80,9 +80,9 @@ import javax.validation.constraints.NotNull;
 //					+ " UPPER(p.description) LIKE :keyword) "
 //					+ " AND p.positionManager = :id ORDER BY p.positionCode"),
 	@NamedQuery(name = "Position.findPositionsByCandidate",
-			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s WHERE u.id = :id"),
+			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s WHERE u = :user"),
 	@NamedQuery(name = "Position.findByPositionAndCandidate",
-			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s WHERE u.id = :id AND s.position = :idP ")
+			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s WHERE u = :user AND s.position = :position ")
 })
 public class PositionEntity implements Serializable {
 

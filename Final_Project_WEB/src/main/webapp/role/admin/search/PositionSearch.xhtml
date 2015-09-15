@@ -1,4 +1,4 @@
-<ui:composition template="../../WEB-INF/template/Layout.xhtml"
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -120,23 +120,11 @@
 				<p:inputText id="search-sla" value="#{positionSearchCDI.days}"
 					size="35" />
 
-				<p:outputLabel value="País: " for="search-country" />
-				<p:inputText id="search-country"
-					value="#{candidateSearchCDI.country}" size="35" />
-
-				<p:outputLabel value="Curso: " for="search-course" />
-				<p:inputText id="search-course" value="#{candidateSearchCDI.course}"
-					size="35" />
-
-				<p:outputLabel value="Escola: " for="search-school" />
-				<p:inputText id="search-school" value="#{candidateSearchCDI.school}"
-					size="35" />
-
 				<p:outputLabel value="Keyword: " for="search-keywordp" />
 				<p:inputText id="search-keywordp"
 					value="#{positionSearchCDI.keyword}" size="35" />
 
-				<p:outputLabel value="Id manager/candid: " for="search-idUp" />
+				<p:outputLabel value="Id gestor/candid: " for="search-idUp" />
 				<p:inputText id="search-idUp" value="#{positionSearchCDI.idU}"
 					size="35" />
 
