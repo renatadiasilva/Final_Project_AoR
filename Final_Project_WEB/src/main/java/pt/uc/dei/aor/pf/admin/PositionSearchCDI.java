@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.admin;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,10 +33,11 @@ public class PositionSearchCDI {
 	// search fields
 	private Date date1, date2;
 
-	private String code, title, location, status;
+	private String code, title, status;
 	private String company, tarea, keyword;
 
-	private List<String> locations; // select buttons
+	private String location;
+	private List<String> locations;
 
 	private Long idU;
 	private Long idPos;
@@ -115,16 +117,21 @@ public class PositionSearchCDI {
 		log.debug("Internal search string (code): "+pattern1);
 		String pattern2 = SearchPattern.preparePattern(title);
 		log.debug("Internal search string (title): "+pattern2);
-		String pattern3 = SearchPattern.preparePattern(location);
-		log.debug("Internal search string (location): "+pattern3);
 		String pattern4 = SearchPattern.preparePattern(status);
 		log.debug("Internal search string (status): "+pattern4);
 		String pattern5 = SearchPattern.preparePattern(company);
 		log.debug("Internal search string (ccompany): "+pattern5);
 		String pattern6 = SearchPattern.preparePattern(tarea);
 		log.debug("Internal search string (tech area): "+pattern6);
+		List<String> pattern = new ArrayList<String>(locations.size());		
+		for (String l : locations) {
+			String p = SearchPattern.preparePattern(l);
+			pattern.add(p);
+			log.debug("Internal search string (location "+
+				(locations.indexOf(l)+1)+"): "+p);
+		}
 		this.plist = positionEJB.findPositions(date1, date2, pattern1,
-				pattern2, pattern3, pattern4, pattern5, pattern6);
+				pattern2, pattern, pattern4, pattern5, pattern6);
 	}	
 
 	public void searchPositionsByManager() {
@@ -136,16 +143,21 @@ public class PositionSearchCDI {
 			log.debug("Internal search string (code): "+pattern1);
 			String pattern2 = SearchPattern.preparePattern(title);
 			log.debug("Internal search string (title): "+pattern2);
-			String pattern3 = SearchPattern.preparePattern(location);
-			log.debug("Internal search string (location): "+pattern3);
 			String pattern4 = SearchPattern.preparePattern(status);
 			log.debug("Internal search string (status): "+pattern4);
 			String pattern5 = SearchPattern.preparePattern(company);
 			log.debug("Internal search string (ccompany): "+pattern5);
 			String pattern6 = SearchPattern.preparePattern(tarea);
 			log.debug("Internal search string (tech area): "+pattern6);
+			List<String> pattern = new ArrayList<String>(locations.size());		
+			for (String l : locations) {
+				String p = SearchPattern.preparePattern(l);
+				pattern.add(p);
+				log.debug("Internal search string (location "+
+					(locations.indexOf(l)+1)+"): "+p);
+			}
 			this.plist = positionEJB.findPositionsByManager(date1, date2, pattern1,
-					pattern2, pattern3, pattern4, pattern5, pattern6, manager);
+					pattern2, pattern, pattern4, pattern5, pattern6, manager);
 		} else log.error("No manager with id "+idU);
 	}	
 
@@ -232,14 +244,6 @@ public class PositionSearchCDI {
 		this.title = title;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -318,6 +322,34 @@ public class PositionSearchCDI {
 
 	public void setResult(boolean result) {
 		this.result = result;
+	}
+	
+	public void addLocation() {
+		if (this.locations == null) this.locations = new ArrayList<String>();
+		this.locations.add(location);
+	}
+
+	public void addLocationCoimbra() {
+		if (this.locations == null) this.locations = new ArrayList<String>();
+		this.locations.add("COIMBRA");
+	}
+
+	public void addLocationPorto() {
+		if (this.locations == null) this.locations = new ArrayList<String>();
+		this.locations.add("PORTO");
+	}
+
+	public void addLocationLisboa() {
+		if (this.locations == null) this.locations = new ArrayList<String>();
+		this.locations.add("LISBOA");
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}	
 
 }

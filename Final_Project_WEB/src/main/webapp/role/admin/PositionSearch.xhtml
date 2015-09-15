@@ -5,106 +5,124 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="Título">Admin - Pesquisas de Candidatos - IT Jobs</ui:define>
+	<ui:define name="Título">Admin - Pesquisas de Posições - IT Jobs</ui:define>
 
 	<ui:define name="contents">
-		<h1>Pesquisas de Candidatos</h1>
+		<h1>Pesquisas de Posições</h1>
 
-		<h:form id="candidateSearch">
+		<h:form id="positionSearch">
 
-			<h:panelGrid id="buttonsCandidateSearch" columns="7">
+			<h:panelGrid id="buttonsPositionSearch" columns="7">
 
-				<p:commandButton value="Todos candidatos"
-					action="#{candidateSearchCDI.searchAllCandidates()}" update="@form, messages"
+				<p:commandButton value="Todas posições"
+					action="#{positionSearchCDI.searchAll()}" update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (email)"
-					action="#{candidateSearchCDI.searchCandidatesByEmail()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições abertas"
+					action="#{positionSearchCDI.searchOpenPositions()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (1º nome)"
-					action="#{candidateSearchCDI.searchCandidatesByFirstName()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições perto do SLA"
+					action="#{positionSearchCDI.searchCloseToSLAPositions()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (sobrenome)"
-					action="#{candidateSearchCDI.searchCandidatesByLastName()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (código)"
+					action="#{positionSearchCDI.searchPositionsByCode()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (morada)"
-					action="#{candidateSearchCDI.searchCandidatesByAddress()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições ente duas datas"
+					action="#{positionSearchCDI.searchPositionsByDate()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (cidade)"
-					action="#{candidateSearchCDI.searchCandidatesByCity()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (título)"
+					action="#{positionSearchCDI.searchPositionsByTitle()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (tlf/tlm)"
-					action="#{candidateSearchCDI.searchCandidatesByPhone()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (pelo menos um local)"
+					action="#{positionSearchCDI.searchPositionsByLocationsOne()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (país)"
-					action="#{candidateSearchCDI.searchCandidatesByCountry()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (vários locais)"
+					action="#{positionSearchCDI.searchPositionsByLocationsAll()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (curso)"
-					action="#{candidateSearchCDI.searchCandidatesByCourse()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (estado)"
+					action="#{positionSearchCDI.searchPositionsByStatus()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (escola)"
-					action="#{candidateSearchCDI.searchCandidatesBySchool()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (empresa)"
+					action="#{positionSearchCDI.searchPositionsByCompany()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (todos os campos)"
-					action="#{candidateSearchCDI.searchCandidates()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (área técnica)"
+					action="#{positionSearchCDI.searchPositionsByTechArea()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (keyword)"
-					action="#{candidateSearchCDI.searchCandidatesByKeyword()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (todos os campos)"
+					action="#{positionSearchCDI.searchPositions()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (posição)"
-					action="#{candidateSearchCDI.searchCandidatesByPositionOnly()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (keyword)"
+					action="#{positionSearchCDI.searchPositionsByKeyword()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (posição e atributos short)"
-					action="#{candidateSearchCDI.searchCandidatesByPositionShort()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (keyword/gestor)"
+					action="#{positionSearchCDI.searchPositionsByKeywordAndManager()}"
+					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Candidatos (posição e atributos)"
-					action="#{candidateSearchCDI.searchCandidatesByPositionLong()}" update="@form, messages"
-					icon="ui-icon-search" />
+				<p:commandButton value="Posições (campos/gestor)"
+					action="#{positionSearchCDI.searchPositionsByManager()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+				<p:commandButton value="Posições (candidato)"
+					action="#{positionSearchCDI.searchPositionsByCandidate()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+				<p:commandButton value="Candidato associado a posição?"
+					action="#{positionSearchCDI.alreadyCandidateOfPosition()}"
+					update="@form, messages" icon="ui-icon-search" />
 
 			</h:panelGrid>
 
-			<h:panelGrid id="gridCandidatesSearch" columns="8">
+			<h:panelGrid id="gridPositionSearch" columns="8">
 
-				<p:outputLabel value="Email: " for="search-emailc" />
-				<p:inputText id="search-emailc" value="#{candidateSearchCDI.email}"
+				<p:outputLabel value="Primeira Data: " for="search-date1p" />
+				<p:calendar id="search-date1p" value="#{positionSearchCDI.date1}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+					yearRange="c-100:c+100" locale="pt" size="35" />
+
+				<p:outputLabel value="Segunda Data: " for="search-date2p" />
+				<p:calendar id="search-date2p" value="#{positionSearchCDI.date2}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+					yearRange="c-100:c+100" locale="pt" size="35" />
+
+				<p:outputLabel value="Código: " for="search-code" />
+				<p:inputText id="search-code" value="#{positionSearchCDI.code}"
 					size="35" />
 
-				<p:outputLabel value="Primeiro nome: " for="search-firstNamec" />
-				<p:inputText id="search-firstNamec" value="#{candidateSearchCDI.fname}"
+				<p:outputLabel value="Título: " for="search-titlep" />
+				<p:inputText id="search-titlep" value="#{positionSearchCDI.title}"
 					size="35" />
 
-				<p:outputLabel value="Sobrenome: " for="search-lastNamec" />
-				<p:inputText id="search-lastNamec" value="#{candidateSearchCDI.lname}"
+				<p:outputLabel value="Estado: " for="search-statusp" />
+				<p:inputText id="search-statusp" value="#{positionSearchCDI.status}"
 					size="35" />
 
-				<p:outputLabel value="Morada: " for="search-address" />
-				<p:inputText id="search-address" value="#{candidateSearchCDI.address}"
+				<p:outputLabel value="Empresa: " for="search-company" />
+				<p:inputText id="search-company"
+					value="#{positionSearchCDI.company}" size="35" />
+
+				<p:outputLabel value="Área Técnica: " for="search-tarea" />
+				<p:inputText id="search-tarea" value="#{positionSearchCDI.tarea}"
 					size="35" />
 
-				<p:outputLabel value="Cidade: " for="search-city" />
-				<p:inputText id="search-city" value="#{candidateSearchCDI.city}"
-					size="35" />
-
-				<p:outputLabel value="Telefone: " for="search-phone" />
-				<p:inputText id="search-phone" value="#{candidateSearchCDI.phone}"
+				<p:outputLabel value="SLA (dias): " for="search-sla" />
+				<p:inputText id="search-sla" value="#{positionSearchCDI.days}"
 					size="35" />
 
 				<p:outputLabel value="País: " for="search-country" />
-				<p:inputText id="search-country" value="#{candidateSearchCDI.country}"
-					size="35" />
+				<p:inputText id="search-country"
+					value="#{candidateSearchCDI.country}" size="35" />
 
 				<p:outputLabel value="Curso: " for="search-course" />
 				<p:inputText id="search-course" value="#{candidateSearchCDI.course}"
@@ -114,50 +132,82 @@
 				<p:inputText id="search-school" value="#{candidateSearchCDI.school}"
 					size="35" />
 
-				<p:outputLabel value="Keyword: " for="search-keywordc" />
-				<p:inputText id="search-keywordc" value="#{candidateSearchCDI.keyword}"
+				<p:outputLabel value="Keyword: " for="search-keywordp" />
+				<p:inputText id="search-keywordp"
+					value="#{positionSearchCDI.keyword}" size="35" />
+
+				<p:outputLabel value="Id manager/candid: " for="search-idUp" />
+				<p:inputText id="search-idUp" value="#{positionSearchCDI.idU}"
 					size="35" />
 
-				<p:outputLabel value="Id da posição: " for="search-idP" />
-				<p:inputText id="search-idP" value="#{candidateSearchCDI.idPos}"
+				<p:outputLabel value="Id da posição: " for="search-idPosp" />
+				<p:inputText id="search-idPosp" value="#{positionSearchCDI.idPos}"
 					size="35" />
 
+				<p:outputLabel value="Candidato+posição? " for="search-resultp" />
+				<p:inputText id="search-resultp"
+					value="#{positionSearchCDI.result}" size="35" />
+
+				<p:outputLabel value="Coimbra: " for="search-coimbra" />
+				<p:selectBooleanCheckbox id="search-coimbra"
+					value="#{positionSearchCDI.addLocationCoimbra()}" />
+
+				<p:outputLabel value="Porto: " for="search-porto" />
+				<p:selectBooleanCheckbox id="search-porto"
+					value="#{positionSearchCDI.addLocationPorto()}" />
+
+				<p:outputLabel value="Lisboa: " for="search-lisboa" />
+				<p:selectBooleanCheckbox id="search-lisboa"
+					value="#{positionSearchCDI.addLocationLisboa()}" />
+
+				<p:outputLabel value="Outro local: " for="search-otherl" />
+				<p:selectBooleanCheckbox id="search-otherl"
+					value="#{positionSearchCDI.addLocation()}" />
+
+				<p:outputLabel value="Local: " for="search-location" />
+				<p:inputText id="search-location"
+					value="#{positionSearchCDI.location}" size="35" />
+
+				</p:selectBooleanCheckbox>
 			</h:panelGrid>
 
-			<p:dataTable var="u" value="#{candidateSearchCDI.ulist}">
-				<f:facet name="header">Listagem candidatos</f:facet>
-				<p:column headerText="Nome">
-					<h:outputText value="#{u.firstName}" />
+			<p:dataTable var="p" value="#{positionSearchCDI.plist}">
+				<f:facet name="header">Listagem posições</f:facet>
+				<p:column headerText="Código">
+					<h:outputText value="#{p.positionCode}" />
 				</p:column>
-				<p:column headerText="Sobrenome">
-					<h:outputText value="#{u.lastName}" />
+				<p:column headerText="Título">
+					<h:outputText value="#{p.title}" />
 				</p:column>
-				<p:column headerText="Email">
-					<h:outputText value="#{u.email}" />
+				<p:column headerText="Data Abert">
+					<h:outputText value="#{p.openingDate}" />
 				</p:column>
-				<p:column headerText="Data N">
-					<h:outputText value="#{u.userInfo.birthDate}" />
+				<p:column headerText="Estado">
+					<h:outputText value="#{p.status}" />
 				</p:column>
-				<p:column headerText="Morada">
-					<h:outputText value="#{u.userInfo.address}" />
+				<p:column headerText="Vagas">
+					<h:outputText value="#{p.openings}" />
 				</p:column>
-				<p:column headerText="Cidade">
-					<h:outputText value="#{u.userInfo.city}" />
+				<p:column headerText="Empresa">
+					<h:outputText value="#{p.company}" />
 				</p:column>
-				<p:column headerText="Telefone">
-					<h:outputText value="#{u.userInfo.homePhone}" />
+				<p:column headerText="Área Técnica">
+					<h:outputText value="#{p.technicalArea}" />
 				</p:column>
-				<p:column headerText="Telemóvel">
-					<h:outputText value="#{u.userInfo.mobilePhone}" />
+				<p:column headerText="Data Fech">
+					<h:outputText value="#{p.closingDate}" />
 				</p:column>
-				<p:column headerText="País">
-					<h:outputText value="#{u.userInfo.country}" />
+				<p:column headerText="Data sla">
+					<h:outputText value="#{p.slaDate}" />
 				</p:column>
-				<p:column headerText="Curso">
-					<h:outputText value="#{u.userInfo.course}" />
+				<p:column headerText="Gestor">
+					<h:outputText value="#{p.positionManager.firstName}" />
 				</p:column>
-				<p:column headerText="Escola">
-					<h:outputText value="#{u.userInfo.school}" />
+				<p:column headerText="Criador">
+					<h:outputText value="#{p.positionCreator.firstName}" />
+				</p:column>
+				<p:column headerText="Guião">
+					<h:outputText value="#{p.defaultScript.title}" />
 				</p:column>
 			</p:dataTable>
 
