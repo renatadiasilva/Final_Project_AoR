@@ -61,7 +61,7 @@ import javax.validation.constraints.NotNull;
 //					+ " AND UPPER(p.technicalArea) LIKE :ta AND p.positionManager = :id"
 //					+ " ORDER BY p.positionCode"),
 	@NamedQuery(name = "Position.findCloseToSLAPositions",
-			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate AND p.status = 'OPEN'"),
+			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate AND p.status = :status"),
 //	@NamedQuery(name = "Position.findPositionsByKeyword",
 //			query = "SELECT p FROM PositionEntity p WHERE"
 //					+ " UPPER(p.positionCode) LIKE :keyword OR"

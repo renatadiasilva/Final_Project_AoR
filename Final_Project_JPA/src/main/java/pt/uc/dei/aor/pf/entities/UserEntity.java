@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT u FROM UserEntity u WHERE UPPER(u.email) LIKE :email"),
 	@NamedQuery(name = "User.findUsersByEmailPattern",
 			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r WHERE UPPER(u.email) LIKE :email"
-					+ " AND (r <> 'CANDIDATE') ORDER BY u.email"),
+					+ " AND (r <> :role) ORDER BY u.email"),
 	@NamedQuery(name = "User.findCandidatesByPhone",
 			query = "SELECT u.owner FROM UserInfoEntity u WHERE"
 					+ " u.homePhone LIKE :phone OR u.mobilePhone LIKE :phone"

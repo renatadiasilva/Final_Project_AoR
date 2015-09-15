@@ -39,10 +39,10 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT s FROM SubmissionEntity s WHERE "
 					+ " s.spontaneous = TRUE AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findRejectedSubmissionsByDate",
-			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) = 'REJECTED SUBMISSION'"
+			query = "SELECT s FROM SubmissionEntity s WHERE s.status = :status"
 					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findPresentedProposalsByDate",
-			query = "SELECT s FROM SubmissionEntity s WHERE UPPER(s.status) LIKE '%PROPOSAL'"
+			query = "SELECT s FROM SubmissionEntity s WHERE s.status LIKE :status"
 					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSubmissionsBySource",
 			query = "SELECT s FROM SubmissionEntity s WHERE :source MEMBER OF s.sources"
@@ -60,7 +60,9 @@ public class SubmissionEntity implements Serializable {
 	public static final String STATUS_APROPOSAL = "ACCEPTED PROPOSAL";
 	public static final String STATUS_OPROPOSAL = "ON NEGOTIATION PROPOSAL"; //"Offer Process (Negotiation)";
 	public static final String STATUS_HIRED     = "HIRED";
-	public static final String STATUS_NOTHIRED  = "NOT HIRED"; 
+	public static final String STATUS_NOTHIRED  = "NOT HIRED";
+	//para usar nas queries
+	public static final String STATUS_PROPOSAL  = "%PROPOSAL"; 
 
 	// outros??
 	public static final String SOURCE_EXPRESSO = "EXPRESSO";

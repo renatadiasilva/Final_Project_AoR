@@ -246,6 +246,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		Calendar cal = Calendar.getInstance(); // today
 		cal.add(Calendar.DAY_OF_YEAR, daysBefore); // today plus the given days before SLA
 		parameters.put("date", cal.getTime());
+		parameters.put("status", PositionEntity.STATUS_OPEN);
 		return super.findSomeResults("Position.findCloseToSLAPositions", parameters);
 	}
 

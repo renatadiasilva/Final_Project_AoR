@@ -40,6 +40,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
+		parameters.put("status", SubmissionEntity.STATUS_REJECTED);
 		return super.findSomeResults("Submission.findRejectedSubmissionsByDate", parameters);
 	}
 	
@@ -48,6 +49,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
+		parameters.put("status", SubmissionEntity.STATUS_PROPOSAL);
 		return super.findSomeResults("Submission.findPresentedProposalsByDate", parameters);
 	}
 

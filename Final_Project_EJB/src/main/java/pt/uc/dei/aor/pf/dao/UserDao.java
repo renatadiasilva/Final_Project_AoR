@@ -27,6 +27,7 @@ public class UserDao extends GenericDao<UserEntity> {
 	public List<UserEntity> findUsersByEmailPattern(String email) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);
+		parameters.put("r", UserEntity.ROLE_CANDIDATE);
 		return super.findSomeResults("User.findUsersByEmailPattern", parameters);
 	}
 
@@ -36,8 +37,8 @@ public class UserDao extends GenericDao<UserEntity> {
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
 				"(", attributes, values, " OR ", 
-				"users.id = roles.user_id AND roles.role <> \'CANDIDATE\'",
-				"email");
+				"users.id = roles.user_id AND roles.role <> \'"+
+				UserEntity.ROLE_CANDIDATE+"\'","email");
 //		String queryS = "SELECT DISTINCT users.* FROM users, roles"
 //				+ " WHERE (TRANSLATE(UPPER(REPLACE(first_name,\' \',\'\')), "
 //				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :first_name"
@@ -91,8 +92,8 @@ public class UserDao extends GenericDao<UserEntity> {
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
 				"(UPPER(email) LIKE \'"+keyword+"\' OR ", attributes, values, " OR ", 
-				"users.id = roles.user_id AND roles.role <> \'CANDIDATE\'",
-				"email");
+				"users.id = roles.user_id AND roles.role <> \'"+
+				UserEntity.ROLE_CANDIDATE+"\'",	"email");
 //		String queryS = "SELECT DISTINCT users.* FROM users, roles"
 //				+ " WHERE (UPPER(email) LIKE :email"
 //				+ " OR TRANSLATE(UPPER(REPLACE(first_name,\' \',\'\')), "

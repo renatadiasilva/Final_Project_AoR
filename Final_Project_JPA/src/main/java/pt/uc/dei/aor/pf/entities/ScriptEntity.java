@@ -32,9 +32,9 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Script.findReusableScripts",
 			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
 					+ " ORDER BY s.creationDate DESC"),
-	@NamedQuery(name = "Script.findScriptsByTitle",
-			query = "SELECT s FROM ScriptEntity s WHERE UPPER(s.title) LIKE :t"
-					+ " ORDER BY s.title"),
+//	@NamedQuery(name = "Script.findScriptsByTitle",
+//			query = "SELECT s FROM ScriptEntity s WHERE UPPER(s.title) LIKE :t"
+//					+ " ORDER BY s.title"),
 })
 public class ScriptEntity implements Serializable{
 
