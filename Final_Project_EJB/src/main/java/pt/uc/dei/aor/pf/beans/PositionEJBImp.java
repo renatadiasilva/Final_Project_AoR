@@ -55,32 +55,26 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public PositionEntity findPositionByCode(String positionCode) {
-		log.info("Finding position by exact code");
-		// code is unique
-		List<PositionEntity> pos = positionDAO.findPositionsByCode(positionCode.toUpperCase());
-		if (pos == null) return null; // 0 results: code not found
-		if (pos.size() == 1) return pos.get(0); // 1 result: code found
-		return null; // 0 results: code not found
-	}
-
-	@Override
-	public List<PositionEntity> findPositionsByCode(String codePattern) {
-		log.info("Finding positions by code pattern");
-		return positionDAO.findPositionsByCode(codePattern);
+	public List<PositionEntity> findPositionsByCode(String code) {
+		log.info("Finding positions by code");
+		return positionDAO.findPositions(code, "%", "%", "%", "%", "%", null);
+//		return positionDAO.findPositionsByCode(codePattern);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByDate(Date openingDate1,
 			Date openingDate2) {
 		log.info("Finding all positions opened between two dates");
-		return positionDAO.findPositionsByDate(openingDate1, openingDate2);
+//		return positionDAO.findPositionsByDate(openingDate1, openingDate2);
+		return positionDAO.findPositionsByDate(openingDate1, openingDate2, "%", "%", "%",
+				"%", "%", "%", null);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByTitle(String title) {
 		log.info("Finding positions by title");
-		return positionDAO.findPositionsByTitle(title);
+		return positionDAO.findPositions("%", title, "%", "%", "%", "%", null);
+//		return positionDAO.findPositionsByTitle(title);
 	}
 
 	@Override
@@ -98,19 +92,22 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByStatus(String currentStatus) {
 		log.info("Finding positions by status");
-		return positionDAO.findPositionsByStatus(currentStatus);
+		return positionDAO.findPositions("%", "%", currentStatus, "%", "%", "%", null);
+//		return positionDAO.findPositionsByStatus(currentStatus);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByCompany(String company) {
 		log.info("Finding positions by company");
-		return positionDAO.findPositionsByCompany(company);
+		return positionDAO.findPositions("%", "%", "%", company, "%", "%", null);
+//		return positionDAO.findPositionsByCompany(company);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByTechArea(String tecnhicalArea) {
 		log.info("Finding positions by technical area");
-		return positionDAO.findPositionsByCompany(tecnhicalArea);
+		return positionDAO.findPositions("%", "%", "%", "%", tecnhicalArea, "%", null);
+//		return positionDAO.findPositionsByCompany(tecnhicalArea);
 	}
 
 	@Override
@@ -119,7 +116,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 			String location, String currentStatus, String company,
 			String technicalArea) {
 		log.info("Finding positions by several attributes");
-		return positionDAO.findPositions(openingDate1, openingDate2, positionCode, 
+		return positionDAO.findPositionsByDate(openingDate1, openingDate2, positionCode, 
 				title, location, currentStatus, company, technicalArea, null);
 	}
 
@@ -129,7 +126,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 			String location, String currentStatus, String company,
 			String technicalArea, UserEntity positionManager) {
 		log.info("Finding positions of given manager by several attributes");
-		return positionDAO.findPositions(openingDate1, openingDate2, positionCode, 
+		return positionDAO.findPositionsByDate(openingDate1, openingDate2, positionCode, 
 				title, location, currentStatus, company, technicalArea, 
 				positionManager);
 	}
@@ -137,7 +134,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findOpenPositions() {
 		log.info("Finding all open positions");
-		return positionDAO.findPositionsByStatus("open");
+		return positionDAO.findPositions("%", "%", "%", "OPEN", "%", "%", null);
 	}
 
 	@Override
@@ -150,8 +147,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 //		for (SubmissionEntity s : listS)
 //			listP.add(s.getPosition());
 //		return listP; //order by??
-		return positionDAO.findPositionsByCandidate(candidate);
-		
+		return positionDAO.findPositionsByCandidate(candidate);		
 	}
 
 	@Override

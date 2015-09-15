@@ -54,13 +54,6 @@ public class PositionSearchCDI {
 		this.plist = positionEJB.findAll();
 	}
 
-	// needed??
-	public void searchPositionByCode() {
-		log.info("Searching for position by exact code");
-		log.debug("Code "+code);
-		this.plist.add(positionEJB.findPositionByCode(code));
-	}	
-
 	public void searchPositionsByCode() {
 		log.info("Searching for positions by code");
 		String pattern = SearchPattern.preparePattern(code);

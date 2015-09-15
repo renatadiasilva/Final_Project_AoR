@@ -108,7 +108,7 @@ public class InitDB {
 						ulist[2], ulist[1], "Critical Software", PositionEntity.TECH_JAVA, "Procuram-se programadores java "
 								+ "bla bla bla", null, sclist[0]), // plist[0]
 				// sla = 60 dias
-				new PositionEntity("Técnico de Segurança", null, 1, null, ftDate.parse("2015-11-04"), 
+				new PositionEntity("Tecnico de Segurança", null, 1, null, ftDate.parse("2015-11-04"), 
 						ulist[2], ulist[1], "Critical Software", PositionEntity.TECH_SAFETY, "Procura-se técnico de segurança "
 								+ "bla bla bla", null, sclist[0]), // plist[1]
 				// sla = 150 dias
