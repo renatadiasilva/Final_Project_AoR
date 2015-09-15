@@ -197,7 +197,7 @@ public class InterviewEntity implements Serializable {
 
 	public void addInterviewer(UserEntity user) {
 		if (interviewers == null) interviewers = new ArrayList<UserEntity>();
-		interviewers.add(user);
+		if (!interviewers.contains(user)) interviewers.add(user);
 	}
 
 	public void removeInterviewer(UserEntity user) {

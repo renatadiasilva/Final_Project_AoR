@@ -182,7 +182,7 @@ public class ScriptEntity implements Serializable{
 
 	public void addQuestion(QuestionEntity question) {
 		if (questions == null) questions = new ArrayList<QuestionEntity>();
-		questions.add(question);
+		if (!questions.contains(question)) questions.add(question);
 	}
 
 	public void removeQuestion(QuestionEntity question) {
