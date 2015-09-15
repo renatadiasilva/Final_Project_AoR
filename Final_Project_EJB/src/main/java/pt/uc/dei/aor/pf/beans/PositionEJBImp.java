@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByCode(String code) {
 		log.info("Finding positions by code");
-		return positionDAO.findPositions(code, "%", "%", "%", "%", "%", null);
+		return positionDAO.findPositions(code, "%", new ArrayList<String>(), "%", "%", "%", null);
 //		return positionDAO.findPositionsByCode(codePattern);
 	}
 
@@ -66,14 +67,15 @@ public class PositionEJBImp implements PositionEJBInterface {
 			Date openingDate2) {
 		log.info("Finding all positions opened between two dates");
 //		return positionDAO.findPositionsByDate(openingDate1, openingDate2);
-		return positionDAO.findPositionsByDate(openingDate1, openingDate2, "%", "%", "%",
-				"%", "%", "%", null);
+		return positionDAO.findPositionsByDate(openingDate1, openingDate2, "%", "%", 
+				new ArrayList<String>(), "%", "%", "%", null);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByTitle(String title) {
 		log.info("Finding positions by title");
-		return positionDAO.findPositions("%", title, "%", "%", "%", "%", null);
+		return positionDAO.findPositions("%", title, new ArrayList<String>(),
+				"%", "%", "%", null);
 //		return positionDAO.findPositionsByTitle(title);
 	}
 
@@ -92,49 +94,53 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<PositionEntity> findPositionsByStatus(String currentStatus) {
 		log.info("Finding positions by status");
-		return positionDAO.findPositions("%", "%", currentStatus, "%", "%", "%", null);
+		return positionDAO.findPositions("%", "%", new ArrayList<String>(),
+				currentStatus, "%", "%", null);
 //		return positionDAO.findPositionsByStatus(currentStatus);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByCompany(String company) {
 		log.info("Finding positions by company");
-		return positionDAO.findPositions("%", "%", "%", company, "%", "%", null);
+		return positionDAO.findPositions("%", "%", new ArrayList<String>(),
+				"%", company, "%", null);
 //		return positionDAO.findPositionsByCompany(company);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByTechArea(String tecnhicalArea) {
 		log.info("Finding positions by technical area");
-		return positionDAO.findPositions("%", "%", "%", "%", tecnhicalArea, "%", null);
+		return positionDAO.findPositions("%", "%", new ArrayList<String>(),
+				"%", "%", tecnhicalArea, null);
 //		return positionDAO.findPositionsByCompany(tecnhicalArea);
 	}
 
 	@Override
 	public List<PositionEntity> findPositions(Date openingDate1,
 			Date openingDate2, String positionCode, String title,
-			String location, String currentStatus, String company,
+			List<String> locations, String currentStatus, String company,
 			String technicalArea) {
 		log.info("Finding positions by several attributes");
 		return positionDAO.findPositionsByDate(openingDate1, openingDate2, positionCode, 
-				title, location, currentStatus, company, technicalArea, null);
+				title, locations, currentStatus, company, technicalArea, null);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByManager(Date openingDate1,
 			Date openingDate2, String positionCode, String title,
-			String location, String currentStatus, String company,
+			List<String> locations, String currentStatus, String company,
 			String technicalArea, UserEntity positionManager) {
 		log.info("Finding positions of given manager by several attributes");
 		return positionDAO.findPositionsByDate(openingDate1, openingDate2, positionCode, 
-				title, location, currentStatus, company, technicalArea, 
+				title, locations, currentStatus, company, technicalArea, 
 				positionManager);
 	}
 
 	@Override
 	public List<PositionEntity> findOpenPositions() {
 		log.info("Finding all open positions");
-		return positionDAO.findPositions("%", "%", "%", "OPEN", "%", "%", null);
+		return positionDAO.findPositions("%", "%", new ArrayList<String>(),
+				"OPEN", "%", "%", null);
 	}
 
 	@Override

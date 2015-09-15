@@ -45,17 +45,32 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	//		return super.findSomeResults("Position.findPositionsByLocation", parameters);
 	//	}
 
-	// entrar no outro??????
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositionsByLocations(List<String> locations, String AND_OR) {
-		String queryS = "SELECT * FROM positions, locations WHERE "
-				+ "positions.id = locations.position_id AND (locations.location = "+locations.get(0);
-		for (int i = 1; i < locations.size(); i++) 
-			queryS += AND_OR+"locations.location = "+locations.get(i);
-		queryS += ") ORDER BY positions.code";
+//		String queryS = "SELECT * FROM positions, locations WHERE "
+//				+ "positions.id = locations.position_id AND (locations.location = "+locations.get(0);
+//		for (int i = 1; i < locations.size(); i++) 
+//			queryS += AND_OR+"locations.location = "+locations.get(i);
+//		queryS += ") ORDER BY positions.code";
+//		System.out.println(queryS);
+//		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+//		return (List<PositionEntity>) query.getResultList();
+	
+		String[] values = new String[locations.size()];
+		String[] attributes = new String[locations.size()];
+		int i = 0;
+		for (String l : locations) {
+			attributes[i] = "locations.location";
+			values[i] = l;
+			i++;
+		}
+		String queryS = makeQuery("DISTINCT positions.*", "positions, locations",
+					"(", attributes, values, AND_OR, 
+					"positions.id = locations.position_id", "code");
 		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		return (List<PositionEntity>) query.getResultList();
+		
 //		Map<String, Object> parameters = new HashMap<String, Object>();
 //		parameters.put("loc", locations);
 //		return super.findSomeResults("Position.findPositionsByLocation", parameters);
@@ -95,7 +110,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositions(String positionCode,
-			String title, String location, String currentStatus, String company, String technicalArea, 
+			String title, List<String> locations, String currentStatus, 
+			String company, String technicalArea, 
 			UserEntity positionManager) {
 //		Map<String, Object> parameters = new HashMap<String, Object>();
 //		parameters.put("c", positionCode);
@@ -106,10 +122,22 @@ public class PositionDao extends GenericDao<PositionEntity> {
 //		parameters.put("ta", technicalArea);
 		String queryS;
 		Query query;
-		String[] values = {positionCode, title, location, currentStatus,
-				company, technicalArea};
-		String[] attributes = {"code", "title", "locations.location", "status", "company", 
-				"technical_area"};		
+		String[] attributes = new String[5+locations.size()];		
+		String[] values = new String[5+locations.size()];
+		String[] a1 = {"code", "title", "status", "company", 
+			"technical_area"};		
+		String[] v1 = {positionCode, title, currentStatus,
+			company, technicalArea};
+
+		System.arraycopy(v1, 0, values, 0, 5);
+		System.arraycopy(a1, 0, values, 0, 5);
+		
+		int i = 5;
+		for (String l : locations) {
+			attributes[i] = "locations.location";
+			values[i] = l;
+			i++;
+		}
 		if (positionManager != null) {
 			// DISTINCT??
 			queryS = makeQuery("DISTINCT positions.*", "positions, locations",
@@ -142,10 +170,9 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		return (List<PositionEntity>) query.getResultList();
 	}
 
-	// order by date or code!!
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositionsByDate(Date openingDate1, Date openingDate2, String positionCode,
-			String title, String location, String currentStatus, String company, String technicalArea, 
+			String title, List<String> locations, String currentStatus, String company, String technicalArea, 
 			UserEntity positionManager) {
 //		Map<String, Object> parameters = new HashMap<String, Object>();
 //		parameters.put("date1", openingDate1);
@@ -158,15 +185,28 @@ public class PositionDao extends GenericDao<PositionEntity> {
 //		parameters.put("ta", technicalArea);
 		String queryS;
 		Query query;
-		String[] values = {positionCode, title, location, currentStatus,
-				company, technicalArea};
-		String[] attributes = {"code", "title", "locations.location", "status", "company", 
-				"technical_area"};
+		String[] attributes = new String[5+locations.size()];		
+		String[] values = new String[5+locations.size()];
+		String[] a1 = {"code", "title", "status", "company", 
+			"technical_area"};		
+		String[] v1 = {positionCode, title, currentStatus,
+			company, technicalArea};
+
+		System.arraycopy(v1, 0, values, 0, 5);
+		System.arraycopy(a1, 0, values, 0, 5);
+		
+		int i = 5;
+		for (String l : locations) {
+			attributes[i] = "locations.location";
+			values[i] = l;
+			i++;
+		}
+
 		if (positionManager != null) {
 			queryS = makeQuery("DISTINCT positions.*", "positions, locations",
 					"(", attributes, values, " AND ", "positions.id = locations.position_id"
 							+ " AND positions.opening_date BETWEEN :date1 AND :date2 AND"
-							+ " submissions.position.id = "+positionManager.getId(), "code");
+							+ " submissions.position.id = "+positionManager.getId(), "opening_date");
 			
 //			parameters.put("id", positionManager);
 //			@NamedQuery(name = "Position.findPositionsBySeveralAttributesByManager",
@@ -181,7 +221,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		} else {
 			queryS = makeQuery("DISTINCT positions.*", "positions, locations",
 					"(", attributes, values, " AND ", "positions.id = locations.position_id"
-					+ " AND positions.opening_date BETWEEN :date1 AND :date2", "code");
+					+ " AND positions.opening_date BETWEEN :date1 AND :date2", "opening_date");
 
 //		return super.findSomeResults("Position.findPositionsBySeveralAttributes", parameters);
 //		@NamedQuery(name = "Position.findPositionsBySeveralAttributes",
