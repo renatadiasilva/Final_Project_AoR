@@ -82,10 +82,10 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		int sizel = locations.size(); 
 		String queryS = "SELECT * FROM (SELECT positions.*, count(positions.*) FROM"
 				+ " positions, locations WHERE positions.id = locations.position_id AND"
-				+ " (locations.location = "+locations.get(0);
+				+ " (locations.location = \'"+locations.get(0)+"\'";
 		for (int i = 1; i < sizel; i++) 
-			queryS += " OR locations.location = "+locations.get(i);
-		queryS += ") GROUP BY id) AS c WHERE c.count = "+sizel+" ORDER BY positions.code";
+			queryS += " OR locations.location = \'"+locations.get(i)+"\'";
+		queryS += ") GROUP BY id) AS c WHERE c.count = "+sizel+" ORDER BY c.code";
 		
 //		
 //		String queryS = "select * from (select positions.*, count(positions.*) "
