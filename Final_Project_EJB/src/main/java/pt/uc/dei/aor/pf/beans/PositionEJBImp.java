@@ -185,7 +185,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByKeywordByManager(String keyword, UserEntity positionManager) {
+	public List<PositionEntity> findPositionsByKeywordAndManager(String keyword, UserEntity positionManager) {
 		log.info("Finding positions of given manager by keyword");
 		return positionDAO.findPositionsByKeyword(keyword, positionManager);
 	}

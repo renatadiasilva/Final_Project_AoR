@@ -42,6 +42,8 @@ public class PositionSearchCDI {
 
 	private int days;
 
+	private boolean result;
+
 	private List<PositionEntity> plist;
 
 	public PositionSearchCDI() {
@@ -153,7 +155,7 @@ public class PositionSearchCDI {
 					pattern2, pattern3, pattern4, pattern5, pattern6, manager);
 		} else log.error("No manager with id "+idU);
 	}	
-	
+
 	public void searchOpenPositions() {
 		log.info("Searching for all open positions");
 		this.plist = positionEJB.findOpenPositions();
@@ -166,89 +168,42 @@ public class PositionSearchCDI {
 			log.debug("Candidate "+candidate.getFirstName());
 			this.plist = positionEJB.findPositionsByCandidate(candidate);
 		} else log.error("No candidate with id "+idU);
-	}	
+	}
 
-	//	public void searchCandidatesByPositionOnly() {
-	//		log.info("Searching for candidates by position");
-	//		PositionEntity pos = positionEJB.find(idPos);
-	//		if (pos != null) {
-	//			log.debug("Position: "+pos.getPositionCode());
-	//			this.plist = userEJB.findCandidatesByPosition(pos);
-	//		} else log.error("No position with id "+idPos);
-	//	}	
-	//
-	//	public void searchCandidatesByPositionShort() {
-	//		log.info("Searching for candidates by position and email/name");
-	//		PositionEntity pos = positionEJB.find(idPos);
-	//		if (pos != null) {
-	//			log.debug("Position: "+pos.getPositionCode());
-	//			String pattern1 = SearchPattern.preparePattern(email);
-	//			log.debug("Internal search string (email): "+pattern1);
-	//			String pattern2 = SearchPattern.preparePattern(fname);
-	//			log.debug("Internal search string (first name): "+pattern2);
-	//			String pattern3 = SearchPattern.preparePattern(lname);
-	//			log.debug("Internal search string (last name): "+pattern3);
-	//			this.plist = userEJB.findCandidatesByPosition(pattern1, 
-	//					pattern2, pattern3, pos);
-	//		}		
-	//	}	
-	//
-	//	public void searchCandidatesByPositionLong() {
-	//		log.info("Searching for candidates by position and more attributes");
-	//		PositionEntity pos = positionEJB.find(idPos);
-	//		if (pos != null) {
-	//			log.debug("Position: "+pos.getPositionCode());
-	//			String pattern1 = SearchPattern.preparePattern(email);
-	//			log.debug("Internal search string (email): "+pattern1);
-	//			String pattern2 = SearchPattern.preparePattern(fname);
-	//			log.debug("Internal search string (first name): "+pattern2);
-	//			String pattern3 = SearchPattern.preparePattern(lname);
-	//			log.debug("Internal search string (last name): "+pattern3);
-	//			String pattern4 = SearchPattern.preparePattern(address);
-	//			log.debug("Internal search string (address): "+pattern4);
-	//			String pattern5 = SearchPattern.preparePattern(city);
-	//			log.debug("Internal search string (city): "+pattern5);
-	//			String pattern6 = SearchPattern.preparePattern(country);
-	//			log.debug("Internal search string (country): "+pattern6);
-	//			String pattern7 = SearchPattern.preparePattern(course);
-	//			log.debug("Internal search string (course): "+pattern7);
-	//			String pattern8 = SearchPattern.preparePattern(school);
-	//			log.debug("Internal search string (school): "+pattern8);
-	//			this.plist = userEJB.findCandidatesByPosition(pattern1, 
-	//					pattern2, pattern3, pattern4, pattern5, pattern6,
-	//					pattern7, pattern8, pos);
-	//		}		
-	//	}	
-	//
-	//	public void searchCandidates() {
-	//		log.info("Searching for candidates by several attributes");
-	//		String pattern1 = SearchPattern.preparePattern(email);
-	//		log.debug("Internal search string (email): "+pattern1);
-	//		String pattern2 = SearchPattern.preparePattern(fname);
-	//		log.debug("Internal search string (first name): "+pattern2);
-	//		String pattern3 = SearchPattern.preparePattern(lname);
-	//		log.debug("Internal search string (last name): "+pattern3);
-	//		String pattern4 = SearchPattern.preparePattern(address);
-	//		log.debug("Internal search string (address): "+pattern4);
-	//		String pattern5 = SearchPattern.preparePattern(city);
-	//		log.debug("Internal search string (city): "+pattern5);
-	//		String pattern6 = SearchPattern.preparePattern(country);
-	//		log.debug("Internal search string (country): "+pattern6);
-	//		String pattern7 = SearchPattern.preparePattern(course);
-	//		log.debug("Internal search string (course): "+pattern7);
-	//		String pattern8 = SearchPattern.preparePattern(school);
-	//		log.debug("Internal search string (school): "+pattern8);
-	//		this.plist = userEJB.findCandidates(pattern1, 
-	//				pattern2, pattern3, pattern4, pattern5, pattern6,
-	//				pattern7, pattern8);
-	//	}	
-	//
-	//	public void searchCandidatesByKeyword() {
-	//		log.info("Searching for candidates by keyword");
-	//		String pattern = SearchPattern.preparePattern(keyword);
-	//		log.debug("Internal search string: "+pattern);
-	//		this.plist = userEJB.findCandidatesByKeyword(pattern);
-	//	}
+	public void alreadyCandidateOfPosition() {
+		log.info("Checking if candidate is already associated with a positions");
+		UserEntity candidate = userEJB.find(idU);
+		if ( (candidate != null) && (candidate.getRoles().contains("CANDIDATE")) ) {
+			log.debug("Candidate "+candidate.getFirstName());
+			PositionEntity position = positionEJB.find(idPos);
+			if (position != null) {
+				log.debug("Position "+position.getPositionCode());
+				result = positionEJB.alreadyCandidateOfPosition(candidate, position);
+			} else log.error("No position with id "+idPos);
+		} else log.error("No candidate with id "+idU);
+	}
+
+	public void searchCloseToSLAPositions() {
+		log.info("Searching for close to SLA positions");
+		this.plist = positionEJB.findCloseToSLAPositions(days);
+	}
+
+	public void searchPositionsByKeyword() {
+		log.info("Searching for positions by keyword");
+		String pattern = SearchPattern.preparePattern(keyword);
+		log.debug("Internal search string: "+pattern);
+		this.plist = positionEJB.findPositionsByKeyword(pattern);
+	}
+
+	public void searchPositionsByKeywordAndManager() {
+		log.info("Searching for positions of manager by keyword");
+		UserEntity manager = userEJB.find(idU);
+		if ( (manager != null) && (manager.getRoles().contains("MANAGER")) ) {
+			String pattern = SearchPattern.preparePattern(keyword);
+			log.debug("Internal search string: "+pattern);
+			this.plist = positionEJB.findPositionsByKeywordAndManager(pattern, manager);
+		} else log.error("No manager with id "+idU);
+	}
 
 	// getters e setters
 
@@ -362,6 +317,14 @@ public class PositionSearchCDI {
 
 	public void setLocations(List<String> locations) {
 		this.locations = locations;
+	}
+
+	public boolean isResult() {
+		return result;
+	}
+
+	public void setResult(boolean result) {
+		this.result = result;
 	}	
 
 }
