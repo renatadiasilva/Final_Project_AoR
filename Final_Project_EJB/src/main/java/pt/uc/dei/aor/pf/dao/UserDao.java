@@ -27,7 +27,7 @@ public class UserDao extends GenericDao<UserEntity> {
 	public List<UserEntity> findUsersByEmailPattern(String email) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);
-		parameters.put("r", UserEntity.ROLE_CANDIDATE);
+		parameters.put("role", UserEntity.ROLE_CANDIDATE);
 		return super.findSomeResults("User.findUsersByEmailPattern", parameters);
 	}
 
