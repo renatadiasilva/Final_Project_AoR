@@ -3,7 +3,6 @@ package pt.uc.dei.aor.pf;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
