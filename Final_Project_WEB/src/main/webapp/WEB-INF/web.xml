@@ -12,6 +12,16 @@
     </form-login-config>
   </login-config>
   
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Secure URLs</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+  
   <security-constraint>
     <display-name>ProjFinal</display-name>
     <web-resource-collection>
@@ -28,9 +38,6 @@
     <auth-constraint>
       <role-name>ADMIN</role-name>
     </auth-constraint>
-    <user-data-constraint>
-      <transport-guarantee>NONE</transport-guarantee>
-    </user-data-constraint>
   </security-constraint>
   <security-role>
     <role-name>ADMIN</role-name>
@@ -52,9 +59,6 @@
     <auth-constraint>
       <role-name>MANAGER</role-name>
     </auth-constraint>
-    <user-data-constraint>
-      <transport-guarantee>NONE</transport-guarantee>
-    </user-data-constraint>
   </security-constraint>
   <security-role>
     <role-name>MANAGER</role-name>
@@ -76,9 +80,6 @@
     <auth-constraint>
       <role-name>INTERVIEWER</role-name>
     </auth-constraint>
-    <user-data-constraint>
-      <transport-guarantee>NONE</transport-guarantee>
-    </user-data-constraint>
   </security-constraint>
   <security-role>
     <role-name>INTERVIEWER</role-name>
@@ -100,9 +101,6 @@
     <auth-constraint>
       <role-name>CANDIDATE</role-name>
     </auth-constraint>
-    <user-data-constraint>
-      <transport-guarantee>NONE</transport-guarantee>
-    </user-data-constraint>
   </security-constraint>
   <security-role>
     <role-name>CANDIDATE</role-name>
