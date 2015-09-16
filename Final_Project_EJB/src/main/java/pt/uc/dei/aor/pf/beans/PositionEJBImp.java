@@ -46,10 +46,11 @@ public class PositionEJBImp implements PositionEJBInterface {
 	public void delete(PositionEntity position) {
 		log.info("Deleting position from DB");
 		
-		//tirar do EJB
-		List<SubmissionEntity> sub = submissionDAO.findSubmissionsOfPosition(position);
+		//tirar do EJB (pensar em mais gets)
+		List<SubmissionEntity> sub = 
+				submissionDAO.findSubmissionsOfPosition(position);
 		System.out.println(sub);
-		if ( sub != null || !sub.isEmpty()) {
+		if ( sub != null && !sub.isEmpty()) {
 			// erro: avisar o admin que há candidaturas
 			// terá de avisar users e remover tudo à mão
 			
