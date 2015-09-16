@@ -43,9 +43,8 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 
 	@Override
 	public void delete(InterviewEntity interview) {
-		log.info("Deleting interview from DB");
-		// change something (visibility?)
-		interviewDAO.update(interview);
+		log.info("Deleting data of interview from DB");
+		interviewDAO.delete(interview);
 	}
 
 	@Override

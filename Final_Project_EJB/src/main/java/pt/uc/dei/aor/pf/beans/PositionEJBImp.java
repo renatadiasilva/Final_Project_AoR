@@ -39,8 +39,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public void delete(PositionEntity position) {
 		log.info("Deleting position from DB");
-		// change something (visibility?)
-		positionDAO.update(position);
+		positionDAO.delete(position);
 	}
 
 	@Override

@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.dao.ScriptDao;
+import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
 public class ScriptEJBImp implements ScriptEJBInterface {
@@ -36,9 +38,16 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 
 	@Override
 	public void delete(ScriptEntity script) {
-		log.info("Deleting script from DB");
-		// change something (visibility?)
-		scriptDAO.update(script);
+		log.info("Deleting/Making not reusable a script from DB");
+		scriptDAO.delete(script);
+	}
+	
+	@Override
+	public void edit(ScriptEntity script, String title,
+			List<QuestionEntity> questions, String comments, 
+			UserEntity creator) {
+		log.info("Editing/Cloning script from DB");
+		scriptDAO.edit(script, title, questions, comments, creator);
 	}
 
 	@Override

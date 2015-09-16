@@ -81,9 +81,8 @@ public class UserEJBImp implements UserEJBInterface {
 
 	@Override
 	public void delete(UserEntity user) {
-		log.info("Deleting user from DB");
-		// change something (visibility?)
-		userDAO.update(user);
+		log.info("Deleting data of user from DB");
+		userDAO.delete(user);
 	}
 
 	@Override

@@ -16,6 +16,9 @@ public abstract class GenericDao<E> {
 
 	private Class<E> entityClass;
 	
+	// used in deleting data
+	static final String REMOVED_DATA = "DADOS APAGADOS";
+	
 	// used in accent insensitive searchs
 	static final String 
 		ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";

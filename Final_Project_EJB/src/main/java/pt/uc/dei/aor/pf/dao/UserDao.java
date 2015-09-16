@@ -8,8 +8,12 @@ import javax.ejb.Stateless;
 //import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 
+//import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+//import pt.uc.dei.aor.pf.entities.ScriptEntity;
+//import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
 @Stateless
 public class UserDao extends GenericDao<UserEntity> {
@@ -18,6 +22,75 @@ public class UserDao extends GenericDao<UserEntity> {
 		super(UserEntity.class);
 	}
 
+	public void delete(UserEntity user) {
+		// remove the data not the user
+		user.setEmail(REMOVED_DATA);  // deixar email??
+		user.setPassword("12345");
+		user.setFirstName(REMOVED_DATA);
+		user.setLastName(REMOVED_DATA);
+		user.setDefaultRole(REMOVED_DATA);  // ok??
+		user.setRoles(null);  // erro ao entrar??
+		
+		//chamar user info fora??? ou aqui???
+		// remove the data not the user
+		UserInfoEntity userInfo = user.getUserInfo();
+		userInfo.setBirthDate(null);
+		userInfo.setAddress(REMOVED_DATA);
+		userInfo.setCity(REMOVED_DATA);
+		userInfo.setHomePhone(null);
+		userInfo.setMobilePhone("999 999 999");
+		userInfo.setCountry(REMOVED_DATA);
+		userInfo.setCourse(REMOVED_DATA);
+		userInfo.setSchool(REMOVED_DATA);
+		userInfo.setCv(null);
+		userInfo.setLinkedin(null);
+//		update(userInfo); ???? CASCADE???
+		
+		// mudanças/remoções manuais ou passar para admin???
+		
+		// ------------------------------------------------
+		
+//		List<PositionEntity> plist = user.getManagedPositions();
+//		if (plist != null)
+//			for (PositionEntity p : plist) {
+//				p.setPositionManager(admin); //outro?
+//			}
+			
+//		plist = user.getCreatedPositions();
+//		if (plist != null)
+//			for (PositionEntity p : plist) {
+//				p.setPositionCreator(admin);
+//			}
+		
+//		List<ScriptEntity> sclist = user.getCreatedScripts();
+//		if (sclist != null)
+//			for (ScriptEntity sc : sclist) {
+//				//ou remover à mão
+//				sc.setReusable(false);
+//				sc.setScriptCreator(admin);
+//			}
+
+//		List<InterviewEntity> ilist = user.getInterviews();
+//		if (ilist != null)
+//			for (InterviewEntity i : ilist) {
+//				//ou remover à mão
+//				List<UserEntity> ulist = i.getInterviewers();
+//				ulist.remove(user);
+//				if (ulist.isEmpty()) i.addInterviewers(admin); //outro?
+//			}
+
+//		List<SubmissionEntity> slist = user.getSubmissions();
+//		if (slist != null) {
+//			//avisar que há candidaturas deste user, apagar à mão
+//			// ou automaticamente?? ou limpar dados?
+//		}
+		
+		// scheduled interviews ok??
+		// spontaneousSubmissionAssociatedBy ok??
+
+		update(user);
+	}
+	
 	public List<UserEntity> findUserByEmail(String email) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);

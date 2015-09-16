@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
 public class SubmissionEJBImp implements SubmissionEJBInterface {
@@ -38,8 +40,14 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	@Override
 	public void delete(SubmissionEntity submission) {
 		log.info("Deleting submission from DB");
-		// change something (visibility?)
-		submissionDAO.update(submission);
+		submissionDAO.delete(submission);
+	}
+
+	@Override
+	public void addPositionToSpontaneous(SubmissionEntity submission,
+			PositionEntity position, UserEntity user) {
+		log.info("Adding position to a spontaneous submission (cloning)");
+		submissionDAO.addPositionToSpontaneous(submission, position, user);
 	}
 
 	@Override

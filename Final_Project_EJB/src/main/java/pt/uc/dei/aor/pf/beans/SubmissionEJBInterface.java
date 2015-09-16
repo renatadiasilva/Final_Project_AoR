@@ -3,13 +3,17 @@ package pt.uc.dei.aor.pf.beans;
 import java.util.Date;
 import java.util.List;
 
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 public interface SubmissionEJBInterface {
 	
 	public abstract void save(SubmissionEntity submission);
 	public abstract void update(SubmissionEntity submission);
 	public abstract void delete(SubmissionEntity submission);
+	public abstract void addPositionToSpontaneous(SubmissionEntity submission,
+			PositionEntity position, UserEntity user);
 	public abstract SubmissionEntity find(Long id);
 	public abstract List<SubmissionEntity> findAll();
 	public abstract List<SubmissionEntity> findSpontaneousSubmissions();
