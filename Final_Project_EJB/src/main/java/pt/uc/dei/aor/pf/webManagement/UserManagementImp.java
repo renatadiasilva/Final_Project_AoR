@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
-import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +14,7 @@ import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
+import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
 
 
 @Stateful
@@ -21,11 +22,14 @@ public class UserManagementImp implements UserManagementInterface {
 
 	private static final Logger log = LoggerFactory.getLogger(UserManagementImp.class);
 
-	@Inject
+	@EJB
 	UserEJBInterface userBean;
 
-	@Inject
+	@EJB
 	UserInfoEJBInterface userInfoBean;
+	
+	@EJB
+	MailManagementInterface mail;
 
 	private UserEntity currentUser;
 
@@ -219,6 +223,29 @@ public class UserManagementImp implements UserManagementInterface {
 		this.currentUser.getUserInfo().setLinkedin(linkedin);
 
 		this.userBean.update(this.currentUser);
+	}
+	
+	@Override
+	public void recoverPassword (String email, String temporaryPassword){
+		log.info("Password recovery: "+email);
+		
+		UserEntity userToRecover=userBean.findUserByEmail(email);
+		
+		// Verifica se existe algum utilizador com o email na BD
+		if(userToRecover!=null){
+			
+			// Muda a password para uma password temporária
+			userToRecover.setPassword(temporaryPassword);
+			this.userBean.updatePassword(userToRecover);
+			
+			// Persiste com o atributo de password temporária marcado a true
+			userToRecover.setTemporaryPassword(true);
+			this.userBean.update(userToRecover);
+			
+			// Envia um email ao user com a password temporária
+			this.mail.passwordRecovery(userToRecover, temporaryPassword);
+			
+		}else log.info(email+" not found in DB");
 	}
 
 	@Override

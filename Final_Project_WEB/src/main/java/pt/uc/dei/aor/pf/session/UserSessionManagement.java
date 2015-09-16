@@ -4,7 +4,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -147,7 +146,7 @@ public class UserSessionManagement implements Serializable {
 			this.session.invalidate();
 
 			// Encaminha para...
-			this.response.sendRedirect(request.getContextPath()+"/Index.xhtml");
+			this.response.sendRedirect(request.getContextPath()+"/Home.xhtml");
 
 		} catch (ServletException e) {
 			log.error("Logout failure");
@@ -240,7 +239,12 @@ public class UserSessionManagement implements Serializable {
 		// Vai para a camada de negócio
 		this.userManagement.updateUserInfo(firstName, lastName, address, city, homePhone, mobilePhone, country, course, school, linkedin);
 		
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dados actualizados"));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dados actualizados."));
+	}
+	
+	public void recoverPassword(String email, String temporaryPassword){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Foi enviado um email para a sua conta com os novos dados de autenticação."));
+		this.userManagement.recoverPassword(email, temporaryPassword);
 	}
 
 	@SuppressWarnings("unused")

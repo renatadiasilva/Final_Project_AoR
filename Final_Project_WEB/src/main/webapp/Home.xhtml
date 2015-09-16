@@ -1,0 +1,221 @@
+<ui:composition template="WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">IT Jobs</ui:define>
+
+	<ui:define name="header-menus">
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{userSessionManagement.checkForUser()}" />
+		</f:metadata>
+
+		<h:panelGrid columns="3">
+
+			<h:form id="header-login">
+				<h:panelGrid columns="6">
+
+					<p:inputText id="login-email" value="#{loginCDI.email}" size="35"
+						required="true" requiredMessage="Insira um email." />
+					<p:watermark for="login-email" value="Email" />
+
+					<div id="caps-lock" style="display: none; color: #fff">Caps
+						lock ligado!</div>
+
+					<p:password id="login-password" value="#{loginCDI.password}"
+						size="35" required="true" requiredMessage="Insira a password."
+						onkeypress="checkCaps()" />
+					<p:watermark for="login-password" value="Password" />
+
+					<p:commandButton value="Login" action="#{loginCDI.login()}"
+						ajax="false" icon="ui-icon-key" />
+
+				</h:panelGrid>
+			</h:form>
+
+			<h:form id="header-signup">
+				<p:commandButton value="Signup" onclick="PF('signup').show();"
+					icon="ui-icon-person" style="margin:none" />
+			</h:form>
+
+			<h:form id="header-recover">
+				<p:commandButton value="Recuperar password"
+					onclick="PF('recoverPassword').show();" icon="ui-icon-help"
+					style="margin:none" />
+			</h:form>
+
+		</h:panelGrid>
+
+		<!-- SignUp Dialog -->
+		<h:form id="recoverPasswordForm">
+
+			<p:dialog header="Recuperar Password" widgetVar="recoverPassword"
+				draggable="false" resizable="false" modal="true">
+
+				<h:panelGroup id="recoverPasswordDialog">
+
+					<p:messages />
+
+					<h:panelGrid columns="2">
+
+						<p:outputLabel value="Email da conta: "
+							for="recover-password-email" />
+						<p:inputText id="recover-password-email"
+							value="#{recoverPasswordCDI.emailRecovery}" size="35"
+							required="true" requiredMessage="Insira um email.">
+							<o:validator validatorId="javax.faces.RegularExpression"
+								message="Insira um email válido."
+								pattern="^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$" />
+						</p:inputText>
+
+					</h:panelGrid>
+
+					<p:commandButton value="Recuperar Password"
+						actionListener="#{recoverPasswordCDI.recover()}"
+						update="recoverPasswordDialog messages" icon="ui-icon-mail-closed"
+						style="width: 100%" oncomplete="PF('recoverPassword').hide();" />
+
+					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
+						onclick="PF('recoverPassword').hide();" update="messages" />
+
+				</h:panelGroup>
+
+			</p:dialog>
+
+		</h:form>
+
+
+		<!-- SignUp Dialog -->
+		<h:form id="signupForm">
+
+			<p:dialog header="Novo Registo" widgetVar="signup" draggable="false"
+				resizable="false" modal="true" height="536">
+
+				<h:panelGroup id="signupDialog">
+
+					<p:messages />
+
+					<h:panelGrid columns="2">
+
+						<p:outputLabel value="Email: " for="signup-email" />
+						<p:inputText id="signup-email" value="#{signupCDI.email}"
+							size="35" required="true" requiredMessage="Insira um email.">
+							<o:validator validatorId="javax.faces.RegularExpression"
+								message="Insira um email válido."
+								pattern="^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$" />
+						</p:inputText>
+
+						<p:outputLabel value="Password: " for="signup-password" />
+						<p:password id="signup-password" value="#{signupCDI.password}"
+							size="35" required="true" feedback="true" weakLabel="Fraca"
+							goodLabel="Boa" strongLabel="Forte"
+							promptLabel="Insira uma senha" match="signup-repeatPassword"
+							requiredMessage="Insira uma password." />
+
+						<p:outputLabel value="Repita a Password: "
+							for="signup-repeatPassword" />
+						<p:password id="signup-repeatPassword" size="35" required="true"
+							requiredMessage="Repita a password." />
+
+						<p:outputLabel />
+						<p:outputLabel />
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel value="Primeiro Nome: " for="signup-firstName" />
+						<p:inputText id="signup-firstName" value="#{signupCDI.firstName}"
+							size="35" required="true"
+							requiredMessage="Insira o primeiro nome."
+							maxlength="#{max.length.userFirstName()}" />
+
+						<p:outputLabel value="Sobrenome: " for="signup-lastName" />
+						<p:inputText id="signup-lastName" value="#{signupCDI.lastName}"
+							size="35" required="true" requiredMessage="Insira o Sobrenome."
+							maxlength="#{max.length.userLastName()}" />
+
+						<p:outputLabel value="Data de Nascimento: " for="signup-birthday" />
+						<p:calendar id="signup-birthday" value="#{signupCDI.birthday}"
+							pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+							yearRange="c-100:c+0" maxdate="#{signupCDI.maxDate}" locale="pt"
+							size="35" />
+
+						<p:outputLabel value="Telefone: " for="signup-homePhone" />
+						<p:inputMask mask="999 999 999" id="signup-homePhone"
+							value="#{signupCDI.homePhone}" size="35" maxlength="20" />
+
+						<p:outputLabel value="Telemóvel: " for="signup-mobilePhone" />
+						<p:inputMask mask="999 999 999" id="signup-mobilePhone"
+							value="#{signupCDI.mobilePhone}" size="35" maxlength="20"
+							required="true" requiredMessage="Insira o número de telemóvel." />
+
+						<p:outputLabel />
+						<p:outputLabel />
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel value="Morada: " for="signup-adress" />
+						<h:panelGroup>
+							<p:inputTextarea id="signup-adress" value="#{signupCDI.address}"
+								cols="35" rows="3" counter="maxAdress" counterTemplate=" - {0}"
+								required="true" requiredMessage="Insira a Morada."
+								maxlength="#{max.length.userInfoAddress()}" />
+							<h:outputText id="maxAdress" />
+						</h:panelGroup>
+
+						<p:outputLabel value="Cidade: " for="signup-city" />
+						<p:inputText id="signup-city" value="#{signupCDI.city}" size="35"
+							required="true" requiredMessage="Insira a cidade."
+							maxlength="#{max.length.userInfoCity()}" />
+
+						<p:outputLabel value="País: " for="signup-country" />
+						<p:autoComplete id="signup-country" value="#{signupCDI.country}"
+							size="35" required="true" requiredMessage="Insira o País."
+							maxlength="#{max.length.userInfoCountry()}" maxResults="10"
+							completeMethod="#{countryListCDI.getCountries}" />
+
+						<p:outputLabel />
+						<p:outputLabel />
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel value="Curso: " for="signup-course" />
+						<p:inputText id="signup-course" value="#{signupCDI.course}"
+							size="35" required="true" requiredMessage="Insira o curso."
+							maxlength="#{max.length.userInfoCourse()}" />
+
+						<p:outputLabel value="Escola: " for="signup-school" />
+						<p:inputText id="signup-school" value="#{signupCDI.school}"
+							size="35" required="true" requiredMessage="Insira a Escola."
+							maxlength="#{max.length.userInfoSchool()}" />
+
+						<p:outputLabel value="LinkedIn: " for="signup-linkedin" />
+						<p:inputText id="signup-linkedin" value="#{signupCDI.linkedin}"
+							size="35" />
+
+					</h:panelGrid>
+
+					<p:commandButton value="Signup"
+						actionListener="#{signupCDI.signUp()}" update="signupDialog"
+						icon="ui-icon-person" style="width: 100%" />
+
+					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
+						onclick="PF('signup').hide();" update="@all" />
+
+				</h:panelGroup>
+
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+
+	<ui:define name="contents">
+		<h:form>
+			<p:commandButton value="Populate" action="#{initDB.populate()}" />
+		</h:form>
+	</ui:define>
+
+</ui:composition>

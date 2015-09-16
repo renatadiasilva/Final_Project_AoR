@@ -59,5 +59,7 @@ public interface UserManagementInterface {
 	public abstract boolean isUserLogged();
 
 	public abstract String getUserFullName();
+
+	public abstract void recoverPassword(String email, String temporaryPassword);
 	
 }
