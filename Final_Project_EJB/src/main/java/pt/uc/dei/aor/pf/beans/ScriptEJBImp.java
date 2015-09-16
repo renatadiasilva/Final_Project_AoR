@@ -50,13 +50,15 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 			// erro: avisar para o admin ir mudar o default 
 			// das posições e/ou listá-las
 			// ou apresentar logo uma lista com as posições e scripts??
+			System.out.println("Não pode apagar um guião usado em posições"
+					+ " abertas");
 			return;
 		} else { //no positions
 			// there are interviews using this script
 			if (script.getInterviewsUsingScript() != null) {
 				// script cannot be used anymore, but don't delete it
 				script.setReusable(false);
-			} else scriptDAO.delete(script, ScriptEntity.class);
+			} else scriptDAO.delete(script.getId(), ScriptEntity.class);
 		}
 	}
 

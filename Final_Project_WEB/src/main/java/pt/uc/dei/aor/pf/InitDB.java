@@ -148,6 +148,12 @@ public class InitDB {
 				"O BPI procura programadores de Java para integrar"
 				+ " a sua equipa de desenvolvimento da aplicação blablabla", 
 				null, sclist[0]), // plist[4]
+			new PositionEntity("Gestor de projeto", null, 1, null,
+				200, ulist[2], ulist[1], "Critical Software", 
+				PositionEntity.TECH_MANAGEMENT,
+				"A Critical Software procura um gestor de projeto"
+				+ " blablabla", 
+				null, sclist[1]), // plist[5]
 			};
 			
 		SubmissionEntity [] slist = {
@@ -287,7 +293,12 @@ public class InitDB {
 		plist[4].setClosingDate(ftDate.parse("2015-07-31"));
 		plist[4].setStatus(PositionEntity.STATUS_CLOSED);
 		
+		locations = Arrays.asList(PositionEntity.LOCATION_COIMBRA);
+		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL);
+		plist[4].setLocations(locations);
+		plist[4].setAdvertisingChannels(channels);
 
+		
 		// SUBMISSION ATTRIBUTES
 		
 		List<String> sources = Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO,

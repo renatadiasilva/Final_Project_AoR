@@ -50,7 +50,8 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 		log.info("Deleting interview from DB");
 		if (interview.isCarriedOut()) {
 			// erro, não pode apagar -> warning ao admin
-		} else interviewDAO.delete(interview, InterviewEntity.class);
+			System.out.println("Não pode apagar entrevista com resultados");
+		} else interviewDAO.delete(interview.getId(), InterviewEntity.class);
 	}
 
 	@Override

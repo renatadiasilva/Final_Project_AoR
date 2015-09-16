@@ -48,5 +48,5 @@ public interface PositionEJBInterface {
 			PositionEntity position);
 	public abstract List<PositionEntity> findOpenPositionsByScript(
 			ScriptEntity script);
-	
+
 }

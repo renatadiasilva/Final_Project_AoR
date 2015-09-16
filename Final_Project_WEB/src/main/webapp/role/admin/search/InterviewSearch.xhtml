@@ -5,7 +5,9 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="Título">Admin - Pesquisas de Entrevistas - IT Jobs</ui:define>
+	<ui:define name="Título">
+		Admin - Pesquisas de Entrevistas - IT Jobs
+	</ui:define>
 
 	<ui:define name="contents">
 		<h1>Pesquisas de Entrevistas</h1>
@@ -15,43 +17,66 @@
 			<h:panelGrid id="buttonsInterviewSearch" columns="7">
 
 				<p:commandButton value="Todas entrevistas"
-					action="#{interviewSearchCDI.searchAllInterviews()}" update="@form, messages"
+					action="#{interviewSearchCDI.searchAllInterviews()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas passadas entre duas datas"
-					action="#{interviewSearchCDI.searchCarriedOutInterviews()}" update="@form, messages"
+					action="#{interviewSearchCDI.searchCarriedOutInterviews()}"
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas passadas (interv)"
-					action="#{interviewSearchCDI.searchCarriedOutInterviewsByUser()}" update="@form, messages"
+					action="#{interviewSearchCDI.
+						searchCarriedOutInterviewsByUser()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas agendadas (interv)"
-					action="#{interviewSearchCDI.searchScheduledInterviewsByUser()}" update="@form, messages"
+					action="#{interviewSearchCDI.
+						searchScheduledInterviewsByUser()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Data ocupada? (interv)"
-					action="#{interviewSearchCDI.checkInterviewerHasDateConflict()}" update="@form, messages"
+					action="#{interviewSearchCDI.
+						checkInterviewerHasDateConflict()}"
+						update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Data ocupada? (candid)"
-					action="#{interviewSearchCDI.checkCandidateHasDateConflict()}" update="@form, messages"
+					action="#{interviewSearchCDI.
+						checkCandidateHasDateConflict()}" 
+						update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas (posição)"
-					action="#{interviewSearchCDI.searchInterviewsByPosition()}" update="@form, messages"
+					action="#{interviewSearchCDI.
+						searchInterviewsByPosition()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas passadas (posição)"
-					action="#{interviewSearchCDI.searchCarriedOutInterviewsByPosition()}" update="@form, messages"
+					action="#{interviewSearchCDI.
+						searchCarriedOutInterviewsByPosition()}"
+						 update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas agendadas (posição)"
-					action="#{interviewSearchCDI.searchScheduledInterviewsByPosition()}" update="@form, messages"
+					action="#{interviewSearchCDI.
+						searchScheduledInterviewsByPosition()}"
+						 update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas agendadas (candid)"
-					action="#{interviewSearchCDI.searchScheduledInterviewsByCandidate()}" update="@form, messages"
+					action="#{interviewSearchCDI.
+						searchScheduledInterviewsByCandidate()}"
+						 update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover entrevista"
+					action="#{interviewSearchCDI.remove()}"
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 			</h:panelGrid>
@@ -70,7 +95,7 @@
 					readonlyInput="true" navigator="true" yearRange="c-100:c+100"
 					locale="pt" size="35" />
 
-				<p:outputLabel value="Id (user/posição): " for="search-idi" />
+				<p:outputLabel value="Id: " for="search-idi" />
 				<p:inputText id="search-idi" value="#{interviewSearchCDI.id}"
 					size="35" />
 

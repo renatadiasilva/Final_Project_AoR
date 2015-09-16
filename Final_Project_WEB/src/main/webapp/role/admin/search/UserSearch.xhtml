@@ -46,6 +46,11 @@
 					action="#{userSearchCDI.searchByKeyword()}" update="@form, messages"
 					icon="ui-icon-search" />
 
+				<p:commandButton value="Remover user"
+					action="#{userSearchCDI.remove()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridUserSearch" columns="4">
@@ -70,9 +75,14 @@
 				<p:inputText id="search-keyword" value="#{userSearchCDI.keyword}"
 					size="35" />
 
+				<p:outputLabel value="Id: " for="search-idu" />
+				<p:inputText id="search-idu" value="#{userSearchCDI.id}"
+					size="35" />
+
 			</h:panelGrid>
 
-			<p:dataTable var="u" value="#{userSearchCDI.ulist}">
+			<p:dataTable emptyMessage="Não foram encontrados utilizadores."
+				var="u" value="#{userSearchCDI.ulist}">
 				<f:facet name="header">Listagem users</f:facet>
 				<p:column headerText="Primeiro nome">
 					<h:outputText value="#{u.firstName}" />

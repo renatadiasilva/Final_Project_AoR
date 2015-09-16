@@ -26,10 +26,23 @@ public class UserSearchCDI {
 
 	// search fields
 	private String email, fname, lname, role, keyword;
+	private Long id;
 
 	private List<UserEntity> ulist;
 
 	public UserSearchCDI() {
+	}
+
+	public void remove() {
+		log.info("Removing user by id");
+		log.debug("Id "+id);
+		UserEntity user = userEJB.find(id);
+		if (user != null) {
+			UserEntity admin = userEJB.findUserByEmail("admin@mail.com");
+			if (admin != null) {
+				userEJB.delete(user, admin);
+			} else log.error("No admin with email admin@mail.com");
+		} else log.error("No user with id "+id);
 	}
 
 	// ALL
@@ -137,6 +150,14 @@ public class UserSearchCDI {
 	// tirar
 	public void meh() {
 		// Deal with it
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

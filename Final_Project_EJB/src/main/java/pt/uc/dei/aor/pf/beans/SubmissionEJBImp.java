@@ -47,8 +47,9 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 			// CASCADE APAGA LOGO??
 			// ou avisar admin que há entrevistas e ele apaga-as à mão
 			// ou dá autorização para se apagar automaticamente
+			System.out.println("Apaga a candidatura e as entrevistas??");
 		}
-		else submissionDAO.delete(submission, SubmissionEntity.class);
+		else submissionDAO.delete(submission.getId(), SubmissionEntity.class);
 	}
 
 	@Override
@@ -116,6 +117,13 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 			Date date2) {
 		log.info("Finding presented proposals between two dates");
 		return submissionDAO.findPresentedProposalByDate(date1, date2);
+	}
+
+	@Override
+	public List<SubmissionEntity> findSubmissionsOfPosition(
+			PositionEntity position) {
+		log.info("Finding submissions of a position");
+		return submissionDAO.findSubmissionsOfPosition(position);
 	}
 
 	private void isSubmissionComplete(SubmissionEntity submission) {

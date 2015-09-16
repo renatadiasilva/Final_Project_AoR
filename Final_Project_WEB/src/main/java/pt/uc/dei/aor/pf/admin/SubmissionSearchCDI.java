@@ -27,10 +27,20 @@ public class SubmissionSearchCDI {
 	// search fields
 	private Date date1, date2;
 	private String source;
+	private Long id;
 
 	private List<SubmissionEntity> slist;
 
 	public SubmissionSearchCDI() {
+	}
+
+	public void remove() {
+		log.info("Removing submission by id");
+		log.debug("Id "+id);
+		SubmissionEntity submission = submissionEJB.find(id);
+		if (submission != null) {
+			submissionEJB.delete(submission);
+		} else log.error("No submission with id "+id);
 	}
 
 	public void searchAll() {
@@ -108,6 +118,14 @@ public class SubmissionSearchCDI {
 
 	public void setSource(String source) {
 		this.source = source;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

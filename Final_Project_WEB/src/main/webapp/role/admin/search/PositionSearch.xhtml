@@ -86,6 +86,11 @@
 					action="#{positionSearchCDI.alreadyCandidateOfPosition()}"
 					update="@form, messages" icon="ui-icon-search" />
 
+				<p:commandButton value="Remover posição"
+					action="#{positionSearchCDI.remove()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridPositionSearch" columns="8">

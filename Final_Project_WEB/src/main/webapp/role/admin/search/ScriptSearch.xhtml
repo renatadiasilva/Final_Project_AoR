@@ -26,12 +26,21 @@
 					action="#{scriptSearchCDI.searchByTitle()}" update="@form, messages"
 					icon="ui-icon-search" />
 
+				<p:commandButton value="Remover guião"
+					action="#{scriptSearchCDI.remove()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridScriptSearch" columns="8">
 
 				<p:outputLabel value="Título: " for="search-titlesc" />
 				<p:inputText id="search-titlesc" value="#{scriptSearchCDI.title}"
+					size="35" />
+
+				<p:outputLabel value="Id: " for="search-idsc" />
+				<p:inputText id="search-idsc" value="#{scriptSearchCDI.id}"
 					size="35" />
 
 			</h:panelGrid>

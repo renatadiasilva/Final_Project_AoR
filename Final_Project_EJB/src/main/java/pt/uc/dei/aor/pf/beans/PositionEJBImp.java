@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import pt.uc.dei.aor.pf.dao.PositionDao;
+import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import javax.ejb.EJB;
@@ -22,6 +24,9 @@ public class PositionEJBImp implements PositionEJBInterface {
 	
 	@EJB
 	private PositionDao positionDAO;
+	
+	@EJB
+	private SubmissionDao submissionDAO;
 	
 	@Override
 	public void save(PositionEntity position) {
@@ -41,7 +46,10 @@ public class PositionEJBImp implements PositionEJBInterface {
 	public void delete(PositionEntity position) {
 		log.info("Deleting position from DB");
 		
-		if (position.getSubmissions() != null) {
+		//tirar do EJB
+		List<SubmissionEntity> sub = submissionDAO.findSubmissionsOfPosition(position);
+		System.out.println(sub);
+		if ( sub != null || !sub.isEmpty()) {
 			// erro: avisar o admin que há candidaturas
 			// terá de avisar users e remover tudo à mão
 			
@@ -49,7 +57,8 @@ public class PositionEJBImp implements PositionEJBInterface {
 			
 			// ou apresentar logo uma lista com a candidaturas para as
 			// remover e avisar users??
-		} else positionDAO.delete(position, PositionEntity.class);
+			System.out.println("Não pode apagar posição com candidaturas");
+		} else positionDAO.delete(position.getId(), PositionEntity.class);
 		
 	}
 

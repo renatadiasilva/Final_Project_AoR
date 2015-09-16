@@ -42,6 +42,11 @@
 					action="#{submissionSearchCDI.searchBySourceAndDate()}" update="@form, messages"
 					icon="ui-icon-search" />
 
+				<p:commandButton value="Remover candidatura"
+					action="#{submissionSearchCDI.remove()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridSubmissionSearch" columns="8">
@@ -60,6 +65,10 @@
 
 				<p:outputLabel value="Fonte: " for="search-source" />
 				<p:inputText id="search-source" value="#{submissionSearchCDI.source}"
+					size="35" />
+
+				<p:outputLabel value="Id: " for="search-ids" />
+				<p:inputText id="search-ids" value="#{submissionSearchCDI.id}"
 					size="35" />
 
 			</h:panelGrid>

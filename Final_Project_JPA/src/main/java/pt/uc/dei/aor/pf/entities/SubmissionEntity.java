@@ -28,6 +28,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "submissions")
 @NamedQueries({
+	@NamedQuery(name = "Submission.findSubmissionsOfPosition",
+			query = "SELECT s FROM SubmissionEntity s "
+					+ "WHERE s.position = :position ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSpontaneousSubmissions",
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE s.spontaneous = TRUE ORDER BY s.date DESC"),

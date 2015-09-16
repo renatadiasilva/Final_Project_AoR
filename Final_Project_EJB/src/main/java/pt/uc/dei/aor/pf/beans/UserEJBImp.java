@@ -141,8 +141,9 @@ public class UserEJBImp implements UserEJBInterface {
 		List<SubmissionEntity> slist = user.getSubmissions();
 		if (slist != null) 
 			for (SubmissionEntity s : slist)
-				submissionDAO.delete(s, SubmissionEntity.class);
+				submissionDAO.delete(s.getId(), SubmissionEntity.class);
 				// se tem interviews?? meter delete no DAO?
+				// ou erro aqui...
 		
 		userDAO.update(user);
 	}

@@ -27,5 +27,7 @@ public interface SubmissionEJBInterface {
 			Date date2);
 	public abstract List<SubmissionEntity> findSubmissionsBySource(
 			String source, Date date1, Date date2);
+	public abstract List<SubmissionEntity> findSubmissionsOfPosition(
+			PositionEntity position);
 		
 }

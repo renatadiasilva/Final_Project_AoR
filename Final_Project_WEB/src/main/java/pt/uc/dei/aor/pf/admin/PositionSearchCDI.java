@@ -53,6 +53,15 @@ public class PositionSearchCDI {
 	public PositionSearchCDI() {
 	}
 
+	public void remove() {
+		log.info("Removing position by id");
+		log.debug("Id "+idPSc);
+		PositionEntity position = positionEJB.find(idPSc);
+		if (position != null) {
+			positionEJB.delete(position);
+		} else log.error("No position with id "+idPSc);
+	}
+
 	public void searchAll() {
 		log.info("Searching for all positions");
 		this.plist = positionEJB.findAll();

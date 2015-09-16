@@ -43,6 +43,15 @@ public class InterviewSearchCDI {
 
 	public InterviewSearchCDI() {
 	}
+	
+	public void remove() {
+		log.info("Removing interview by id");
+		log.debug("Id "+id);
+		InterviewEntity interview = interviewEJB.find(id);
+		if (interview != null) {
+			interviewEJB.delete(interview);
+		} else log.error("No interview with id "+id);
+	}
 
 	public void searchAllInterviews() {
 		log.info("Searching for all interviews");
@@ -61,7 +70,7 @@ public class InterviewSearchCDI {
 		UserEntity interviewer = userEJB.find(id);
 //		if ( (interviewer != null) && 
 //				(interviewer.getRoles().contains("INTERVIEWER"))) {
-		if ( interviewer != null) {
+		if (interviewer != null) {
 			this.ilist = interviewEJB.findCarriedOutInterviewsByUser(
 					interviewer);
 		} else log.error("No interviewer with id "+id);

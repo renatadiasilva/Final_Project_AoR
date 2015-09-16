@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.ejb.Stateless;
 
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 
 @Stateless
@@ -69,4 +70,12 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 				parameters);
 	}
 	
+	public List<SubmissionEntity> findSubmissionsOfPosition(
+			PositionEntity position) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("position", position);
+		return super.findSomeResults("Submission.findSubmissionsOfPosition",
+				parameters);
+	
+	}
 }

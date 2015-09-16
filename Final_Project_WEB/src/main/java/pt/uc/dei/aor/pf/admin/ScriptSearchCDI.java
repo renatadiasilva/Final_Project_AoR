@@ -26,10 +26,20 @@ public class ScriptSearchCDI {
 
 	// search fields
 	private String title;
+	private Long id;
 	
 	private List<ScriptEntity> sclist;
 
 	public ScriptSearchCDI() {
+	}
+
+	public void remove() {
+		log.info("Removing script by id");
+		log.debug("Id "+id);
+		ScriptEntity script = scriptEJB.find(id);
+		if (script != null) {
+			scriptEJB.delete(script);
+		} else log.error("No script with id "+id);
 	}
 
 	public void searchAllScripts() {
@@ -64,6 +74,18 @@ public class ScriptSearchCDI {
 	}
 
 	public void setSlist(List<ScriptEntity> sclist) {
+		this.sclist = sclist;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setSclist(List<ScriptEntity> sclist) {
 		this.sclist = sclist;
 	}
 
