@@ -10,12 +10,42 @@
 	<title><ui:insert name="titulo">IT Jobs</ui:insert></title>
 	<h:outputStylesheet library="css" name="MainStyle.css" />
 	<h:outputStylesheet library="css" name="PrimeFacesOverride.css" />
-	<h:outputScript library="scripts" name="calendar.js" />
+	<h:outputScript library="scripts" name="Calendar.js" />
+	<h:outputScript library="scripts" name="CapsLock.js" />
+	
+	<!-- Scripts de Exibição -->
+	<script type="text/javascript">
+	function checkCaps(){
+		if(CapsLock.isOn()){
+			document.getElementById("caps-lock").style.display='inline';
+			}
+		else{
+			document.getElementById("caps-lock").style.display='none';
+			}
+		}
+	</script>
+	<script type="text/javascript">
+	function jsCheck(){
+		document.getElementById("js-check").style.display='none';
+		}
+	</script>
+	
 </h:head>
 
-<h:body>
+<h:body onload="jsCheck();">
 
-	<header> <!-- Logótipo -->
+	<!-- JavaScript Check -->
+	<div id="js-check">
+		<h:graphicImage library="images" name="logo_49px.png"
+			style="margin:8px 16px;" />
+		<br /> <br /> <br />
+		<h1 style="margin:16px;">Por favor habilite o javascript no seu browser.</h1>
+	</div>
+
+
+	<header>
+	
+	<!-- Logótipo -->
 	<div id="header-link">
 		<h:link>
 			<h:graphicImage library="images" name="logo_49px.png" />
@@ -30,6 +60,7 @@
 	</div>
 
 	</header>
+
 
 	<div id="inner-body">
 
@@ -49,4 +80,5 @@
 	</div>
 
 </h:body>
+
 </html>

@@ -3,9 +3,9 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
-	<ui:define name="Título">IT Jobs</ui:define>
+	<ui:define name="titulo">IT Jobs</ui:define>
 
 	<ui:define name="header-menus">
 		<f:metadata>
@@ -13,16 +13,21 @@
 				actionListener="#{userSessionManagement.checkForUser()}" />
 		</f:metadata>
 
-		<h:panelGrid columns="2">
+		<h:panelGrid columns="3">
+
 			<h:form id="header-login">
-				<h:panelGrid columns="5" style="margin-left: 5px">
+				<h:panelGrid columns="6">
 
 					<p:inputText id="login-email" value="#{loginCDI.email}" size="35"
 						required="true" requiredMessage="Insira um email." />
 					<p:watermark for="login-email" value="Email" />
 
+					<div id="caps-lock" style="display: none; color: #fff">Caps
+						lock ligado!</div>
+
 					<p:password id="login-password" value="#{loginCDI.password}"
-						size="35" required="true" requiredMessage="Insira a password." />
+						size="35" required="true" requiredMessage="Insira a password."
+						onkeypress="checkCaps()" />
 					<p:watermark for="login-password" value="Password" />
 
 					<p:commandButton value="Login" action="#{loginCDI.login()}"
@@ -30,11 +35,19 @@
 
 				</h:panelGrid>
 			</h:form>
+
 			<h:form id="header-signup">
-				<p:commandButton value="Signup" oncomplete="PF('signup').show();"
-					icon="ui-icon-person" />
+				<p:commandButton value="Signup" onclick="PF('signup').show();"
+					icon="ui-icon-person" style="margin:none" />
 			</h:form>
+
+			<h:form id="header-recover">
+				<p:commandButton value="Recuperar password" icon="ui-icon-help"
+					style="margin:none" />
+			</h:form>
+
 		</h:panelGrid>
+
 	</ui:define>
 
 	<ui:define name="contents">
@@ -55,7 +68,11 @@
 
 						<p:outputLabel value="Email: " for="signup-email" />
 						<p:inputText id="signup-email" value="#{signupCDI.email}"
-							size="35" required="true" requiredMessage="Insira uma email." />
+							size="35" required="true" requiredMessage="Insira um email.">
+							<o:validator validatorId="javax.faces.RegularExpression"
+								message="Insira um email válido."
+								pattern="^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$" />
+						</p:inputText>
 
 						<p:outputLabel value="Password: " for="signup-password" />
 						<p:password id="signup-password" value="#{signupCDI.password}"
@@ -66,7 +83,8 @@
 
 						<p:outputLabel value="Repita a Password: "
 							for="signup-repeatPassword" />
-						<p:password id="signup-repeatPassword" size="35" required="true" />
+						<p:password id="signup-repeatPassword" size="35" required="true"
+							requiredMessage="Repita a password." />
 
 						<p:outputLabel />
 						<p:outputLabel />
@@ -119,9 +137,10 @@
 							maxlength="#{max.length.userInfoCity()}" />
 
 						<p:outputLabel value="País: " for="signup-country" />
-						<p:inputText id="signup-country" value="#{signupCDI.country}"
+						<p:autoComplete id="signup-country" value="#{signupCDI.country}"
 							size="35" required="true" requiredMessage="Insira o País."
-							maxlength="#{max.length.userInfoCountry()}" />
+							maxlength="#{max.length.userInfoCountry()}" maxResults="10"
+							completeMethod="#{countryListCDI.getCountries}" />
 
 						<p:outputLabel />
 						<p:outputLabel />
