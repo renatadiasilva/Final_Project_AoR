@@ -23,7 +23,8 @@ import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 // to put in WEB (CDI Bean)??
 public class StatisticalReports {
 
-	private static final Logger log = LoggerFactory.getLogger(StatisticalReports.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(StatisticalReports.class);
 
 	@EJB
 	private InterviewEJBInterface interviewEJB;
@@ -45,59 +46,75 @@ public class StatisticalReports {
 	}
 
 	// interview counts and results by period between two dates (file?)
-	public List<Integer> interviewCountResults(Date d1, Date d2, String period) {
+	public List<Integer> interviewCountResults(Date d1, Date d2, 
+			String period) {
 		log.info("Creating report with interview countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		return reportCounting(d1, d2, period, 1, null);  // if 0, no interviews, no report!
+		return reportCounting(d1, d2, period, 1, null);
+		// if 0, no interviews, no report!
 	}
 
 	// average time to first interview by period between two dates (file?)
-	public List<Integer> averageTimeToInterview(Date d1, Date d2, String period) {
+	public List<Integer> averageTimeToInterview(Date d1, Date d2,
+			String period) {
 		log.info("Creating report with average time to first interview");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		return reportCounting(d1, d2, period, 2, null); // if -1, no valid submissions, no report!
+		return reportCounting(d1, d2, period, 2, null);
+		// if -1, no valid submissions, no report!
 	}
 
 	// average time to be hired by period between two dates (file?)
-	public List<Integer> averageTimeToBeHired(Date d1, Date d2, String period) {
+	public List<Integer> averageTimeToBeHired(Date d1, Date d2,
+			String period) {
 		log.info("Creating report with average time to be hired");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		return reportCounting(d1, d2, period, 3, null); // if -1, no valid submissions, no report!
+		return reportCounting(d1, d2, period, 3, null);
+		// if -1, no valid submissions, no report!
 	}
 
 	// candidate counts by period between two dates (file?)
-	public List<Integer> candidatesCountResults(Date d1, Date d2, String period) {
+	public List<Integer> candidatesCountResults(Date d1, Date d2,
+			String period) {
 		log.info("Creating report with candidate countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		return reportCounting(d1, d2, period, 4, null); // if 0, no candidates, no report!
+		return reportCounting(d1, d2, period, 4, null);
+		// if 0, no candidates, no report!
 	}
 
 	// spontaneous submission counts by period between two dates (file?)
-	public List<Integer> spontaneousCountResults(Date d1, Date d2, String period) {
+	public List<Integer> spontaneousCountResults(Date d1, Date d2,
+			String period) {
 		log.info("Creating report with spontaneous submissions");
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
-		return reportCounting(d1, d2, period, 5, null); // if 0, no spontaneous submissions, no report!
+		return reportCounting(d1, d2, period, 5, null);
+		// if 0, no spontaneous submissions, no report!
 	}
 
-	// reject submission counts and rejected reasons by period between two dates (file?)
-	public List<Integer> rejectedCountResults(Date d1, Date d2, String period) {
+	// reject submission counts/rejected reasons by period between two dates
+	public List<Integer> rejectedCountResults(Date d1, Date d2,
+			String period) {
 		log.info("Creating report with reject candidates countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		return reportCounting(d1, d2, period, 6, null); // if 0, no rejected submitions, no report!
+		return reportCounting(d1, d2, period, 6, null);
+		// if 0, no rejected submitions, no report!
 	}
 
-	// presented proposal counts and results by period between two dates (file?)
-	public List<Integer> proposalCountResults(Date d1, Date d2, String period) {
+	// presented proposal counts/results by period between two dates (file?)
+	public List<Integer> proposalCountResults(Date d1, Date d2,
+			String period) {
 		log.info("Creating report with presented proposal countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
-		return reportCounting(d1, d2, period, 7, null); // if 0, no presented proposals, no report!
+		return reportCounting(d1, d2, period, 7, null);
+		// if 0, no presented proposals, no report!
 	}
 
 	// submission source counts by period between two dates (file?)
-	public List<Integer> sourceCount(Date d1, Date d2, String period, List<String> sources) {
+	public List<Integer> sourceCount(Date d1, Date d2, String period,
+			List<String> sources) {
 		log.info("Creating report with submission's source countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);				
-		return reportCounting(d1, d2, period, 8, sources); // if 0, no submissions, no report!
+		return reportCounting(d1, d2, period, 8, sources);
+		// if 0, no submissions, no report!
 	}
 
 	// produces statistics by period between two dates
@@ -161,8 +178,8 @@ public class StatisticalReports {
 			endDate.set(Calendar.MONTH, 0);
 		}
 
-		// juntar listas?? não... 
-		//		List<InterviewEntity> allInterviews = new ArrayList<InterviewEntity>();
+// juntar listas?? não... 
+//		List<InterviewEntity> allInterviews = new ArrayList<InterviewEntity>();
 
 		int total = 0;
 		int countTotal = 0;
@@ -171,7 +188,8 @@ public class StatisticalReports {
 		List<Integer> totalS = new ArrayList<Integer>(ns);
 		for (int i = 0; i < ns; i++) totalS.add(0);
 
-		// each WHILE iteration corresponds to a single day, month, or year between d1 and d2
+		// each WHILE iteration corresponds to
+		// a single day, month, or year between d1 and d2
 		while (!startDate.after(endDate)) {
 
 			// compute temporary end date
@@ -183,9 +201,12 @@ public class StatisticalReports {
 				break;
 			case 'm':
 				// last day in the current month 
-				interDate.set(Calendar.DAY_OF_MONTH, startDate.getActualMaximum(Calendar.DAY_OF_MONTH));
-				interDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
-				interDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
+				interDate.set(Calendar.DAY_OF_MONTH, 
+						startDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+				interDate.set(Calendar.MONTH, 
+						startDate.get(Calendar.MONTH));
+				interDate.set(Calendar.YEAR, 
+						startDate.get(Calendar.YEAR));
 				break;
 			case 'y':
 				// last day in the current year (December, 31)
@@ -198,9 +219,10 @@ public class StatisticalReports {
 			switch (report) {
 			case 1:
 				// get list of carried out interviews of the day, month, or year
-				listI = interviewEJB.findCarriedOutInterviews(startDate.getTime(), interDate.getTime());
+				listI = interviewEJB.findCarriedOutInterviews(
+						startDate.getTime(), interDate.getTime());
 
-				//				allInterviews.addAll(list);
+//				allInterviews.addAll(list);
 
 				// count the number of interviews of the day, month, or year
 				if (listI != null) n = listI.size();
@@ -212,7 +234,8 @@ public class StatisticalReports {
 				break;
 			case 2:
 				// get list of submissions of the day, month, or year
-				listS = submissionEJB.findSubmissionsByDate(startDate.getTime(), interDate.getTime());
+				listS = submissionEJB.findSubmissionsByDate(
+						startDate.getTime(), interDate.getTime());
 
 				// compute the average time to first interview 
 				// (ignore submission without carried out interview)
@@ -226,13 +249,15 @@ public class StatisticalReports {
 					if ( (listSI != null) && !listSI.isEmpty()) {
 
 						// keep tomorrow date for comparisons
-						Calendar tomorrow = Calendar.getInstance(); // today 
-						tomorrow.add(Calendar.DAY_OF_YEAR, 1); // day plus one: tomorrow
+						Calendar tomorrow = Calendar.getInstance(); // today
+						 // day plus one: tomorrow
+						tomorrow.add(Calendar.DAY_OF_YEAR, 1);
 
 						// set initial older date as tomorrow (worse case)
 						Calendar firstI = tomorrow;
 
-						// find the first carried out interview of this submission, if any
+						// find the first carried out interview of 
+						// this submission, if any
 						Calendar cDate = Calendar.getInstance();
 						for (InterviewEntity i : listSI) {
 							if (i.isCarriedOut()) {
@@ -274,22 +299,28 @@ public class StatisticalReports {
 				break;
 			case 3:
 				// get list of submissions of the day, month, or year
-				listS = submissionEJB.findSubmissionsByDate(startDate.getTime(), interDate.getTime());
+				listS = submissionEJB.findSubmissionsByDate(
+						startDate.getTime(), interDate.getTime());
 
 				// compute the average time to be hired 
 				// (ignore submission without hired status)
 				countS = 0;
 				avg = 0.0;
 				for (SubmissionEntity s : listS) {
+					//query??
 					// submission status is hired
-					if (s.getStatus().equalsIgnoreCase(SubmissionEntity.STATUS_HIRED)) {
+					if (s.getStatus().equalsIgnoreCase(
+							SubmissionEntity.STATUS_HIRED)) {
 
-						// colect submission date and hired (closing submission) date
+						// colect submission date and hired date
 						Calendar sDate = Calendar.getInstance();
 						Calendar hDate = Calendar.getInstance();
 						sDate.setTime(s.getDate());
-						hDate.setTime(s.getPosition().getClosingDate()); // hiredDate?????
-
+						//esta não --------------------------------!
+						hDate.setTime(s.getPosition().getClosingDate());
+						//esta sim
+						hDate.setTime(s.getHiredDate());
+						
 						ndays = daysBetween(sDate, hDate);
 						if (ndays < 0)  {
 							// erro, datas não ordenadas
@@ -309,7 +340,8 @@ public class StatisticalReports {
 				break;
 			case 4:
 				// get list of submissions of the day, month, or year
-				listS = submissionEJB.findSubmissionsByDate(startDate.getTime(), interDate.getTime());
+				listS = submissionEJB.findSubmissionsByDate(
+						startDate.getTime(), interDate.getTime());
 
 				// count the number of submissions of the day, month, or year
 				if (listS != null) n = listS.size();
@@ -320,11 +352,13 @@ public class StatisticalReports {
 				total += n;
 				break;
 			case 5:
-				// get list of spontaneous submissions of the day, month, or year
-				listS = submissionEJB.findSpontaneousSubmissionsByDate(startDate.getTime(), 
-						interDate.getTime());
+				// get list of spontaneous submissions 
+				// of the day, month, or year
+				listS = submissionEJB.findSpontaneousSubmissionsByDate(
+						startDate.getTime(), interDate.getTime());
 
-				// count the number of spontaneous submissions of the day, month, or year
+				// count the number of spontaneous submissions
+				// of the day, month, or year
 				if (listS != null) n = listS.size();
 				else n = 0; // no submissions
 				count.add(n);
@@ -334,10 +368,11 @@ public class StatisticalReports {
 				break;
 			case 6:
 				// get list of rejected submissions of the day, month, or year
-				listS = submissionEJB.findRejectedSubmissions(startDate.getTime(), 
-						interDate.getTime());
+				listS = submissionEJB.findRejectedSubmissions(
+						startDate.getTime(), interDate.getTime());
 
-				// count the number of reject submissions of the day, month, or year
+				// count the number of reject submissions
+				// of the day, month, or year
 				if (listS != null) n = listS.size();
 				else n = 0; // no submissions
 				count.add(n);
@@ -345,12 +380,13 @@ public class StatisticalReports {
 				// update overall number of submissions
 				total += n;
 				break;
-			case 7: // está mal pois a data é da candidatura e não da proposta...
+			case 7: // está mal pois a data é da candidatura e não da proposta!
 				// get list of presented proposal of the day, month, or year
-				listS = submissionEJB.findPresentedProposals(startDate.getTime(), 
-						interDate.getTime());
+				listS = submissionEJB.findPresentedProposals(
+						startDate.getTime(), interDate.getTime());
 
-				// count the number of presented proposals of the day, month, or year
+				// count the number of presented proposals
+				// of the day, month, or year
 				if (listS != null) n = listS.size();
 				else n = 0; // no submissions
 				count.add(n);
@@ -362,11 +398,13 @@ public class StatisticalReports {
 				int index = 0;
 				// count submissions for each source of the list of sources
 				for (String so : sources) {
-					// get list of submissions by a source of the day, month, or year
-					listS = submissionEJB.findSubmissionsBySource(so, startDate.getTime(), 
-							interDate.getTime());
+					// get list of submissions by a source
+					// of the day, month, or year
+					listS = submissionEJB.findSubmissionsBySource(so,
+							startDate.getTime(), interDate.getTime());
 
-					// count the number of submissions by a source of the day, month, or year
+					// count the number of submissions by a source
+					// of the day, month, or year
 					if (listS != null) n = listS.size();
 					else n = 0; // no submissions
 					count.add(n);
@@ -381,16 +419,21 @@ public class StatisticalReports {
 
 			switch (period) {
 			case 'd':
-				String m = startDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+				String m = startDate.getDisplayName(Calendar.MONTH,
+						Calendar.LONG, Locale.getDefault());
 				System.out.println("\n"+header+" (DIA: "+
-						startDate.get(Calendar.DAY_OF_MONTH)+" "+m+" "+startDate.get(Calendar.YEAR)+"): "+n);
+						startDate.get(Calendar.DAY_OF_MONTH)+" "+m+" "
+						+startDate.get(Calendar.YEAR)+"): "+n);
 				break;
 			case 'm':
-				m = startDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-				System.out.println("\n"+header+" (MÊS: "+m+" "+startDate.get(Calendar.YEAR)+"): "+n);
+				m = startDate.getDisplayName(Calendar.MONTH, Calendar.LONG,
+						Locale.getDefault());
+				System.out.println("\n"+header+" (MÊS: "+m+" "+
+						startDate.get(Calendar.YEAR)+"): "+n);
 				break;
 			case 'y':
-				System.out.println("\n"+header+" (ANO: "+startDate.get(Calendar.YEAR)+"): "+n);
+				System.out.println("\n"+header+" (ANO: "+
+						startDate.get(Calendar.YEAR)+"): "+n);
 				break;
 			}
 
@@ -404,11 +447,14 @@ public class StatisticalReports {
 					System.out.println("\nData: "+i.getDate());
 					System.out.print("\nEntrevistadores: ");
 					for (UserEntity u : i.getInterviewers())
-						System.out.println(u.getFirstName()+" "+u.getLastName()+", ");
+						System.out.println(u.getFirstName()+" "+
+								u.getLastName()+", ");
 					System.out.print("\nCandidato: ");
-					System.out.println(i.getSubmission().getCandidate().getFirstName()+" "
+					System.out.println(i.getSubmission().
+							getCandidate().getFirstName()+" "
 							+i.getSubmission().getCandidate().getLastName());
-					System.out.println("\n\nAprovado: "+(i.isApproved()?"SIM":"NÃO"));
+					System.out.println("\n\nAprovado: "+
+							(i.isApproved()?"SIM":"NÃO"));
 					System.out.println("\nFeedback: "+i.getFeedback());
 				}
 				break;
@@ -422,20 +468,26 @@ public class StatisticalReports {
 				// print info/results of submissions of the day, month, or year
 				for (SubmissionEntity s : listS) {
 					printCandidateInfo(s, listS.indexOf(s), true);
-					System.out.println("\nMotivo da Rejeição: "+s.getRejectReason());
+					System.out.println("\nMotivo da Rejeição: "
+							+s.getRejectReason());
 				}
 			case 7:
 				// print info/results of submissions of the day, month, or year
 				for (SubmissionEntity s : listS) {
 					printCandidateInfo(s, listS.indexOf(s), true);
 					String result = s.getStatus(); 
-					if (result.equalsIgnoreCase(SubmissionEntity.STATUS_SPROPOSAL))
-						System.out.println("\n\nProposta recebida (ainda não avaliada)");
-					else if (result.equalsIgnoreCase(SubmissionEntity.STATUS_OPROPOSAL))
+					if (result.equalsIgnoreCase(
+							SubmissionEntity.STATUS_SPROPOSAL))
+						System.out.println("\n\nProposta recebida"
+								+ " (ainda não avaliada)");
+					else if (result.equalsIgnoreCase(
+							SubmissionEntity.STATUS_OPROPOSAL))
 						System.out.println("\n\nProposta em negociação.");
-					else if (result.equalsIgnoreCase(SubmissionEntity.STATUS_RPROPOSAL))
+					else if (result.equalsIgnoreCase(
+							SubmissionEntity.STATUS_RPROPOSAL))
 						System.out.println("\n\nProposta recusada.");
-					else if (result.equalsIgnoreCase(SubmissionEntity.STATUS_APROPOSAL))
+					else if (result.equalsIgnoreCase(
+							SubmissionEntity.STATUS_APROPOSAL))
 						System.out.println("\n\nProposta aceite.");
 				}
 			}
@@ -459,11 +511,12 @@ public class StatisticalReports {
 		// overall counts in the beginning of the list (count) to be returned
 		switch (report) {
 		case 1: case 4: case 5: case 6: case 7:
-			// keep also overall number of interviews/submissions between the two dates
+			// overall number of interviews/submissions between the two dates
 			count.add(0, total);
 			break;
 		case 2:	case 3:
-			// keep also overall average time to first interview/to be hired between the two dates
+			// overall average time to first interview/to be hired
+			// between the two dates
 			if (countTotal != 0) avg = total*1.0/countTotal;
 			else avg = -1; // no submissions to compute average
 			count.add(0, (int) Math.round(avg));  // tempo médio em double???
@@ -478,24 +531,29 @@ public class StatisticalReports {
 
 	}
 
-	private void printCandidateInfo(SubmissionEntity s, int index, boolean printPosition) {
+	private void printCandidateInfo(SubmissionEntity s, int index,
+			boolean printPosition) {
 		UserEntity cand = s.getCandidate();
 		System.out.print("\nCandidato "+ index+" ");
 		System.out.println("\nNome: "+cand.getFirstName()+" "
 				+cand.getLastName());					
 		UserInfoEntity info = cand.getUserInfo();
-		System.out.println("\nCidade: "+info.getCity()+", "+info.getCountry());
-		System.out.println("\nCurso: "+info.getCourse()+" ("+info.getSchool()+")");
-		System.out.println("\nContactos: "+cand.getEmail()+" "+ info.getMobilePhone()+
-				" "+info.getHomePhone());
+		System.out.println("\nCidade: "+info.getCity()+", "
+				+info.getCountry());
+		System.out.println("\nCurso: "+info.getCourse()+" ("
+				+info.getSchool()+")");
+		System.out.println("\nContactos: "+cand.getEmail()+" "
+				+info.getMobilePhone()+" "+info.getHomePhone());
 
 		if (printPosition) {
 			PositionEntity pos = s.getPosition();
-			if (!s.isSpontaneous()) System.out.println("\n\nConcorreu à posição :"+pos.getTitle()+
+			if (!s.isSpontaneous()) 
+				System.out.println("\n\nConcorreu à posição :"+pos.getTitle()+
 					" ("+pos.getPositionCode()+")"); //truncate title??
 			else { // spontaneous submission
-				if (pos != null) System.out.println("\n\nFoi associado à posição :"+pos.getTitle()+
-						" ("+pos.getPositionCode()+")"); //truncate title??
+				if (pos != null) 
+					System.out.println("\n\nFoi associado à posição :"
+							+pos.getTitle()+" ("+pos.getPositionCode()+")");
 				else System.out.println("\n\nCandidatura espontânea");
 			}
 		}
@@ -515,7 +573,8 @@ public class StatisticalReports {
 		dateEndCal.set(Calendar.SECOND, 0);
 		dateEndCal.set(Calendar.MILLISECOND, 0);
 
-		return (dateStartCal.getTimeInMillis() - dateEndCal.getTimeInMillis()) / MSPERDAY;
+		return (dateStartCal.getTimeInMillis() - 
+					dateEndCal.getTimeInMillis()) / MSPERDAY;
 	}
 
 }

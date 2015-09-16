@@ -28,32 +28,38 @@ import javax.validation.constraints.NotNull;
 @Table(name = "interviews")
 @NamedQueries({
 	@NamedQuery(name = "Interview.findCarriedOutInterviews",
-			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE AND"
-					+ " i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
+			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE"
+					+ " AND i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findCarriedOutInterviewsByUser",
 			query = "SELECT i FROM InterviewEntity i JOIN i.interviewers u "
-					+ "WHERE i.carriedOut = TRUE AND u = :user ORDER BY i.date DESC"),
+					+ "WHERE i.carriedOut = TRUE AND u = :user"
+					+ " ORDER BY i.date DESC"),
 	@NamedQuery(name = "Interview.findScheduledInterviewsByUser",
 			query = "SELECT i FROM InterviewEntity i JOIN i.interviewers u "
-					+ "WHERE i.carriedOut = FALSE AND u = :user ORDER BY i.date"),
+					+ "WHERE i.carriedOut = FALSE AND u = :user"
+					+ " ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findScheduledInterviewsByCandidate",
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
-					+ "WHERE i.carriedOut = FALSE AND s.candidate = :candidate ORDER BY i.date"),
+					+ "WHERE i.carriedOut = FALSE AND s.candidate = :candidate"
+					+ " ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findByDateAndInterviewer",
 			query = "SELECT i FROM UserEntity u JOIN u.interviews i "
 					+ "WHERE u = :user AND i.date = :date"),
 	@NamedQuery(name = "Interview.findByDateAndCandidate",
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s"
-					+ " WHERE i.date = :date AND s.candidate = :candidate ORDER BY i.date"),
+					+ " WHERE i.date = :date AND s.candidate = :candidate "
+					+ "ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findInterviewByPosition",
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
 					+ " WHERE s.position = :position ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findCarriedOutInterviewByPosition",
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
-					+ " WHERE i.carriedOut = TRUE AND s.position = :position ORDER BY i.date"),
+					+ " WHERE i.carriedOut = TRUE AND s.position = :position"
+					+ " ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findScheduledInterviewByPosition",
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
-					+ " WHERE i.carriedOut = FALSE AND s.position = :position ORDER BY i.date"),
+					+ " WHERE i.carriedOut = FALSE AND s.position = :position"
+					+ " ORDER BY i.date"),
 })
 public class InterviewEntity implements Serializable {
 
@@ -77,7 +83,6 @@ public class InterviewEntity implements Serializable {
 	private SubmissionEntity submission;
 
 	@Column(name = "date")
-//	@Temporal(TemporalType.DATE)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
@@ -91,7 +96,6 @@ public class InterviewEntity implements Serializable {
 	@OneToMany(mappedBy = "interview")
 	private List<AnswerEntity> answers;
 
-	// negative positive??
 	@Column(name = "approved")
 	private boolean approved;
 
@@ -112,7 +116,7 @@ public class InterviewEntity implements Serializable {
 		this.date = date;
 		this.script = script;
 		this.scheduledBy = interviewScheduledBy;
-		this.carriedOut = false;  // passadas ou concluidas??
+		this.carriedOut = false;
 	}
 
 	public Long getId() {

@@ -33,10 +33,8 @@ public class UserEJBImp implements UserEJBInterface {
 			user.setPassword(securePass(user.getPassword()));
 		} catch (NoSuchAlgorithmException e) {
 			log.error("Error encrypting password");
-			//e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			log.error("Error encrypting password");
-			//e.printStackTrace();
 		}
 		userDAO.save(user);
 	}
@@ -56,10 +54,8 @@ public class UserEJBImp implements UserEJBInterface {
 			user.setTemporaryPassword(false);
 		} catch (NoSuchAlgorithmException e) {
 			log.error("Error encrypting password");
-			//e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			log.error("Error encrypting password");
-			//e.printStackTrace();
 		}
 		userDAO.update(user);
 	}
@@ -163,30 +159,35 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findCandidatesByEmail(String email) {
 		log.info("Finding candidates by email");
-		return userDAO.findCandidates(email, "%", "%", "%", "%", "%", "%", "%", null);
+		return userDAO.findCandidates(email, "%", "%", "%", "%", "%", "%",
+				"%", null);
 	}
 
 	public List<UserEntity> findCandidatesByFirstName(String firstName) {
 		log.info("Finding candidates by first name");
-		return userDAO.findCandidates("%", firstName, "%", "%", "%", "%", "%", "%", null);
+		return userDAO.findCandidates("%", firstName, "%", "%", "%", "%",
+				"%", "%", null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByLastName(String lastName) {
 		log.info("Finding candidates by last name");
-		return userDAO.findCandidates("%", "%", lastName, "%", "%", "%", "%", "%", null);
+		return userDAO.findCandidates("%", "%", lastName, "%", "%", "%",
+				"%", "%", null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByAddress(String address) {
 		log.info("Finding candidates by address");
-		return userDAO.findCandidates("%", "%", "%", address, "%", "%", "%", "%", null);
+		return userDAO.findCandidates("%", "%", "%", address, "%", "%", "%",
+				"%", null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByCity(String city) {
 		log.info("Finding candidates by city");
-		return userDAO.findCandidates("%", "%", "%", "%", city, "%", "%", "%", null);
+		return userDAO.findCandidates("%", "%", "%", "%", city, "%", "%",
+				"%", null);
 	}
 
 	@Override
@@ -198,41 +199,46 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findCandidatesByCountry(String country) {
 		log.info("Finding candidates by country");
-		return userDAO.findCandidates("%", "%", "%", "%", "%", country, "%", "%", null);
+		return userDAO.findCandidates("%", "%", "%", "%", "%", country, "%",
+				"%", null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByCourse(String course) {
 		log.info("Finding candidates by course");
-		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", course, "%", null);
+		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", course, 
+				"%", null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesBySchool(String school) {
 		log.info("Finding candidates by school");
-		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", "%", school, null);
+		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", "%",
+				school, null);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByPosition(PositionEntity position) {
 		log.info("Finding candidates by position");
-		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", "%", "%", position);
+		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", "%",
+				"%", position);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByPosition(String email, String firstName,
 			String lastName, PositionEntity position) {
 		log.info("Finding candidates of a given position by email or name");
-		return userDAO.findCandidates(email, firstName, lastName, "%", "%", "%", "%",
-				"%", position);
+		return userDAO.findCandidates(email, firstName, lastName, "%", "%",
+				"%", "%", "%", position);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByPosition(String email, String firstName,
-			String lastName, String address, String city, 
+	public List<UserEntity> findCandidatesByPosition(String email, 
+			String firstName, String lastName, String address, String city, 
 			String country, String course, String school,
 			PositionEntity position) {
-		log.info("Finding candidates of a given position by several attributes");
+		log.info("Finding candidates of a given position by several"
+				+ " attributes");
 		return userDAO.findCandidates(email, firstName, lastName, address, city, 
 				country, course, school, position);
 	}
@@ -246,7 +252,6 @@ public class UserEJBImp implements UserEJBInterface {
 				address, city, country, course, school, null);
 	}
 
-	// tirar?
 	@Override
 	public List<UserEntity> findCandidatesByKeywordShort(String keyword) {
 		log.info("Finding candidates by keyword");
@@ -259,7 +264,9 @@ public class UserEJBImp implements UserEJBInterface {
 		return userDAO.findCandidatesByKeyword(keyword);
 	}
 
-	private String securePass(String pass) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	private String securePass(String pass) throws NoSuchAlgorithmException,
+		UnsupportedEncodingException {
+		
 		String securedPassword = "";
 
 		try {

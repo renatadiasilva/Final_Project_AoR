@@ -20,22 +20,15 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 
 	@SuppressWarnings("unchecked")
 	public List<ScriptEntity> findScriptsByTitle(String title) {
+
 		String[] values = {title};
 		String[] attributes = {"title"};
 		String queryS = makeQuery("*", "scripts", "(", attributes,
 				values, " OR ", "", "title");
-//		String queryS = "SELECT * FROM scripts"
-//				+ " WHERE (TRANSLATE(UPPER(REPLACE(title,\' \',\'\')), "
-//				+ACCENT_LETTERS+","+NO_ACCENT_LETTERS+") LIKE :title)"
-//				+ " ORDER BY title";
-		System.out.println(queryS);
+
 		Query query = em.createNativeQuery(queryS, ScriptEntity.class);
-//		query.setParameter("title", title);
 		return (List<ScriptEntity>) query.getResultList();
 
-//		Map<String, Object> parameters = new HashMap<String, Object>();
-//		parameters.put("t", title);
-//		return super.findSomeResults("Script.findScriptsByTitle", parameters);
 	}
 
 }

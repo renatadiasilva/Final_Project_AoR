@@ -18,15 +18,14 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @RequestScoped
 public class UserSearchCDI {
 
-	private static final Logger log = LoggerFactory.getLogger(UserSearchCDI.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(UserSearchCDI.class);
 
 	@EJB
 	private UserEJBInterface userEJB;
 
 	// search fields
 	private String email, fname, lname, role, keyword;
-
-	private UserEntity user;
 
 	private List<UserEntity> ulist;
 
@@ -117,14 +116,6 @@ public class UserSearchCDI {
 
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	public UserEntity getUser() {
-		return user;
-	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
 	}
 
 	public List<UserEntity> getUlist() {

@@ -18,14 +18,14 @@ import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 @RequestScoped
 public class SubmissionSearchCDI {
 
-	private static final Logger log = LoggerFactory.getLogger(SubmissionSearchCDI.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(SubmissionSearchCDI.class);
 
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
 
 	// search fields
 	private Date date1, date2;
-	
 	private String source;
 
 	private List<SubmissionEntity> slist;
@@ -52,7 +52,8 @@ public class SubmissionSearchCDI {
 	public void searchSpontanouseByDate() {
 		log.info("Searching for spontaneous submissions between two dates");
 		log.debug("Dates between "+date1+" and "+date2);
-		this.slist = submissionEJB.findSpontaneousSubmissionsByDate(date1, date2);
+		this.slist = submissionEJB.findSpontaneousSubmissionsByDate(date1,
+				date2);
 	}	
 
 	public void searchRejectedByDate() {
@@ -71,7 +72,8 @@ public class SubmissionSearchCDI {
 		log.info("Searching for submissions by source between two dates");
 		log.debug("Source "+source);
 		log.debug("Dates between "+date1+" and "+date2);
-		this.slist = submissionEJB.findSubmissionsBySource(source, date1, date2);
+		this.slist = submissionEJB.findSubmissionsBySource(source, date1,
+				date2);
 	}	
 
 	// getters e setters

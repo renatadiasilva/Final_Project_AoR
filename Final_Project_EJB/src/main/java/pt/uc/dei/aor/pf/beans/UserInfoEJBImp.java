@@ -12,7 +12,8 @@ import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 @Stateless
 public class UserInfoEJBImp implements UserInfoEJBInterface {
 	
-	private static final Logger log = LoggerFactory.getLogger(UserEJBImp.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(UserInfoEJBImp.class);
 
 	@EJB
 	private UserInfoDao userInfoDAO;
@@ -51,7 +52,7 @@ public class UserInfoEJBImp implements UserInfoEJBInterface {
 		else if (u.getSchool() == null) hasError = true;
 
 		if (hasError)
-			throw new IllegalArgumentException("The userinfo is missing data. "
+			throw new IllegalArgumentException("The user info is missing data. "
 					+ "Check the notnull attributes.");
 	}
 

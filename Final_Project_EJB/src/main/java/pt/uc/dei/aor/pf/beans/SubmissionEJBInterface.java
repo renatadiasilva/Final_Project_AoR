@@ -13,13 +13,15 @@ public interface SubmissionEJBInterface {
 	public abstract SubmissionEntity find(Long id);
 	public abstract List<SubmissionEntity> findAll();
 	public abstract List<SubmissionEntity> findSpontaneousSubmissions();
-	
-	// listagens para relatório?? (marketing)
-	public abstract List<SubmissionEntity> findSubmissionsBySource(String source, Date date1, Date date2);
-	
-	public abstract List<SubmissionEntity> findSubmissionsByDate(Date date1, Date date2);
-	public abstract List<SubmissionEntity> findSpontaneousSubmissionsByDate(Date date1, Date date2);
-	public abstract List<SubmissionEntity> findRejectedSubmissions(Date date1, Date date2);
-	public abstract List<SubmissionEntity> findPresentedProposals(Date date1, Date date2);
-	
+	public abstract List<SubmissionEntity> findSubmissionsByDate(Date date1,
+			Date date2);
+	public abstract List<SubmissionEntity> findSpontaneousSubmissionsByDate(
+			Date date1, Date date2);
+	public abstract List<SubmissionEntity> findRejectedSubmissions(Date date1,
+			Date date2);
+	public abstract List<SubmissionEntity> findPresentedProposals(Date date1,
+			Date date2);
+	public abstract List<SubmissionEntity> findSubmissionsBySource(
+			String source, Date date1, Date date2);
+		
 }

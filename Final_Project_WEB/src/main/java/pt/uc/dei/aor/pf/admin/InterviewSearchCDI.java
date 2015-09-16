@@ -22,7 +22,8 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @RequestScoped
 public class InterviewSearchCDI {
 
-	private static final Logger log = LoggerFactory.getLogger(InterviewSearchCDI.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(InterviewSearchCDI.class);
 
 	@EJB
 	private InterviewEJBInterface interviewEJB;
@@ -35,9 +36,7 @@ public class InterviewSearchCDI {
 
 	// search fields
 	private Date date1, date2;
-
-	private Long id;   // Users id=11,15 Position id=18
-
+	private Long id;
 	private boolean result;
 
 	private List<InterviewEntity> ilist;
@@ -60,9 +59,11 @@ public class InterviewSearchCDI {
 		log.info("Searching carried out interviews of a interviewer");
 		log.debug("Id "+id);
 		UserEntity interviewer = userEJB.find(id);
-//		if ( (interviewer != null) && (interviewer.getRoles().contains("INTERVIEWER"))) {
+//		if ( (interviewer != null) && 
+//				(interviewer.getRoles().contains("INTERVIEWER"))) {
 		if ( interviewer != null) {
-			this.ilist = interviewEJB.findCarriedOutInterviewsByUser(interviewer);
+			this.ilist = interviewEJB.findCarriedOutInterviewsByUser(
+					interviewer);
 		} else log.error("No interviewer with id "+id);
 	}
 
@@ -71,7 +72,8 @@ public class InterviewSearchCDI {
 		log.debug("Id "+id);
 		UserEntity interviewer = userEJB.find(id);
 		if ( interviewer != null) {
-			this.ilist = interviewEJB.findScheduledInterviewsByUser(interviewer);
+			this.ilist = interviewEJB.findScheduledInterviewsByUser(
+					interviewer);
 		} else log.error("No interviewer with id "+id);
 	}
 
@@ -81,7 +83,8 @@ public class InterviewSearchCDI {
 		log.debug("Date "+date1);
 		UserEntity interviewer = userEJB.find(id);
 		if ( interviewer != null) {
-			result = interviewEJB.interviewerHasDateConflict(date1, interviewer);
+			result = interviewEJB.interviewerHasDateConflict(date1,
+					interviewer);
 		} else log.error("No interviewer with id "+id);
 	}
 
@@ -90,7 +93,8 @@ public class InterviewSearchCDI {
 		log.debug("Id "+id);
 		log.debug("Date "+date1);
 		UserEntity candidate = userEJB.find(id);
-		if ( (candidate != null) && (candidate.getRoles().contains("CANDIDATE"))) {
+		if ( (candidate != null) && 
+				(candidate.getRoles().contains("CANDIDATE"))) {
 			result = interviewEJB.candidateHasDateConflict(date1, candidate);
 		} else log.error("No candidate with id "+id);
 	}
@@ -109,7 +113,8 @@ public class InterviewSearchCDI {
 		log.debug("Id "+id);
 		PositionEntity position = positionEJB.find(id);
 		if (position != null) {
-			this.ilist = interviewEJB.findCarriedOutInterviewsByPosition(position);
+			this.ilist = interviewEJB.findCarriedOutInterviewsByPosition(
+					position);
 		} else log.error("No position with id "+id);
 	}
 
@@ -118,7 +123,8 @@ public class InterviewSearchCDI {
 		log.debug("Id "+id);
 		PositionEntity position = positionEJB.find(id);
 		if (position != null) {
-			this.ilist = interviewEJB.findScheduledInterviewsByPosition(position);
+			this.ilist = interviewEJB.findScheduledInterviewsByPosition(
+					position);
 		} else log.error("No position with id "+id);
 	}
 
@@ -126,8 +132,10 @@ public class InterviewSearchCDI {
 		log.info("Searching scheduled interviews of candidate");
 		log.debug("Id "+id);
 		UserEntity candidate = userEJB.find(id);
-		if ( (candidate != null) && (candidate.getRoles().contains("CANDIDATE"))) {
-			this.ilist = interviewEJB.findScheduledInterviewsByCandidate(candidate);
+		if ( (candidate != null) && 
+				(candidate.getRoles().contains("CANDIDATE"))) {
+			this.ilist = interviewEJB.findScheduledInterviewsByCandidate(
+					candidate);
 		} else log.error("No candidate with id "+id);
 	}
 

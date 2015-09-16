@@ -18,7 +18,8 @@ import pt.uc.dei.aor.pf.entities.ScriptEntity;
 @RequestScoped
 public class ScriptSearchCDI {
 
-	private static final Logger log = LoggerFactory.getLogger(ScriptSearchCDI.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(ScriptSearchCDI.class);
 
 	@EJB
 	private ScriptEJBInterface scriptEJB;

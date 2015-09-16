@@ -7,4 +7,5 @@ public interface UserInfoEJBInterface {
 	public abstract void save(UserInfoEntity user);
 	public abstract void update(UserInfoEntity user);
 	public abstract void delete(UserInfoEntity user);
+	
 }

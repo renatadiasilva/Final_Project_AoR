@@ -22,7 +22,8 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @RequestScoped
 public class PositionSearchCDI {
 
-	private static final Logger log = LoggerFactory.getLogger(PositionSearchCDI.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(PositionSearchCDI.class);
 
 	@EJB
 	private UserEJBInterface userEJB;
@@ -32,19 +33,14 @@ public class PositionSearchCDI {
 
 	// search fields
 	private Date date1, date2;
-
 	private String code, title, status;
 	private String company, tarea, keyword;
-
 	private String location;
 	private boolean coimbra, lisboa, porto, other;
 	private List<String> locations;
-
 	private Long idU;
 	private Long idPos;
-
 	private int days;
-
 	private boolean result;
 
 	private List<PositionEntity> plist;
@@ -149,8 +145,9 @@ public class PositionSearchCDI {
 			log.debug("Internal search string (ccompany): "+pattern5);
 			String pattern6 = SearchPattern.preparePattern(tarea);
 			log.debug("Internal search string (tech area): "+pattern6);
-			this.plist = positionEJB.findPositionsByManager(date1, date2, pattern1,
-					pattern2, pattern3, pattern4, pattern5, pattern6, manager);
+			this.plist = positionEJB.findPositionsByManager(date1, date2,
+					pattern1, pattern2, pattern3, pattern4, pattern5, 
+					pattern6, manager);
 		} else log.error("No manager with id "+idU);
 	}	
 
@@ -162,21 +159,25 @@ public class PositionSearchCDI {
 	public void searchPositionsByCandidate() {
 		log.info("Searching for positions by candidate");
 		UserEntity candidate = userEJB.find(idU);
-		if ( (candidate != null) && (candidate.getRoles().contains("CANDIDATE")) ) {
+		if ( (candidate != null) &&
+				(candidate.getRoles().contains("CANDIDATE")) ) {
 			log.debug("Candidate "+candidate.getFirstName());
 			this.plist = positionEJB.findPositionsByCandidate(candidate);
 		} else log.error("No candidate with id "+idU);
 	}
 
 	public void alreadyCandidateOfPosition() {
-		log.info("Checking if candidate is already associated with a positions");
+		log.info("Checking if candidate is already associated "
+				+ "with a positions");
 		UserEntity candidate = userEJB.find(idU);
-		if ( (candidate != null) && (candidate.getRoles().contains("CANDIDATE")) ) {
+		if ( (candidate != null) && 
+				(candidate.getRoles().contains("CANDIDATE")) ) {
 			log.debug("Candidate "+candidate.getFirstName());
 			PositionEntity position = positionEJB.find(idPos);
 			if (position != null) {
 				log.debug("Position "+position.getPositionCode());
-				result = positionEJB.alreadyCandidateOfPosition(candidate, position);
+				result = positionEJB.alreadyCandidateOfPosition(candidate,
+						position);
 			} else log.error("No position with id "+idPos);
 		} else log.error("No candidate with id "+idU);
 	}
@@ -200,7 +201,8 @@ public class PositionSearchCDI {
 		if ( (manager != null) && (manager.getRoles().contains("MANAGER")) ) {
 			String pattern = SearchPattern.preparePattern(keyword);
 			log.debug("Internal search string: "+pattern);
-			this.plist = positionEJB.findPositionsByKeywordAndManager(pattern, manager);
+			this.plist = positionEJB.findPositionsByKeywordAndManager(pattern,
+					manager);
 		} else log.error("No manager with id "+idU);
 	}
 

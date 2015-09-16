@@ -20,7 +20,8 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @RequestScoped
 public class CandidateSearchCDI {
 
-	private static final Logger log = LoggerFactory.getLogger(CandidateSearchCDI.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(CandidateSearchCDI.class);
 
 	@EJB
 	private UserEJBInterface userEJB;
@@ -32,7 +33,6 @@ public class CandidateSearchCDI {
 	private String email, fname, lname, keyword;
 	private String address, city, phone, country;
 	private String course, school;
-
 	private Long idPos;
 
 	private List<UserEntity> ulist;

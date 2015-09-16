@@ -18,7 +18,8 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 @Stateless
 public class InterviewEJBImp implements InterviewEJBInterface {
 
-	private static final Logger log = LoggerFactory.getLogger(InterviewEJBImp.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(InterviewEJBImp.class);
 	
 	@EJB
 	private InterviewDao interviewDAO;
@@ -35,7 +36,6 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 
 	@Override
 	public void update(InterviewEntity interview) {
-		//validations here????
 		log.info("Updating interview of DB");
 		isInterviewComplete(interview);
 		interviewDAO.update(interview);
@@ -61,7 +61,8 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
-	public List<InterviewEntity> findCarriedOutInterviews(Date date1, Date date2) {
+	public List<InterviewEntity> findCarriedOutInterviews(Date date1,
+			Date date2) {
 		log.info("Finding all carried out interviews between two dates");
 		return interviewDAO.findCarriedOutInterviews(date1, date2);
 	}
@@ -81,9 +82,11 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
-	public boolean interviewerHasDateConflict(Date date, UserEntity interviewer) {
+	public boolean interviewerHasDateConflict(Date date, 
+			UserEntity interviewer) {
 		log.info("Checking if interviewer has date conflict");
-		List<InterviewEntity> inter = interviewDAO.findByDateAndInterviewer(date, interviewer);
+		List<InterviewEntity> inter = 
+				interviewDAO.findByDateAndInterviewer(date, interviewer);
 		if (inter == null) return false;
 		if (inter.size() == 1) return true;
 		return false;
@@ -92,7 +95,8 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	@Override
 	public boolean candidateHasDateConflict(Date date, UserEntity candidate) {
 		log.info("Checking if candidate has date conflit");
-		List<InterviewEntity> inter = interviewDAO.findByDateAndCandidate(date, candidate);
+		List<InterviewEntity> inter = interviewDAO.findByDateAndCandidate(date,
+				candidate);
 		if (inter == null) return false;
 		if (inter.size() == 1) return true;
 		return false;

@@ -16,7 +16,8 @@ import org.slf4j.LoggerFactory;
 @Stateless
 public class PositionEJBImp implements PositionEJBInterface {
 
-	private static final Logger log = LoggerFactory.getLogger(PositionEJBImp.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(PositionEJBImp.class);
 	
 	@EJB
 	private PositionDao positionDAO;
@@ -58,16 +59,14 @@ public class PositionEJBImp implements PositionEJBInterface {
 	public List<PositionEntity> findPositionsByCode(String code) {
 		log.info("Finding positions by code");
 		return positionDAO.findPositions(code, "%", "%", "%", "%", "%", null);
-//		return positionDAO.findPositionsByCode(codePattern);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByDate(Date openingDate1,
 			Date openingDate2) {
 		log.info("Finding all positions opened between two dates");
-//		return positionDAO.findPositionsByDate(openingDate1, openingDate2);
-		return positionDAO.findPositionsByDate(openingDate1, openingDate2, "%", "%", 
-				"%", "%", "%", "%", null);
+		return positionDAO.findPositionsByDate(openingDate1, openingDate2, "%",
+				"%", "%", "%", "%", "%", null);
 	}
 
 	@Override
@@ -75,17 +74,18 @@ public class PositionEJBImp implements PositionEJBInterface {
 		log.info("Finding positions by title");
 		return positionDAO.findPositions("%", title, "%",
 				"%", "%", "%", null);
-//		return positionDAO.findPositionsByTitle(title);
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByLocationsOne(List<String> locations) {
+	public List<PositionEntity> findPositionsByLocationsOne(
+			List<String> locations) {
 		log.info("Finding positions by locations");
 		return positionDAO.findPositionsByLocationsOne(locations);
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByLocationsAll(List<String> locations) {
+	public List<PositionEntity> findPositionsByLocationsAll(
+			List<String> locations) {
 		log.info("Finding positions by locations");
 		return positionDAO.findPositionsByLocationsAll(locations);
 	}
@@ -95,7 +95,6 @@ public class PositionEJBImp implements PositionEJBInterface {
 		log.info("Finding positions by status");
 		return positionDAO.findPositions("%", "%", "%",
 				currentStatus, "%", "%", null);
-//		return positionDAO.findPositionsByStatus(currentStatus);
 	}
 
 	@Override
@@ -103,14 +102,13 @@ public class PositionEJBImp implements PositionEJBInterface {
 		log.info("Finding positions by company");
 		return positionDAO.findPositions("%", "%", "%",
 				"%", company, "%", null);
-//		return positionDAO.findPositionsByCompany(company);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByTechArea(String tecnhicalArea) {
 		log.info("Finding positions by technical area");
-		return positionDAO.findPositions("%", "%", "%",	"%", "%", tecnhicalArea, null);
-//		return positionDAO.findPositionsByCompany(tecnhicalArea);
+		return positionDAO.findPositions("%", "%", "%",	"%", "%", 
+				tecnhicalArea, null);
 	}
 
 	@Override
@@ -119,8 +117,9 @@ public class PositionEJBImp implements PositionEJBInterface {
 			String location, String currentStatus, String company,
 			String technicalArea) {
 		log.info("Finding positions by several attributes");
-		return positionDAO.findPositionsByDate(openingDate1, openingDate2, positionCode, 
-				title, location, currentStatus, company, technicalArea, null);
+		return positionDAO.findPositionsByDate(openingDate1, openingDate2, 
+				positionCode, title, location, currentStatus, company, 
+				technicalArea, null);
 	}
 
 	@Override
@@ -129,9 +128,9 @@ public class PositionEJBImp implements PositionEJBInterface {
 			String location, String currentStatus, String company,
 			String technicalArea, UserEntity positionManager) {
 		log.info("Finding positions of given manager by several attributes");
-		return positionDAO.findPositionsByDate(openingDate1, openingDate2, positionCode, 
-				title, location, currentStatus, company, technicalArea, 
-				positionManager);
+		return positionDAO.findPositionsByDate(openingDate1, openingDate2, 
+				positionCode, title, location, currentStatus, company, 
+				technicalArea, positionManager);
 	}
 
 	@Override
@@ -145,31 +144,19 @@ public class PositionEJBImp implements PositionEJBInterface {
 	public List<PositionEntity> findPositionsByCandidate(
 			UserEntity candidate) {
 		log.info("Finding positions associated to a given candidate");
-		// colocar isto fora...
-//		List<PositionEntity> listP = new ArrayList<PositionEntity>();
-//		List<SubmissionEntity> listS = candidate.getSubmissions();
-//		for (SubmissionEntity s : listS)
-//			listP.add(s.getPosition());
-//		return listP; //order by??
 		return positionDAO.findPositionsByCandidate(candidate);		
 	}
 
 	@Override
 	public boolean alreadyCandidateOfPosition(
 			UserEntity candidate, PositionEntity position) {
-		log.info("Find if a positions is already associated to a given candidate");
-		// colocar isto fora...
-//		List<SubmissionEntity> listS = candidate.getSubmissions();
-//		for (SubmissionEntity s : listS)
-//			if (s.getPosition().equals(position)) return true;
-//		return false;
-
-		// ou então usar query
-		List<PositionEntity> pos = positionDAO.findByPositionAndCandidate(candidate, position);
-		if (pos == null) return false; // no previouse submission exists
-		if (pos.size() == 1) return true; // the candidate is already associated to the position
-		return false; // no previouse submission exists
-		
+		log.info("Find if a positions is already associated to a "
+				+ "given candidate");
+		List<PositionEntity> pos = positionDAO.findByPositionAndCandidate(
+				candidate, position);
+		if (pos == null) return false; // no previous submission exists
+		if (pos.size() == 1) return true; // candidate/position association
+		return false; // no previous submission exists		
 	}
 
 	@Override
@@ -185,7 +172,8 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByKeywordAndManager(String keyword, UserEntity positionManager) {
+	public List<PositionEntity> findPositionsByKeywordAndManager(String keyword,
+			UserEntity positionManager) {
 		log.info("Finding positions of given manager by keyword");
 		return positionDAO.findPositionsByKeyword(keyword, positionManager);
 	}

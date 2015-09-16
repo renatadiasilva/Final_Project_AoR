@@ -23,60 +23,74 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();		
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findSomeResults("Interview.findCarriedOutInterviews", parameters);
+		return super.findSomeResults("Interview.findCarriedOutInterviews",
+				parameters);
 	}
 	
 	public List<InterviewEntity> findCarriedOutInterviewsByUser(
 			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("user", interviewer);
-		return super.findSomeResults("Interview.findCarriedOutInterviewsByUser", parameters);
+		return super.findSomeResults("Interview.findCarriedOutInterviewsByUser",
+				parameters);
 	}
 	
 	public List<InterviewEntity> findScheduledInterviewsByUser(
 			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("user", interviewer);
-		return super.findSomeResults("Interview.findScheduledInterviewsByUser", parameters);
+		return super.findSomeResults("Interview.findScheduledInterviewsByUser",
+				parameters);
 	}
 
 	public List<InterviewEntity> findScheduledInterviewsByCandidate(
 			UserEntity candidate) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("candidate", candidate);
-		return super.findSomeResults("Interview.findScheduledInterviewsByCandidate", parameters);
+		return super.findSomeResults(
+				"Interview.findScheduledInterviewsByCandidate", parameters);
 	}
 	
-	public List<InterviewEntity> findByDateAndInterviewer(Date date, UserEntity interviewer) {
+	public List<InterviewEntity> findByDateAndInterviewer(Date date,
+			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("date", date); // format date!!!
+		parameters.put("date", date);
 		parameters.put("user", interviewer);
-		return super.findSomeResults("Interview.findByDateAndInterviewer", parameters);
+		return super.findSomeResults("Interview.findByDateAndInterviewer",
+				parameters);
 	}
 	
-	public List<InterviewEntity> findByDateAndCandidate(Date date, UserEntity candidate) {
+	public List<InterviewEntity> findByDateAndCandidate(Date date,
+			UserEntity candidate) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date", date);
 		parameters.put("candidate", candidate);
-		return super.findSomeResults("Interview.findByDateAndCandidate", parameters);
+		return super.findSomeResults("Interview.findByDateAndCandidate",
+				parameters);
 	}
 
-	public List<InterviewEntity> findInterviewByPosition(PositionEntity position) {
+	public List<InterviewEntity> findInterviewByPosition(
+			PositionEntity position) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("position", position);
-		return super.findSomeResults("Interview.findInterviewByPosition", parameters);
+		return super.findSomeResults("Interview.findInterviewByPosition",
+				parameters);
 	}
 
-	public List<InterviewEntity> findCarriedOutInterviewByPosition(PositionEntity position) {
+	public List<InterviewEntity> findCarriedOutInterviewByPosition(
+			PositionEntity position) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("position", position);
-		return super.findSomeResults("Interview.findCarriedOutInterviewByPosition", parameters);
+		return super.findSomeResults(
+				"Interview.findCarriedOutInterviewByPosition", parameters);
 	}
 
-	public List<InterviewEntity> findScheduledInterviewByPosition(PositionEntity position) {
+	public List<InterviewEntity> findScheduledInterviewByPosition(
+			PositionEntity position) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("position", position);
-		return super.findSomeResults("Interview.findScheduledInterviewByPosition", parameters);
+		return super.findSomeResults(
+				"Interview.findScheduledInterviewByPosition", parameters);
 	}
 
 }

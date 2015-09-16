@@ -17,8 +17,10 @@ public abstract class GenericDao<E> {
 	private Class<E> entityClass;
 	
 	// used in accent insensitive searchs
-	static final String ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
-	static final String NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";	
+	static final String 
+		ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
+	static final String 
+		NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";	
 	
 	public GenericDao(Class<E> entityClass) {
 		this.entityClass = entityClass;
@@ -49,13 +51,15 @@ public abstract class GenericDao<E> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected List<E> findSomeResults(String namedQuery, Map<String, Object> parameters) {
+	protected List<E> findSomeResults(String namedQuery,
+			Map<String, Object> parameters) {
 		Query nq = em.createNamedQuery(namedQuery);
 		if (parameters != null && !parameters.isEmpty())
 			populateQueryParameters(nq, parameters);
 		return nq.getResultList();
 	}
 
+	// used in accent insensitive searchs
 	protected static String makeQuery(String selectPart, String fromPart,
 			String extraPart, String[] attributesPart, String[] valuesPart,
 			String AND_OR, String wherePart, String orderbyPart) {
@@ -74,7 +78,8 @@ public abstract class GenericDao<E> {
 		return query;
 	}
 
-	private void populateQueryParameters(Query query, Map<String, Object> parameters) {
+	private void populateQueryParameters(Query query, 
+			Map<String, Object> parameters) {
 		for (Entry<String, Object> entry : parameters.entrySet())
 			query.setParameter(entry.getKey(), entry.getValue());
 	}

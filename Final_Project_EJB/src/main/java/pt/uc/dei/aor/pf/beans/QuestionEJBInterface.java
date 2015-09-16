@@ -10,7 +10,9 @@ public interface QuestionEJBInterface {
 	public abstract void update(QuestionEntity question);
 	public abstract void delete(QuestionEntity question);
 	public abstract QuestionEntity find(Long id);
-	public abstract List<QuestionEntity> findAll();  //só questions tipo!!! mais atributos (idade/nome/etc)
+	public abstract List<QuestionEntity> findAll(); 
+	
+	//só questions tipo!!! mais atributos (idade/nome/etc)
 	//muito complicado??
 
 }

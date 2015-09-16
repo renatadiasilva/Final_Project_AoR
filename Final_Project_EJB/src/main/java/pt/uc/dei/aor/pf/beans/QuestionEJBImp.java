@@ -14,7 +14,8 @@ import pt.uc.dei.aor.pf.entities.QuestionEntity;
 @Stateless
 public class QuestionEJBImp implements QuestionEJBInterface {
 
-	private static final Logger log = LoggerFactory.getLogger(QuestionEJBImp.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(QuestionEJBImp.class);
 	
 	@EJB
 	private QuestionDao questionDAO;

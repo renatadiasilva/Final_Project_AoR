@@ -42,15 +42,9 @@ public class UserInfoEntity implements Serializable {
 	@Column(name = "city", nullable = false, length = 40)
 	private String city;
 	
-//	check pattern
-//  @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
-//  	message="{invalid.phonenumber}")
 	@Column(name = "home_phone", length = 20)
 	private String homePhone;
 	
-//	check pattern
-//	@Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
-//  	message="{invalid.mobilephone}")
 	@NotNull
 	@Column(name = "mobile_phone", nullable = false, length = 20)
 	private String mobilePhone;
@@ -67,11 +61,9 @@ public class UserInfoEntity implements Serializable {
 	@Column(name = "school", nullable = false, length = 100)
 	private String school;
 	
-	// Link
 	@Column(name = "cv")
 	private String cv;
 	
-	// Link (validação!!)
 	@Column(name = "linkedin")
 	private String linkedin;
 	
@@ -82,9 +74,9 @@ public class UserInfoEntity implements Serializable {
 	public UserInfoEntity() {
 	}
 
-	public UserInfoEntity(Date birthday, String adress, String city, String telephone,
-			String mobilePhone, String country, String course, String school, String cv, UserEntity owner) {
-		super();
+	public UserInfoEntity(Date birthday, String adress, String city,
+			String telephone, String mobilePhone, String country, 
+			String course, String school, String cv, UserEntity owner) {
 		this.birthDate = birthday;
 		this.address = adress;
 		this.city = city;
@@ -93,8 +85,8 @@ public class UserInfoEntity implements Serializable {
 		this.country = country;
 		this.course = course;
 		this.school = school;
-		this.cv=cv;
-		this.owner=owner;
+		this.cv = cv;
+		this.owner = owner;
 	}
 
 	public Long getId() {

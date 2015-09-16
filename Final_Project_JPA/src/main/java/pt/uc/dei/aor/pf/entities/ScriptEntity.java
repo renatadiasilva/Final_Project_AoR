@@ -32,9 +32,6 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Script.findReusableScripts",
 			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
 					+ " ORDER BY s.creationDate DESC"),
-//	@NamedQuery(name = "Script.findScriptsByTitle",
-//			query = "SELECT s FROM ScriptEntity s WHERE UPPER(s.title) LIKE :t"
-//					+ " ORDER BY s.title"),
 })
 public class ScriptEntity implements Serializable{
 
@@ -45,7 +42,6 @@ public class ScriptEntity implements Serializable{
 	@Column(name = "id")
 	private Long id;
 
-	// O Script do qual deriva este Script - Null: foi criado de raíz
 	@OneToOne(optional = true)
 	@JoinColumn(name = "derived_from", updatable = false)
 	private ScriptEntity derivedFrom;
@@ -68,7 +64,6 @@ public class ScriptEntity implements Serializable{
 	@Column(name="comments", length = 100)
 	private String comments;
 
-	// True by Default
 	@Column(name = "reusable")
 	private boolean reusable;
 
@@ -176,7 +171,8 @@ public class ScriptEntity implements Serializable{
 		return interviewsUsingScript;
 	}
 
-	public void setInterviewsUsingScript(List<InterviewEntity> interviewsUsingScript) {
+	public void setInterviewsUsingScript(
+			List<InterviewEntity> interviewsUsingScript) {
 		this.interviewsUsingScript = interviewsUsingScript;
 	}
 

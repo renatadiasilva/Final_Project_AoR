@@ -25,90 +25,39 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "positions")
 @NamedQueries({
-//	@NamedQuery(name = "Position.findPositionsByDate",
-//			query = "SELECT p FROM PositionEntity p WHERE p.openingDate "
-//					+ "BETWEEN :date1 AND :date2 ORDER BY p.openingDate"),
-//	@NamedQuery(name = "Position.findPositionsByCode",
-//			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.positionCode) LIKE :c"
-//					+ " ORDER BY p.positionCode"),
-//	@NamedQuery(name = "Position.findPositionsByTitle",
-//			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.title) LIKE :t"
-//					+ " ORDER BY p.positionCode"),
-//	@NamedQuery(name = "Position.findPositionsByLocation",
-//			query = "SELECT p FROM PositionEntity p JOIN p.locations l WHERE l LIKE :loc"
-//					+ " ORDER BY p.positionCode"),
-//			query = "SELECT p FROM PositionEntity p WHERE :loc MEMBER OF p.locations ORDER BY p.positionCode"), //(TESTAR)
-//	@NamedQuery(name = "Position.findPositionsByStatus",
-//			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.status) LIKE :s "
-//					+ "ORDER BY p.positionCode"),
-//	@NamedQuery(name = "Position.findPositionsByCompany",
-//			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.company) LIKE :c"
-//					+ " ORDER BY p.positionCode"),
-//	@NamedQuery(name = "Position.findPositionsByTechArea",
-//			query = "SELECT p FROM PositionEntity p WHERE UPPER(p.technicalArea) LIKE :ta"
-//					+ " ORDER BY p.positionCode"),
-//	@NamedQuery(name = "Position.findPositionsBySeveralAttributes",
-//			query = "SELECT p FROM PositionEntity p WHERE p.openingDate BETWEEN :date1 AND :date2"
-//					+ " AND UPPER(p.positionCode) LIKE :c AND UPPER(p.title) LIKE :t"
-//					+ " AND :loc MEMBER OF p.locations AND UPPER(p.status) LIKE :s"
-//					+ " AND UPPER(p.company) LIKE :comp"
-//					+ " AND UPPER(p.technicalArea) LIKE :ta ORDER BY p.positionCode"),
-//	@NamedQuery(name = "Position.findPositionsBySeveralAttributesByManager",
-//			query = "SELECT p FROM PositionEntity p WHERE p.openingDate BETWEEN :date1 AND :date2"
-//					+ " AND UPPER(p.positionCode) LIKE :c AND UPPER(p.title) LIKE :t"
-//					+ " AND :loc MEMBER OF p.locations AND UPPER(p.status) LIKE :s"
-//					+ " AND UPPER(p.company) LIKE :comp"
-//					+ " AND UPPER(p.technicalArea) LIKE :ta AND p.positionManager = :id"
-//					+ " ORDER BY p.positionCode"),
 	@NamedQuery(name = "Position.findCloseToSLAPositions",
-			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate AND p.status = :status"),
-//	@NamedQuery(name = "Position.findPositionsByKeyword",
-//			query = "SELECT p FROM PositionEntity p WHERE"
-//					+ " UPPER(p.positionCode) LIKE :keyword OR"
-//					+ " UPPER(p.title) LIKE :keyword OR"
-//					+ " :keyword MEMBER OF p.locations OR"
-//					+ " UPPER(p.company) LIKE :keyword OR"
-//					+ " UPPER(p.technicalArea) LIKE :keyword OR"
-//					+ " UPPER(p.description) LIKE :keyword ORDER BY p.positionCode"),
-//	@NamedQuery(name = "Position.findPositionsByKeywordByManager",
-//			query = "SELECT p FROM PositionEntity p WHERE"
-//					+ " (UPPER(p.positionCode) LIKE :keyword OR"
-//					+ " UPPER(p.title) LIKE :keyword OR"
-//					+ " :keyword MEMBER OF p.locations OR"
-//					+ " UPPER(p.company) LIKE :keyword OR"
-//					+ " UPPER(p.technicalArea) LIKE :keyword OR"
-//					+ " UPPER(p.description) LIKE :keyword) "
-//					+ " AND p.positionManager = :id ORDER BY p.positionCode"),
+			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate"
+					+ " AND p.status = :status"),
 	@NamedQuery(name = "Position.findPositionsByCandidate",
-			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s WHERE u = :user"),
+			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s"
+					+ " WHERE u = :user"),
 	@NamedQuery(name = "Position.findByPositionAndCandidate",
-			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s WHERE u = :user AND s.position = :position ")
+			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s"
+					+ " WHERE u = :user AND s.position = :position ")
 })
 public class PositionEntity implements Serializable {
 
 	private static final long serialVersionUID = -2368658385927790368L;
 
-	public static final String LOCATION_LISBOA="LISBOA";
-	public static final String LOCATION_PORTO="PORTO";
-	public static final String LOCATION_COIMBRA="COIMBRA";
+	public static final String LOCATION_LISBOA  = "LISBOA";
+	public static final String LOCATION_PORTO   = "PORTO";
+	public static final String LOCATION_COIMBRA = "COIMBRA";
 
-	public static final String STATUS_OPEN="OPEN";
-	public static final String STATUS_CLOSED="CLOSED";
-	public static final String STATUS_ONHOLD="ON HOLD";
-	// closed with hired people (just internal??)
-	public static final String STATUS_FULFILLED="CLOSED AND FULFILLED";
+	public static final String STATUS_OPEN      = "OPEN";
+	public static final String STATUS_CLOSED    = "CLOSED";
+	public static final String STATUS_ONHOLD    = "ON HOLD";
 
-	public static final String TECH_SSPA="SSPA";
-	public static final String TECH_DOTNET=".Net Development";
-	public static final String TECH_JAVA="Java Development";
-	public static final String TECH_SAFETY="Safety Critical";
-	public static final String TECH_MANAGEMENT="Project Management";
-	public static final String TECH_INTEGRATION="Integration";
+	public static final String TECH_SSPA        = "SSPA";
+	public static final String TECH_DOTNET      = ".NET DEVELOPMENT";
+	public static final String TECH_JAVA        = "JAVA DEVELOPMENT";
+	public static final String TECH_SAFETY      = "SAFETY CRITICAL";
+	public static final String TECH_MANAGEMENT  = "PROJECT MANAGEMENT";
+	public static final String TECH_INTEGRATION = "INTEGRATION";
 
-	public static final String SOCIAL_CRITICAL="Critical Software Website";
-	public static final String SOCIAL_LINKEDIN="Linkedin";
-	public static final String SOCIAL_GLASSDOOR="Glassdoor";
-	public static final String SOCIAL_FACEBOOK="Facebook";
+	public static final String SOCIAL_CRITICAL  = "CRITICAL SOFTWARW WEBSITE";
+	public static final String SOCIAL_LINKEDIN  = "LINKEDIN";
+	public static final String SOCIAL_GLASSDOOR = "GLASSDOOR";
+	public static final String SOCIAL_FACEBOOK  = "FACEBOOK";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -146,7 +95,6 @@ public class PositionEntity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date closingDate;
 
-	// compute using days in the web
 	@Column(name = "sla_date")
 	@Temporal(TemporalType.DATE)
 	private Date slaDate;
@@ -189,23 +137,29 @@ public class PositionEntity implements Serializable {
 	}
 
 	public PositionEntity(String title, List<String> locations, int openings,
-			Date closingDate, Date slaDate, UserEntity positionManager,
+			Date closingDate, int slaDays, UserEntity positionManager,
 			UserEntity positionCreator, String company, String technicalArea,
 			String description, List<String> advertisingChannels,
 			ScriptEntity defaultScript) {
 		this.title = title;
 		this.openingDate = new Date(); // today
+
+		// generate code position (improve this!!!!)
 		Calendar cal = Calendar.getInstance();
-		this.positionCode = title.substring(0, (int) Math.min(3,title.length()))+
-				technicalArea.substring(0,(int) Math.min(3,title.length()))+ 
-				cal.get(Calendar.DAY_OF_MONTH)+
-				(cal.get(Calendar.MONTH)+1)+cal.get(Calendar.YEAR); // do generation!
+		this.positionCode = title.substring(0, (int) Math.min(3,title.length()))
+				+technicalArea.substring(0,(int) Math.min(3,title.length()))
+				+cal.get(Calendar.DAY_OF_MONTH)
+				+(cal.get(Calendar.MONTH)+1)+cal.get(Calendar.YEAR);
+		
 		this.locations = locations;
 		this.status = STATUS_OPEN;
 		this.openings = openings;
 		this.closingDate = closingDate; 
-		// use with days??
-		this.slaDate = slaDate;
+
+		// compute SLA date adding SLA days to openingDate (today)
+		cal.add(Calendar.DAY_OF_YEAR, slaDays);
+		this.slaDate = cal.getTime();
+		
 		this.positionManager = positionManager;
 		this.positionCreator = positionCreator;
 		this.company = company;

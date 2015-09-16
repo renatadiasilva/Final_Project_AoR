@@ -14,7 +14,8 @@ import pt.uc.dei.aor.pf.entities.ScriptEntity;
 @Stateless
 public class ScriptEJBImp implements ScriptEJBInterface {
 
-	private static final Logger log = LoggerFactory.getLogger(ScriptEJBImp.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(ScriptEJBImp.class);
 	
 	@EJB
 	private ScriptDao scriptDAO;

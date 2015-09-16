@@ -15,7 +15,8 @@ import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 @Stateless
 public class SubmissionEJBImp implements SubmissionEJBInterface {
 
-	private static final Logger log = LoggerFactory.getLogger(InterviewEJBImp.class);
+	private static final Logger log = 
+			LoggerFactory.getLogger(SubmissionEJBImp.class);
 	
 	@EJB
 	private SubmissionDao submissionDAO;
@@ -60,7 +61,8 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 
 	@Override
-	public List<SubmissionEntity> findSubmissionsByDate(Date date1, Date date2) {
+	public List<SubmissionEntity> findSubmissionsByDate(Date date1,
+			Date date2) {
 		log.info("Finding submissions between two dates");
 		return submissionDAO.findSubmissionsByDate(date1, date2);
 	}
@@ -87,7 +89,8 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 
 	@Override
-	public List<SubmissionEntity> findPresentedProposals(Date date1, Date date2) {
+	public List<SubmissionEntity> findPresentedProposals(Date date1,
+			Date date2) {
 		log.info("Finding presented proposals between two dates");
 		return submissionDAO.findPresentedProposalByDate(date1, date2);
 	}
@@ -101,8 +104,8 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 		else if (submission.getStatus() == null) hasError = true;
 
 		if (hasError)
-			throw new IllegalArgumentException("The submission is missing data. "
-					+ "Check the notnull attributes.");
+			throw new IllegalArgumentException("The submission is missing"
+					+ " data. Check the notnull attributes.");
 	}
 
 }

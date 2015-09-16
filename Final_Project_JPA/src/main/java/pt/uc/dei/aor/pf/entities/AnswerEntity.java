@@ -55,13 +55,16 @@ public class AnswerEntity implements Serializable {
 		this.interview = interview;
 		this.question = question;
 		
-		if (question.getType().equals(QuestionEntity.VALUE)) this.value = value;
-		if (question.getType().equals(QuestionEntity.ISTRUE)) this.isTrue = isTrue;
-		if (question.getType().equals(QuestionEntity.ANSWER)) this.answer = answer;
+		if (question.getType().equals(QuestionEntity.VALUE)) 
+			this.value = value;
+		if (question.getType().equals(QuestionEntity.ISTRUE)) 
+			this.isTrue = isTrue;
+		if (question.getType().equals(QuestionEntity.ANSWER)) 
+			this.answer = answer;
 		
 		this.comments = comments;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
