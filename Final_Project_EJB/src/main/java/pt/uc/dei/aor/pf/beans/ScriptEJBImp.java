@@ -8,7 +8,9 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.ScriptDao;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -18,10 +20,13 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(ScriptEJBImp.class);
-	
+
 	@EJB
 	private ScriptDao scriptDAO;
-	
+
+	@EJB
+	private PositionDao positionDAO;
+
 	@Override
 	public void save(ScriptEntity script) {
 		log.info("Saving script in DB");
@@ -39,15 +44,46 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 	@Override
 	public void delete(ScriptEntity script) {
 		log.info("Deleting/Making not reusable a script from DB");
-		scriptDAO.delete(script);
+
+		// there are open positions with this script as default
+		if (positionDAO.findOpenPositionsByScript(script) != null) {
+			// erro: avisar para o admin ir mudar o default 
+			// das posições e/ou listá-las
+			// ou apresentar logo uma lista com as posições e scripts??
+			return;
+		} else { //no positions
+			// there are interviews using this script
+			if (script.getInterviewsUsingScript() != null) {
+				// script cannot be used anymore, but don't delete it
+				script.setReusable(false);
+			} else scriptDAO.delete(script, ScriptEntity.class);
+		}
 	}
-	
+
 	@Override
-	public void edit(ScriptEntity script, String title,
-			List<QuestionEntity> questions, String comments, 
+	public void edit(ScriptEntity script, List<QuestionEntity> questions, 
 			UserEntity creator) {
 		log.info("Editing/Cloning script from DB");
-		scriptDAO.edit(script, title, questions, comments, creator);
+
+		// there are positions with this script as default
+		// and/or there are interviews using this script
+		List<PositionEntity> plist = script.getPositionsWithScriptDefault(); 
+		if (plist != null || script.getInterviewsUsingScript() != null) {
+			// clone script
+			ScriptEntity newScript = new ScriptEntity(script, script.getTitle(),
+					questions, script.getComments(), true, creator);
+			save(newScript);
+			// old script cannot be used anymore
+			script.setReusable(false);
+			
+			// change position default script, if any
+			if (plist != null)
+				for (PositionEntity p : plist)
+					p.setDefaultScript(newScript);
+		} else { // no position/interviews using this script
+			script.setQuestions(questions);
+			scriptDAO.update(script);
+		}
 	}
 
 	@Override
@@ -76,7 +112,7 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 
 	private void isScriptComplete(ScriptEntity script) {
 		boolean hasError = false;
-		
+
 		if (script == null) hasError = true;
 		else if (script.getTitle() == null) hasError = true;
 		else if (script.getCreationDate() == null) hasError = true;

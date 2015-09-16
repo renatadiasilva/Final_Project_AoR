@@ -13,17 +13,30 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.syndication.io.impl.Base64;
 
+import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.dao.UserDao;
+import pt.uc.dei.aor.pf.dao.UserInfoDao;
+import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
 @Stateless
 public class UserEJBImp implements UserEJBInterface {
 
 	private static final Logger log = LoggerFactory.getLogger(UserEJBImp.class);
 
+	static final String REMOVED_DATA = "DADOS APAGADOS";	
+
 	@EJB
 	private UserDao userDAO;
+	
+	@EJB
+	private UserInfoDao userInfoDAO;
+	
+	@EJB
+	private SubmissionDao submissionDAO;
 
 	@Override
 	public void save(UserEntity user) {
@@ -80,9 +93,58 @@ public class UserEJBImp implements UserEJBInterface {
 	}
 
 	@Override
-	public void delete(UserEntity user) {
+	public void delete(UserEntity user, UserEntity admin) {
 		log.info("Deleting data of user from DB");
-		userDAO.delete(user);
+		
+		// remove the data not the user
+		user.setEmail(REMOVED_DATA);  // deixar email??
+		user.setPassword("12345");
+		user.setFirstName(REMOVED_DATA);
+		user.setLastName(REMOVED_DATA);
+		user.setDefaultRole(REMOVED_DATA);  // ok??
+		user.setRoles(null);  // erro ao entrar??
+		
+		// remove the data not the userInfo
+		UserInfoEntity userInfo = user.getUserInfo();
+		userInfo.setBirthDate(null);
+		userInfo.setAddress(REMOVED_DATA);
+		userInfo.setCity(REMOVED_DATA);
+		userInfo.setHomePhone(null);
+		userInfo.setMobilePhone("000 000 000");
+		userInfo.setCountry(REMOVED_DATA);
+		userInfo.setCourse(REMOVED_DATA);
+		userInfo.setSchool(REMOVED_DATA);
+		userInfo.setCv(null);
+		userInfo.setLinkedin(null);
+		userInfoDAO.update(userInfo); // ???? CASCADE???
+		
+		// mudanças/remoções manuais ou passar para admin???		
+		// ------------------------------------------------
+		
+		List<PositionEntity> plist = user.getManagedPositions();
+		if (plist != null)
+			for (PositionEntity p : plist)
+				// temporariamente (mudar perfil?)
+				p.setPositionManager(admin);
+				// avisar que existem posições que precisam de novo gestor
+			
+		List<InterviewEntity> ilist = user.getInterviews();
+		if (ilist != null)
+			for (InterviewEntity i : ilist) {
+				List<UserEntity> ulist = i.getInterviewers();
+				ulist.remove(user);
+				// temporariamente (mudar perfil?)
+				if (ulist.isEmpty()) i.addInterviewer(admin);
+				// avisar que existem entrevistas que ficam sem entrevistador
+			}
+
+		List<SubmissionEntity> slist = user.getSubmissions();
+		if (slist != null) 
+			for (SubmissionEntity s : slist)
+				submissionDAO.delete(s, SubmissionEntity.class);
+				// se tem interviews?? meter delete no DAO?
+		
+		userDAO.update(user);
 	}
 
 	@Override

@@ -18,31 +18,6 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		super(InterviewEntity.class);
 	}
 
-	public void delete(InterviewEntity interview) {
-
-		if (interview.isCarriedOut()) {
-			// erro, não pode apagar se tiver feedback/etc -> warning
-
-			// ou remover dados??
-			// remove the data not the interview
-			//		interview.setDate(null);
-			//		interview.setCarriedOut(false);
-			//		interview.setScript(null);
-			//		interview.setApproved(false);
-			//		interview.setFeedback(REMOVED_DATA);
-			//		update(interview);
-
-		} else {
-			List<UserEntity> ulist = interview.getInterviewers();
-			if (ulist != null) {
-				// fazer interview.removeAllInterviewers();
-				//interview.removeInterviewer(user);
-			}
-			else delete(interview, InterviewEntity.class);
-		}
-
-	}	
-
 	public List<InterviewEntity> findCarriedOutInterviews(Date date1,
 			Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();		

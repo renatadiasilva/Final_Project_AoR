@@ -10,9 +10,8 @@ public interface ScriptEJBInterface {
 	public abstract void save(ScriptEntity script);
 	public abstract void update(ScriptEntity script);
 	public abstract void delete(ScriptEntity script);
-	public abstract void edit(ScriptEntity script, String title,
-			List<QuestionEntity> questions, String comments,
-			UserEntity creator);
+	public abstract void edit(ScriptEntity script, 
+			List<QuestionEntity> questions, UserEntity creator);
 	public abstract ScriptEntity find(Long id);
 	public abstract List<ScriptEntity> findAll();
 	public abstract List<ScriptEntity> findReusableScripts();

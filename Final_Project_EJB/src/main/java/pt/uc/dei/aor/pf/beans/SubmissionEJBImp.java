@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
+import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -40,15 +41,29 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	@Override
 	public void delete(SubmissionEntity submission) {
 		log.info("Deleting submission from DB");
-		submissionDAO.delete(submission);
+		// the submission has interviews
+		List<InterviewEntity> ilist = submission.getInterviews();
+		if (ilist != null) {
+			// CASCADE APAGA LOGO??
+			// ou avisar admin que há entrevistas e ele apaga-as à mão
+			// ou dá autorização para se apagar automaticamente
+		}
+		else submissionDAO.delete(submission, SubmissionEntity.class);
 	}
 
 	@Override
 	public void addPositionToSpontaneous(SubmissionEntity submission,
 			PositionEntity position, UserEntity user) {
 		log.info("Adding position to a spontaneous submission (cloning)");
-		submissionDAO.addPositionToSpontaneous(submission, position, user);
-	}
+		// clone submission: na web???
+		SubmissionEntity newSubmission = new SubmissionEntity(
+				submission.getCandidate(), submission.getMotivationLetter(),
+				submission.getSources(), false);
+		newSubmission.setPosition(position);
+		newSubmission.setAssociatedBy(user);
+		newSubmission.setDate(submission.getDate());
+		save(newSubmission);
+}
 
 	@Override
 	public SubmissionEntity find(Long id) {

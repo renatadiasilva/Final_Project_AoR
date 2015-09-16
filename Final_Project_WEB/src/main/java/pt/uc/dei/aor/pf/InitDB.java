@@ -196,12 +196,13 @@ public class InitDB {
 		for(int i = 0; i < 6; i++) {
 			ulist[i+4].setDefaultRole(UserEntity.ROLE_CANDIDATE);
 			ulist[i+4].setRoles(roles);
-			ulist[i+4].setUserInfo(uilist[i]);
+			ulist[i+4].setUserInfo(uilist[i]); // verificar se necessário
 		}
 		
 		roles = Arrays.asList(UserEntity.ROLE_MANAGER);
 		ulist[10].setDefaultRole(UserEntity.ROLE_MANAGER);
 		ulist[10].setRoles(roles);
+		
 		
 		// SCRIPT ATTRIBUTES
 		
@@ -232,6 +233,7 @@ public class InitDB {
 		plist[2].setAdvertisingChannels(channels);
 		plist[2].setOpeningDate(ftDate.parse("2015-07-31"));
 
+		
 		// SUBMISSION ATTRIBUTES
 		
 		List<String> sources = Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO,
@@ -298,6 +300,7 @@ public class InitDB {
 		slist[12].setStatus(SubmissionEntity.STATUS_SPROPOSAL);
 		slist[12].setDate(ftDate.parse("2015-08-01"));
 
+		
 		// INTERVIEW ATTRIBUTES
 		
 		ilist[0].addInterviewer(ulist[3]);
@@ -331,6 +334,7 @@ public class InitDB {
 		ilist[5].setApproved(true);
 		ilist[5].setFeedback("O candidato satisfez plenamente blablabla");
 
+		
 		// ENTITIES PRESISTENCE
 		
 		for (UserEntity u : ulist) {

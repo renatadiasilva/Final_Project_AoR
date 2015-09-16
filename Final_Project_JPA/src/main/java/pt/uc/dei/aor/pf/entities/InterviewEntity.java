@@ -207,5 +207,5 @@ public class InterviewEntity implements Serializable {
 	public void removeInterviewer(UserEntity user) {
 		if (interviewers != null) interviewers.remove(user);
 	}
-
+	
 }

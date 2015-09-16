@@ -11,7 +11,6 @@ import javax.persistence.Query;
 
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -21,38 +20,6 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		super(PositionEntity.class);
 	}
 
-	public void delete(PositionEntity position) {
-		// there are already submitions on this position
-		List<SubmissionEntity> slist = position.getSubmissions(); 
-		if (slist != null) {
-			// erro: avisar o admin que há candidaturas
-			// terá de avisar users e remover tudo à mão
-			
-			// warning: fechar posição ou colocar on hold??
-			
-			// ou apresentar logo uma lista com a candidaturas para as
-			// remover e avisar users??
-		} else delete(position, PositionEntity.class);
-		
-		// remove the data not the position
-//		Calendar cal = Calendar.getInstance();
-//		cal.set(1900, 1, 1);
-//		position.setOpeningDate(cal.getTime());
-//		position.setPositionCode(REMOVED_DATA);
-//		position.setTitle(REMOVED_DATA);
-//		position.setLocations(null);
-//		position.setStatus(REMOVED_DATA);
-//		position.setOpenings(-1);
-//		position.setClosingDate(cal.getTime());
-//		position.setSlaDate(cal.getTime());
-//		position.setCompany(REMOVED_DATA);
-//		position.setTechnicalArea(REMOVED_DATA);
-//		position.setDescription(REMOVED_DATA);
-//		position.setAdvertisingChannels(null);
-//		position.setDefaultScript(null);
-//		update(position);
-	}
-	
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositionsByLocationsOne(
 			List<String> locations) {

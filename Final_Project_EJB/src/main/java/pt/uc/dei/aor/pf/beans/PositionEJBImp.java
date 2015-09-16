@@ -40,7 +40,17 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public void delete(PositionEntity position) {
 		log.info("Deleting position from DB");
-		positionDAO.delete(position);
+		
+		if (position.getSubmissions() != null) {
+			// erro: avisar o admin que há candidaturas
+			// terá de avisar users e remover tudo à mão
+			
+			// warning: quer fechar posição ou colocar on hold??
+			
+			// ou apresentar logo uma lista com a candidaturas para as
+			// remover e avisar users??
+		} else positionDAO.delete(position, PositionEntity.class);
+		
 	}
 
 	@Override

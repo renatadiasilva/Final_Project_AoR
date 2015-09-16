@@ -35,7 +35,7 @@ public class UserInfoEJBImp implements UserInfoEJBInterface {
 	@Override
 	public void delete(UserInfoEntity userInfo) {
 		log.info("Deleting userInfo from DB");
-		userInfoDAO.delete(userInfo);
+		userInfoDAO.delete(userInfo, UserInfoEntity.class);
 	}
 
 	private void isUserInfoComplete(UserInfoEntity u) {

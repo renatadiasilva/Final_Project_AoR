@@ -27,6 +27,9 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	@EJB
 	private SubmissionDao submissionDAO;
 	
+	@EJB
+	private PositionEntity positionDAO;
+	
 	@Override
 	public void save(InterviewEntity interview) {
 		log.info("Saving interview in DB");
@@ -43,8 +46,10 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 
 	@Override
 	public void delete(InterviewEntity interview) {
-		log.info("Deleting data of interview from DB");
-		interviewDAO.delete(interview);
+		log.info("Deleting interview from DB");
+		if (interview.isCarriedOut()) {
+			// erro, não pode apagar -> warning ao admin
+		} else interviewDAO.delete(interview, InterviewEntity.class);
 	}
 
 	@Override
