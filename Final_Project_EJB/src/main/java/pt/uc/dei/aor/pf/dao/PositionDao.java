@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
@@ -91,29 +92,24 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		return (List<PositionEntity>) query.getResultList();
-		
 	
 	}
 
 	public List<PositionEntity> findPositionsByCandidate(
-			UserEntity candidate) {
-		
+			UserEntity candidate) {		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("user", candidate);
 		return super.findSomeResults("Position.findPositionsByCandidate", 
 				parameters);
-	
 	}
 
 	public List<PositionEntity> findByPositionAndCandidate(
 			UserEntity candidate, PositionEntity position) {
-	
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("user", candidate);
 		parameters.put("position", position);
 		return super.findSomeResults("Position.findByPositionAndCandidate",
 				parameters);
-	
 	}
 
 	@SuppressWarnings("unchecked")
@@ -200,6 +196,15 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		return (List<PositionEntity>) query.getResultList();
 		
+	}
+
+	public List<PositionEntity> findOpenPositionsByScript(
+			ScriptEntity script) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("status", PositionEntity.STATUS_OPEN);
+		parameters.put("script", script);
+		return super.findSomeResults("Position.findOpenPositionsByScript",
+				parameters);
 	}
 
 }

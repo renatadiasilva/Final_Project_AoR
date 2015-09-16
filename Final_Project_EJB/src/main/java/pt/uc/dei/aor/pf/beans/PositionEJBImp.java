@@ -5,6 +5,7 @@ import java.util.List;
 
 import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import javax.ejb.EJB;
@@ -175,6 +176,13 @@ public class PositionEJBImp implements PositionEJBInterface {
 			UserEntity positionManager) {
 		log.info("Finding positions of given manager by keyword");
 		return positionDAO.findPositionsByKeyword(keyword, positionManager);
+	}
+
+	@Override
+	public List<PositionEntity> findOpenPositionsByScript(
+			ScriptEntity script) {
+		log.info("Finding open positions using a script as default");
+		return positionDAO.findOpenPositionsByScript(script);
 	}
 
 	private void isPositionComplete(PositionEntity position) {

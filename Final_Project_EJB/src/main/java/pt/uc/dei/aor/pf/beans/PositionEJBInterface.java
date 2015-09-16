@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 public interface PositionEJBInterface {
@@ -45,5 +46,7 @@ public interface PositionEJBInterface {
 			UserEntity candidate);
 	public abstract boolean alreadyCandidateOfPosition(UserEntity candidate,
 			PositionEntity position);
+	public abstract List<PositionEntity> findOpenPositionsByScript(
+			ScriptEntity script);
 	
 }

@@ -24,13 +24,22 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 
 	public void delete(ScriptEntity script) {
 		// there are open positions with this script as default
+		// find open position with script (fora!!)
 		List<PositionEntity> plist = script.getPositionsWithScriptDefault(); 
 		if (plist != null) { // empty??
-			// erro: avisar para o admin ir mudar o default das posições
-			// e listá-las
-			
-			// ou apresentar logo uma lista com a posições e scripts??
+			for (PositionEntity p : plist) {
+				if (p.getStatus() == PositionEntity.STATUS_OPEN) {
+					// erro: avisar para o admin ir mudar o default 
+					// das posições e/ou listá-las
+					// ou apresentar logo uma lista com a posições e scripts??
+				} else if (p.getStatus() == PositionEntity.STATUS_ONHOLD) {
+					// lançar warning: position on hold que usa script
+					// ou mudar
+//					p.setDefaultScript(newScript); // outro
+				}
+				// não fazer nada se closed
 			return;
+			}
 		}
 		
 		// there are interviews using this script
