@@ -120,7 +120,7 @@ public class PositionEntity implements Serializable {
 	@Column(name = "technical_area", nullable = false)
 	private String technicalArea;
 
-	@Column(name = "description", length = 200)
+	@Column(name = "description", length = 3000)
 	private String description;
 
 	@ElementCollection

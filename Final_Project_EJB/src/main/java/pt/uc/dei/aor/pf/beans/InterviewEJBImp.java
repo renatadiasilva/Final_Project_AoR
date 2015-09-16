@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.dao.InterviewDao;
+import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
@@ -28,7 +29,7 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	private SubmissionDao submissionDAO;
 	
 	@EJB
-	private PositionEntity positionDAO;
+	private PositionDao positionDAO;
 	
 	@Override
 	public void save(InterviewEntity interview) {

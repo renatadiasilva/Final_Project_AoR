@@ -13,8 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
+import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
@@ -30,6 +32,9 @@ public class PositionSearchCDI {
 
 	@EJB
 	private PositionEJBInterface positionEJB;
+	
+	@EJB
+	private ScriptEJBInterface scriptEJB;
 
 	// search fields
 	private Date date1, date2;
@@ -39,7 +44,7 @@ public class PositionSearchCDI {
 	private boolean coimbra, lisboa, porto, other;
 	private List<String> locations;
 	private Long idU;
-	private Long idPos;
+	private Long idPSc;
 	private int days;
 	private boolean result;
 
@@ -53,6 +58,7 @@ public class PositionSearchCDI {
 		this.plist = positionEJB.findAll();
 	}
 
+	
 	public void searchPositionsByCode() {
 		log.info("Searching for positions by code");
 		String pattern = SearchPattern.preparePattern(code);
@@ -60,7 +66,6 @@ public class PositionSearchCDI {
 		this.plist = positionEJB.findPositionsByCode(pattern);
 	}	
 
-	//open??
 	public void searchPositionsByDate() {
 		log.info("Searching for positions between two dates");
 		log.debug("Dates between "+date1+" and "+date2);
@@ -173,12 +178,12 @@ public class PositionSearchCDI {
 		if ( (candidate != null) && 
 				(candidate.getRoles().contains("CANDIDATE")) ) {
 			log.debug("Candidate "+candidate.getFirstName());
-			PositionEntity position = positionEJB.find(idPos);
+			PositionEntity position = positionEJB.find(idPSc);
 			if (position != null) {
 				log.debug("Position "+position.getPositionCode());
 				result = positionEJB.alreadyCandidateOfPosition(candidate,
 						position);
-			} else log.error("No position with id "+idPos);
+			} else log.error("No position with id "+idPSc);
 		} else log.error("No candidate with id "+idU);
 	}
 
@@ -199,11 +204,21 @@ public class PositionSearchCDI {
 		log.info("Searching for positions of manager by keyword");
 		UserEntity manager = userEJB.find(idU);
 		if ( (manager != null) && (manager.getRoles().contains("MANAGER")) ) {
+			log.debug("Manager "+manager.getFirstName());
 			String pattern = SearchPattern.preparePattern(keyword);
 			log.debug("Internal search string: "+pattern);
 			this.plist = positionEJB.findPositionsByKeywordAndManager(pattern,
 					manager);
 		} else log.error("No manager with id "+idU);
+	}
+	
+	public void searchPositionByScript() {
+		log.info("Searching for positions by script");
+		ScriptEntity script = scriptEJB.find(idPSc);
+		if (script != null) {
+			log.debug("Script "+script.getTitle());
+			this.plist = positionEJB.findOpenPositionsByScript(script);
+		} else log.error("No script with id "+idU);
 	}
 
 	// getters e setters
@@ -280,12 +295,12 @@ public class PositionSearchCDI {
 		this.idU = idU;
 	}
 
-	public Long getIdPos() {
-		return idPos;
+	public Long getIdPSc() {
+		return idPSc;
 	}
 
-	public void setIdPos(Long idPos) {
-		this.idPos = idPos;
+	public void setIdPSc(Long id) {
+		this.idPSc = id;
 	}
 
 	public int getDays() {

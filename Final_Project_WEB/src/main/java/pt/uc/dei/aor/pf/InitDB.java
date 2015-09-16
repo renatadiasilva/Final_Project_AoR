@@ -118,21 +118,36 @@ public class InitDB {
 					"Primeira versão", false, ulist[1]), // sclist[0]
 			new ScriptEntity(null, "Guião Geral v2", null, 
 					"Segunda versão", true, ulist[1]), // sclist[1]
+			new ScriptEntity(null, "Guião Programadores", null, 
+					"Primeira versão, baseado no padrão internacional"
+					+ " blablabla", true, ulist[1]), // sclist[2]
 			};
 
 		PositionEntity [] plist = {
-				new PositionEntity("Programadores Java", null, 4, null, 60, 
-					ulist[2], ulist[1], "Critical Software", 
-					PositionEntity.TECH_JAVA, "Procuram-se programadores java "
-					+ "bla bla bla", null, sclist[0]), // plist[0]
-				new PositionEntity("Tecnico de Segurança", null, 1, null, 60, 
-					ulist[2], ulist[1], "Critical Software",
-					PositionEntity.TECH_SAFETY, "Procura-se técnico de"
-					+ " segurança bla bla bla", null, sclist[0]), // plist[1]
-				new PositionEntity("Programadores .NET", null, 3, null, 150, 
-					ulist[10], ulist[1], "IT Grow", PositionEntity.TECH_DOTNET,
-					"Procuram-se programadores .NET bla bla bla", 
-					null, sclist[0]), // plist[2]
+			new PositionEntity("Programadores Java", null, 4, null, 60, 
+				ulist[2], ulist[1], "Critical Software", 
+				PositionEntity.TECH_JAVA, "Procuram-se programadores java "
+				+ "bla bla bla", null, sclist[2]), // plist[0]
+			new PositionEntity("Tecnico de Segurança", null, 1, null, 60, 
+				ulist[2], ulist[1], "Critical Software",
+				PositionEntity.TECH_SAFETY, "Procura-se técnico de"
+				+ " segurança bla bla bla", null, sclist[0]), // plist[1]
+			new PositionEntity("Programadores .NET", null, 3, null, 150, 
+				ulist[10], ulist[1], "IT Grow", PositionEntity.TECH_DOTNET,
+				"Procuram-se programadores .NET bla bla bla", 
+				null, sclist[2]), // plist[2]
+			new PositionEntity("Analistas de Integração", null, 2, null,
+				30, ulist[10], ulist[1], "BPI", 
+				PositionEntity.TECH_INTEGRATION,
+				"O BPI procura analistas de integração para integrar"
+				+ " a sua equipa blablabla", 
+				null, sclist[1]), // plist[3]
+			new PositionEntity("Junior Programador de Java", null, 1, null,
+				40, ulist[2], ulist[1], "BPI", 
+				PositionEntity.TECH_JAVA,
+				"O BPI procura programadores de Java para integrar"
+				+ " a sua equipa de desenvolvimento da aplicação blablabla", 
+				null, sclist[0]), // plist[4]
 			};
 			
 		SubmissionEntity [] slist = {
@@ -152,21 +167,40 @@ public class InitDB {
 			new SubmissionEntity(ulist[7], null, null, false), // slist[10]			
 			new SubmissionEntity(ulist[8], null, null, false), // slist[11]			
 			new SubmissionEntity(ulist[9], null, null, false), // slist[12]			
+			new SubmissionEntity(ulist[4], null, null, false), // slist[13]			
+			new SubmissionEntity(ulist[7], null, null, false), // slist[14]			
+			new SubmissionEntity(ulist[8], null, null, false), // slist[15]			
+			new SubmissionEntity(ulist[9], null, null, false), // slist[16]			
+			new SubmissionEntity(ulist[7], null, null, false), // slist[17]			
+			new SubmissionEntity(ulist[8], null, null, false), // slist[18]			
+			new SubmissionEntity(ulist[9], null, null, false), // slist[19]			
 		};
 		
 		InterviewEntity [] ilist = {
 			new InterviewEntity(slist[5], ftDateHour.parse("2015-09-20 10:00"),
-					sclist[0], ulist[1]), // ilist[0]				
+					sclist[2], ulist[1]), // ilist[0]				
 			new InterviewEntity(slist[8], ftDateHour.parse("2015-09-01 17:30"),
-					sclist[0], ulist[2]), // ilist[1]				
+					sclist[2], ulist[2]), // ilist[1]				
 			new InterviewEntity(slist[10], ftDateHour.parse("2015-08-21 12:00"),
-					sclist[0], ulist[10]), // ilist[2]				
+					sclist[2], ulist[10]), // ilist[2]				
 			new InterviewEntity(slist[11], ftDateHour.parse("2015-08-06 14:00"),
-					sclist[0], ulist[10]), // ilist[3]				
+					sclist[2], ulist[10]), // ilist[3]				
 			new InterviewEntity(slist[12], ftDateHour.parse("2015-08-06 15:00"),
-					sclist[0], ulist[10]), // ilist[4]				
+					sclist[2], ulist[10]), // ilist[4]				
 			new InterviewEntity(slist[12], ftDateHour.parse("2015-08-10 09:00"),
-					sclist[0], ulist[10]), // ilist[5]				
+					sclist[2], ulist[10]), // ilist[5]				
+			new InterviewEntity(slist[13], ftDateHour.parse("2015-09-05 09:00"),
+					sclist[1], ulist[10]), // ilist[6]				
+			new InterviewEntity(slist[15], ftDateHour.parse("2015-09-05 10:00"),
+					sclist[1], ulist[10]), // ilist[7]				
+			new InterviewEntity(slist[16], ftDateHour.parse("2015-09-05 11:00"),
+					sclist[1], ulist[10]), // ilist[8]				
+			new InterviewEntity(slist[17], ftDateHour.parse("2015-07-30 14:00"),
+					sclist[0], ulist[2]), // ilist[9]				
+			new InterviewEntity(slist[18], ftDateHour.parse("2015-07-30 15:00"),
+					sclist[0], ulist[2]), // ilist[10]				
+			new InterviewEntity(slist[19], ftDateHour.parse("2015-07-30 16:00"),
+					sclist[0], ulist[2]), // ilist[11]				
 		};
 		
 		
@@ -228,12 +262,32 @@ public class InitDB {
 		plist[1].setOpeningDate(ftDate.parse("2015-09-02"));
 		
 		locations = Arrays.asList(PositionEntity.LOCATION_LISBOA);
-		channels = Arrays.asList(PositionEntity.SOCIAL_FACEBOOK);
+		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
+				PositionEntity.SOCIAL_FACEBOOK);
 		plist[2].setLocations(locations);
 		plist[2].setAdvertisingChannels(channels);
 		plist[2].setOpeningDate(ftDate.parse("2015-07-31"));
 
+		locations = Arrays.asList(PositionEntity.LOCATION_LISBOA,
+				PositionEntity.LOCATION_COIMBRA, PositionEntity.LOCATION_PORTO);
+		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
+				PositionEntity.SOCIAL_LINKEDIN);
+		plist[3].setLocations(locations);
+		plist[3].setAdvertisingChannels(channels);
+		plist[3].setOpeningDate(ftDate.parse("2015-08-15"));
+		plist[3].setClosingDate(ftDate.parse("2015-09-15"));
+		plist[3].setStatus(PositionEntity.STATUS_CLOSED);
 		
+		locations = Arrays.asList(PositionEntity.LOCATION_COIMBRA);
+		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
+				PositionEntity.SOCIAL_FACEBOOK, PositionEntity.SOCIAL_LINKEDIN);
+		plist[4].setLocations(locations);
+		plist[4].setAdvertisingChannels(channels);
+		plist[4].setOpeningDate(ftDate.parse("2015-06-29"));
+		plist[4].setClosingDate(ftDate.parse("2015-07-31"));
+		plist[4].setStatus(PositionEntity.STATUS_CLOSED);
+		
+
 		// SUBMISSION ATTRIBUTES
 		
 		List<String> sources = Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO,
@@ -300,7 +354,57 @@ public class InitDB {
 		slist[12].setStatus(SubmissionEntity.STATUS_SPROPOSAL);
 		slist[12].setDate(ftDate.parse("2015-08-01"));
 
+		sources = Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO);
+		slist[13].setPosition(plist[3]);
+		slist[13].setSources(sources);
+		slist[13].setStatus(SubmissionEntity.STATUS_HIRED);
+		slist[13].setDate(ftDate.parse("2015-08-30"));
 		
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK);
+		slist[14].setPosition(plist[3]);
+		slist[14].setSources(sources);
+		slist[14].setStatus(SubmissionEntity.STATUS_REJECTED);
+		slist[14].setDate(ftDate.parse("2015-08-17"));
+		slist[14].setRejectReason("O candidato não tem currículo "
+				+ "para a posição");
+
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
+				SubmissionEntity.SOURCE_EXPRESSO);
+		slist[15].setPosition(plist[3]);
+		slist[15].setSources(sources);
+		slist[15].setStatus(SubmissionEntity.STATUS_HIRED);
+		slist[15].setDate(ftDate.parse("2015-09-01"));
+
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
+				SubmissionEntity.SOURCE_EXPRESSO);
+		slist[16].setPosition(plist[3]);
+		slist[16].setSources(sources);
+		slist[16].setStatus(SubmissionEntity.STATUS_ACCEPTED);
+		slist[16].setDate(ftDate.parse("2015-08-30"));
+
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
+				SubmissionEntity.SOURCE_NETEMPREGO);
+		slist[17].setPosition(plist[4]);
+		slist[17].setSources(sources);
+		slist[17].setStatus(SubmissionEntity.STATUS_ACCEPTED);
+		slist[17].setDate(ftDate.parse("2015-07-12"));
+
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
+				SubmissionEntity.SOURCE_LINKEDIN);
+		slist[18].setPosition(plist[4]);
+		slist[18].setSources(sources);
+		slist[18].setStatus(SubmissionEntity.STATUS_ACCEPTED);
+		slist[18].setDate(ftDate.parse("2015-07-01"));
+
+		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
+				SubmissionEntity.SOURCE_EXPRESSO,
+				SubmissionEntity.SOURCE_LINKEDIN);
+		slist[19].setPosition(plist[4]);
+		slist[19].setSources(sources);
+		slist[19].setStatus(SubmissionEntity.STATUS_HIRED);
+		slist[19].setDate(ftDate.parse("2015-07-20"));
+		
+
 		// INTERVIEW ATTRIBUTES
 		
 		ilist[0].addInterviewer(ulist[3]);
@@ -334,7 +438,33 @@ public class InitDB {
 		ilist[5].setApproved(true);
 		ilist[5].setFeedback("O candidato satisfez plenamente blablabla");
 
+		ilist[6].addInterviewer(ulist[3]);
+		ilist[6].setCarriedOut(true);
+		ilist[6].setApproved(true);
+		ilist[6].setFeedback("Recomenda-se a contratação");
+
+		ilist[7].addInterviewer(ulist[3]);
+		ilist[7].setCarriedOut(true);
+		ilist[7].setApproved(true);
+		ilist[7].setFeedback("Excelente! Recomenda-se a contratação");
 		
+		ilist[8].addInterviewer(ulist[3]);
+		ilist[8].setCarriedOut(false);
+		
+		ilist[9].addInterviewer(ulist[3]);
+		ilist[9].setCarriedOut(true);
+		ilist[9].setApproved(true);
+		ilist[9].setFeedback("Boa prestação. A considerar.");
+		
+		ilist[10].addInterviewer(ulist[3]);
+		ilist[10].setCarriedOut(false);
+		
+		ilist[11].addInterviewer(ulist[3]);
+		ilist[11].setCarriedOut(true);
+		ilist[11].setApproved(true);
+		ilist[11].setFeedback("Mais valia para a equipa. Boas indicações");
+		
+
 		// ENTITIES PRESISTENCE
 		
 		for (UserEntity u : ulist) {

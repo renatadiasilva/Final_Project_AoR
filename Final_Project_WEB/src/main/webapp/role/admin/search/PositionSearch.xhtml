@@ -78,6 +78,10 @@
 					action="#{positionSearchCDI.searchPositionsByCandidate()}"
 					update="@form, messages" icon="ui-icon-search" />
 
+				<p:commandButton value="Posições abertas (script)"
+					action="#{positionSearchCDI.searchPositionByScript()}"
+					update="@form, messages" icon="ui-icon-search" />
+
 				<p:commandButton value="Candidato associado a posição?"
 					action="#{positionSearchCDI.alreadyCandidateOfPosition()}"
 					update="@form, messages" icon="ui-icon-search" />
@@ -128,8 +132,8 @@
 				<p:inputText id="search-idUp" value="#{positionSearchCDI.idU}"
 					size="35" />
 
-				<p:outputLabel value="Id da posição: " for="search-idPosp" />
-				<p:inputText id="search-idPosp" value="#{positionSearchCDI.idPos}"
+				<p:outputLabel value="Id posição/guião: " for="search-idPosp" />
+				<p:inputText id="search-idPosp" value="#{positionSearchCDI.idPSc}"
 					size="35" />
 
 				<p:outputLabel value="Candidato+posição? " for="search-resultp" />
