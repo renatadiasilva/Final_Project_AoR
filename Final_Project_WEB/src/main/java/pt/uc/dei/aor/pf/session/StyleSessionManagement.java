@@ -31,19 +31,19 @@ public class StyleSessionManagement implements Serializable{
 	private String logoWidth;
 
 	public StyleSessionManagement() {
-		this.style=this.userManagement.getStyle();
-		
-		if(this.style!=null&&this.style.size()==4){
-			this.companyName=this.style.get(0);
-			this.footerMessage=this.style.get(1);
-			this.primaryColor=this.style.get(2);
-			this.secondaryColor=this.style.get(3);
-		}else{
+//		this.style=this.userManagement.getStyle();
+//		
+//		if(this.style!=null&&this.style.size()==4){
+//			this.companyName=this.style.get(0);
+//			this.footerMessage=this.style.get(1);
+//			this.primaryColor=this.style.get(2);
+//			this.secondaryColor=this.style.get(3);
+//		}else{
 			this.companyName="IT Jobs";
 			this.footerMessage="IT Jobs - Projecto Final | Programação Avançada em JAVA | Duarte Gonçalves | Renata Silva";
 			this.primaryColor="#3f51b5";
 			this.secondaryColor="#ff4081";
-		}
+//		}
 	}
 
 	public String getCompanyName() {
