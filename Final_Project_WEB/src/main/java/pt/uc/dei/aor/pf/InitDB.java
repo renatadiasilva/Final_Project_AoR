@@ -81,6 +81,8 @@ public class InitDB {
 					"Rozeno", null), // ulist[9]
 			new UserEntity("gestor1000@itgrow.pt", "12345", "Stephen",
 					"Hawkings", null), // ulist[10]
+			new UserEntity("entre2000@itgrow.pt", "12345", "Isaac",
+					"Newton", null), // ulist[11]
 		};
 		
 		UserInfoEntity [] uilist = {
@@ -121,6 +123,12 @@ public class InitDB {
 			new ScriptEntity(null, "Guião Programadores", null, 
 					"Primeira versão, baseado no padrão internacional"
 					+ " blablabla", true, ulist[1]), // sclist[2]
+			new ScriptEntity(null, "Guião (entrevista agendada)", null, 
+					"Só para testar", true, ulist[1]), // sclist[3]
+			new ScriptEntity(null, "Guião sem utilidade", null, 
+					"Só para testar", true, ulist[1]), // sclist[4]
+			new ScriptEntity(null, "Guião (entrevista passada)", null, 
+					"Só para testar", true, ulist[1]), // sclist[5]
 			};
 
 		PositionEntity [] plist = {
@@ -204,9 +212,9 @@ public class InitDB {
 			new InterviewEntity(slist[17], ftDateHour.parse("2015-07-30 14:00"),
 					sclist[0], ulist[2]), // ilist[9]				
 			new InterviewEntity(slist[18], ftDateHour.parse("2015-07-30 15:00"),
-					sclist[0], ulist[2]), // ilist[10]				
+					sclist[3], ulist[2]), // ilist[10]				
 			new InterviewEntity(slist[19], ftDateHour.parse("2015-07-30 16:00"),
-					sclist[0], ulist[2]), // ilist[11]				
+					sclist[5], ulist[2]), // ilist[11]				
 		};
 		
 		
@@ -248,6 +256,10 @@ public class InitDB {
 		ulist[10].setRoles(roles);
 		ulist[10].setCreatedBy(ulist[0]);
 
+		roles = Arrays.asList(UserEntity.ROLE_INTERVIEWER);
+		ulist[11].setDefaultRole(UserEntity.ROLE_INTERVIEWER);
+		ulist[11].setRoles(roles);
+		ulist[11].setCreatedBy(ulist[0]);
 
 		// SCRIPT ATTRIBUTES
 		
@@ -427,6 +439,7 @@ public class InitDB {
 		ilist[0].addInterviewer(ulist[3]);
 
 		ilist[1].addInterviewer(ulist[2]);
+		ilist[1].addInterviewer(ulist[11]);
 		ilist[1].setCarriedOut(true);
 		ilist[1].setApproved(true);
 		ilist[1].setFeedback("O candidato mostrou-se muito dinâmico blablabla");
@@ -451,11 +464,13 @@ public class InitDB {
 
 		ilist[5].addInterviewer(ulist[3]);
 		ilist[5].addInterviewer(ulist[10]);
+		ilist[5].addInterviewer(ulist[11]);
 		ilist[5].setCarriedOut(true);
 		ilist[5].setApproved(true);
 		ilist[5].setFeedback("O candidato satisfez plenamente blablabla");
 
 		ilist[6].addInterviewer(ulist[3]);
+		ilist[6].addInterviewer(ulist[11]);
 		ilist[6].setCarriedOut(true);
 		ilist[6].setApproved(true);
 		ilist[6].setFeedback("Recomenda-se a contratação");
@@ -466,6 +481,7 @@ public class InitDB {
 		ilist[7].setFeedback("Excelente! Recomenda-se a contratação");
 		
 		ilist[8].addInterviewer(ulist[3]);
+		ilist[8].addInterviewer(ulist[11]);
 		ilist[8].setCarriedOut(false);
 		
 		ilist[9].addInterviewer(ulist[3]);
