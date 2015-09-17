@@ -15,7 +15,8 @@
 			<h:panelGrid id="buttonsPositionSearch" columns="7">
 
 				<p:commandButton value="Todas posições"
-					action="#{positionSearchCDI.searchAll()}" update="@form, messages"
+					action="#{positionSearchCDI.searchAll()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Posições abertas"
@@ -67,7 +68,8 @@
 					update="@form, messages" icon="ui-icon-search" />
 
 				<p:commandButton value="Posições (keyword/gestor)"
-					action="#{positionSearchCDI.searchPositionsByKeywordAndManager()}"
+					action="#{positionSearchCDI.
+						searchPositionsByKeywordAndManager()}"
 					update="@form, messages" icon="ui-icon-search" />
 
 				<p:commandButton value="Posições (campos/gestor)"
@@ -80,6 +82,15 @@
 
 				<p:commandButton value="Posições abertas (script)"
 					action="#{positionSearchCDI.searchPositionByScript()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+				<p:commandButton value="Posições não abertas (script)"
+					action="#{positionSearchCDI.
+						searchNotOpenPositionByScript()}"
+					update="@form, messages" icon="ui-icon-search" />
+
+				<p:commandButton value="Posições (gestor)"
+					action="#{positionSearchCDI.searchPositionManagedByUser()}"
 					update="@form, messages" icon="ui-icon-search" />
 
 				<p:commandButton value="Candidato associado a posição?"

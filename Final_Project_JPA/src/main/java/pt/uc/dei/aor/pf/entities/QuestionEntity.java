@@ -19,9 +19,9 @@ public class QuestionEntity implements Serializable{
 
 	private static final long serialVersionUID = 8262287711073210783L;
 
-	public static final String VALUE="value";
-	public static final String ISTRUE="isTrue";
-	public static final String ANSWER="answer";
+	public static final String VALUE  = "value";
+	public static final String ISTRUE = "isTrue";
+	public static final String ANSWER = "answer";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

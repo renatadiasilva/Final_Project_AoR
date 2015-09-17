@@ -37,6 +37,12 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Position.findOpenPositionsByScript",
 			query = "SELECT p FROM PositionEntity p WHERE p.status = :status"
 					+ " AND p.defaultScript = :script"),
+	@NamedQuery(name = "Position.findPositionsManagedByUser",
+			query = "SELECT p FROM PositionEntity p WHERE"
+					+ " p.positionManager = :user"),
+	@NamedQuery(name = "Position.findNotOpenPositionByScript",
+			query = "SELECT p FROM PositionEntity p WHERE p.status <> :status"
+					+ " AND p.defaultScript = :script"),
 })
 public class PositionEntity implements Serializable {
 
@@ -57,7 +63,7 @@ public class PositionEntity implements Serializable {
 	public static final String TECH_MANAGEMENT  = "PROJECT MANAGEMENT";
 	public static final String TECH_INTEGRATION = "INTEGRATION";
 
-	public static final String SOCIAL_CRITICAL  = "CRITICAL SOFTWARW WEBSITE";
+	public static final String SOCIAL_CRITICAL  = "CRITICAL SOFTWARE WEBSITE";
 	public static final String SOCIAL_LINKEDIN  = "LINKEDIN";
 	public static final String SOCIAL_GLASSDOOR = "GLASSDOOR";
 	public static final String SOCIAL_FACEBOOK  = "FACEBOOK";
@@ -133,7 +139,7 @@ public class PositionEntity implements Serializable {
 	@JoinColumn(name = "default_script")
 	private ScriptEntity defaultScript;
 
-	@OneToMany
+	@OneToMany(mappedBy = "position")
 	private List<SubmissionEntity> submissions;
 
 	public PositionEntity() {

@@ -9,6 +9,8 @@ import javax.ejb.Stateless;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -91,6 +93,28 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		parameters.put("position", position);
 		return super.findSomeResults(
 				"Interview.findScheduledInterviewByPosition", parameters);
+	}
+
+	public List<InterviewEntity> findInterviewsOfUser(UserEntity interviewer) {
+		Map<String, Object> parameters = new HashMap<String, Object>();		
+		parameters.put("user", interviewer);
+		return super.findSomeResults("Interview.findInterviewsOfUser",
+				parameters);
+	}
+
+	public List<InterviewEntity> findInterviewsOfSubmission(
+			SubmissionEntity submission) {
+		Map<String, Object> parameters = new HashMap<String, Object>();		
+		parameters.put("submission", submission);
+		return super.findSomeResults("Interview.findInterviewsOfSubmission",
+				parameters);
+	}
+
+	public List<InterviewEntity> findInterviewsWithScript(ScriptEntity script) {
+		Map<String, Object> parameters = new HashMap<String, Object>();		
+		parameters.put("script", script);
+		return super.findSomeResults("Interview.findInterviewsWithScript",
+				parameters);
 	}
 
 }

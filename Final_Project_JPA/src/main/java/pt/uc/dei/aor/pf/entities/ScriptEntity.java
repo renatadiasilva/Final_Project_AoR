@@ -68,7 +68,7 @@ public class ScriptEntity implements Serializable{
 	private boolean reusable;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "creator", nullable = false)
 	private UserEntity scriptCreator;
 

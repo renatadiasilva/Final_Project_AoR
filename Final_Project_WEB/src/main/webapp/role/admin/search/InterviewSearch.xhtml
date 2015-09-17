@@ -59,18 +59,34 @@
 				<p:commandButton value="Entrevistas passadas (posição)"
 					action="#{interviewSearchCDI.
 						searchCarriedOutInterviewsByPosition()}"
-						 update="@form, messages"
+					 update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas agendadas (posição)"
 					action="#{interviewSearchCDI.
 						searchScheduledInterviewsByPosition()}"
-						 update="@form, messages"
+					 update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Entrevistas agendadas (candid)"
 					action="#{interviewSearchCDI.
 						searchScheduledInterviewsByCandidate()}"
+					 update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Entrevistas (entrevistador)"
+					action="#{interviewSearchCDI.searchInterviewsOfUser()}"
+					 update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Entrevistas (candidatura)"
+					action="#{interviewSearchCDI.
+						searchInterviewsOfSubmission()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Entrevistas (guião)"
+					action="#{interviewSearchCDI.searchInterviewsWithScript()}"
 						 update="@form, messages"
 					icon="ui-icon-search" />
 

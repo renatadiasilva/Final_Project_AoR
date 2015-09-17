@@ -49,4 +49,8 @@ public interface UserEJBInterface {
 			String keyword);
 	public abstract boolean checkPassword(UserEntity user, String password);
 	
+	// eager??
+//	public abstract List<UserEntity> findInterviewers(
+//			InterviewEntity interview);
+	
 }

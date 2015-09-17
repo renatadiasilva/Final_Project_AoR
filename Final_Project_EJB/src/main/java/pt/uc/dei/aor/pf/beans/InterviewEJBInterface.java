@@ -5,6 +5,8 @@ import java.util.List;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 public interface InterviewEJBInterface {
@@ -32,5 +34,11 @@ public interface InterviewEJBInterface {
 			PositionEntity position);
 	public abstract List<InterviewEntity> findScheduledInterviewsByPosition(
 			PositionEntity position);
+	public abstract List<InterviewEntity> findInterviewsOfUser(
+			UserEntity interviewer);
+	public abstract List<InterviewEntity> findInterviewsOfSubmission(
+			SubmissionEntity submission);
+	public abstract List<InterviewEntity> findInterviewsWithScript(
+			ScriptEntity script);
 
 }

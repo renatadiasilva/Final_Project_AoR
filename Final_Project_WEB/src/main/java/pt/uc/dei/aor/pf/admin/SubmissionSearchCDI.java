@@ -10,8 +10,12 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
 @Named
@@ -23,6 +27,12 @@ public class SubmissionSearchCDI {
 
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
+	
+	@EJB
+	private PositionEJBInterface positionEJB;
+	
+	@EJB
+	private UserEJBInterface userEJB;
 
 	// search fields
 	private Date date1, date2;
@@ -84,6 +94,24 @@ public class SubmissionSearchCDI {
 		log.debug("Dates between "+date1+" and "+date2);
 		this.slist = submissionEJB.findSubmissionsBySource(source, date1,
 				date2);
+	}	
+
+	public void searchSubmissionsOfPosition() {
+		log.info("Searching for submissions by position");
+		PositionEntity position = positionEJB.find(id);
+		if (position != null) {
+			log.debug("Script "+position.getPositionCode());
+			this.slist = submissionEJB.findSubmissionsOfPosition(position);
+		} else log.error("No position with id "+id);
+	}	
+
+	public void searchSubmissionsOfCandidate() {
+		log.info("Searching for submissions by candidate");
+		UserEntity user = userEJB.find(id);
+		if (user != null) {
+			log.debug("Script "+user.getFirstName());
+			this.slist = submissionEJB.findSubmissionsOfCandidate(user);
+		} else log.error("No candidate with id "+id);
 	}	
 
 	// getters e setters

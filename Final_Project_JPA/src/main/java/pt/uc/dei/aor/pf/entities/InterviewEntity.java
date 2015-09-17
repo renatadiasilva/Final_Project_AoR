@@ -60,6 +60,15 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
 					+ " WHERE i.carriedOut = FALSE AND s.position = :position"
 					+ " ORDER BY i.date"),
+	@NamedQuery(name = "Interview.findInterviewsOfUser",
+			query = "SELECT i FROM InterviewEntity i JOIN i.interviewers u"
+					+ " WHERE u = :user ORDER BY i.date"),
+	@NamedQuery(name = "Interview.findInterviewsOfSubmission",
+			query = "SELECT i FROM InterviewEntity i"
+					+ " WHERE i.submission = :submission ORDER BY i.date"),
+	@NamedQuery(name = "Interview.findInterviewsWithScript",
+			query = "SELECT i FROM InterviewEntity i WHERE i.script = :script"
+					+ " ORDER BY i.date"),
 })
 public class InterviewEntity implements Serializable {
 
@@ -103,7 +112,7 @@ public class InterviewEntity implements Serializable {
 	private String feedback;
 	
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "scheduled_by", nullable = false)
 	private UserEntity scheduledBy;
 

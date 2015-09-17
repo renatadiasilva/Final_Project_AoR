@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -67,13 +66,14 @@ public class UserInfoEntity implements Serializable {
 	@Column(name = "linkedin")
 	private String linkedin;
 	
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", unique = true, updatable = false)
 	private UserEntity owner;
 	
 	public UserInfoEntity() {
 	}
 
+	// Linkedin
 	public UserInfoEntity(Date birthday, String adress, String city,
 			String telephone, String mobilePhone, String country, 
 			String course, String school, String cv, UserEntity owner) {

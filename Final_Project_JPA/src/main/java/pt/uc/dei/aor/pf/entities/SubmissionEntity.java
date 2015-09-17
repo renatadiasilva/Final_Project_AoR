@@ -28,9 +28,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "submissions")
 @NamedQueries({
-	@NamedQuery(name = "Submission.findSubmissionsOfPosition",
-			query = "SELECT s FROM SubmissionEntity s "
-					+ "WHERE s.position = :position ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSpontaneousSubmissions",
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE s.spontaneous = TRUE ORDER BY s.date DESC"),
@@ -52,6 +49,12 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE :source MEMBER OF s.sources"
 					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
+	@NamedQuery(name = "Submission.findSubmissionsOfPosition",
+			query = "SELECT s FROM SubmissionEntity s "
+					+ "WHERE s.position = :position ORDER BY s.date"),
+	@NamedQuery(name = "Submission.findSubmissionsOfCandidate",
+			query = "SELECT s FROM SubmissionEntity s"
+					+ " WHERE s.candidate = :user ORDER BY s.date"),
 })
 public class SubmissionEntity implements Serializable {
 

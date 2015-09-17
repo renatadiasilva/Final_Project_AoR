@@ -46,11 +46,9 @@ public class PositionEJBImp implements PositionEJBInterface {
 	public void delete(PositionEntity position) {
 		log.info("Deleting position from DB");
 		
-		//tirar do EJB (pensar em mais gets)
 		List<SubmissionEntity> sub = 
 				submissionDAO.findSubmissionsOfPosition(position);
-		System.out.println(sub);
-		if ( sub != null && !sub.isEmpty()) {
+		if (sub != null && !sub.isEmpty()) {
 			// erro: avisar o admin que há candidaturas
 			// terá de avisar users e remover tudo à mão
 			
@@ -203,6 +201,19 @@ public class PositionEJBImp implements PositionEJBInterface {
 			ScriptEntity script) {
 		log.info("Finding open positions using a script as default");
 		return positionDAO.findOpenPositionsByScript(script);
+	}
+
+	@Override
+	public List<PositionEntity> findPositionsManagedByUser(UserEntity manager) {
+		log.info("Finding positions manged by a user");
+		return positionDAO.findPositionsManagedByUser(manager);
+	}
+
+	@Override
+	public List<PositionEntity> findNotOpenPositionsByScript(
+			ScriptEntity script) {
+		log.info("Finding not open positions using a script as default");
+		return positionDAO.findNotOpenPositionsByScript(script);
 	}
 
 	private void isPositionComplete(PositionEntity position) {

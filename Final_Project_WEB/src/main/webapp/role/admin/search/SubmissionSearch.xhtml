@@ -5,7 +5,9 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="Título">Admin - Pesquisas de Candidaturas - IT Jobs</ui:define>
+	<ui:define name="Título">
+	Admin - Pesquisas de Candidaturas - IT Jobs
+	</ui:define>
 
 	<ui:define name="contents">
 		<h1>Pesquisas de Candidaturas</h1>
@@ -15,31 +17,50 @@
 			<h:panelGrid id="buttonsSubmissionSearch" columns="7">
 
 				<p:commandButton value="Todas candidaturas"
-					action="#{submissionSearchCDI.searchAll()}" update="@form, messages"
+					action="#{submissionSearchCDI.searchAll()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Candidaturas espontâneas"
-					action="#{submissionSearchCDI.searchAllSponteanous()}" update="@form, messages"
+					action="#{submissionSearchCDI.searchAllSponteanous()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Candidaturas entre duas datas"
-					action="#{submissionSearchCDI.searchByDate()}" update="@form, messages"
+					action="#{submissionSearchCDI.searchByDate()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Espontâneas entre duas datas"
-					action="#{submissionSearchCDI.searchSpontanouseByDate()}" update="@form, messages"
+					action="#{submissionSearchCDI.searchSpontanouseByDate()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Rejeitadas entre duas datas"
-					action="#{submissionSearchCDI.searchRejectedByDate()}" update="@form, messages"
+					action="#{submissionSearchCDI.searchRejectedByDate()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Propostas entre duas datas"
-					action="#{submissionSearchCDI.searchProposalByDate()}" update="@form, messages"
+					action="#{submissionSearchCDI.searchProposalByDate()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Candidaturas entre duas datas (fonte)"
-					action="#{submissionSearchCDI.searchBySourceAndDate()}" update="@form, messages"
+					action="#{submissionSearchCDI.searchBySourceAndDate()}" 
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Candidaturas (posição)"
+					action="#{submissionSearchCDI.
+						searchSubmissionsOfPosition()}" 
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Candidaturas (candidato)"
+					action="#{submissionSearchCDI.
+						searchSubmissionsOfCandidate()}" 
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Remover candidatura"
@@ -54,17 +75,20 @@
 				<p:outputLabel value="Primeira Data: " for="search-date1s" />
 				<p:calendar id="search-date1s"
 					value="#{submissionSearchCDI.date1}" pattern="dd/MM/yyyy"
-					readonlyInput="true" navigator="true" yearRange="c-100:c+100"
+					readonlyInput="true" navigator="true" 
+					yearRange="c-100:c+100"
 					locale="pt" size="35" />
 
 				<p:outputLabel value="Segunda Data: " for="search-date2s" />
 				<p:calendar id="search-date2s"
 					value="#{submissionSearchCDI.date2}" pattern="dd/MM/yyyy"
-					readonlyInput="true" navigator="true" yearRange="c-100:c+100"
+					readonlyInput="true" navigator="true" 
+					yearRange="c-100:c+100"
 					locale="pt" size="35" />
 
 				<p:outputLabel value="Fonte: " for="search-source" />
-				<p:inputText id="search-source" value="#{submissionSearchCDI.source}"
+				<p:inputText id="search-source" 
+					value="#{submissionSearchCDI.source}"
 					size="35" />
 
 				<p:outputLabel value="Id: " for="search-ids" />

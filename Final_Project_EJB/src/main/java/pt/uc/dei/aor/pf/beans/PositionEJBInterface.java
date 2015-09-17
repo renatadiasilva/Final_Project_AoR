@@ -47,6 +47,10 @@ public interface PositionEJBInterface {
 	public abstract boolean alreadyCandidateOfPosition(UserEntity candidate,
 			PositionEntity position);
 	public abstract List<PositionEntity> findOpenPositionsByScript(
+			ScriptEntity script);	
+	public abstract List<PositionEntity> findPositionsManagedByUser(
+			UserEntity manager);
+	public abstract List<PositionEntity> findNotOpenPositionsByScript(
 			ScriptEntity script);
 
 }

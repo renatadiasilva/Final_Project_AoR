@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -86,9 +87,16 @@ public class UserEntity implements Serializable {
 			cascade = CascadeType.ALL)
 	private UserInfoEntity userInfo;
 
-	@OneToOne(optional = true)
+//	@OneToOne(optional = true)
+//	@JoinColumn(name = "created_by", updatable = false)
+//	private UserEntity createdBy;
+	
+	@ManyToOne
 	@JoinColumn(name = "created_by", updatable = false)
 	private UserEntity createdBy;
+
+	@OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+	private List<UserEntity> createdUsers; 
 
 	@OneToMany(mappedBy = "positionManager", cascade = CascadeType.ALL)
 	@OrderBy("positionCode")
@@ -267,6 +275,14 @@ public class UserEntity implements Serializable {
 			List<SubmissionEntity> spontaneusSubmissionAssociatedBy) {
 		this.spontaneusSubmissionAssociatedBy = 
 				spontaneusSubmissionAssociatedBy;
+	}
+
+	public List<UserEntity> getCreatedUsers() {
+		return createdUsers;
+	}
+
+	public void setCreatedUsers(List<UserEntity> createdUsers) {
+		this.createdUsers = createdUsers;
 	}
 
 }

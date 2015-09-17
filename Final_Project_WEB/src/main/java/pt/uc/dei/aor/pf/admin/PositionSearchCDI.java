@@ -222,12 +222,30 @@ public class PositionSearchCDI {
 	}
 	
 	public void searchPositionByScript() {
-		log.info("Searching for positions by script");
+		log.info("Searching for open positions by script");
 		ScriptEntity script = scriptEJB.find(idPSc);
 		if (script != null) {
 			log.debug("Script "+script.getTitle());
 			this.plist = positionEJB.findOpenPositionsByScript(script);
-		} else log.error("No script with id "+idU);
+		} else log.error("No script with id "+idPSc);
+	}
+
+	public void searchPositionManagedByUser() {
+		log.info("Searching for positions by manager");
+		UserEntity manager = userEJB.find(idU);
+		if (manager != null && manager.getRoles().contains("MANAGER")) {
+			log.debug("Script "+manager.getFirstName());
+			this.plist = positionEJB.findPositionsManagedByUser(manager);
+		} else log.error("No user with id "+idU);
+	}
+
+	public void searchNotOpenPositionByScript() {
+		log.info("Searching for not open positions by script");
+		ScriptEntity script = scriptEJB.find(idPSc);
+		if (script != null) {
+			log.debug("Script "+script.getTitle());
+			this.plist = positionEJB.findNotOpenPositionsByScript(script);
+		} else log.error("No script with id "+idPSc);
 	}
 
 	// getters e setters

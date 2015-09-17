@@ -12,4 +12,9 @@ public interface AnswerEJBInterface {
 	public abstract AnswerEntity find(Long id);
 	public abstract List<AnswerEntity> findAll();
 	
+//	public abstract List<AnswerEntity> findAnswerByInterview(
+//			InterviewEntity interview);
+//	public abstract List<AnswerEntity> findAnswerByQuestion(
+//			InterviewEntity interview); // report para sexo/idade??
+	
 }

@@ -29,5 +29,6 @@ public interface SubmissionEJBInterface {
 			String source, Date date1, Date date2);
 	public abstract List<SubmissionEntity> findSubmissionsOfPosition(
 			PositionEntity position);
-		
+	public abstract List<SubmissionEntity> findSubmissionsOfCandidate(
+			UserEntity candidate);
 }

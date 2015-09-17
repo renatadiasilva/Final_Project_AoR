@@ -12,9 +12,13 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
+import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
+import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
@@ -33,7 +37,13 @@ public class InterviewSearchCDI {
 
 	@EJB
 	private PositionEJBInterface positionEJB;
+	
+	@EJB
+	private SubmissionEJBInterface submissionEJB;
 
+	@EJB
+	private ScriptEJBInterface scriptEJB;
+	
 	// search fields
 	private Date date1, date2;
 	private Long id;
@@ -146,6 +156,35 @@ public class InterviewSearchCDI {
 			this.ilist = interviewEJB.findScheduledInterviewsByCandidate(
 					candidate);
 		} else log.error("No candidate with id "+id);
+	}
+
+	public void searchInterviewsOfUser() {
+		log.info("Searching interviews of interviewer");
+		log.debug("Id "+id);
+		UserEntity interviewer = userEJB.find(id);
+		if ( (interviewer != null) ) {
+//				if ( (interviewer != null) && 
+//				(interviewer.getRoles().contains("CANDIDATE"))) {
+			this.ilist = interviewEJB.findInterviewsOfUser(interviewer);
+		} else log.error("No interviewer with id "+id);
+	}
+	
+	public void searchInterviewsOfSubmission() {
+		log.info("Searching interviews of submission");
+		log.debug("Id "+id);
+		SubmissionEntity submission = submissionEJB.find(id);
+		if (submission != null) {
+			this.ilist = interviewEJB.findInterviewsOfSubmission(submission);
+		} else log.error("No submission with id "+id);
+	}
+
+	public void searchInterviewsWithScript() {
+		log.info("Searching interviews of script");
+		log.debug("Id "+id);
+		ScriptEntity script = scriptEJB.find(id);
+		if (script != null) {
+			this.ilist = interviewEJB.findInterviewsWithScript(script);
+		} else log.error("No script with id "+id);
 	}
 
 	// getters e setters

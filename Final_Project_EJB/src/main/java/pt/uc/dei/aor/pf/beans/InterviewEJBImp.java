@@ -14,6 +14,8 @@ import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -52,6 +54,7 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 			// erro, não pode apagar -> warning ao admin
 			System.out.println("Não pode apagar entrevista com resultados");
 		} else interviewDAO.delete(interview.getId(), InterviewEntity.class);
+		//apaga mesmo com entrevistadores ligados?
 	}
 
 	@Override
@@ -134,6 +137,25 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 			UserEntity candidate) {
 		log.info("Finding all scheduled interviews of a candidate");
 		return interviewDAO.findScheduledInterviewsByCandidate(candidate);
+	}
+
+	@Override
+	public List<InterviewEntity> findInterviewsOfUser(UserEntity interviewer) {
+		log.info("Finding all interviews of an interviewer");
+		return interviewDAO.findInterviewsOfUser(interviewer);
+	}
+
+	@Override
+	public List<InterviewEntity> findInterviewsOfSubmission(
+			SubmissionEntity submission) {
+		log.info("Finding all interviews of a submission");
+		return interviewDAO.findInterviewsOfSubmission(submission);
+	}
+
+	@Override
+	public List<InterviewEntity> findInterviewsWithScript(ScriptEntity script) {
+		log.info("Finding all interviews using a script");
+		return interviewDAO.findInterviewsWithScript(script);
 	}
 
 	private void isInterviewComplete(InterviewEntity interview) {

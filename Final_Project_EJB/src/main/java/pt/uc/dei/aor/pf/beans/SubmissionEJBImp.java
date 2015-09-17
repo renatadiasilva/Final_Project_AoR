@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.dao.InterviewDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
@@ -23,6 +24,9 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	
 	@EJB
 	private SubmissionDao submissionDAO;
+	
+	@EJB
+	private InterviewDao interviewDAO;
 
 	@Override
 	public void save(SubmissionEntity submission) {
@@ -42,8 +46,9 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	public void delete(SubmissionEntity submission) {
 		log.info("Deleting submission from DB");
 		// the submission has interviews
-		List<InterviewEntity> ilist = submission.getInterviews();
-		if (ilist != null) {
+		List<InterviewEntity> ilist = 
+				interviewDAO.findInterviewsOfSubmission(submission);
+		if (ilist != null && !ilist.isEmpty()) {
 			// CASCADE APAGA LOGO??
 			// ou avisar admin que há entrevistas e ele apaga-as à mão
 			// ou dá autorização para se apagar automaticamente
@@ -124,6 +129,13 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 			PositionEntity position) {
 		log.info("Finding submissions of a position");
 		return submissionDAO.findSubmissionsOfPosition(position);
+	}
+
+	@Override
+	public List<SubmissionEntity> findSubmissionsOfCandidate(
+			UserEntity candidate) {
+		log.info("Finding submissions of a candidate");
+		return submissionDAO.findSubmissionsOfCandidate(candidate);
 	}
 
 	private void isSubmissionComplete(SubmissionEntity submission) {

@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
 public class SubmissionDao extends GenericDao<SubmissionEntity> {
@@ -75,7 +76,15 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("position", position);
 		return super.findSomeResults("Submission.findSubmissionsOfPosition",
-				parameters);
-	
+				parameters);	
 	}
+	
+	public List<SubmissionEntity> findSubmissionsOfCandidate(
+			UserEntity candidate) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("user", candidate);
+		return super.findSomeResults("Submission.findSubmissionsOfCandidate",
+				parameters);	
+	}
+
 }

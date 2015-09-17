@@ -12,6 +12,9 @@ public interface QuestionEJBInterface {
 	public abstract QuestionEntity find(Long id);
 	public abstract List<QuestionEntity> findAll(); 
 	
+//	public abstract List<QuestionEntity> findQuestionsByScript(
+//				ScriptEntity script); // needed??
+	
 	//só questions tipo!!! mais atributos (idade/nome/etc)
 	//muito complicado??
 

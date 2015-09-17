@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.syndication.io.impl.Base64;
 
+import pt.uc.dei.aor.pf.dao.InterviewDao;
+import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.dao.UserDao;
 import pt.uc.dei.aor.pf.dao.UserInfoDao;
@@ -31,12 +33,18 @@ public class UserEJBImp implements UserEJBInterface {
 
 	@EJB
 	private UserDao userDAO;
-	
+
 	@EJB
 	private UserInfoDao userInfoDAO;
-	
+
 	@EJB
 	private SubmissionDao submissionDAO;
+
+	@EJB
+	private PositionDao positionDAO;
+
+	@EJB
+	private InterviewDao interviewDAO;
 
 	@Override
 	public void save(UserEntity user) {
@@ -72,7 +80,7 @@ public class UserEJBImp implements UserEJBInterface {
 		}
 		userDAO.update(user);
 	}
-	
+
 	@Override
 	public boolean checkPassword(UserEntity user, String password){
 		try {
@@ -95,15 +103,16 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public void delete(UserEntity user, UserEntity admin) {
 		log.info("Deleting data of user from DB");
-		
+
 		// remove the data not the user
-		user.setEmail(REMOVED_DATA);  // deixar email??
+		//		user.setEmail(REMOVED_DATA); ??
+		user.setEmail(user.getEmail()+" APAGADO");
 		user.setPassword("12345");
 		user.setFirstName(REMOVED_DATA);
 		user.setLastName(REMOVED_DATA);
 		user.setDefaultRole(REMOVED_DATA);  // ok??
 		user.setRoles(null);  // erro ao entrar??
-		
+
 		// remove the data not the userInfo
 		UserInfoEntity userInfo = user.getUserInfo();
 		userInfo.setBirthDate(null);
@@ -116,35 +125,51 @@ public class UserEJBImp implements UserEJBInterface {
 		userInfo.setSchool(REMOVED_DATA);
 		userInfo.setCv(null);
 		userInfo.setLinkedin(null);
-		userInfoDAO.update(userInfo); // ???? CASCADE???
-		
+		//userInfoDAO.update(userInfo); // ???? CASCADE???
+
 		// mudanças/remoções manuais ou passar para admin???		
 		// ------------------------------------------------
-		
-		List<PositionEntity> plist = user.getManagedPositions();
-		if (plist != null)
+
+		List<PositionEntity> plist = 
+				positionDAO.findPositionsManagedByUser(user);
+		if (plist != null && !plist.isEmpty()) {
 			for (PositionEntity p : plist)
-				// temporariamente (mudar perfil?)
+				// temporariamente (mudar perfil?) dar hipoteses
 				p.setPositionManager(admin);
-				// avisar que existem posições que precisam de novo gestor
-			
-		List<InterviewEntity> ilist = user.getInterviews();
-		if (ilist != null)
+			// avisar que existem posições que precisam de novo gestor
+			System.out.println("Posições geridas pelo user a apagar os dados"
+					+ " passam a ser geridas por "+admin.getFirstName());
+		}
+
+		List<InterviewEntity> ilist = interviewDAO.findInterviewsOfUser(user);
+		if (ilist != null && !ilist.isEmpty()) {
 			for (InterviewEntity i : ilist) {
+				//este da!
 				List<UserEntity> ulist = i.getInterviewers();
 				ulist.remove(user);
 				// temporariamente (mudar perfil?)
 				if (ulist.isEmpty()) i.addInterviewer(admin);
 				// avisar que existem entrevistas que ficam sem entrevistador
 			}
+			System.out.println("O user a apagar foi removido da lista"
+					+ " das entrevistas onde era entrevistador");
+			System.out.println("As entrevistas que ficaram sem entrevistador "
+					+ "passam a ter como entrevistador "
+					+admin.getFirstName());
+		}
 
-		List<SubmissionEntity> slist = user.getSubmissions();
-		if (slist != null) 
+		List<SubmissionEntity> slist = 
+				submissionDAO.findSubmissionsOfCandidate(user);
+		if (slist != null && !slist.isEmpty())  {
 			for (SubmissionEntity s : slist)
 				submissionDAO.delete(s.getId(), SubmissionEntity.class);
-				// se tem interviews?? meter delete no DAO?
-				// ou erro aqui...
-		
+			System.out.println("As candidaturas do user a apagar foram"
+					+ " removidas entrevistas");
+			System.out.println("Verificar se havia entrevistas nas"
+					+ " candidaturas apagadas");
+			// se tem interviews?? meter delete no DAO?
+			// ou erro aqui...
+		}
 		userDAO.update(user);
 	}
 
@@ -304,7 +329,7 @@ public class UserEJBImp implements UserEJBInterface {
 		return userDAO.findCandidates(email, firstName, lastName, address, city, 
 				country, course, school, position);
 	}
-	
+
 	@Override
 	public List<UserEntity> findCandidates(String email, String firstName,
 			String lastName, String address, String city, String country,
@@ -327,8 +352,8 @@ public class UserEJBImp implements UserEJBInterface {
 	}
 
 	private String securePass(String pass) throws NoSuchAlgorithmException,
-		UnsupportedEncodingException {
-		
+	UnsupportedEncodingException {
+
 		String securedPassword = "";
 
 		try {
@@ -362,33 +387,33 @@ public class UserEJBImp implements UserEJBInterface {
 	}
 
 	//Cloning... Think about it...
-	
-//	@Override
-//	public List<Utilizador> findAllWS() {
-//		List<Utilizador> novos= new ArrayList<Utilizador>();
-//		List<Utilizador> list=userDao.findAll();
-//		for (Utilizador u:list){
-//			Utilizador user2=new Utilizador();
-//			user2.setId(u.getId());
-//			user2.setNome(u.getNome());
-//			user2.setMail(u.getMail());
-//			user2.setPassword("");	
-//			novos.add(user2);
-//		}
-//		return novos;
-//		
-//	}
-//
-//	@Override
-//	public Utilizador findSimpleUser(int id) {
-//		Utilizador user=userDao.find(id);
-//		Utilizador user2=new Utilizador();
-//		user2.setId(user.getId());
-//		user2.setNome(user.getNome());
-//		user2.setMail(user.getMail());
-//		user2.setPassword("");
-//		return user2;
-//	}
 
-	
+	//	@Override
+	//	public List<Utilizador> findAllWS() {
+	//		List<Utilizador> novos= new ArrayList<Utilizador>();
+	//		List<Utilizador> list=userDao.findAll();
+	//		for (Utilizador u:list){
+	//			Utilizador user2=new Utilizador();
+	//			user2.setId(u.getId());
+	//			user2.setNome(u.getNome());
+	//			user2.setMail(u.getMail());
+	//			user2.setPassword("");	
+	//			novos.add(user2);
+	//		}
+	//		return novos;
+	//		
+	//	}
+	//
+	//	@Override
+	//	public Utilizador findSimpleUser(int id) {
+	//		Utilizador user=userDao.find(id);
+	//		Utilizador user2=new Utilizador();
+	//		user2.setId(user.getId());
+	//		user2.setNome(user.getNome());
+	//		user2.setMail(user.getMail());
+	//		user2.setPassword("");
+	//		return user2;
+	//	}
+
+
 }

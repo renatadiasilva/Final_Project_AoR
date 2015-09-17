@@ -221,29 +221,34 @@ public class InitDB {
 		roles = Arrays.asList(UserEntity.ROLE_ADMIN);
 		ulist[1].setDefaultRole(UserEntity.ROLE_ADMIN);
 		ulist[1].setRoles(roles);
+		ulist[1].setCreatedBy(ulist[0]);
 
 		roles = Arrays.asList(UserEntity.ROLE_MANAGER,
 				UserEntity.ROLE_CANDIDATE);
 		ulist[2].setDefaultRole(UserEntity.ROLE_MANAGER);
 		ulist[2].setRoles(roles);
+		ulist[2].setCreatedBy(ulist[0]);
 
 		roles = Arrays.asList(UserEntity.ROLE_INTERVIEWER);
 		ulist[3].setDefaultRole(UserEntity.ROLE_INTERVIEWER);
 		ulist[3].setRoles(roles);
+		ulist[3].setCreatedBy(ulist[0]);
 
 		roles = Arrays.asList(UserEntity.ROLE_CANDIDATE);
 
 		for(int i = 0; i < 6; i++) {
 			ulist[i+4].setDefaultRole(UserEntity.ROLE_CANDIDATE);
 			ulist[i+4].setRoles(roles);
-			ulist[i+4].setUserInfo(uilist[i]); // verificar se necessário
+			ulist[i+4].setUserInfo(uilist[i]);
+			ulist[i+4].setCreatedBy(ulist[0]);
 		}
 		
 		roles = Arrays.asList(UserEntity.ROLE_MANAGER);
 		ulist[10].setDefaultRole(UserEntity.ROLE_MANAGER);
 		ulist[10].setRoles(roles);
-		
-		
+		ulist[10].setCreatedBy(ulist[0]);
+
+
 		// SCRIPT ATTRIBUTES
 		
 		sclist[1].setDerivedFrom(sclist[0]);
@@ -497,7 +502,7 @@ public class InitDB {
 		for (InterviewEntity i : ilist) {
 			this.interviewEJB.save(i);
 		}
-
+		
 	}
 
 }
