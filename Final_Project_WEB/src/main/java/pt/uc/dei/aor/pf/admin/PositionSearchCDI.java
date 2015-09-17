@@ -14,9 +14,11 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
+import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
@@ -35,6 +37,9 @@ public class PositionSearchCDI {
 	
 	@EJB
 	private ScriptEJBInterface scriptEJB;
+	
+	@EJB
+	private SubmissionEJBInterface submissionEJB;
 
 	// search fields
 	private Date date1, date2;
@@ -58,7 +63,16 @@ public class PositionSearchCDI {
 		log.debug("Id "+idPSc);
 		PositionEntity position = positionEJB.find(idPSc);
 		if (position != null) {
-			positionEJB.delete(position);
+			if (!positionEJB.delete(position)) {
+				System.out.println("Não pode apagar posição com candidaturas");
+				System.out.println("Se quiser mesmo terá que as apagar"
+						+ " manualmente...");
+				System.out.println("Não quer em alternativa colocar a "
+						+ "posição em hold ou fechá-la?");
+				List<SubmissionEntity> slist = 
+					submissionEJB.findSubmissionsOfPosition(position);
+				System.out.println(slist); // adicionar código
+			}
 		} else log.error("No position with id "+idPSc);
 	}
 
@@ -230,15 +244,6 @@ public class PositionSearchCDI {
 		} else log.error("No script with id "+idPSc);
 	}
 
-	public void searchPositionManagedByUser() {
-		log.info("Searching for positions by manager");
-		UserEntity manager = userEJB.find(idU);
-		if (manager != null && manager.getRoles().contains("MANAGER")) {
-			log.debug("Script "+manager.getFirstName());
-			this.plist = positionEJB.findPositionsManagedByUser(manager);
-		} else log.error("No user with id "+idU);
-	}
-
 	public void searchNotOpenPositionByScript() {
 		log.info("Searching for not open positions by script");
 		ScriptEntity script = scriptEJB.find(idPSc);
@@ -246,6 +251,24 @@ public class PositionSearchCDI {
 			log.debug("Script "+script.getTitle());
 			this.plist = positionEJB.findNotOpenPositionsByScript(script);
 		} else log.error("No script with id "+idPSc);
+	}
+
+	public void searchPositionManagedByUser() {
+		log.info("Searching for positions by manager");
+		UserEntity manager = userEJB.find(idU);
+		if (manager != null && manager.getRoles().contains("MANAGER")) {
+			log.debug("Script "+manager.getFirstName());
+			this.plist = positionEJB.findPositionsManagedByUser(manager);
+		} else log.error("No manager with id "+idU);
+	}
+
+	public void searchOpenPositionManagedByUser() {
+		log.info("Searching for open positions by manager");
+		UserEntity manager = userEJB.find(idU);
+		if (manager != null && manager.getRoles().contains("MANAGER")) {
+			log.debug("Script "+manager.getFirstName());
+			this.plist = positionEJB.findOpenPositionsManagedByUser(manager);
+		} else log.error("No manager with id "+idU);
 	}
 
 	// getters e setters

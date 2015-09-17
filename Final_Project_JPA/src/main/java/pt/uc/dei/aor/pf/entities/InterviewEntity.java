@@ -66,9 +66,12 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Interview.findInterviewsOfSubmission",
 			query = "SELECT i FROM InterviewEntity i"
 					+ " WHERE i.submission = :submission ORDER BY i.date"),
-	@NamedQuery(name = "Interview.findInterviewsWithScript",
+	@NamedQuery(name = "Interview.findCarriedOutInterviewsWithScript",
 			query = "SELECT i FROM InterviewEntity i WHERE i.script = :script"
-					+ " ORDER BY i.date"),
+					+ " AND i.carriedOut = TRUE"),
+	@NamedQuery(name = "Interview.findScheduledInterviewsWithScript",
+			query = "SELECT i FROM InterviewEntity i WHERE i.script = :script"
+					+ " AND i.carriedOut = FALSE"),
 })
 public class InterviewEntity implements Serializable {
 

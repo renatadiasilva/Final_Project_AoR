@@ -3,7 +3,6 @@ package pt.uc.dei.aor.pf.entities;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -66,7 +65,7 @@ public class UserInfoEntity implements Serializable {
 	@Column(name = "linkedin")
 	private String linkedin;
 	
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = false)
 	@JoinColumn(name = "user_id", unique = true, updatable = false)
 	private UserEntity owner;
 	

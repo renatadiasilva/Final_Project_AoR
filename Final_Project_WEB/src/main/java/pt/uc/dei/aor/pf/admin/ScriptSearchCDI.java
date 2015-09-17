@@ -10,7 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.SearchPattern;
+import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
+import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
+import pt.uc.dei.aor.pf.entities.InterviewEntity;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 
 
@@ -24,10 +28,15 @@ public class ScriptSearchCDI {
 	@EJB
 	private ScriptEJBInterface scriptEJB;
 
+	@EJB
+	private PositionEJBInterface positionEJB;
+
+	@EJB
+	private InterviewEJBInterface interviewEJB;
 	// search fields
 	private String title;
 	private Long id;
-	
+
 	private List<ScriptEntity> sclist;
 
 	public ScriptSearchCDI() {
@@ -38,7 +47,28 @@ public class ScriptSearchCDI {
 		log.debug("Id "+id);
 		ScriptEntity script = scriptEJB.find(id);
 		if (script != null) {
-			scriptEJB.delete(script);
+			int deleteCode = scriptEJB.delete(script);
+			switch (deleteCode) {
+			case -1:
+				System.out.println("Não pode apagar um guião usado por"
+						+ " defeito em posições abertas");
+				System.out.println("Se quiser terá de ir alterar manualmente"
+						+ " o guião por defeito de cada uma delas");
+				List<PositionEntity> plist = 
+						positionEJB.findOpenPositionsByScript(script);
+				System.out.println(plist); //adicionar código
+				break;
+			case -2:
+				// verificar como faremos com os scripts...
+				System.out.println("Não pode apagar um guião associado a"
+						+ " entrevistas agendadas");
+				System.out.println("Se quiser terá de ir alterar manualmente"
+						+ " o guião de cada uma delas");
+				List<InterviewEntity> ilist = 
+						interviewEJB.findScheduledInterviewsWithScript(script);
+				System.out.println(ilist);
+			}	
+
 		} else log.error("No script with id "+id);
 	}
 

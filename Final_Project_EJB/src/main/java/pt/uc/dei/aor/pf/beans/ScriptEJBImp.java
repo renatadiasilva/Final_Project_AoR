@@ -13,9 +13,7 @@ import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.ScriptDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
-import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
 public class ScriptEJBImp implements ScriptEJBInterface {
@@ -28,7 +26,7 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 
 	@EJB
 	private PositionDao positionDAO;
-	
+
 	@EJB
 	private InterviewDao interviewDAO;
 
@@ -47,67 +45,39 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 	}
 
 	@Override
-	public void delete(ScriptEntity script) {
+	public int delete(ScriptEntity script) {
 		log.info("Deleting/Making not reusable a script from DB");
 
 		// there are open positions with this script as default
 		List<PositionEntity> plist = 
 				positionDAO.findOpenPositionsByScript(script);
-		if (plist != null && !plist.isEmpty()) {
-			// erro: avisar para o admin ir mudar o default 
-			// das posições e/ou listá-las
-			// ou apresentar logo uma lista com as posições e scripts??
-			System.out.println("Não pode apagar um guião usado em posições"
-					+ " abertas");
-			return;
-		} else { //open no positions
-			plist = positionDAO.findNotOpenPositionsByScript(script);
-			// there are not open positions
-			if ( plist != null && !plist.isEmpty() ) {
-				for (PositionEntity p : plist)
-					// remove script from position
-					p.setDefaultScript(null);
-				// script cannot be used anymore, but don't delete it
-//				script.setReusable(false);
-//				return;
-			}
-			List<InterviewEntity> ilist = 
-					interviewDAO.findInterviewsWithScript(script);
-			// there are interviews using this script
-			if (ilist != null && !ilist.isEmpty()) {
-				for (InterviewEntity i : ilist)
-					//remove script from interview
-					i.setScript(null);
-				// script cannot be used anymore, but don't delete it
-//				script.setReusable(false);
-			} else scriptDAO.delete(script.getId(), ScriptEntity.class);
-		}
-	}
+		if (plist != null && !plist.isEmpty()) return -1;
 
-	@Override
-	public void edit(ScriptEntity script, List<QuestionEntity> questions, 
-			UserEntity creator) {
-		log.info("Editing/Cloning script from DB");
+		//no open positions
+		plist = positionDAO.findNotOpenPositionsByScript(script);
+		// there are not open positions with script
+		// verificar como faremos com os scripts...
+		if (plist != null && !plist.isEmpty())
+			for (PositionEntity p : plist)
+				// remove script from position
+				p.setDefaultScript(null);
 
-		// there are positions with this script as default
-		// and/or there are interviews using this script
-		List<PositionEntity> plist = script.getPositionsWithScriptDefault(); 
-		if (plist != null || script.getInterviewsUsingScript() != null) {
-			// clone script
-			ScriptEntity newScript = new ScriptEntity(script, script.getTitle(),
-					questions, script.getComments(), true, creator);
-			save(newScript);
-			// old script cannot be used anymore
-			script.setReusable(false);
-			
-			// change position default script, if any
-			if (plist != null)
-				for (PositionEntity p : plist)
-					p.setDefaultScript(newScript);
-		} else { // no position/interviews using this script
-			script.setQuestions(questions);
-			scriptDAO.update(script);
-		}
+		// there are scheduled interviews associated with this script
+		List<InterviewEntity> ilist = 
+				interviewDAO.findScheduledInterviewsWithScript(script);
+		if (ilist != null && !ilist.isEmpty()) return -2;
+
+		// there are carried out interviews with script
+		// verificar como faremos com os scripts...
+		ilist = interviewDAO.findCarriedOutInterviewsWithScript(script);
+		if (ilist != null && !ilist.isEmpty())
+			for (InterviewEntity i : ilist)
+				//remove script from interview
+				i.setScript(null);
+		
+		// finally remove script
+		scriptDAO.delete(script.getId(), ScriptEntity.class);
+		return 0;
 	}
 
 	@Override

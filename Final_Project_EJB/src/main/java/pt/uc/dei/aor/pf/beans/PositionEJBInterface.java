@@ -11,7 +11,7 @@ public interface PositionEJBInterface {
 	
 	public abstract void save(PositionEntity position);
 	public abstract void update(PositionEntity position);
-	public abstract void delete(PositionEntity position);
+	public abstract boolean delete(PositionEntity position);
 	public abstract PositionEntity find(Long id);
 	public abstract List<PositionEntity> findAll();
 	public abstract List<PositionEntity> findOpenPositions();
@@ -48,9 +48,11 @@ public interface PositionEJBInterface {
 			PositionEntity position);
 	public abstract List<PositionEntity> findOpenPositionsByScript(
 			ScriptEntity script);	
-	public abstract List<PositionEntity> findPositionsManagedByUser(
-			UserEntity manager);
 	public abstract List<PositionEntity> findNotOpenPositionsByScript(
 			ScriptEntity script);
+	public abstract List<PositionEntity> findPositionsManagedByUser(
+			UserEntity manager);
+	public List<PositionEntity> findOpenPositionsManagedByUser(
+			UserEntity manager);
 
 }

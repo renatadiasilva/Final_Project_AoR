@@ -59,7 +59,9 @@ public class InterviewSearchCDI {
 		log.debug("Id "+id);
 		InterviewEntity interview = interviewEJB.find(id);
 		if (interview != null) {
-			interviewEJB.delete(interview);
+			if (!interviewEJB.delete(interview))
+				System.out.println("Não pode apagar entrevista com resultados."
+						+ " Fale com o gestor da base de dados.");
 		} else log.error("No interview with id "+id);
 	}
 
@@ -178,12 +180,23 @@ public class InterviewSearchCDI {
 		} else log.error("No submission with id "+id);
 	}
 
-	public void searchInterviewsWithScript() {
+	public void searchCarriedOutInterviewsWithScript() {
 		log.info("Searching interviews of script");
 		log.debug("Id "+id);
 		ScriptEntity script = scriptEJB.find(id);
 		if (script != null) {
-			this.ilist = interviewEJB.findInterviewsWithScript(script);
+			this.ilist = 
+				interviewEJB.findCarriedOutInterviewsWithScript(script);
+		} else log.error("No script with id "+id);
+	}
+
+	public void searchScheduledInterviewsWithScript() {
+		log.info("Searching interviews of script");
+		log.debug("Id "+id);
+		ScriptEntity script = scriptEJB.find(id);
+		if (script != null) {
+			this.ilist = 
+				interviewEJB.findScheduledInterviewsWithScript(script);
 		} else log.error("No script with id "+id);
 	}
 

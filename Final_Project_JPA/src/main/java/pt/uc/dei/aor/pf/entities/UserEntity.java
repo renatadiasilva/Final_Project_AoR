@@ -84,13 +84,9 @@ public class UserEntity implements Serializable {
 	private List<String> roles;
 
 	@OneToOne(mappedBy="owner", fetch = FetchType.EAGER, 
-			cascade = CascadeType.ALL)
+			cascade = CascadeType.ALL, orphanRemoval = true)
 	private UserInfoEntity userInfo;
 
-//	@OneToOne(optional = true)
-//	@JoinColumn(name = "created_by", updatable = false)
-//	private UserEntity createdBy;
-	
 	@ManyToOne
 	@JoinColumn(name = "created_by", updatable = false)
 	private UserEntity createdBy;

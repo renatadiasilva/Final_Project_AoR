@@ -43,22 +43,14 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public void delete(PositionEntity position) {
+	public boolean delete(PositionEntity position) {
 		log.info("Deleting position from DB");
 		
 		List<SubmissionEntity> sub = 
 				submissionDAO.findSubmissionsOfPosition(position);
-		if (sub != null && !sub.isEmpty()) {
-			// erro: avisar o admin que há candidaturas
-			// terá de avisar users e remover tudo à mão
-			
-			// warning: quer fechar posição ou colocar on hold??
-			
-			// ou apresentar logo uma lista com a candidaturas para as
-			// remover e avisar users??
-			System.out.println("Não pode apagar posição com candidaturas");
-		} else positionDAO.delete(position.getId(), PositionEntity.class);
-		
+		if (sub != null && !sub.isEmpty()) return false;
+		positionDAO.delete(position.getId(), PositionEntity.class);
+		return true;
 	}
 
 	@Override
@@ -204,16 +196,23 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsManagedByUser(UserEntity manager) {
-		log.info("Finding positions manged by a user");
-		return positionDAO.findPositionsManagedByUser(manager);
-	}
-
-	@Override
 	public List<PositionEntity> findNotOpenPositionsByScript(
 			ScriptEntity script) {
 		log.info("Finding not open positions using a script as default");
 		return positionDAO.findNotOpenPositionsByScript(script);
+	}
+
+	@Override
+	public List<PositionEntity> findPositionsManagedByUser(UserEntity manager) {
+		log.info("Finding positions managed by a user");
+		return positionDAO.findPositionsManagedByUser(manager);
+	}
+
+	@Override
+	public List<PositionEntity> findOpenPositionsManagedByUser(
+			UserEntity manager) {
+		log.info("Finding open positions managed by a user");
+		return positionDAO.findOpenPositionsManagedByUser(manager);
 	}
 
 	private void isPositionComplete(PositionEntity position) {

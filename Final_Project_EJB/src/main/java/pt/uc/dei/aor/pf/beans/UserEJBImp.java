@@ -20,7 +20,6 @@ import pt.uc.dei.aor.pf.dao.UserDao;
 import pt.uc.dei.aor.pf.dao.UserInfoDao;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
@@ -91,86 +90,50 @@ public class UserEJBImp implements UserEJBInterface {
 			}
 		} catch (NoSuchAlgorithmException e) {
 			log.error("Error checking password");
-			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			log.error("Error checking password");
-			e.printStackTrace();
 		}
 		log.info("Wrong Password");
 		return false;
 	}
 
 	@Override
-	public void delete(UserEntity user, UserEntity admin) {
+	public int delete(UserEntity user) {
 		log.info("Deleting data of user from DB");
-
+		
+		// protection: don't delete data of superAdmin!
+		if (user.getEmail().equals("admin@mail.com")) return -1;
+		
 		// remove the data not the user
 		//		user.setEmail(REMOVED_DATA); ??
 		user.setEmail(user.getEmail()+" APAGADO");
 		user.setPassword("12345");
 		user.setFirstName(REMOVED_DATA);
 		user.setLastName(REMOVED_DATA);
-		user.setDefaultRole(REMOVED_DATA);  // ok??
-		user.setRoles(null);  // erro ao entrar??
+		user.setDefaultRole(REMOVED_DATA);
+		user.setRoles(null);
 
-		// remove the data not the userInfo
+		// remove the userInfo data
 		UserInfoEntity userInfo = user.getUserInfo();
-		userInfo.setBirthDate(null);
-		userInfo.setAddress(REMOVED_DATA);
-		userInfo.setCity(REMOVED_DATA);
-		userInfo.setHomePhone(null);
-		userInfo.setMobilePhone("000 000 000");
-		userInfo.setCountry(REMOVED_DATA);
-		userInfo.setCourse(REMOVED_DATA);
-		userInfo.setSchool(REMOVED_DATA);
-		userInfo.setCv(null);
-		userInfo.setLinkedin(null);
-		//userInfoDAO.update(userInfo); // ???? CASCADE???
-
-		// mudanças/remoções manuais ou passar para admin???		
-		// ------------------------------------------------
+		if (userInfo != null) user.setUserInfo(null);
 
 		List<PositionEntity> plist = 
-				positionDAO.findPositionsManagedByUser(user);
-		if (plist != null && !plist.isEmpty()) {
-			for (PositionEntity p : plist)
-				// temporariamente (mudar perfil?) dar hipoteses
-				p.setPositionManager(admin);
-			// avisar que existem posições que precisam de novo gestor
-			System.out.println("Posições geridas pelo user a apagar os dados"
-					+ " passam a ser geridas por "+admin.getFirstName());
-		}
+				positionDAO.findOpenPositionsManagedByUser(user);
+		if (plist != null && !plist.isEmpty()) return -2;
 
-		List<InterviewEntity> ilist = interviewDAO.findInterviewsOfUser(user);
+		List<InterviewEntity> ilist = 
+				interviewDAO.findScheduledInterviewsByUser(user);
 		if (ilist != null && !ilist.isEmpty()) {
 			for (InterviewEntity i : ilist) {
-				//este da!
 				List<UserEntity> ulist = i.getInterviewers();
-				ulist.remove(user);
-				// temporariamente (mudar perfil?)
-				if (ulist.isEmpty()) i.addInterviewer(admin);
-				// avisar que existem entrevistas que ficam sem entrevistador
+				if (ulist != null && ulist.size() == 1) {
+					return -3;
+				}
 			}
-			System.out.println("O user a apagar foi removido da lista"
-					+ " das entrevistas onde era entrevistador");
-			System.out.println("As entrevistas que ficaram sem entrevistador "
-					+ "passam a ter como entrevistador "
-					+admin.getFirstName());
 		}
 
-		List<SubmissionEntity> slist = 
-				submissionDAO.findSubmissionsOfCandidate(user);
-		if (slist != null && !slist.isEmpty())  {
-			for (SubmissionEntity s : slist)
-				submissionDAO.delete(s.getId(), SubmissionEntity.class);
-			System.out.println("As candidaturas do user a apagar foram"
-					+ " removidas entrevistas");
-			System.out.println("Verificar se havia entrevistas nas"
-					+ " candidaturas apagadas");
-			// se tem interviews?? meter delete no DAO?
-			// ou erro aqui...
-		}
 		userDAO.update(user);
+		return 0;
 	}
 
 	@Override
@@ -365,7 +328,7 @@ public class UserEJBImp implements UserEJBInterface {
 			securedPassword = new String(data2);
 			return securedPassword;
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			log.error("Error securing password");
 		}
 
 		return securedPassword;

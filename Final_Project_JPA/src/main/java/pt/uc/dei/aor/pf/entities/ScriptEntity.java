@@ -29,6 +29,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="scripts")
 @NamedQueries({
+	//tirar
 	@NamedQuery(name = "Script.findReusableScripts",
 			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
 					+ " ORDER BY s.creationDate DESC"),
@@ -42,6 +43,7 @@ public class ScriptEntity implements Serializable{
 	@Column(name = "id")
 	private Long id;
 
+	//tirar
 	@OneToOne(optional = true)
 	@JoinColumn(name = "derived_from", updatable = false)
 	private ScriptEntity derivedFrom;
@@ -64,6 +66,7 @@ public class ScriptEntity implements Serializable{
 	@Column(name="comments", length = 100)
 	private String comments;
 
+	//tirar
 	@Column(name = "reusable")
 	private boolean reusable;
 

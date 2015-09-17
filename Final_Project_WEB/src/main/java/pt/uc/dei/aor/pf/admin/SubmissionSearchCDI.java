@@ -10,9 +10,11 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -33,6 +35,9 @@ public class SubmissionSearchCDI {
 	
 	@EJB
 	private UserEJBInterface userEJB;
+	
+	@EJB
+	private InterviewEJBInterface interviewEJB;
 
 	// search fields
 	private Date date1, date2;
@@ -49,7 +54,15 @@ public class SubmissionSearchCDI {
 		log.debug("Id "+id);
 		SubmissionEntity submission = submissionEJB.find(id);
 		if (submission != null) {
-			submissionEJB.delete(submission);
+			List<InterviewEntity> ilist = 
+					interviewEJB.findInterviewsOfSubmission(submission);
+			if (ilist != null && !ilist.isEmpty()) {
+				System.out.println("A candidatura tem entrevistas."
+						+ "Quer mesmo removê-la?");
+				boolean delSub = true; // pedir resposta
+				if (delSub) submissionEJB.delete(submission);
+			}
+		submissionEJB.delete(submission);
 		} else log.error("No submission with id "+id);
 	}
 
@@ -108,7 +121,7 @@ public class SubmissionSearchCDI {
 	public void searchSubmissionsOfCandidate() {
 		log.info("Searching for submissions by candidate");
 		UserEntity user = userEJB.find(id);
-		if (user != null) {
+		if (user != null && user.getRoles().contains("CANDIDATE")) {
 			log.debug("Script "+user.getFirstName());
 			this.slist = submissionEJB.findSubmissionsOfCandidate(user);
 		} else log.error("No candidate with id "+id);

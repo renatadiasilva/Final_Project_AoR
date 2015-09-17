@@ -48,13 +48,11 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
-	public void delete(InterviewEntity interview) {
+	public boolean delete(InterviewEntity interview) {
 		log.info("Deleting interview from DB");
-		if (interview.isCarriedOut()) {
-			// erro, não pode apagar -> warning ao admin
-			System.out.println("Não pode apagar entrevista com resultados");
-		} else interviewDAO.delete(interview.getId(), InterviewEntity.class);
-		//apaga mesmo com entrevistadores ligados?
+		if (interview.isCarriedOut()) return false;
+		interviewDAO.delete(interview.getId(), InterviewEntity.class);
+		return true;
 	}
 
 	@Override
@@ -153,9 +151,17 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
-	public List<InterviewEntity> findInterviewsWithScript(ScriptEntity script) {
+	public List<InterviewEntity> findCarriedOutInterviewsWithScript(
+			ScriptEntity script) {
 		log.info("Finding all interviews using a script");
-		return interviewDAO.findInterviewsWithScript(script);
+		return interviewDAO.findCarriedOutInterviewsWithScript(script);
+	}
+
+	@Override
+	public List<InterviewEntity> findScheduledInterviewsWithScript(
+			ScriptEntity script) {
+		log.info("Finding all interviews using a script");
+		return interviewDAO.findScheduledInterviewsWithScript(script);
 	}
 
 	private void isInterviewComplete(InterviewEntity interview) {

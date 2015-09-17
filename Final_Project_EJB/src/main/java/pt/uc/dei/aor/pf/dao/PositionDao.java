@@ -174,19 +174,28 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				parameters);
 	}
 
-	public List<PositionEntity> findPositionsManagedByUser(UserEntity manager) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("user", manager);
-		return super.findSomeResults("Position.findPositionsManagedByUser",
-				parameters);
-	}
-
 	public List<PositionEntity> findNotOpenPositionsByScript(
 			ScriptEntity script) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("status", PositionEntity.STATUS_OPEN);
 		parameters.put("script", script);
 		return super.findSomeResults("Position.findNotOpenPositionByScript",
+				parameters);
+	}
+
+	public List<PositionEntity> findPositionsManagedByUser(UserEntity manager) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("user", manager);
+		return super.findSomeResults("Position.findPositionsManagedByUser",
+				parameters);
+	}
+	
+	public List<PositionEntity> findOpenPositionsManagedByUser(
+			UserEntity manager) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("user", manager);
+		parameters.put("status", PositionEntity.STATUS_OPEN);
+		return super.findSomeResults("Position.findOpenPositionsManagedByUser",
 				parameters);
 	}
 

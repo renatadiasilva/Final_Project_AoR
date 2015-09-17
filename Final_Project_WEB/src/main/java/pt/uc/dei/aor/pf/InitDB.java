@@ -251,6 +251,7 @@ public class InitDB {
 
 		// SCRIPT ATTRIBUTES
 		
+		//tirar ou manter?
 		sclist[1].setDerivedFrom(sclist[0]);
 				
 

@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.dao.InterviewDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
-import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -45,16 +44,7 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	@Override
 	public void delete(SubmissionEntity submission) {
 		log.info("Deleting submission from DB");
-		// the submission has interviews
-		List<InterviewEntity> ilist = 
-				interviewDAO.findInterviewsOfSubmission(submission);
-		if (ilist != null && !ilist.isEmpty()) {
-			// CASCADE APAGA LOGO??
-			// ou avisar admin que há entrevistas e ele apaga-as à mão
-			// ou dá autorização para se apagar automaticamente
-			System.out.println("Apaga a candidatura e as entrevistas??");
-		}
-		else submissionDAO.delete(submission.getId(), SubmissionEntity.class);
+		submissionDAO.delete(submission.getId(), SubmissionEntity.class);
 	}
 
 	@Override

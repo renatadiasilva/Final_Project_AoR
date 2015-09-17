@@ -93,6 +93,11 @@
 					action="#{positionSearchCDI.searchPositionManagedByUser()}"
 					update="@form, messages" icon="ui-icon-search" />
 
+				<p:commandButton value="Posições abertas (gestor)"
+					action="#{positionSearchCDI.
+						searchOpenPositionManagedByUser()}"
+					update="@form, messages" icon="ui-icon-search" />
+
 				<p:commandButton value="Candidato associado a posição?"
 					action="#{positionSearchCDI.alreadyCandidateOfPosition()}"
 					update="@form, messages" icon="ui-icon-search" />

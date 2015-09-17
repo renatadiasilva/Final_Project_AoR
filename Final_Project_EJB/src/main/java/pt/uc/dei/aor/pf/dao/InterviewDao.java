@@ -110,11 +110,20 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 				parameters);
 	}
 
-	public List<InterviewEntity> findInterviewsWithScript(ScriptEntity script) {
+	public List<InterviewEntity> findCarriedOutInterviewsWithScript(
+			ScriptEntity script) {
 		Map<String, Object> parameters = new HashMap<String, Object>();		
 		parameters.put("script", script);
-		return super.findSomeResults("Interview.findInterviewsWithScript",
-				parameters);
+		return super.findSomeResults(
+				"Interview.findCarriedOutInterviewsWithScript", parameters);
+	}
+
+	public List<InterviewEntity> findScheduledInterviewsWithScript(
+			ScriptEntity script) {
+		Map<String, Object> parameters = new HashMap<String, Object>();		
+		parameters.put("script", script);
+		return super.findSomeResults(
+				"Interview.findScheduledInterviewsWithScript", parameters);
 	}
 
 }
