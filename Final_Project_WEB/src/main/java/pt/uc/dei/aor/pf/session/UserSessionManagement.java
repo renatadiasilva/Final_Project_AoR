@@ -20,6 +20,7 @@ import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.io.Serializable;
 
 @Named
@@ -75,7 +76,7 @@ public class UserSessionManagement implements Serializable {
 
 	public void checkTemporaryPassword(){
 		// ActionListener para ass páginas */Landing.xhtml
-		
+
 		log.info("Checking if the password is temporary");
 
 		if(this.userManagement.isTemporaryPassword()){
@@ -137,7 +138,7 @@ public class UserSessionManagement implements Serializable {
 		try{
 			// Logout no servidor
 			this.request.logout();
-			
+
 			// Logout na aplicação
 			this.userManagement.logout();
 
@@ -168,7 +169,7 @@ public class UserSessionManagement implements Serializable {
 	public void changePassword (){
 		log.info("Changing password");
 		log.debug("User: "+ currentUser.getEmail());
-		
+
 		this.context=FacesContext.getCurrentInstance();
 
 		// Manda para a camada de negócio, espera o boleano e reporta para a UI
@@ -194,7 +195,7 @@ public class UserSessionManagement implements Serializable {
 		// Manda para a camada de negócio, espera o boleano e reporta para a UI
 		if(this.userManagement.newUser(email, password, firstName, lastName, birthday, address, city, homePhone, mobilePhone,
 				country, course, school, linkedin, createdByAdmin, admin, manager, interviewer)){
-			
+
 			this.context=FacesContext.getCurrentInstance();
 
 			// Se foi criado à mão, fecha o dialog (Index.xhtml)
@@ -217,7 +218,7 @@ public class UserSessionManagement implements Serializable {
 			String lastName, boolean admin, boolean manager, boolean interviewer) {
 
 		log.info("Creating new user (internal)");
-		
+
 		this.context=FacesContext.getCurrentInstance();
 
 		// Manda para a camada de negócio, espera o boleano e reporta para a UI
@@ -238,13 +239,13 @@ public class UserSessionManagement implements Serializable {
 
 		// Vai para a camada de negócio
 		this.userManagement.updateUserInfo(firstName, lastName, address, city, homePhone, mobilePhone, country, course, school, linkedin);
-		
+
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dados actualizados."));
 	}
-	
+
 	public void recoverPassword(String email, String temporaryPassword){
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Foi enviado um email para a sua conta com os novos dados de autenticação."));
 		this.userManagement.recoverPassword(email, temporaryPassword);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Foi enviado um email para a sua conta com os novos dados de autenticação."));
 	}
 
 	@SuppressWarnings("unused")
@@ -295,9 +296,13 @@ public class UserSessionManagement implements Serializable {
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
-	
+
 	public String getUserFullName(){
 		return this.userManagement.getUserFullName();
+	}
+	
+	public List<String>getStyle(){
+		return this.userManagement.getStyle();
 	}
 
 }

@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.webManagement;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Local;
 
@@ -60,6 +61,8 @@ public interface UserManagementInterface {
 
 	public abstract String getUserFullName();
 
-	public abstract void recoverPassword(String email, String temporaryPassword);
+	public abstract boolean recoverPassword(String email, String temporaryPassword);
+
+	public abstract List<String> getStyle();
 	
 }

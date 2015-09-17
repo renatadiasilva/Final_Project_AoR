@@ -226,7 +226,7 @@ public class UserManagementImp implements UserManagementInterface {
 	}
 	
 	@Override
-	public void recoverPassword (String email, String temporaryPassword){
+	public boolean recoverPassword (String email, String temporaryPassword){
 		log.info("Password recovery: "+email);
 		
 		UserEntity userToRecover=userBean.findUserByEmail(email);
@@ -245,7 +245,12 @@ public class UserManagementImp implements UserManagementInterface {
 			// Envia um email ao user com a password temporária
 			this.mail.passwordRecovery(userToRecover, temporaryPassword);
 			
-		}else log.info(email+" not found in DB");
+			return true;
+			
+		}else{
+			log.info(email+" not found in DB - no email was sent");
+			return false;
+		}
 	}
 
 	@Override
@@ -318,6 +323,13 @@ public class UserManagementImp implements UserManagementInterface {
 	@Override
 	public String getUserFullName(){
 		return this.currentUser.getFirstName()+" "+this.currentUser.getLastName();
+	}
+	
+	@Override 
+	public List<String> getStyle(){
+		// Caso seja definida alguma regra consoante o tipo de utilizador, vem para aqui
+		// Caso contrário, segue o estilo marcado a "default"
+		return null;
 	}
 	
 }
