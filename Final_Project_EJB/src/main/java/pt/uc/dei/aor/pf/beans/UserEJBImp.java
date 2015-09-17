@@ -119,7 +119,10 @@ public class UserEJBImp implements UserEJBInterface {
 
 		List<PositionEntity> plist = 
 				positionDAO.findOpenPositionsManagedByUser(user);
-		if (plist != null && !plist.isEmpty()) return -2;
+		if (plist != null && !plist.isEmpty()) {
+			userDAO.update(user);
+			return -2;
+		}
 
 		List<InterviewEntity> ilist = 
 				interviewDAO.findScheduledInterviewsByUser(user);
@@ -127,6 +130,7 @@ public class UserEJBImp implements UserEJBInterface {
 			for (InterviewEntity i : ilist) {
 				List<UserEntity> ulist = i.getInterviewers();
 				if (ulist != null && ulist.size() == 1) {
+					userDAO.update(user);
 					return -3;
 				}
 			}

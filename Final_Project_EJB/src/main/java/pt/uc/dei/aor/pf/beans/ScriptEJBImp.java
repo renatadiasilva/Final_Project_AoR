@@ -46,7 +46,7 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 
 	@Override
 	public int delete(ScriptEntity script) {
-		log.info("Deleting/Making not reusable a script from DB");
+		log.info("Deleting a script from DB");
 
 		// there are open positions with this script as default
 		List<PositionEntity> plist = 
@@ -58,9 +58,11 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 		// there are not open positions with script
 		// verificar como faremos com os scripts...
 		if (plist != null && !plist.isEmpty())
-			for (PositionEntity p : plist)
+			for (PositionEntity p : plist) {
 				// remove script from position
 				p.setDefaultScript(null);
+				positionDAO.update(p);
+			}
 
 		// there are scheduled interviews associated with this script
 		List<InterviewEntity> ilist = 
@@ -71,9 +73,11 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 		// verificar como faremos com os scripts...
 		ilist = interviewDAO.findCarriedOutInterviewsWithScript(script);
 		if (ilist != null && !ilist.isEmpty())
-			for (InterviewEntity i : ilist)
+			for (InterviewEntity i : ilist) {
 				//remove script from interview
 				i.setScript(null);
+				interviewDAO.update(i);
+			}
 		
 		// finally remove script
 		scriptDAO.delete(script.getId(), ScriptEntity.class);

@@ -59,7 +59,7 @@ public class UserSearchCDI {
 				System.out.println("Há posições abertas geridas pelo user"
 						+ " a apagar");
 				System.out.println("Quer mudar os gestores agora ou depois"
-						+ "manualmente?");
+						+ " manualmente?");
 				// query repetida...
 				List<PositionEntity> plist = 
 						positionEJB.findOpenPositionsManagedByUser(user);

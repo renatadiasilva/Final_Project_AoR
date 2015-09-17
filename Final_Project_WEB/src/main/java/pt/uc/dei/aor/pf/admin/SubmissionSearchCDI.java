@@ -58,11 +58,10 @@ public class SubmissionSearchCDI {
 					interviewEJB.findInterviewsOfSubmission(submission);
 			if (ilist != null && !ilist.isEmpty()) {
 				System.out.println("A candidatura tem entrevistas."
-						+ "Quer mesmo removê-la?");
+						+ " Quer mesmo assim removê-la?");
 				boolean delSub = true; // pedir resposta
 				if (delSub) submissionEJB.delete(submission);
 			}
-		submissionEJB.delete(submission);
 		} else log.error("No submission with id "+id);
 	}
 

@@ -1,0 +1,56 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">Admin - Zona Perigosa - IT Jobs</ui:define>
+
+	<ui:define name="contents">
+		<h1>Remoções de entidades</h1>
+
+		<h:form id="dangerZone">
+
+			<h:panelGrid id="buttonsDangerZone" columns="5">
+
+				<p:commandButton value="Remover user"
+					action="#{dangerZoneCDI.removeUser()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover candidatura"
+					action="#{dangerZoneCDI.removeSubmission()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover posição"
+					action="#{dangerZoneCDI.removePosition()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover guião"
+					action="#{dangerZoneCDI.removeScript()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover entrevista"
+					action="#{dangerZoneCDI.removeInterview()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+			</h:panelGrid>
+
+			<h:panelGrid id="gridDangerZone" columns="4">
+
+				<p:outputLabel value="Id: " for="danger-zone-id" />
+				<p:inputText id="danger-zone-id" value="#{dangerZoneCDI.id}"
+					size="35" />
+
+			</h:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

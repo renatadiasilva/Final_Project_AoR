@@ -37,15 +37,15 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Position.findOpenPositionsByScript",
 			query = "SELECT p FROM PositionEntity p WHERE p.status = :status"
 					+ " AND p.defaultScript = :script"),
+	@NamedQuery(name = "Position.findNotOpenPositionByScript",
+			query = "SELECT p FROM PositionEntity p WHERE p.status <> :status"
+					+ " AND p.defaultScript = :script"),
 	@NamedQuery(name = "Position.findPositionsManagedByUser",
 			query = "SELECT p FROM PositionEntity p WHERE"
 					+ " p.positionManager = :user"),
 	@NamedQuery(name = "Position.findOpenPositionsManagedByUser",
 			query = "SELECT p FROM PositionEntity p WHERE"
 					+ " p.positionManager = :user AND p.status = :status"),
-	@NamedQuery(name = "Position.findNotOpenPositionByScript",
-			query = "SELECT p FROM PositionEntity p WHERE p.status <> :status"
-					+ " AND p.defaultScript = :script"),
 })
 public class PositionEntity implements Serializable {
 
