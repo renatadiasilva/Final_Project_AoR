@@ -1,14 +1,21 @@
 package pt.uc.dei.aor.pf.dao;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Query;
 
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
@@ -86,6 +93,17 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		parameters.put("user", candidate);
 		return super.findSomeResults("Submission.findSubmissionsOfCandidate",
 				parameters);	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> countSubmissionsByPosition() {
+		
+		String queryS = "SELECT position, count(*) FROM submissions "
+			+ "WHERE position IS NOT NULL GROUP BY position";
+
+		Query query = em.createNativeQuery(queryS);
+		return query.getResultList();
+
 	}
 
 }

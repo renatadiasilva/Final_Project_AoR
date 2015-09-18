@@ -13,7 +13,6 @@ import javax.inject.Named;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
-
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
@@ -28,7 +27,7 @@ import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 public class ReportCDI {
 
 //	private static final Logger log = 
-//			LoggerFactory.getLogger(SubmissionReportsCDI.class);
+//			LoggerFactory.getLogger(ReportCDI.class);
 
 	@EJB
 	private InterviewEJBInterface interviewEJB;

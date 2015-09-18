@@ -129,6 +129,12 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 		log.info("Finding submissions of a candidate");
 		return submissionDAO.findSubmissionsOfCandidate(candidate);
 	}
+	
+	@Override
+	public List<Object[]> countSubmissionsByPosition() {
+		log.info("Counting submissions by position");
+		return submissionDAO.countSubmissionsByPosition();
+	}
 
 	private void isSubmissionComplete(SubmissionEntity submission) {
 		boolean hasError = false;

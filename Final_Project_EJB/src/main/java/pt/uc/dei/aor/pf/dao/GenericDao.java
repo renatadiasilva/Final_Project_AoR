@@ -61,6 +61,15 @@ public abstract class GenericDao<E> {
 		return nq.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
+	protected List<Object[]> findSomeResultsList(String namedQuery,
+			Map<String, Object> parameters) {
+		Query nq = em.createNamedQuery(namedQuery);
+		if (parameters != null && !parameters.isEmpty())
+			populateQueryParameters(nq, parameters);
+		return nq.getResultList();
+	}
+
 	// used in accent insensitive searchs
 	protected static String makeQuery(String selectPart, String fromPart,
 			String extraPart, String[] attributesPart, String[] valuesPart,

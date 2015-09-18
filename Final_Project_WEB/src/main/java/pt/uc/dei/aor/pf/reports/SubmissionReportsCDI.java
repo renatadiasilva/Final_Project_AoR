@@ -1,5 +1,7 @@
 package pt.uc.dei.aor.pf.reports;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 
 @Named
 @RequestScoped
@@ -32,27 +33,30 @@ public class SubmissionReportsCDI {
 	@Inject
 	private ReportCDI report;
 	
+	private List<SubmissionReport> sreports = new ArrayList<SubmissionReport>();
+	
 	// data input fields
-	private Long id; // mais tarde, listar posições e tirar id automaticamente
 	private Date date1, date2;
 
-	// needed here??? FILE!!!
-	public int submissionsByPosition() {
-		log.info("Creating report with submissions of a position");
-		log.debug("Id of position "+id);
-		PositionEntity position = positionEJB.find(id);
-		if (position != null) {
-			log.debug("Position ", position.getPositionCode());
-			List<SubmissionEntity> slist = 
-					submissionEJB.findSubmissionsOfPosition(position);;
-			System.out.println("\n\nPosição :"+position.getTitle()+
-					" ("+position.getPositionCode()+")"); //truncate title??"
-			for (SubmissionEntity s : slist) 			
-				report.printCandidateInfo(s, slist.indexOf(s), false);
-			return slist.size();  //print also... LIST é para gráficos
-		} else log.error("No position with id "+id);
+	public void submissionsByPosition() {
+		log.info("Creating report with number of submissions by position");
 		
-		return -1;
+		List<Object[]> result = submissionEJB.countSubmissionsByPosition();
+		List<SubmissionReportItem> resultItems =
+				new ArrayList<SubmissionReportItem>();
+		
+		for (Object[] ele : result) {
+			PositionEntity position = 
+					positionEJB.find(bigIntToLong((BigInteger) ele[0]));
+			resultItems.add(new SubmissionReportItem(position,
+					bigIntToLong((BigInteger) ele[1])));
+		}
+		
+		SubmissionReport sreport = 
+				new SubmissionReport("Candidatos por posição", resultItems);
+		
+		sreports.add(sreport);
+
 	}
 
 	// average time to be hired by period between two dates (file?)
@@ -109,14 +113,6 @@ public class SubmissionReportsCDI {
 		// if 0, no submissions, no report!
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Date getDate1() {
 		return date1;
 	}
@@ -131,6 +127,18 @@ public class SubmissionReportsCDI {
 
 	public void setDate2(Date date2) {
 		this.date2 = date2;
+	}
+
+	public List<SubmissionReport> getSreports() {
+		return sreports;
+	}
+
+	public void setSreports(List<SubmissionReport> sreports) {
+		this.sreports = sreports;
+	}
+	
+	private Long bigIntToLong(BigInteger value) {
+		return new Long(value.intValue());
 	}
 
 }

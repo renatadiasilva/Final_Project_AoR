@@ -31,4 +31,5 @@ public interface SubmissionEJBInterface {
 			PositionEntity position);
 	public abstract List<SubmissionEntity> findSubmissionsOfCandidate(
 			UserEntity candidate);
+	public abstract List<Object[]> countSubmissionsByPosition();
 }
