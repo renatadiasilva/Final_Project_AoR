@@ -2,6 +2,7 @@ package pt.uc.dei.aor.pf.session;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -9,6 +10,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
 import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.StyleEntity;
 
 @Named
@@ -32,17 +34,18 @@ public class StyleSessionManagement implements Serializable{
 
 	private boolean defaultLogo;
 
+	private String logoFormat;
+
 	public StyleSessionManagement() {
-		this.companyName=StyleEntity.DEFAULT_COMPANY_NAME;
-		this.footerMessage=StyleEntity.DEFAULT_FOOTER_MESSAGE;
-		this.primaryColor=StyleEntity.DEFAULT_PRIMARY_COLOR;
-		this.secondaryColor=StyleEntity.DEFAULT_SECONDARY_COLOR;
+		this.companyName=Constants.DEFAULT_COMPANY_NAME;
+		this.footerMessage=Constants.DEFAULT_FOOTER_MESSAGE;
+		this.primaryColor=Constants.DEFAULT_PRIMARY_COLOR;
+		this.secondaryColor=Constants.DEFAULT_SECONDARY_COLOR;
 		this.defaultLogo=true;
-//		this.init();
 	}
 
+	@PostConstruct
 	public void init(){
-		System.out.println("Início da pesquisa CDI");
 		StyleEntity style=styleBean.findDefaulStyle();
 
 		this.id=style.getId();
@@ -50,6 +53,7 @@ public class StyleSessionManagement implements Serializable{
 		this.footerMessage=style.getFooterMessage();
 		this.primaryColor=style.getPrimaryColor();
 		this.secondaryColor=style.getSecondaryColor();
+		this.logoFormat=style.getLogoFormat();
 		
 		if(style.isUserDefaultStyle()){
 			this.defaultLogo=false;
@@ -87,11 +91,11 @@ public class StyleSessionManagement implements Serializable{
 		
 //		return request.getContextPath()+"/customLogos/"+"critical"+".jpg";
 
-		if(this.companyName.equals(StyleEntity.DEFAULT_COMPANY_NAME)){
+		if(this.companyName.equals(Constants.DEFAULT_COMPANY_NAME)){
 			return "";
 		}
 		request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/customLogos/"+this.id+".jpg";
+		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/customLogos/"+this.id+this.logoFormat;
 	}
 
 	public boolean isDefaultLogo() {
@@ -99,7 +103,7 @@ public class StyleSessionManagement implements Serializable{
 	}
 
 	public String getITJobsLogo(){
-		return StyleEntity.DEFAULT_LOGO;
+		return Constants.DEFAULT_LOGO;
 	}
 
 }

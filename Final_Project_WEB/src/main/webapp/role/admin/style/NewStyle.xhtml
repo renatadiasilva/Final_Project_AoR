@@ -8,11 +8,6 @@
 	<ui:define name="titulo">Admin - Pesquisas de Candidatos - #{styleSessionManagement.companyName}</ui:define>
 
 	<ui:define name="contents">
-		<script type="text/javascript">
-			function submit() {
-				document.getElementById("new-style-submit").click();   
-			}
-		</script>
 
 		<h1>Novo Estilo</h1>
 
@@ -22,23 +17,23 @@
 
 				<h:panelGrid columns="2" style="width:100%">
 
-					<h:panelGrid columns="2">
+					<h:panelGroup style="width:100%">
 						<p:outputLabel value="Nome do estilo" for="new-style-title" />
 						<p:inputText id="new-style-title" value="#{newStyleCDI.styleName}"
 							required="true" requiredMessage="Insíra um título."
 							style="width:100%" />
-					</h:panelGrid>
+					</h:panelGroup>
 
-					<h:panelGrid columns="2">
+					<h:panelGroup style="width:100%">
 						<p:outputLabel value="Nome da Empresa" for="new-style-name" />
 						<p:inputText id="new-style-name"
 							value="#{newStyleCDI.companyName}" required="true"
-							requiredMessage="Insíra um nome." style="width:100%" />
-					</h:panelGrid>
+							requiredMessage="Insira um nome." style="width:100%" />
+					</h:panelGroup>
 
 				</h:panelGrid>
 
-				<h:panelGrid columns="2" style="width:100%">
+				<h:panelGroup style="width:100%">
 
 					<p:outputLabel value="Breve descrição (footer)"
 						for="new-style-footer" />
@@ -46,7 +41,7 @@
 						value="#{newStyleCDI.footerMessage}" required="true"
 						requiredMessage="Insíra uma descrição." style="width:100%" />
 
-				</h:panelGrid>
+				</h:panelGroup>
 
 				<h:panelGrid columns="2">
 
@@ -65,17 +60,36 @@
 				<p:outputLabel value="Definir como estilo padrão" />
 				<p:selectBooleanCheckbox value="#{newStyleCDI.userDefault}" />
 
-				<p:fileUpload label="Escolha o logotipo (*.gif, *.jpg, *.png)" process="@form"
-					uploadLabel="Submeter estilo" cancelLabel="Cancelar"
-					required="true" requiredMessage="Submeta um logotipo."
-					fileUploadListener="#{newStyleCDI.newStyle}" mode="advanced"
-					dragDropSupport="true" update="messages" sizeLimit="100000"
-					fileLimit="1" invalidSizeMessage="Ficheiro demaisado grande."
-					invalidFileMessage="Só são permitidos os formatos .gif, .jpg e .png"
-					allowTypes="/(\.|\/)(gif|jpg|png)$/" />
-
 			</h:panelGroup>
 
+			<p:commandButton id="action-button" value="Continuar para Logo"
+				icon="ui-icon-folder-open" actionListener="#{newStyleCDI.newStyle()}"
+				onclick="PF('uploadLogo').show();"/>
+
+		</h:form>
+
+		<h:form>
+		
+			<p:dialog header="Logotipo" widgetVar="uploadLogo" draggable="false"
+				resizable="false" modal="true">
+
+				<p:messages id="dialogMessages" />
+
+				<p:fileUpload id="file-upload" update="@all" 
+					label="Escolha o logotipo (*.gif, *.jpg, *.png)"
+					uploadLabel="Submeter logo" cancelLabel="Cancelar"
+					required="true" requiredMessage="Submeta um logotipo."
+					fileUploadListener="#{newStyleCDI.uploadLogo}" mode="advanced"
+					dragDropSupport="true" sizeLimit="100000" fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande."
+					invalidFileMessage="Só são permitidos os formatos .gif, .jpg e .png"
+					allowTypes="/(\.|\/)(gif|jpg|png)$/"
+					oncomplete="PF('uploadLogo').hide();" />
+
+				<p:commandButton value="Fechar" onclick="PF('uploadLogo').hide();"
+					icon="ui-icon-close" style="width:100%" />
+
+			</p:dialog>
 		</h:form>
 
 	</ui:define>

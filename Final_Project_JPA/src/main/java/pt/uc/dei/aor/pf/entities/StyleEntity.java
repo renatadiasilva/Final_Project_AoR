@@ -45,10 +45,14 @@ public class StyleEntity implements Serializable{
 	@NotNull
 	@Column(name = "secondary_color", nullable = false)
 	private String secondaryColor;
+	
+	@Column(name = "logo_format", nullable = true)
+	private String logoFormat;
 
 	// O style default está a true, os outros a null
 	@Column(name = "default_style", nullable = false)
 	private boolean userDefaultStyle;
+	
 
 	public StyleEntity() {
 	}
@@ -109,6 +113,14 @@ public class StyleEntity implements Serializable{
 
 	public void setSecondaryColor(String secondaryColor) {
 		this.secondaryColor = secondaryColor;
+	}
+
+	public String getLogoFormat() {
+		return logoFormat;
+	}
+
+	public void setLogoFormat(String logoFormat) {
+		this.logoFormat = logoFormat;
 	}
 
 	public boolean isUserDefaultStyle() {

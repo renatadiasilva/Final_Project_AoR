@@ -18,9 +18,9 @@ public class UploadFile {
 	public static final String FOLDER_SUBMISSION_MOTIVATION_LETTER="submissionMotivationLetter";
 	public static final String FOLDER_INTERVIEW_RESULT="interviewResult";
 	
-	public static final String IMAGE_EXTENSION="jpg";
-	public static final String DOCUMENT_EXTENSION_PDF="pdf";
-	public static final String DOCUMENT_EXTENSION_WORD="doc";
+	public static final String IMAGE_EXTENSION=".jpg";
+	public static final String DOCUMENT_EXTENSION_PDF=".pdf";
+	public static final String DOCUMENT_EXTENSION_WORD=".doc";
 	
 	public void uploadFile(UploadedFile file, String folder, Long id, String extension){
 		Properties props = System.getProperties();
@@ -32,10 +32,10 @@ public class UploadFile {
 		System.out.println(extension);
 		
 		try {
-			file.write(props.getProperty("user.dir")+"\\"+folder+"\\"+id+"."+extension);
+			file.write(props.getProperty("user.dir")+"\\"+folder+"\\"+id+extension);
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("Error writing "+file.getFileName()+" to "+folder+" with new name "+id+"."+extension);
+			log.error("Error writing "+file.getFileName()+" to "+folder+" with new name "+id+extension);
 		}
 	}
 }
