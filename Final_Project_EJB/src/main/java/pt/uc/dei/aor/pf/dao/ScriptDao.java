@@ -1,6 +1,8 @@
 package pt.uc.dei.aor.pf.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -29,6 +31,12 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 		Query query = em.createNativeQuery(queryS, ScriptEntity.class);
 		return (List<ScriptEntity>) query.getResultList();
 
+	}
+
+	public List<ScriptEntity> findChildScripts(ScriptEntity script) {		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("script", script);
+		return super.findSomeResults("Script.findChildScripts", parameters);
 	}
 
 }

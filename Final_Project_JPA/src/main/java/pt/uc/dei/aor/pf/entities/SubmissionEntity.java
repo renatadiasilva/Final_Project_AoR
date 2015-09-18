@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "submissions")
+//DATE_PART
 @NamedQueries({
 	@NamedQuery(name = "Submission.findSpontaneousSubmissions",
 			query = "SELECT s FROM SubmissionEntity s"

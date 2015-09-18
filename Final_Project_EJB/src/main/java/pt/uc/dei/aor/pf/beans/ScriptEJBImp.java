@@ -53,7 +53,14 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 				positionDAO.findOpenPositionsByScript(script);
 		if (plist != null && !plist.isEmpty()) return -1;
 
-		//no open positions
+		// there are scheduled interviews associated with this script
+		List<InterviewEntity> ilist = 
+				interviewDAO.findScheduledInterviewsWithScript(script);
+		if (ilist != null && !ilist.isEmpty()) return -2;
+		
+		// script can be removed but first clean all connections!
+
+		// closed or on hold positions with script
 		plist = positionDAO.findNotOpenPositionsByScript(script);
 		// there are not open positions with script
 		// verificar como faremos com os scripts...
@@ -64,12 +71,7 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 				positionDAO.update(p);
 			}
 
-		// there are scheduled interviews associated with this script
-		List<InterviewEntity> ilist = 
-				interviewDAO.findScheduledInterviewsWithScript(script);
-		if (ilist != null && !ilist.isEmpty()) return -2;
-
-		// there are carried out interviews with script
+		// carried out interviews with script
 		// verificar como faremos com os scripts...
 		ilist = interviewDAO.findCarriedOutInterviewsWithScript(script);
 		if (ilist != null && !ilist.isEmpty())
@@ -79,6 +81,17 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 				interviewDAO.update(i);
 			}
 		
+		//tirar??
+		// scripts derived from this script
+		// verificar como faremos com os scripts...
+		List<ScriptEntity> sclist = scriptDAO.findChildScripts(script);
+		if (sclist != null && !sclist.isEmpty()) {
+			for (ScriptEntity sc : sclist) {
+				//remove 'parent' script from 'child' script
+				sc.setDerivedFrom(null);
+				scriptDAO.update(sc);
+			}
+		}
 		// finally remove script
 		scriptDAO.delete(script.getId(), ScriptEntity.class);
 		return 0;
@@ -106,6 +119,12 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 	public List<ScriptEntity> findScriptsByTitle(String title) {
 		log.info("Finding scripts by title");
 		return scriptDAO.findScriptsByTitle(title);
+	}
+
+	@Override
+	public List<ScriptEntity> findChildScripts(ScriptEntity script) {
+		log.info("Finding scripts derived from a given script");
+		return scriptDAO.findChildScripts(script);
 	}
 
 	private void isScriptComplete(ScriptEntity script) {

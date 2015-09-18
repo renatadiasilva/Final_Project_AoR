@@ -15,15 +15,23 @@
 			<h:panelGrid id="buttonsScriptSearch" columns="7">
 
 				<p:commandButton value="Todos guiões"
-					action="#{scriptSearchCDI.searchAllScripts()}" update="@form, messages"
+					action="#{scriptSearchCDI.searchAllScripts()}"
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Guiões reutilizáveis"
-					action="#{scriptSearchCDI.searchReusableScripts()}" update="@form, messages"
+					action="#{scriptSearchCDI.searchReusableScripts()}"
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Guiões (título)"
-					action="#{scriptSearchCDI.searchByTitle()}" update="@form, messages"
+					action="#{scriptSearchCDI.searchByTitle()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Guiões derivados"
+					action="#{scriptSearchCDI.searchChildScripts()}"
+					update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Remover guião"
@@ -36,7 +44,8 @@
 			<h:panelGrid id="gridScriptSearch" columns="8">
 
 				<p:outputLabel value="Título: " for="search-titlesc" />
-				<p:inputText id="search-titlesc" value="#{scriptSearchCDI.title}"
+				<p:inputText id="search-titlesc"
+					value="#{scriptSearchCDI.title}"
 					size="35" />
 
 				<p:outputLabel value="Id: " for="search-idsc" />

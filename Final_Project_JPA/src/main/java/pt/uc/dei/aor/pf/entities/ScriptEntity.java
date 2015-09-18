@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -33,6 +31,10 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Script.findReusableScripts",
 			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
 					+ " ORDER BY s.creationDate DESC"),
+	//tirar
+	@NamedQuery(name = "Script.findChildScripts",
+			query = "SELECT s FROM ScriptEntity s"
+					+ " WHERE s.derivedFrom = :script"),
 })
 public class ScriptEntity implements Serializable{
 
@@ -44,9 +46,13 @@ public class ScriptEntity implements Serializable{
 	private Long id;
 
 	//tirar
-	@OneToOne(optional = true)
-	@JoinColumn(name = "derived_from", updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "derived_from")
 	private ScriptEntity derivedFrom;
+
+	//tirar
+	@OneToMany(mappedBy = "derivedFrom")
+	private List<ScriptEntity> childScripts; 
 
 	@NotNull
 	@Column(name = "title", nullable = false, length = 40)
@@ -75,11 +81,11 @@ public class ScriptEntity implements Serializable{
 	@JoinColumn(name = "creator", nullable = false)
 	private UserEntity scriptCreator;
 
-	@OneToMany(mappedBy = "defaultScript", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "defaultScript")
 	@OrderBy("positionCode")
 	private List<PositionEntity> positionsWithScriptDefault;
 
-	@OneToMany(mappedBy = "script", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "script")
 	private List<InterviewEntity> interviewsUsingScript;
 
 	public ScriptEntity() {

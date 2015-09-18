@@ -22,7 +22,6 @@ import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
-import pt.uc.dei.aor.pf.entities.StyleEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
@@ -144,7 +143,7 @@ public class InitDB {
 			new PositionEntity("Tecnico de Segurança", null, 1, null, 60, 
 				ulist[2], ulist[1], "Critical Software",
 				PositionEntity.TECH_SAFETY, "Procura-se técnico de"
-				+ " segurança bla bla bla", null, sclist[0]), // plist[1]
+				+ " segurança bla bla bla", null, sclist[2]), // plist[1]
 			new PositionEntity("Programadores .NET", null, 3, null, 150, 
 				ulist[10], ulist[1], "IT Grow", PositionEntity.TECH_DOTNET,
 				"Procuram-se programadores .NET bla bla bla", 

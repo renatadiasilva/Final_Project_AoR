@@ -89,6 +89,15 @@ public class ScriptSearchCDI {
 		this.sclist = scriptEJB.findScriptsByTitle(pattern);
 	}
 
+	public void searchChildScripts() {
+		log.info("Searching child scripts of a given script");
+		log.debug("Id "+id);
+		ScriptEntity script = scriptEJB.find(id);
+		if (script != null) {
+			this.sclist = scriptEJB.findChildScripts(script);
+		} else log.error("No script with id "+id);
+	}
+
 	// getters e setters
 
 	public String getTitle() {
