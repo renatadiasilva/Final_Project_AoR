@@ -109,7 +109,7 @@ public class UserEJBImp implements UserEJBInterface {
 		// remove the data not the user
 		//		user.setEmail(REMOVED_DATA); ??
 		user.setEmail(user.getEmail()+" APAGADO");
-		user.setPassword("12345");
+		user.setPassword(REMOVED_DATA);
 		user.setFirstName(REMOVED_DATA);
 		user.setLastName(REMOVED_DATA);
 		user.setDefaultRole(REMOVED_DATA);
@@ -146,6 +146,10 @@ public class UserEJBImp implements UserEJBInterface {
 		// code = 1, there are positions but no interviews
 		// code = 2, there are interviews but no positions
 		// code = 3, there are positions and interviews
+		
+		// limpar também dados candidaturas/entrevistas
+		// realizadas?? 
+		// tipo motivation letter/feedback/answers?
 	}
 
 	@Override

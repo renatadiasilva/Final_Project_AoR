@@ -107,7 +107,7 @@ public class DangerZoneCDI {
 								+" "+i.getSubmission().getCandidate().getLastName()
 								+" para a posição "
 								+i.getSubmission().getPosition().getPositionCode()
-								+" ("+i.getDate()+")");
+								+" (data: "+i.getDate()+")");
 					log.info("Failure in removing user");
 					log.debug("Id "+id);
 					// adicionar código
@@ -167,7 +167,7 @@ public class DangerZoneCDI {
 							+" "+i.getSubmission().getCandidate().getLastName()
 							+" para a posição "
 							+i.getSubmission().getPosition().getPositionCode()
-							+" ("+i.getDate()+")");
+							+" (data: "+i.getDate()+")");
 				//adicionar código
 				log.info("Failure in removing script");
 				log.debug("Id "+id);
@@ -224,9 +224,10 @@ public class DangerZoneCDI {
 				FacesContext.getCurrentInstance().
 				addMessage(null, new FacesMessage("Se quiser mesmo terá"
 						+ " que as apagar manualmente..."));
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Não quer em alternativa"
-						+ " colocar a "
+				if (position.getStatus().equals(PositionEntity.STATUS_OPEN))
+					FacesContext.getCurrentInstance().
+						addMessage(null, new FacesMessage("Não quer em "
+						+ "alternativa colocar a "
 						+ "posição em hold ou fechá-la?"));
 				List<SubmissionEntity> slist = 
 						submissionEJB.findSubmissionsOfPosition(position);
@@ -234,7 +235,7 @@ public class DangerZoneCDI {
 				for (SubmissionEntity s : slist)
 					info.add("Candidatura do candidado "
 							+s.getCandidate().getFirstName()+" "
-							+s.getCandidate().getLastName()+" à posição"
+							+s.getCandidate().getLastName()+" à posição "
 							+s.getPosition().getPositionCode());
 				// adicionar código
 				log.info("Failure in removing position");
@@ -257,28 +258,46 @@ public class DangerZoneCDI {
 		log.debug("Id "+id);
 		SubmissionEntity submission = submissionEJB.find(id);
 		if (submission != null) {
+			boolean delSub = true;
 			List<InterviewEntity> ilist = 
 					interviewEJB.findInterviewsOfSubmission(submission);
 			if (ilist != null && !ilist.isEmpty()) {
 				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("A candidatura"
+					addMessage(null, new FacesMessage("A candidatura"
 						+ " tem entrevistas."
 						+ " Quer mesmo assim removê-la?"));
+				// pedir resposta
 				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Está a apagar"
+					addMessage(null, new FacesMessage("Está a apagar"
 						+ " automaticamente..."));
-				boolean delSub = true; // pedir resposta
-				if (delSub) submissionEJB.delete(submission);
-			} else {
+				// pedir resposta
+				delSub = true; // mudar...
+
+				for (InterviewEntity i : ilist)
+					info.add("Entrevista do candidato "
+							+i.getSubmission().getCandidate().getFirstName()
+							+" "+i.getSubmission().getCandidate().getLastName()
+							+" para a posição "
+							+i.getSubmission().getPosition().getPositionCode()
+							+" (data: "+i.getDate()+")");
+			}
+
+			if (delSub) {
+				submissionEJB.delete(submission);
 				FacesContext.getCurrentInstance().
 					addMessage(null, new FacesMessage("Candidatura removida"));
 				log.info("Submission removed");
+				log.debug("Id "+id);
+			} else {
+				FacesContext.getCurrentInstance().
+				addMessage(null, new FacesMessage("Candidatura NÃO removida"));
+				log.info("Submission not removed");
 				log.debug("Id "+id);
 			}
 		} else {
 			log.error("No submission with id "+id);
 			FacesContext.getCurrentInstance().
-			addMessage(null, new FacesMessage("Não existe candidatura"
+				addMessage(null, new FacesMessage("Não existe candidatura"
 					+ " com "+id));
 		}
 	}
