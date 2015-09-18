@@ -112,7 +112,7 @@ public class SubmissionSearchCDI {
 		log.info("Searching for submissions by position");
 		PositionEntity position = positionEJB.find(id);
 		if (position != null) {
-			log.debug("Script "+position.getPositionCode());
+			log.debug("Position "+position.getPositionCode());
 			this.slist = submissionEJB.findSubmissionsOfPosition(position);
 		} else log.error("No position with id "+id);
 	}	
@@ -121,7 +121,7 @@ public class SubmissionSearchCDI {
 		log.info("Searching for submissions by candidate");
 		UserEntity user = userEJB.find(id);
 		if (user != null && user.getRoles().contains("CANDIDATE")) {
-			log.debug("Script "+user.getFirstName());
+			log.debug("Candidate "+user.getFirstName());
 			this.slist = submissionEJB.findSubmissionsOfCandidate(user);
 		} else log.error("No candidate with id "+id);
 	}	
