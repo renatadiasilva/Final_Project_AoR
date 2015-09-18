@@ -48,6 +48,14 @@
 					size="35" />
 
 			</h:panelGrid>
+			
+			<p:dataTable emptyMessage="Nada a mostrar." 
+				var="info" value="#{dangerZoneCDI.info}">
+				<f:facet name="header">Listagem</f:facet>
+				<p:column headerText="Info">
+					<h:outputText value="#{info}" />
+				</p:column>
+			</p:dataTable>
 
 		</h:form>
 

@@ -101,6 +101,8 @@ public class UserEJBImp implements UserEJBInterface {
 	public int delete(UserEntity user) {
 		log.info("Deleting data of user from DB");
 		
+		int code = 0;
+		
 		// protection: don't delete data of superAdmin!
 		if (user.getEmail().equals("admin@mail.com")) return -1;
 		
@@ -117,27 +119,33 @@ public class UserEJBImp implements UserEJBInterface {
 		UserInfoEntity userInfo = user.getUserInfo();
 		if (userInfo != null) user.setUserInfo(null);
 
+		// tirar fora???
+		//there are open positions managed by the given user
 		List<PositionEntity> plist = 
 				positionDAO.findOpenPositionsManagedByUser(user);
-		if (plist != null && !plist.isEmpty()) {
-			userDAO.update(user);
-			return -2;
-		}
+		if (plist != null && !plist.isEmpty()) code++;
 
+		// there are scheduled interviews which have
+		// only the given user as interviewer
 		List<InterviewEntity> ilist = 
 				interviewDAO.findScheduledInterviewsByUser(user);
 		if (ilist != null && !ilist.isEmpty()) {
 			for (InterviewEntity i : ilist) {
 				List<UserEntity> ulist = i.getInterviewers();
 				if (ulist != null && ulist.size() == 1) {
-					userDAO.update(user);
-					return -3;
+					code += 2;
+					break;
 				}
 			}
 		}
 
 		userDAO.update(user);
-		return 0;
+		return code;
+		// code =-1, error
+		// code = 0, no changes needed
+		// code = 1, there are positions but no interviews
+		// code = 2, there are interviews but no positions
+		// code = 3, there are positions and interviews
 	}
 
 	@Override
