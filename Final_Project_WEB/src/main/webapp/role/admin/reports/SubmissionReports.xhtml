@@ -37,27 +37,35 @@
 							<p:column colspan="7" headerText="Posição" />
 							<p:column rowspan="2" headerText="Nº Candidaturas" />
 						</p:row>
+						<p:row>
+							<p:column headerText="Código" />
+							<p:column headerText="Título" />
+							<p:column headerText="Data de Abertura" />
+							<p:column headerText="Estado" />
+							<p:column headerText="Vagas" />
+							<p:column headerText="Empresa" />
+							<p:column headerText="Área Técnica" />
+						</p:row>
 					</p:columnGroup>
-
-					<p:column headerText="Código">
+					<p:column>
 						<h:outputText value="#{item.position.positionCode}" />
 					</p:column>
-					<p:column headerText="Título">
+					<p:column>
 						<h:outputText value="#{item.position.title}" />
 					</p:column>
-					<p:column headerText="Data de Abertura">
+					<p:column>
 						<h:outputText value="#{item.position.openingDate}" />
 					</p:column>
-					<p:column headerText="Estado">
+					<p:column>
 						<h:outputText value="#{item.position.status}" />
 					</p:column>
-					<p:column headerText="Vagas">
+					<p:column>
 						<h:outputText value="#{item.position.openings}" />
 					</p:column>
-					<p:column headerText="Empresa">
+					<p:column>
 						<h:outputText value="#{item.position.company}" />
 					</p:column>
-					<p:column headerText="Área Técnica">
+					<p:column>
 						<h:outputText value="#{item.position.technicalArea}" />
 					</p:column>
 					<p:column>
