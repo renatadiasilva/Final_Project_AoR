@@ -1,0 +1,54 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Admin - Pesquisas de Candidatos - #{styleSessionManagement.companyName}</ui:define>
+
+	<ui:define name="contents">
+		<h1>New Style</h1>
+
+		<h:form>
+			<h:panelGrid columns="6">
+				<p:outputLabel value="Nome do estilo" for="new-style-title" />
+				<p:inputText id="new-style-title" value="#{newStyleCDI.styleName}"
+					required="true" requiredMessage="Insíra um título." />
+
+				<p:outputLabel value="Nome da Empresa" for="new-style-name" />
+				<p:inputText id="new-style-name" value="#{newStyleCDI.companyName}"
+					required="true" requiredMessage="Insíra um nome." />
+
+				<p:outputLabel value="Breve descrição (footer)"
+					for="new-style-footer" />
+				<p:inputText id="new-style-footer"
+					value="#{newStyleCDI.footerMessage}" required="true"
+					requiredMessage="Insíra uma descrição." />
+
+				<p:outputLabel value="Cor Primária" />
+				<p:colorPicker value="#{newStyleCDI.primaryColor}" mode="inline" />
+
+				<p:outputLabel value="Cor Secundária" />
+				<p:colorPicker value="#{newStyleCDI.secondaryColor}" mode="inline" />
+
+			</h:panelGrid>
+			
+			<p:outputLabel value="Seleccionar o logotipo" />
+			<p:fileUpload id="new-style-logo" value="#{newStyleCDI.file}"
+				mode="simple" skinSimple="true" required="true"
+				requiredMessage="Escolha uma imagem para o logotipo."
+				allowTypes="/(\.|\/)(jpg)$/" sizeLimit="100000"
+				description="Procurar (*.jpg)" style="width: 100%" />
+
+			<p:outputLabel value="Definir como estilo padrão" />
+			<p:selectBooleanCheckbox value="#{newStyleCDI.userDefault}" />
+
+			<p:commandButton value="Submeter" update="messages"
+				icon="ui-icon-disk" actionListener="#{newStyleCDI.newStyle()}" />
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

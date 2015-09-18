@@ -73,7 +73,14 @@ public class MailManagementImp implements MailManagementInterface {
 	@Override
 	public void passwordRecovery (UserEntity user, String temporaryPassword){
 		// Envia um email ao user a notificar da nova password temporária
-		log.info("Email enviado a "+user.getEmail()+" com a password temporária "+temporaryPassword);
+		String receiver=user.getEmail();
+		String subject="Recuperação de password";
+		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","+
+				"\n\nA sua nova password para aceder à plataforma ITJobs: "+temporaryPassword
+				+"\n\n\nCumprimentos,\nA equipa ITJobs";
+		
+		log.info("Envio de email para "+user.getEmail()+" para notificar da password temporária "+temporaryPassword);
+		this.sendEmail(receiver, subject, text);
 	}
 	
 	@Override

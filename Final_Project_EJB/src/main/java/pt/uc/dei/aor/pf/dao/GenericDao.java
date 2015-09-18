@@ -42,6 +42,12 @@ public abstract class GenericDao<E> {
 	public E find(Long entityID) {
 		return em.find(entityClass, entityID);
 	}
+	
+	public E saveAndReturn(E entity){
+		em.persist(entity);
+		em.flush();
+		return entity;
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<E> findAll() {

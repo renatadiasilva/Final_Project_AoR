@@ -214,8 +214,9 @@
 
 	<ui:define name="contents">
 		<h:form>
-			<p:commandButton value="Populate" action="#{initDB.populate()}" />
-			<p:commandButton value="Test Email" action="#{testEmailCDI.testMail()}" />
+			<p:commandButton value="Populate" actionListener="#{initDB.populate()}" />
+			<p:commandButton value="Test Email" actionListener="#{testEmailCDI.testMail()}" />
+			<p:commandButton value="Refrescar estilo" actionListener="#{styleSessionManagement.init()}" ajax="false" />
 		</h:form>
 	</ui:define>
 

@@ -329,7 +329,16 @@ public class UserManagementImp implements UserManagementInterface {
 	public List<String> getStyle(){
 		// Caso seja definida alguma regra consoante o tipo de utilizador, vem para aqui
 		// Caso contrário, segue o estilo marcado a "default"
-		return null;
+		
+		List<String>style=new ArrayList<>();
+		
+		style.add("ITJobs");
+		style.add("ITJobs - Projecto Final | Programação Avançada em JAVA | Duarte Gonçalves | Renata Silva");
+		style.add("#3f51b5");
+		style.add("#ff4081");
+		style.add("1");
+		
+		return style;
 	}
 	
 }

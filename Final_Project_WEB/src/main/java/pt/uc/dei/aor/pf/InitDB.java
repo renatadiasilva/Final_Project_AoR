@@ -15,12 +15,14 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
+import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.StyleEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
@@ -48,6 +50,9 @@ public class InitDB {
 
 	@EJB
 	InterviewEJBInterface interviewEJB;
+	
+	@EJB
+	StyleEJBInterface styleEJB;
 	
 	public void populate() throws ParseException {
 
@@ -519,6 +524,8 @@ public class InitDB {
 		for (InterviewEntity i : ilist) {
 			this.interviewEJB.save(i);
 		}
+		
+//		System.out.println("New style ID: "+this.styleEJB.saveAndReturn(new StyleEntity("Critical", "Critical Software", "Critical Software Recruitment", "#A50F13", "#660", true)).getId());
 		
 	}
 

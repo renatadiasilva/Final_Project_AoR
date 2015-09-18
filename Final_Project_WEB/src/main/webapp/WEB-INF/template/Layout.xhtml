@@ -8,11 +8,9 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><ui:insert name="titulo">#{styleSessionManagement.companyName}</ui:insert></title>
-	<h:outputStylesheet library="css" name="MainStyle.css" />
-	<h:outputStylesheet library="css" name="PrimeFacesOverride.css" />
 	<h:outputScript library="scripts" name="Calendar.js" />
 	<h:outputScript library="scripts" name="CapsLock.js" />
-	
+
 	<!-- Scripts de Exibição -->
 	<script type="text/javascript">
 	function checkCaps(){
@@ -29,26 +27,23 @@
 		document.getElementById("js-check").style.display='none';
 		}
 	</script>
-	
+
 </h:head>
 
 <h:body onload="jsCheck();">
 
-	<!-- JavaScript Check -->
-	<div id="js-check">
-		<h:graphicImage library="images" name="logo_49px.png"
-			style="margin:8px 16px;" />
-		<br /> <br /> <br />
-		<h1 style="margin:16px;">Por favor habilite o javascript no seu browser.</h1>
-	</div>
+	<!-- CSS "Dinâmico" -->
+	<ui:include src="style.xhtml" />
 
-
-	<header>
-	
-	<!-- Logótipo -->
+	<header> <!-- Logótipo -->
 	<div id="header-link">
 		<h:link>
-			<h:graphicImage library="images" name="logo_49px.png" />
+			<p:graphicImage rendered="#{styleSessionManagement.defaultLogo}"
+				library="images/logos" style="max-height:100%;width:auto;"
+				name="#{styleSessionManagement.ITJobsLogo}" />
+			<p:graphicImage rendered="#{!styleSessionManagement.defaultLogo}"
+				style="max-height:100%;width:auto;"
+				url="#{styleSessionManagement.logoPath}" />
 		</h:link>
 	</div>
 
@@ -76,6 +71,15 @@
 
 		<!-- Footer -->
 		<div id="footer">#{styleSessionManagement.footerMessage}</div>
+	</div>
+
+	<!-- JavaScript Check -->
+	<div id="js-check">
+		<h:graphicImage library="images" name="logo_49px.png"
+			style="margin:8px 16px;" />
+		<br /> <br /> <br />
+		<h1 style="margin: 16px;">Por favor habilite o javascript no seu
+			browser.</h1>
 	</div>
 
 </h:body>

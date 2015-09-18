@@ -11,6 +11,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 		<class>pt.uc.dei.aor.pf.entities.PositionEntity</class>
 		<class>pt.uc.dei.aor.pf.entities.QuestionEntity</class>
 		<class>pt.uc.dei.aor.pf.entities.ScriptEntity</class>
+		<class>pt.uc.dei.aor.pf.entities.StyleEntity</class>
 		<class>pt.uc.dei.aor.pf.entities.SubmissionEntity</class>
 		<class>pt.uc.dei.aor.pf.entities.UserEntity</class>
 		<class>pt.uc.dei.aor.pf.entities.UserInfoEntity</class>

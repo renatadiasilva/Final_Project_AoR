@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+	
+<style>
+/*Main*/
+		
+@CHARSET "UTF-8";
+
+@font-face {
+	font-family: 'ITJobs_1';
+	font-weight: normal;
+	font-style: normal;
+	src: url("#{resource['fonts:SWISSC.TTF']}");
+}
+
+body {
+	font-size: 12px;
+	font-family: ITJobs_1;
+	margin: 0px;
+	font-weight: normal;
+}
+
+/*header start*/
+header {
+	width: 100%;
+	padding: 8px 0px;
+	height: 49px;
+	background-color: #{styleSessionManagement.primaryColor};
+	color: #fff;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: #{styleSessionManagement.secondaryColor};
+}
+
+#js-check {
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	float: left;
+	z-index: 100;
+	width: 100%;
+	min-height: 100%;
+	background-color: #{styleSessionManagement.primaryColor};
+	color: #fff;
+}
+
+#header-link {
+	margin-left: 16px;
+	float: left;
+	height: 49px;
+}
+
+#header-messages {
+	margin-left: 16px;
+	margin-top: 16px;
+	float: left;
+}
+
+#header-menus {
+	margin-right: 16px;
+	margin-top: 10px;
+	float: right;
+}
+/*header end*/
+#inner-body {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+#contents {
+	position: absolute;
+	padding: 20px;
+	/*margem para o footer*/
+	padding-bottom: 52px;
+}
+
+#footer {
+	font-size: 12px;
+	background-color: #{styleSessionManagement.primaryColor};
+	color: #fff;
+	padding: 8px 0px;
+	text-align: center;
+	border-top-style: solid;
+	border-width: 1px;
+	border-color: #{styleSessionManagement.secondaryColor};
+	position: fixed;
+	width: 100%;
+	min-width: 1024px;
+	bottom: 0px;
+}
+
+/* Login Start */
+#login-dialog {
+	width: 290px;
+	margin: auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.grid-login {
+	background-color: #e8eaf6;
+	padding: 10px;
+}
+/* Login End */
+#index-menu {
+	padding: 3px;
+	background-color: #fff;
+}
+</style>
+
+<style>
+/*PF OR*/
+@CHARSET "UTF-8";
+
+.ui-corner-all {
+	border-radius: 0px;
+}
+
+/* Override PrimeFaces Font */
+.ui-widget {
+	font-family: ITJobs_1;
+}
+
+input {
+	font-family: ITJobs_1;
+}
+
+input .ui-widget-content{
+	font-family: ITJobs_1;
+}
+
+/* p:inputText, etc */
+.ui-inputfield {
+	box-shadow: none;
+	border-radius: 0px;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #fff;
+	color: #5E5E5E;
+	text-shadow: none;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.ui-widget-content {
+	box-shadow: none;
+}
+
+/* Erros - background da fonte nos campos em falta/erro */
+.ui-outputlabel.ui-state-error {
+	background: none;
+}
+
+/* Erros, infos - caixa das mensagens */
+.ui-messages-error {
+	border-radius: 0px;
+	border: none;
+	padding: 5px;
+}
+
+.ui-messages-info {
+	border-radius: 0px;
+	border: none;
+	padding: 5px;
+}
+
+.ui-messages-warn-icon {
+	/* Esconde o ícone */
+	visibility: hidden;
+}
+
+.ui-messages-error-icon {
+	/* Esconde o ícone */
+	visibility: hidden;
+}
+
+.ui-messages-info-icon {
+	/* Esconde o ícone */
+	visibility: hidden;
+}
+
+/* p:commandButton */
+.ui-button {
+	box-shadow: none;
+	border-radius: 0px;
+	border-color: #{styleSessionManagement.primaryColor};
+	/* Cor primária */
+	background-color: #fff;
+	font-weight: normal;
+}
+
+.ui-button:hover {
+	border-color: #{styleSessionManagement.primaryColor};
+	background: #C4C4C4
+		-moz-linear-gradient(center top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0)) repeat scroll 0% 0%;
+}
+
+/* p:calendar date-picker */
+.ui-datepicker {
+	border-radius: 0px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #A8A8A8;
+	color: #{styleSessionManagement.primaryColor};
+	text-shadow: none;
+	font-weight: normal;
+}
+
+/*Menu*/
+.ui-menu {
+	margin-left: 16px;
+}
+
+.ui-widget-content {
+	border-style: none;
+}
+
+.ui-widget-header {
+	border-style: none;
+}
+
+/* Dialog */
+.ui-dialog-titlebar-close {
+	visibility: hidden;
+}
+
+/* Data Table */
+.ui-datatable thead th{
+	padding: 0px
+}
+
+.ui-state-default, .ui-widget-content {
+	background: none;
+	background-color: #fff;
+}
+
+.ui-datatable tbody td {
+	text-align: center;
+	border: none;
+}
+</style>
+
+
+	</ui:composition>
+
+</h:body>
+</html>

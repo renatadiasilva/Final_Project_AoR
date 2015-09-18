@@ -1,97 +1,105 @@
 package pt.uc.dei.aor.pf.session;
 
 import java.io.Serializable;
-import java.util.List;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+
+import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
+import pt.uc.dei.aor.pf.entities.StyleEntity;
 
 @Named
 @SessionScoped
 public class StyleSessionManagement implements Serializable{
-	
+
 	private static final long serialVersionUID = 7618604333949807716L;
-	
-	@Inject
-	UserSessionManagement userManagement;
-	
-	private List<String>style;
+
+	@EJB
+	private StyleEJBInterface styleBean;
+
+	private Long id;
 
 	private String companyName;
-	
+
 	private String footerMessage;
-	
+
 	private String primaryColor;
-	
+
 	private String secondaryColor;
-	
-	private String logoPath;
-	
-	private String logoWidth;
+
+	private boolean defaultLogo;
 
 	public StyleSessionManagement() {
-//		this.style=this.userManagement.getStyle();
-//		
-//		if(this.style!=null&&this.style.size()==4){
-//			this.companyName=this.style.get(0);
-//			this.footerMessage=this.style.get(1);
-//			this.primaryColor=this.style.get(2);
-//			this.secondaryColor=this.style.get(3);
-//		}else{
-			this.companyName="IT Jobs";
-			this.footerMessage="IT Jobs - Projecto Final | Programação Avançada em JAVA | Duarte Gonçalves | Renata Silva";
-			this.primaryColor="#3f51b5";
-			this.secondaryColor="#ff4081";
-//		}
+		this.companyName=StyleEntity.DEFAULT_COMPANY_NAME;
+		this.footerMessage=StyleEntity.DEFAULT_FOOTER_MESSAGE;
+		this.primaryColor=StyleEntity.DEFAULT_PRIMARY_COLOR;
+		this.secondaryColor=StyleEntity.DEFAULT_SECONDARY_COLOR;
+		this.defaultLogo=true;
+//		this.init();
+	}
+
+	public void init(){
+		System.out.println("Início da pesquisa CDI");
+		StyleEntity style=styleBean.findDefaulStyle();
+
+		this.id=style.getId();
+		this.companyName=style.getCompanyName();
+		this.footerMessage=style.getFooterMessage();
+		this.primaryColor=style.getPrimaryColor();
+		this.secondaryColor=style.getSecondaryColor();
+		
+		if(style.isUserDefaultStyle()){
+			this.defaultLogo=false;
+		}else{
+			this.defaultLogo=true;
+		}
+
 	}
 
 	public String getCompanyName() {
 		return companyName;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
 	public String getFooterMessage() {
 		return footerMessage;
-	}
-
-	public void setFooterMessage(String footerMessage) {
-		this.footerMessage = footerMessage;
 	}
 
 	public String getPrimaryColor() {
 		return primaryColor;
 	}
 
-	public void setPrimaryColor(String primaryColor) {
-		this.primaryColor = primaryColor;
-	}
-
 	public String getSecondaryColor() {
 		return secondaryColor;
 	}
 
-	public void setSecondaryColor(String secondaryColor) {
-		this.secondaryColor = secondaryColor;
-	}
-
 	public String getLogoPath() {
-		return logoPath;
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		System.out.println("1 "+request.getScheme());
+		System.out.println("2 "+request.getContextPath());
+		System.out.println("3 "+request.getServletPath());
+		System.out.println("4 "+request.getRequestURI());
+		System.out.println("5 "+request.getRequestURL());
+		System.out.println("6 "+request.getServerName());
+		System.out.println("7 "+request.getServerPort());
+		
+//		return request.getContextPath()+"/customLogos/"+"critical"+".jpg";
+
+		if(this.companyName.equals(StyleEntity.DEFAULT_COMPANY_NAME)){
+			return "";
+		}
+		request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/customLogos/"+this.id+".jpg";
 	}
 
-	public void setLogoPath(String logoPath) {
-		this.logoPath = logoPath;
+	public boolean isDefaultLogo() {
+		return defaultLogo;
 	}
 
-	public String getLogoWidth() {
-		return logoWidth;
-	}
-
-	public void setLogoWidth(String logoWidth) {
-		this.logoWidth = logoWidth;
+	public String getITJobsLogo(){
+		return StyleEntity.DEFAULT_LOGO;
 	}
 
 }
