@@ -8,44 +8,73 @@
 	<ui:define name="titulo">Admin - Pesquisas de Candidatos - #{styleSessionManagement.companyName}</ui:define>
 
 	<ui:define name="contents">
-		<h1>New Style</h1>
+		<script type="text/javascript">
+			function submit() {
+				document.getElementById("new-style-submit").click();   
+			}
+		</script>
+
+		<h1>Novo Estilo</h1>
 
 		<h:form>
-			<h:panelGrid columns="6">
-				<p:outputLabel value="Nome do estilo" for="new-style-title" />
-				<p:inputText id="new-style-title" value="#{newStyleCDI.styleName}"
-					required="true" requiredMessage="Insíra um título." />
 
-				<p:outputLabel value="Nome da Empresa" for="new-style-name" />
-				<p:inputText id="new-style-name" value="#{newStyleCDI.companyName}"
-					required="true" requiredMessage="Insíra um nome." />
+			<h:panelGroup>
 
-				<p:outputLabel value="Breve descrição (footer)"
-					for="new-style-footer" />
-				<p:inputText id="new-style-footer"
-					value="#{newStyleCDI.footerMessage}" required="true"
-					requiredMessage="Insíra uma descrição." />
+				<h:panelGrid columns="2" style="width:100%">
 
-				<p:outputLabel value="Cor Primária" />
-				<p:colorPicker value="#{newStyleCDI.primaryColor}" mode="inline" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Nome do estilo" for="new-style-title" />
+						<p:inputText id="new-style-title" value="#{newStyleCDI.styleName}"
+							required="true" requiredMessage="Insíra um título."
+							style="width:100%" />
+					</h:panelGrid>
 
-				<p:outputLabel value="Cor Secundária" />
-				<p:colorPicker value="#{newStyleCDI.secondaryColor}" mode="inline" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Nome da Empresa" for="new-style-name" />
+						<p:inputText id="new-style-name"
+							value="#{newStyleCDI.companyName}" required="true"
+							requiredMessage="Insíra um nome." style="width:100%" />
+					</h:panelGrid>
 
-			</h:panelGrid>
-			
-			<p:outputLabel value="Seleccionar o logotipo" />
-			<p:fileUpload id="new-style-logo" value="#{newStyleCDI.file}"
-				mode="simple" skinSimple="true" required="true"
-				requiredMessage="Escolha uma imagem para o logotipo."
-				allowTypes="/(\.|\/)(jpg)$/" sizeLimit="100000"
-				description="Procurar (*.jpg)" style="width: 100%" />
+				</h:panelGrid>
 
-			<p:outputLabel value="Definir como estilo padrão" />
-			<p:selectBooleanCheckbox value="#{newStyleCDI.userDefault}" />
+				<h:panelGrid columns="2" style="width:100%">
 
-			<p:commandButton value="Submeter" update="messages"
-				icon="ui-icon-disk" actionListener="#{newStyleCDI.newStyle()}" />
+					<p:outputLabel value="Breve descrição (footer)"
+						for="new-style-footer" />
+					<p:inputText id="new-style-footer"
+						value="#{newStyleCDI.footerMessage}" required="true"
+						requiredMessage="Insíra uma descrição." style="width:100%" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+
+					<h:panelGroup>
+						<p:outputLabel value="Cor Primária" />
+						<p:colorPicker value="#{newStyleCDI.primaryColor}" mode="inline" />
+					</h:panelGroup>
+
+					<h:panelGroup>
+						<p:outputLabel value="Cor Secundária" />
+						<p:colorPicker value="#{newStyleCDI.secondaryColor}" mode="inline" />
+					</h:panelGroup>
+
+				</h:panelGrid>
+
+				<p:outputLabel value="Definir como estilo padrão" />
+				<p:selectBooleanCheckbox value="#{newStyleCDI.userDefault}" />
+
+				<p:fileUpload label="Escolha o logotipo (*.gif, *.jpg, *.png)" process="@form"
+					uploadLabel="Submeter estilo" cancelLabel="Cancelar"
+					required="true" requiredMessage="Submeta um logotipo."
+					fileUploadListener="#{newStyleCDI.newStyle}" mode="advanced"
+					dragDropSupport="true" update="messages" sizeLimit="100000"
+					fileLimit="1" invalidSizeMessage="Ficheiro demaisado grande."
+					invalidFileMessage="Só são permitidos os formatos .gif, .jpg e .png"
+					allowTypes="/(\.|\/)(gif|jpg|png)$/" />
+
+			</h:panelGroup>
 
 		</h:form>
 

@@ -24,10 +24,13 @@ public class UploadFile {
 	
 	public void uploadFile(UploadedFile file, String folder, Long id, String extension){
 		Properties props = System.getProperties();
+		
+		if(file==null)System.out.println("Ficheiro vazio!");
 		System.out.println(file.getFileName());
 		System.out.println(folder);
 		System.out.println(id);
 		System.out.println(extension);
+		
 		try {
 			file.write(props.getProperty("user.dir")+"\\"+folder+"\\"+id+"."+extension);
 		} catch (Exception e) {

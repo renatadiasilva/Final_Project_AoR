@@ -1,10 +1,15 @@
 package pt.uc.dei.aor.pf.admin;
 
+import java.util.Properties;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
@@ -39,31 +44,59 @@ public class NewStyleCDI {
 
 	private boolean userDefault;
 
-	public void newStyle(){		
+	private boolean valid;
+
+	public void newStyle(FileUploadEvent event){
+		System.out.println("newStyle begin");
 		
-		// Se for o novo padrão desmarca o padrão actual
-		if(this.userDefault){
+		this.valid=true;
 
-			// Vai buscar o padrão actual
-			StyleEntity defaultStyle=this.styleBean.findDefaulStyle();
+		this.file=event.getFile();
 
-			// Se for padrão do padrão do sistema salta este ponto
-			if(defaultStyle.isUserDefaultStyle()){
-				// Se for padrão do utilizador marca a falso
-				defaultStyle.setUserDefaultStyle(false);
-				this.styleBean.update(defaultStyle);
-			}
+		if(this.styleName.isEmpty()||this.companyName.isEmpty()||this.footerMessage.isEmpty())this.valid=false;
 
+
+		if(this.valid){
+			// Se for o novo padrão desmarca o padrão actual
+//			if(this.userDefault){
+//
+//				// Vai buscar o padrão actual
+//				StyleEntity defaultStyle=this.styleBean.findDefaulStyle();
+//
+//				// Se for padrão do padrão do sistema salta este ponto
+//				if(defaultStyle.isUserDefaultStyle()){
+//					// Se for padrão do utilizador marca a falso
+//					defaultStyle.setUserDefaultStyle(false);
+//					this.styleBean.update(defaultStyle);
+//				}
+//
+//			}
+
+			// Persiste e devolve o ID
+//			long id=this.styleBean.saveAndReturn(new StyleEntity(styleName, companyName, footerMessage, primaryColor, secondaryColor, userDefault)).getId();
+
+
+//			Properties props = System.getProperties();
+//			try {
+//				System.out.println(this.file.getFileName()+this.file.getSize());
+//				this.file.write(props.getProperty("user.dir")+"\\"+UploadFile.FOLDER_CUSTOM_LOGOS+"\\"+"ninja"+"."+UploadFile.IMAGE_EXTENSION);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				System.out.println("Erro a escrever o ficheiro");
+//				//			log.error("Error writing "+this.file.getFileName()+" to "+folder+" with new name "+id+"."+extension);
+//			}
+
+			// Grava o ficheiro com o ID da Entidade Persistida
+			this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_CUSTOM_LOGOS, (long) 69, UploadFile.IMAGE_EXTENSION);
+
+			// Se for o novo padrão reinicia a apresentação
+//			if(this.userDefault) this.currentStyle.init();
 		}
-
-		// Persiste e devolve o ID
-		long id=this.styleBean.saveAndReturn(new StyleEntity(styleName, companyName, footerMessage, primaryColor, secondaryColor, userDefault)).getId();
-
-		// Grava o ficheiro com o ID da Entidade Persistida
-		this.uploadFile.uploadFile(file, UploadFile.FOLDER_CUSTOM_LOGOS, id, UploadFile.IMAGE_EXTENSION);
-		
-		// Se for o novo padrão reinicia a apresentação
-		if(this.userDefault) this.currentStyle.init();
+	}
+	
+	public void dummy(){
+		// meh
+		System.out.println("Dummy click");
 	}
 
 	public UploadedFile getFile() {
@@ -103,7 +136,7 @@ public class NewStyleCDI {
 	}
 
 	public void setPrimaryColor(String primaryColor) {
-		this.primaryColor = primaryColor;
+		this.primaryColor = "#"+primaryColor;
 	}
 
 	public String getSecondaryColor() {
@@ -111,7 +144,7 @@ public class NewStyleCDI {
 	}
 
 	public void setSecondaryColor(String secondaryColor) {
-		this.secondaryColor = secondaryColor;
+		this.secondaryColor = "#"+secondaryColor;
 	}
 
 	public boolean isUserDefault() {
