@@ -1,0 +1,67 @@
+<ui:composition template="../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">
+	Admin - Relatórios de Entrevistas - IT Jobs
+	</ui:define>
+
+	<ui:define name="contents">
+		<h1>Relatórios de entrevistas</h1>
+
+		<h:form id="interviewsReports">
+
+			<h:panelGrid id="buttonsInterviewsReports" columns="5">
+
+				<p:commandButton value="Remover user"
+					action="#{dangerZoneCDI.removeUser()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover candidatura"
+					action="#{dangerZoneCDI.removeSubmission()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover posição"
+					action="#{dangerZoneCDI.removePosition()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover guião"
+					action="#{dangerZoneCDI.removeScript()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Remover entrevista"
+					action="#{dangerZoneCDI.removeInterview()}"
+					update="@form, messages"
+					icon="ui-icon-search" />
+
+			</h:panelGrid>
+
+			<h:panelGrid id="gridInterviewReports" columns="4">
+
+				<p:outputLabel value="Id: " for="interview-reports-id" />
+				<p:inputText id="interview-reports-id" 
+					value="#{dangerZoneCDI.id}"
+					size="35" />
+
+			</h:panelGrid>
+			
+			<p:dataTable emptyMessage="Nada a mostrar." 
+				var="info" value="#{dangerZoneCDI.info}">
+				<f:facet name="header">Listagem</f:facet>
+				<p:column headerText="Info">
+					<h:outputText value="#{info}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

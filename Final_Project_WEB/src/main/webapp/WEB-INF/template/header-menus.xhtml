@@ -58,11 +58,14 @@
 								url="../../role/admin/search/ScriptSearch.xhtml" />
 						</p:submenu>
 						<p:submenu label="Relatórios">
-							<p:menuitem value="Criar Relatório" url="#" />
+							<p:menuitem value="Relatório de candidaturas" 
+								url="../../role/admin/SubmissionReports.xhtml" />
+							<p:menuitem value="Relatório de entrevistas" 
+								url="../../role/admin/InterviewReports.xhtml" />
 						</p:submenu>
 						<p:submenu label="ZONA PERIGOSA (Cuidado!)">
 							<p:menuitem value="Remoções de entidades" 
-							url="../../role/admin/DangerZone.xhtml" />
+								url="../../role/admin/DangerZone.xhtml" />
 						</p:submenu>
 						<p:submenu label="Perfil Inicial"
 							rendered="#{!userSessionManagement.checkDefault('ADMIN')}">

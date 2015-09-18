@@ -1,6 +1,5 @@
 package pt.uc.dei.aor.pf.reports;
 
-//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +21,22 @@ import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
-// to put in WEB (CDI Bean)??
-public class StatisticalReports {
+@Named
+@RequestScoped
+public class SubmissionReportsCDI {
 
 	private static final Logger log = 
-			LoggerFactory.getLogger(StatisticalReports.class);
+			LoggerFactory.getLogger(SubmissionReportsCDI.class);
 
 	@EJB
 	private InterviewEJBInterface interviewEJB;
 
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
+	
+	// data input fields
+	private Long id;
+	private Date date1, date2;
 
 	// needed here??? FILE!!!
 	public int submissionsByPosition(PositionEntity position) {
@@ -575,6 +581,30 @@ public class StatisticalReports {
 
 		return (dateStartCal.getTimeInMillis() - 
 					dateEndCal.getTimeInMillis()) / MSPERDAY;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getDate1() {
+		return date1;
+	}
+
+	public void setDate1(Date date1) {
+		this.date1 = date1;
+	}
+
+	public Date getDate2() {
+		return date2;
+	}
+
+	public void setDate2(Date date2) {
+		this.date2 = date2;
 	}
 
 }
