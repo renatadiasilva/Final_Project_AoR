@@ -19,6 +19,7 @@ import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
@@ -136,62 +137,88 @@ public class InitDB {
 			};
 
 		PositionEntity [] plist = {
-			new PositionEntity("Programadores Java", null, 4, null, 60, 
+			new PositionEntity("Programadores Java", null, 4, 
+				Constants.STATUS_OPEN, null, 60, 
 				ulist[2], ulist[1], "Critical Software", 
-				PositionEntity.TECH_JAVA, "Procuram-se programadores java "
+				Constants.TECH_JAVA, "Procuram-se programadores java "
 				+ "bla bla bla", null, sclist[2]), // plist[0]
-			new PositionEntity("Tecnico de Segurança", null, 1, null, 60, 
+			new PositionEntity("Tecnico de Segurança", null, 1, 
+				Constants.STATUS_OPEN, null, 60, 
 				ulist[2], ulist[1], "Critical Software",
-				PositionEntity.TECH_SAFETY, "Procura-se técnico de"
+				Constants.TECH_SAFETY, "Procura-se técnico de"
 				+ " segurança bla bla bla", null, sclist[2]), // plist[1]
-			new PositionEntity("Programadores .NET", null, 3, null, 150, 
-				ulist[10], ulist[1], "IT Grow", PositionEntity.TECH_DOTNET,
+			new PositionEntity("Programadores .NET", null, 3, 
+				Constants.STATUS_OPEN, null, 150, 
+				ulist[10], ulist[1], "IT Grow", Constants.TECH_DOTNET,
 				"Procuram-se programadores .NET bla bla bla", 
 				null, sclist[2]), // plist[2]
-			new PositionEntity("Analistas de Integração", null, 2, null,
+			new PositionEntity("Analistas de Integração", null, 2, 
+				Constants.STATUS_OPEN, null,
 				30, ulist[10], ulist[1], "BPI", 
-				PositionEntity.TECH_INTEGRATION,
+				Constants.TECH_INTEGRATION,
 				"O BPI procura analistas de integração para integrar"
 				+ " a sua equipa blablabla", 
 				null, sclist[1]), // plist[3]
-			new PositionEntity("Junior Programador de Java", null, 1, null,
+			new PositionEntity("Junior Programador de Java", null, 1, 
+				Constants.STATUS_OPEN, null,
 				40, ulist[2], ulist[1], "BPI", 
-				PositionEntity.TECH_JAVA,
+				Constants.TECH_JAVA,
 				"O BPI procura programadores de Java para integrar"
 				+ " a sua equipa de desenvolvimento da aplicação blablabla", 
 				null, sclist[0]), // plist[4]
-			new PositionEntity("Gestor de projeto", null, 1, null,
+			new PositionEntity("Gestor de projeto", null, 1, 
+				Constants.STATUS_OPEN, null,
 				200, ulist[2], ulist[1], "Critical Software", 
-				PositionEntity.TECH_MANAGEMENT,
+				Constants.TECH_MANAGEMENT,
 				"A Critical Software procura um gestor de projeto"
 				+ " blablabla", 
 				null, sclist[1]), // plist[5]
 			};
 			
 		SubmissionEntity [] slist = {
-			new SubmissionEntity(ulist[4], null, null, false), // slist[0]
-			new SubmissionEntity(ulist[4], null, null, false), // slist[1]
+			new SubmissionEntity(ulist[4], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[0]
+			new SubmissionEntity(ulist[4], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[1]
 			// espontânea
-			new SubmissionEntity(ulist[5], null, null, true), // slist[2] 
+			new SubmissionEntity(ulist[5], Constants.STATUS_SUBMITED, 
+					null, null, true), // slist[2] 
 			// espontânea mas posteriormente associada a posição
-			new SubmissionEntity(ulist[6], null, null, true), // slist[3]  
+			new SubmissionEntity(ulist[6], Constants.STATUS_SUBMITED, 
+					null, null, true), // slist[3]  
 			// clone da anterior (com posição)
-			new SubmissionEntity(ulist[6], null, null, false), // slist[4] 
-			new SubmissionEntity(ulist[7], null, null, false), // slist[5]			
-			new SubmissionEntity(ulist[8], null, null, false), // slist[6]			
-			new SubmissionEntity(ulist[8], null, null, false), // slist[7]			
-			new SubmissionEntity(ulist[9], null, null, false), // slist[8]			
-			new SubmissionEntity(ulist[4], null, null, false), // slist[9]			
-			new SubmissionEntity(ulist[7], null, null, false), // slist[10]			
-			new SubmissionEntity(ulist[8], null, null, false), // slist[11]			
-			new SubmissionEntity(ulist[9], null, null, false), // slist[12]			
-			new SubmissionEntity(ulist[4], null, null, false), // slist[13]			
-			new SubmissionEntity(ulist[7], null, null, false), // slist[14]			
-			new SubmissionEntity(ulist[8], null, null, false), // slist[15]			
-			new SubmissionEntity(ulist[9], null, null, false), // slist[16]			
-			new SubmissionEntity(ulist[7], null, null, false), // slist[17]			
-			new SubmissionEntity(ulist[8], null, null, false), // slist[18]			
-			new SubmissionEntity(ulist[9], null, null, false), // slist[19]			
+			new SubmissionEntity(ulist[6], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[4] 
+			new SubmissionEntity(ulist[7], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[5]			
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[6]			
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[7]			
+			new SubmissionEntity(ulist[9], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[8]			
+			new SubmissionEntity(ulist[4], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[9]			
+			new SubmissionEntity(ulist[7], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[10]			
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[11]			
+			new SubmissionEntity(ulist[9], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[12]			
+			new SubmissionEntity(ulist[4], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[13]			
+			new SubmissionEntity(ulist[7], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[14]			
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[15]			
+			new SubmissionEntity(ulist[9], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[16]			
+			new SubmissionEntity(ulist[7], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[17]			
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[18]			
+			new SubmissionEntity(ulist[9], Constants.STATUS_SUBMITED, 
+					null, null, false), // slist[19]			
 		};
 		
 		InterviewEntity [] ilist = {
@@ -224,44 +251,44 @@ public class InitDB {
 		
 		// USER/USERSINFO ATTRIBUTES
 		
-		List<String> roles = Arrays.asList(UserEntity.ROLE_ADMIN,
-				UserEntity.ROLE_MANAGER, UserEntity.ROLE_INTERVIEWER,
-				UserEntity.ROLE_CANDIDATE);
-		ulist[0].setDefaultRole(UserEntity.ROLE_ADMIN);
+		List<String> roles = Arrays.asList(Constants.ROLE_ADMIN,
+				Constants.ROLE_MANAGER, Constants.ROLE_INTERVIEWER,
+				Constants.ROLE_CANDIDATE);
+		ulist[0].setDefaultRole(Constants.ROLE_ADMIN);
 		ulist[0].setRoles(roles);
 
-		roles = Arrays.asList(UserEntity.ROLE_ADMIN);
-		ulist[1].setDefaultRole(UserEntity.ROLE_ADMIN);
+		roles = Arrays.asList(Constants.ROLE_ADMIN);
+		ulist[1].setDefaultRole(Constants.ROLE_ADMIN);
 		ulist[1].setRoles(roles);
 		ulist[1].setCreatedBy(ulist[0]);
 
-		roles = Arrays.asList(UserEntity.ROLE_MANAGER,
-				UserEntity.ROLE_CANDIDATE);
-		ulist[2].setDefaultRole(UserEntity.ROLE_MANAGER);
+		roles = Arrays.asList(Constants.ROLE_MANAGER,
+				Constants.ROLE_CANDIDATE);
+		ulist[2].setDefaultRole(Constants.ROLE_MANAGER);
 		ulist[2].setRoles(roles);
 		ulist[2].setCreatedBy(ulist[0]);
 
-		roles = Arrays.asList(UserEntity.ROLE_INTERVIEWER);
-		ulist[3].setDefaultRole(UserEntity.ROLE_INTERVIEWER);
+		roles = Arrays.asList(Constants.ROLE_INTERVIEWER);
+		ulist[3].setDefaultRole(Constants.ROLE_INTERVIEWER);
 		ulist[3].setRoles(roles);
 		ulist[3].setCreatedBy(ulist[0]);
 
-		roles = Arrays.asList(UserEntity.ROLE_CANDIDATE);
+		roles = Arrays.asList(Constants.ROLE_CANDIDATE);
 
 		for(int i = 0; i < 6; i++) {
-			ulist[i+4].setDefaultRole(UserEntity.ROLE_CANDIDATE);
+			ulist[i+4].setDefaultRole(Constants.ROLE_CANDIDATE);
 			ulist[i+4].setRoles(roles);
 			ulist[i+4].setUserInfo(uilist[i]);
 			ulist[i+4].setCreatedBy(ulist[0]);
 		}
 		
-		roles = Arrays.asList(UserEntity.ROLE_MANAGER);
-		ulist[10].setDefaultRole(UserEntity.ROLE_MANAGER);
+		roles = Arrays.asList(Constants.ROLE_MANAGER);
+		ulist[10].setDefaultRole(Constants.ROLE_MANAGER);
 		ulist[10].setRoles(roles);
 		ulist[10].setCreatedBy(ulist[0]);
 
-		roles = Arrays.asList(UserEntity.ROLE_INTERVIEWER);
-		ulist[11].setDefaultRole(UserEntity.ROLE_INTERVIEWER);
+		roles = Arrays.asList(Constants.ROLE_INTERVIEWER);
+		ulist[11].setDefaultRole(Constants.ROLE_INTERVIEWER);
 		ulist[11].setRoles(roles);
 		ulist[11].setCreatedBy(ulist[0]);
 
@@ -273,58 +300,58 @@ public class InitDB {
 
 		// POSITION ATTRIBUTES
 		
-		List<String> locations = Arrays.asList(PositionEntity.LOCATION_COIMBRA,
-				PositionEntity.LOCATION_PORTO);
-		List<String> channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
-				PositionEntity.SOCIAL_FACEBOOK);
+		List<String> locations = Arrays.asList(Constants.LOCATION_COIMBRA,
+				Constants.LOCATION_PORTO);
+		List<String> channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
+				Constants.SOCIAL_FACEBOOK);
 		plist[0].setLocations(locations);
 		plist[0].setAdvertisingChannels(channels);
 		plist[0].setOpeningDate(ftDate.parse("2015-08-02"));
 
-		locations = Arrays.asList(PositionEntity.LOCATION_PORTO);
-		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
-				PositionEntity.SOCIAL_FACEBOOK, 
-				PositionEntity.SOCIAL_GLASSDOOR);
+		locations = Arrays.asList(Constants.LOCATION_PORTO);
+		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
+				Constants.SOCIAL_FACEBOOK, 
+				Constants.SOCIAL_GLASSDOOR);
 		plist[1].setLocations(locations);
 		plist[1].setAdvertisingChannels(channels);
 		plist[1].setOpeningDate(ftDate.parse("2015-09-02"));
 		
-		locations = Arrays.asList(PositionEntity.LOCATION_LISBOA);
-		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
-				PositionEntity.SOCIAL_FACEBOOK);
+		locations = Arrays.asList(Constants.LOCATION_LISBOA);
+		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
+				Constants.SOCIAL_FACEBOOK);
 		plist[2].setLocations(locations);
 		plist[2].setAdvertisingChannels(channels);
 		plist[2].setOpeningDate(ftDate.parse("2015-07-31"));
 
-		locations = Arrays.asList(PositionEntity.LOCATION_LISBOA,
-				PositionEntity.LOCATION_COIMBRA, PositionEntity.LOCATION_PORTO);
-		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
-				PositionEntity.SOCIAL_LINKEDIN);
+		locations = Arrays.asList(Constants.LOCATION_LISBOA,
+				Constants.LOCATION_COIMBRA, Constants.LOCATION_PORTO);
+		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
+				Constants.SOCIAL_LINKEDIN);
 		plist[3].setLocations(locations);
 		plist[3].setAdvertisingChannels(channels);
 		plist[3].setOpeningDate(ftDate.parse("2015-08-15"));
 		plist[3].setClosingDate(ftDate.parse("2015-09-15"));
-		plist[3].setStatus(PositionEntity.STATUS_CLOSED);
+		plist[3].setStatus(Constants.STATUS_CLOSED);
 		
-		locations = Arrays.asList(PositionEntity.LOCATION_COIMBRA);
-		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL,
-				PositionEntity.SOCIAL_FACEBOOK, PositionEntity.SOCIAL_LINKEDIN);
+		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
+		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
+				Constants.SOCIAL_FACEBOOK, Constants.SOCIAL_LINKEDIN);
 		plist[4].setLocations(locations);
 		plist[4].setAdvertisingChannels(channels);
 		plist[4].setOpeningDate(ftDate.parse("2015-06-29"));
 		plist[4].setClosingDate(ftDate.parse("2015-07-31"));
-		plist[4].setStatus(PositionEntity.STATUS_CLOSED);
+		plist[4].setStatus(Constants.STATUS_CLOSED);
 		
-		locations = Arrays.asList(PositionEntity.LOCATION_COIMBRA);
-		channels = Arrays.asList(PositionEntity.SOCIAL_CRITICAL);
+		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
+		channels = Arrays.asList(Constants.SOCIAL_CRITICAL);
 		plist[4].setLocations(locations);
 		plist[4].setAdvertisingChannels(channels);
 
 		
 		// SUBMISSION ATTRIBUTES
 		
-		List<String> sources = Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO,
-				SubmissionEntity.SOURCE_FACEBOOK);
+		List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,
+				Constants.SOURCE_FACEBOOK);
 		slist[0].setPosition(plist[0]);
 		slist[0].setSources(sources);
 		slist[0].setDate(ftDate.parse("2015-08-20"));
@@ -340,101 +367,101 @@ public class InitDB {
 		slist[4].setAssociatedBy(ulist[2]);
 		slist[4].setDate(ftDate.parse("2015-08-28"));
 
-		Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO);
+		Arrays.asList(Constants.SOURCE_EXPRESSO);
 		slist[5].setPosition(plist[0]);
 		slist[5].setSources(sources);
-		slist[5].setStatus(SubmissionEntity.STATUS_ACCEPTED);
+		slist[5].setStatus(Constants.STATUS_ACCEPTED);
 		slist[5].setDate(ftDate.parse("2015-08-05"));
 		
 		slist[6].setPosition(plist[0]);
 		slist[6].setSources(sources);
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
-				SubmissionEntity.SOURCE_NETEMPREGO);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
+				Constants.SOURCE_NETEMPREGO);
 		slist[7].setPosition(plist[1]);
 		slist[7].setSources(sources);
 		slist[7].setDate(ftDate.parse("2015-09-09"));
 		
 		slist[8].setPosition(plist[0]);
 		slist[8].setSources(sources);
-		slist[8].setStatus(SubmissionEntity.STATUS_SPROPOSAL);
+		slist[8].setStatus(Constants.STATUS_SPROPOSAL);
 		slist[8].setDate(ftDate.parse("2015-08-10"));
 		
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
-				SubmissionEntity.SOURCE_EXPRESSO, 
-				SubmissionEntity.SOURCE_LINKEDIN);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
+				Constants.SOURCE_EXPRESSO, 
+				Constants.SOURCE_LINKEDIN);
 		slist[9].setPosition(plist[2]);
 		slist[9].setSources(sources);
-		slist[9].setStatus(SubmissionEntity.STATUS_REJECTED);
+		slist[9].setStatus(Constants.STATUS_REJECTED);
 		slist[9].setDate(ftDate.parse("2015-08-10"));
 		slist[9].setRejectReason("O candidato não tem currículo "
 				+ "para a posição");
 		
-		sources = Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO);
+		sources = Arrays.asList(Constants.SOURCE_EXPRESSO);
 		slist[10].setPosition(plist[2]);
 		slist[10].setSources(sources);
-		slist[10].setStatus(SubmissionEntity.STATUS_OPROPOSAL);
+		slist[10].setStatus(Constants.STATUS_OPROPOSAL);
 		slist[10].setDate(ftDate.parse("2015-08-20"));
 
 		slist[11].setPosition(plist[2]);
-		slist[11].setStatus(SubmissionEntity.STATUS_APROPOSAL);
+		slist[11].setStatus(Constants.STATUS_APROPOSAL);
 		slist[11].setDate(ftDate.parse("2015-08-01"));
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
-				SubmissionEntity.SOURCE_EXPRESSO);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
+				Constants.SOURCE_EXPRESSO);
 		slist[12].setPosition(plist[2]);
 		slist[12].setSources(sources);
-		slist[12].setStatus(SubmissionEntity.STATUS_SPROPOSAL);
+		slist[12].setStatus(Constants.STATUS_SPROPOSAL);
 		slist[12].setDate(ftDate.parse("2015-08-01"));
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_EXPRESSO);
+		sources = Arrays.asList(Constants.SOURCE_EXPRESSO);
 		slist[13].setPosition(plist[3]);
 		slist[13].setSources(sources);
-		slist[13].setStatus(SubmissionEntity.STATUS_HIRED);
+		slist[13].setStatus(Constants.STATUS_HIRED);
 		slist[13].setDate(ftDate.parse("2015-08-30"));
 		
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK);
 		slist[14].setPosition(plist[3]);
 		slist[14].setSources(sources);
-		slist[14].setStatus(SubmissionEntity.STATUS_REJECTED);
+		slist[14].setStatus(Constants.STATUS_REJECTED);
 		slist[14].setDate(ftDate.parse("2015-08-17"));
 		slist[14].setRejectReason("O candidato não tem currículo "
 				+ "para a posição");
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
-				SubmissionEntity.SOURCE_EXPRESSO);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
+				Constants.SOURCE_EXPRESSO);
 		slist[15].setPosition(plist[3]);
 		slist[15].setSources(sources);
-		slist[15].setStatus(SubmissionEntity.STATUS_HIRED);
+		slist[15].setStatus(Constants.STATUS_HIRED);
 		slist[15].setDate(ftDate.parse("2015-09-01"));
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
-				SubmissionEntity.SOURCE_EXPRESSO);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
+				Constants.SOURCE_EXPRESSO);
 		slist[16].setPosition(plist[3]);
 		slist[16].setSources(sources);
-		slist[16].setStatus(SubmissionEntity.STATUS_ACCEPTED);
+		slist[16].setStatus(Constants.STATUS_ACCEPTED);
 		slist[16].setDate(ftDate.parse("2015-08-30"));
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
-				SubmissionEntity.SOURCE_NETEMPREGO);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
+				Constants.SOURCE_NETEMPREGO);
 		slist[17].setPosition(plist[4]);
 		slist[17].setSources(sources);
-		slist[17].setStatus(SubmissionEntity.STATUS_ACCEPTED);
+		slist[17].setStatus(Constants.STATUS_ACCEPTED);
 		slist[17].setDate(ftDate.parse("2015-07-12"));
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
-				SubmissionEntity.SOURCE_LINKEDIN);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
+				Constants.SOURCE_LINKEDIN);
 		slist[18].setPosition(plist[4]);
 		slist[18].setSources(sources);
-		slist[18].setStatus(SubmissionEntity.STATUS_ACCEPTED);
+		slist[18].setStatus(Constants.STATUS_ACCEPTED);
 		slist[18].setDate(ftDate.parse("2015-07-01"));
 
-		sources = Arrays.asList(SubmissionEntity.SOURCE_FACEBOOK,
-				SubmissionEntity.SOURCE_EXPRESSO,
-				SubmissionEntity.SOURCE_LINKEDIN);
+		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
+				Constants.SOURCE_EXPRESSO,
+				Constants.SOURCE_LINKEDIN);
 		slist[19].setPosition(plist[4]);
 		slist[19].setSources(sources);
-		slist[19].setStatus(SubmissionEntity.STATUS_HIRED);
+		slist[19].setStatus(Constants.STATUS_HIRED);
 		slist[19].setDate(ftDate.parse("2015-07-20"));
 		
 

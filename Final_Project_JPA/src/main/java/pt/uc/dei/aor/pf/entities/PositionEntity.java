@@ -51,26 +51,6 @@ public class PositionEntity implements Serializable {
 
 	private static final long serialVersionUID = -2368658385927790368L;
 
-	public static final String LOCATION_LISBOA  = "LISBOA";
-	public static final String LOCATION_PORTO   = "PORTO";
-	public static final String LOCATION_COIMBRA = "COIMBRA";
-
-	public static final String STATUS_OPEN      = "OPEN";
-	public static final String STATUS_CLOSED    = "CLOSED";
-	public static final String STATUS_ONHOLD    = "ON HOLD";
-
-	public static final String TECH_SSPA        = "SSPA";
-	public static final String TECH_DOTNET      = ".NET DEVELOPMENT";
-	public static final String TECH_JAVA        = "JAVA DEVELOPMENT";
-	public static final String TECH_SAFETY      = "SAFETY CRITICAL";
-	public static final String TECH_MANAGEMENT  = "PROJECT MANAGEMENT";
-	public static final String TECH_INTEGRATION = "INTEGRATION";
-
-	public static final String SOCIAL_CRITICAL  = "CRITICAL SOFTWARE WEBSITE";
-	public static final String SOCIAL_LINKEDIN  = "LINKEDIN";
-	public static final String SOCIAL_GLASSDOOR = "GLASSDOOR";
-	public static final String SOCIAL_FACEBOOK  = "FACEBOOK";
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
@@ -149,10 +129,10 @@ public class PositionEntity implements Serializable {
 	}
 
 	public PositionEntity(String title, List<String> locations, int openings,
-			Date closingDate, int slaDays, UserEntity positionManager,
-			UserEntity positionCreator, String company, String technicalArea,
-			String description, List<String> advertisingChannels,
-			ScriptEntity defaultScript) {
+			String status, Date closingDate, int slaDays,
+			UserEntity positionManager, UserEntity positionCreator,
+			String company, String technicalArea, String description,
+			List<String> advertisingChannels, ScriptEntity defaultScript) {
 		this.title = title;
 		this.openingDate = new Date(); // today
 
@@ -164,7 +144,7 @@ public class PositionEntity implements Serializable {
 				+(cal.get(Calendar.MONTH)+1)+cal.get(Calendar.YEAR);
 		
 		this.locations = locations;
-		this.status = STATUS_OPEN;
+		this.status = status;
 		this.openings = openings;
 		this.closingDate = closingDate; 
 

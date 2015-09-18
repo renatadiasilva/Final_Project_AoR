@@ -44,11 +44,6 @@ public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 2911048822662162612L;
 
-	public static final String ROLE_ADMIN       = "ADMIN";
-	public static final String ROLE_MANAGER     = "MANAGER";
-	public static final String ROLE_INTERVIEWER = "INTERVIEWER";
-	public static final String ROLE_CANDIDATE   = "CANDIDATE";
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

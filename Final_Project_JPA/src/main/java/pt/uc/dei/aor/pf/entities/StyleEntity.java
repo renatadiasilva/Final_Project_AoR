@@ -21,12 +21,6 @@ public class StyleEntity implements Serializable{
 
 	private static final long serialVersionUID = 4349097829472427150L;
 	
-	public static final String DEFAULT_COMPANY_NAME="ITJobs";
-	public static final String DEFAULT_LOGO="logo_49px.png";
-	public static final String DEFAULT_FOOTER_MESSAGE="ITJobs - Projecto Final | Programação Avançada em JAVA | Duarte Gonçalves | Renata Silva";
-	public static final String DEFAULT_PRIMARY_COLOR="#3f51b5";
-	public static final String DEFAULT_SECONDARY_COLOR="#ff4081";
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

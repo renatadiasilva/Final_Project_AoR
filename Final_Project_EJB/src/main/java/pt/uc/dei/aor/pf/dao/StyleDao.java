@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.StyleEntity;
 
 @Stateless
@@ -14,10 +15,15 @@ public class StyleDao extends GenericDao<StyleEntity> {
 	}
 
 	public StyleEntity findDefaultStyle(){
-		List<StyleEntity> styles=super.findSomeResults("Style.findDefaultStyle", null);
+		List<StyleEntity> styles=
+				super.findSomeResults("Style.findDefaultStyle", null);
 
 		if(styles.isEmpty()){
-			return new StyleEntity(StyleEntity.DEFAULT_COMPANY_NAME, StyleEntity.DEFAULT_COMPANY_NAME, StyleEntity.DEFAULT_FOOTER_MESSAGE, StyleEntity.DEFAULT_PRIMARY_COLOR, StyleEntity.DEFAULT_SECONDARY_COLOR, false);
+			return new StyleEntity(Constants.DEFAULT_COMPANY_NAME, 
+					Constants.DEFAULT_COMPANY_NAME, 
+					Constants.DEFAULT_FOOTER_MESSAGE,
+					Constants.DEFAULT_PRIMARY_COLOR, 
+					Constants.DEFAULT_SECONDARY_COLOR, false);
 		}
 		
 		return (styles.get(0));

@@ -13,8 +13,10 @@ import javax.inject.Named;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
@@ -38,11 +40,6 @@ public class ReportCDI {
 	public List<Integer> reportCounting(Date d1, Date d2, String periodType,
 			int report, List<String> sources) {
 
-		// limit searching days by period
-		// ver valores...
-		final long LIMITDAY = 100;
-		final long LIMITMONTH = 1000;
-
 		// auxiliary lists
 		List<InterviewEntity> listI = new ArrayList<InterviewEntity>();
 		List<SubmissionEntity> listS = new ArrayList<SubmissionEntity>();
@@ -51,9 +48,9 @@ public class ReportCDI {
 		char period = ' ';
 		String header = " ";
 
-		if (periodType == "daily") period = 'd';
-		else if (periodType == "monthly") period = 'm';
-		else if (periodType == "yearly") period = 'y';
+		if (periodType.equals(Constants.PERIOD_DAILY)) period = 'd';
+		else if (periodType.equals(Constants.PERIOD_MONTHLY)) period = 'm';
+		else if (periodType.equals(Constants.PERIOD_YEARLY)) period = 'y';
 		else ;//error
 
 		// different report headers
@@ -76,8 +73,8 @@ public class ReportCDI {
 		}
 
 		// limit day for periods - aviso ao utilizador!!
-		if (ndays > LIMITMONTH) period = 'y';
-		else if (ndays > LIMITDAY) period = 'm';
+		if (ndays > Constants.LIMITMONTH) period = 'y';
+		else if (ndays > Constants.LIMITDAY) period = 'm';
 
 		// period para tempos médios??? ver melhor
 
@@ -227,7 +224,7 @@ public class ReportCDI {
 					//query??
 					// submission status is hired
 					if (s.getStatus().equalsIgnoreCase(
-							SubmissionEntity.STATUS_HIRED)) {
+							Constants.STATUS_HIRED)) {
 
 						// colect submission date and hired date
 						Calendar sDate = Calendar.getInstance();
@@ -394,17 +391,17 @@ public class ReportCDI {
 					printCandidateInfo(s, listS.indexOf(s), true);
 					String result = s.getStatus(); 
 					if (result.equalsIgnoreCase(
-							SubmissionEntity.STATUS_SPROPOSAL))
+							Constants.STATUS_SPROPOSAL))
 						System.out.println("\n\nProposta recebida"
 								+ " (ainda não avaliada)");
 					else if (result.equalsIgnoreCase(
-							SubmissionEntity.STATUS_OPROPOSAL))
+							Constants.STATUS_OPROPOSAL))
 						System.out.println("\n\nProposta em negociação.");
 					else if (result.equalsIgnoreCase(
-							SubmissionEntity.STATUS_RPROPOSAL))
+							Constants.STATUS_RPROPOSAL))
 						System.out.println("\n\nProposta recusada.");
 					else if (result.equalsIgnoreCase(
-							SubmissionEntity.STATUS_APROPOSAL))
+							Constants.STATUS_APROPOSAL))
 						System.out.println("\n\nProposta aceite.");
 				}
 			}
@@ -478,7 +475,6 @@ public class ReportCDI {
 	}
 
 	private long daysBetween(Calendar dateStartCal, Calendar dateEndCal) {
-		final long MSPERDAY = 60 * 60 * 24 * 1000;
 
 		dateStartCal.set(Calendar.HOUR_OF_DAY, 0);
 		dateStartCal.set(Calendar.MINUTE, 0);
@@ -491,6 +487,6 @@ public class ReportCDI {
 		dateEndCal.set(Calendar.MILLISECOND, 0);
 
 		return (dateStartCal.getTimeInMillis() - 
-					dateEndCal.getTimeInMillis()) / MSPERDAY;
+					dateEndCal.getTimeInMillis()) / Constants.MSPERDAY;
 	}
 }

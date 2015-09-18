@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -139,7 +140,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date", cal.getTime());
-		parameters.put("status", PositionEntity.STATUS_OPEN);
+		parameters.put("status", Constants.STATUS_OPEN);
 		return super.findSomeResults("Position.findCloseToSLAPositions", 
 				parameters);
 	}
@@ -168,7 +169,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	public List<PositionEntity> findOpenPositionsByScript(
 			ScriptEntity script) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("status", PositionEntity.STATUS_OPEN);
+		parameters.put("status", Constants.STATUS_OPEN);
 		parameters.put("script", script);
 		return super.findSomeResults("Position.findOpenPositionsByScript",
 				parameters);
@@ -177,7 +178,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	public List<PositionEntity> findNotOpenPositionsByScript(
 			ScriptEntity script) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("status", PositionEntity.STATUS_OPEN);
+		parameters.put("status", Constants.STATUS_OPEN);
 		parameters.put("script", script);
 		return super.findSomeResults("Position.findNotOpenPositionByScript",
 				parameters);
@@ -194,7 +195,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			UserEntity manager) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("user", manager);
-		parameters.put("status", PositionEntity.STATUS_OPEN);
+		parameters.put("status", Constants.STATUS_OPEN);
 		return super.findSomeResults("Position.findOpenPositionsManagedByUser",
 				parameters);
 	}

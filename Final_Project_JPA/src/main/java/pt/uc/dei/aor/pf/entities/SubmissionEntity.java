@@ -61,25 +61,6 @@ public class SubmissionEntity implements Serializable {
 
 	private static final long serialVersionUID = -2164233391673103244L;
 	
-	public static final String STATUS_SUBMITED   = "SUBMITED";
-	public static final String STATUS_REJECTED   = "REJECTED SUBMISSION";
-	public static final String STATUS_ACCEPTED   = "ACCEPTED TO INTERVIEW";
-	public static final String STATUS_SPROPOSAL  = "SUBMITED PROPOSAL";
-	public static final String STATUS_RPROPOSAL  = "REJECTED PROPOSAL";
-	public static final String STATUS_APROPOSAL  = "ACCEPTED PROPOSAL";
-	 //"Offer Process (Negotiation)";
-	public static final String STATUS_OPROPOSAL  = "ON NEGOTIATION PROPOSAL";
-	public static final String STATUS_HIRED      = "HIRED";
-	public static final String STATUS_NOTHIRED   = "NOT HIRED";
-	//para usar nas queries
-	public static final String STATUS_PROPOSAL   = "%PROPOSAL"; 
-
-	// outros??
-	public static final String SOURCE_EXPRESSO   = "EXPRESSO";
-	public static final String SOURCE_LINKEDIN   = "LINKEDIN";
-	public static final String SOURCE_FACEBOOK   = "FACEBOOK";
-	public static final String SOURCE_NETEMPREGO = "NET.EMPREGO";
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
@@ -133,14 +114,15 @@ public class SubmissionEntity implements Serializable {
 	public SubmissionEntity() {
 	}
 
-	public SubmissionEntity(UserEntity candidate, String motivationLetter,
-			List<String> sources, boolean spontaneous) {
+	public SubmissionEntity(UserEntity candidate, String status,
+			String motivationLetter, List<String> sources,
+			boolean spontaneous) {
 		this.date = new Date();
 		this.candidate = candidate;
 		this.motivationLetter = motivationLetter;
 		this.sources = sources;
 		this.spontaneous = spontaneous;
-		this.status = STATUS_SUBMITED;
+		this.status = status;
 	}
 
 	public Long getId() {

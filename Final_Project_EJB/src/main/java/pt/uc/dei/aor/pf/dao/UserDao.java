@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
@@ -26,7 +27,7 @@ public class UserDao extends GenericDao<UserEntity> {
 	public List<UserEntity> findUsersByEmailPattern(String email) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);
-		parameters.put("role", UserEntity.ROLE_CANDIDATE);
+		parameters.put("role", Constants.ROLE_CANDIDATE);
 		return super.findSomeResults("User.findUsersByEmailPattern", 
 				parameters);
 	}
@@ -39,7 +40,7 @@ public class UserDao extends GenericDao<UserEntity> {
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
 				"(", attributes, values, " OR ", 
 				"users.id = roles.user_id AND roles.role <> \'"+
-				UserEntity.ROLE_CANDIDATE+"\'","email");
+				Constants.ROLE_CANDIDATE+"\'","email");
 		
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		return (List<UserEntity>) query.getResultList();
@@ -69,7 +70,7 @@ public class UserDao extends GenericDao<UserEntity> {
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
 				"(UPPER(email) LIKE \'"+keyword+"\' OR ", attributes, values,
 				" OR ", "users.id = roles.user_id AND roles.role <> \'"+
-				UserEntity.ROLE_CANDIDATE+"\'",	"email");
+				Constants.ROLE_CANDIDATE+"\'",	"email");
 
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		return (List<UserEntity>) query.getResultList();

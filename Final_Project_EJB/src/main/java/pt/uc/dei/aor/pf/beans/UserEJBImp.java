@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.syndication.io.impl.Base64;
 
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.dao.InterviewDao;
 import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
@@ -27,8 +28,6 @@ import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 public class UserEJBImp implements UserEJBInterface {
 
 	private static final Logger log = LoggerFactory.getLogger(UserEJBImp.class);
-
-	static final String REMOVED_DATA = "DADOS APAGADOS";	
 
 	@EJB
 	private UserDao userDAO;
@@ -104,15 +103,15 @@ public class UserEJBImp implements UserEJBInterface {
 		int code = 0;
 		
 		// protection: don't delete data of superAdmin!
-		if (user.getEmail().equals("admin@mail.com")) return -1;
+		if (user.getEmail().equals(Constants.SUPER_ADMIN)) return -1;
 		
 		// remove the data not the user
-		//		user.setEmail(REMOVED_DATA); ??
-		user.setEmail(user.getEmail()+" APAGADO");
-		user.setPassword(REMOVED_DATA);
-		user.setFirstName(REMOVED_DATA);
-		user.setLastName(REMOVED_DATA);
-		user.setDefaultRole(REMOVED_DATA);
+		//		user.setEmail(Constants.REMOVED_DATA); ??
+		user.setEmail(user.getEmail()+Constants.REMOVED_DATA);
+		user.setPassword(Constants.REMOVED_DATA);
+		user.setFirstName(Constants.REMOVED_DATA);
+		user.setLastName(Constants.REMOVED_DATA);
+		user.setDefaultRole(Constants.REMOVED_DATA);
 		user.setRoles(null);
 
 		// remove the userInfo data
@@ -189,25 +188,25 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findAllAdmins() {
 		log.info("Finding all administrators");
-		return userDAO.findUsersByRole("%", UserEntity.ROLE_ADMIN);
+		return userDAO.findUsersByRole("%", Constants.ROLE_ADMIN);
 	}
 
 	@Override
 	public List<UserEntity> findAllManagers() {
 		log.info("Finding all managers");
-		return userDAO.findUsersByRole("%", UserEntity.ROLE_MANAGER);
+		return userDAO.findUsersByRole("%", Constants.ROLE_MANAGER);
 	}
 
 	@Override
 	public List<UserEntity> findAllInterviewers() {
 		log.info("Finding all interviewers");
-		return userDAO.findUsersByRole("%", UserEntity.ROLE_INTERVIEWER);
+		return userDAO.findUsersByRole("%", Constants.ROLE_INTERVIEWER);
 	}
 
 	@Override
 	public List<UserEntity> findAllCandidates() {
 		log.info("Finding all candidates");
-		return userDAO.findUsersByRole("%", UserEntity.ROLE_CANDIDATE);
+		return userDAO.findUsersByRole("%", Constants.ROLE_CANDIDATE);
 	}
 
 	@Override
@@ -321,7 +320,7 @@ public class UserEJBImp implements UserEJBInterface {
 	@Override
 	public List<UserEntity> findCandidatesByKeywordShort(String keyword) {
 		log.info("Finding candidates by keyword");
-		return userDAO.findUsersByRole(keyword, UserEntity.ROLE_CANDIDATE);
+		return userDAO.findUsersByRole(keyword, Constants.ROLE_CANDIDATE);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
@@ -224,7 +225,7 @@ public class DangerZoneCDI {
 				FacesContext.getCurrentInstance().
 				addMessage(null, new FacesMessage("Se quiser mesmo terá"
 						+ " que as apagar manualmente..."));
-				if (position.getStatus().equals(PositionEntity.STATUS_OPEN))
+				if (position.getStatus().equals(Constants.STATUS_OPEN))
 					FacesContext.getCurrentInstance().
 						addMessage(null, new FacesMessage("Não quer em "
 						+ "alternativa colocar a "

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
@@ -76,20 +77,20 @@ public class UserManagementImp implements UserManagementInterface {
 	// Para exibição do menu de navegação (rendered)
 	private void setAvailableRoles() {
 		for (String s: this.currentUser.getRoles()){
-			if(s.equals(UserEntity.ROLE_ADMIN)) this.admin=true;
-			if(s.equals(UserEntity.ROLE_MANAGER)) this.manager=true;
-			if(s.equals(UserEntity.ROLE_INTERVIEWER)) this.interviewer=true;
-			if(s.equals(UserEntity.ROLE_CANDIDATE)) this.candidate=true;
+			if(s.equals(Constants.ROLE_ADMIN)) this.admin=true;
+			if(s.equals(Constants.ROLE_MANAGER)) this.manager=true;
+			if(s.equals(Constants.ROLE_INTERVIEWER)) this.interviewer=true;
+			if(s.equals(Constants.ROLE_CANDIDATE)) this.candidate=true;
 		}
 	}
 
 	@Override
 	public void defaultRole(String role){
 
-		if(role.equals(UserEntity.ROLE_ADMIN)) this.currentUser.setDefaultRole(role);
-		if(role.equals(UserEntity.ROLE_MANAGER)) this.currentUser.setDefaultRole(role);
-		if(role.equals(UserEntity.ROLE_INTERVIEWER)) this.currentUser.setDefaultRole(role);
-		if(role.equals(UserEntity.ROLE_CANDIDATE)) this.currentUser.setDefaultRole(role);
+		if(role.equals(Constants.ROLE_ADMIN)) this.currentUser.setDefaultRole(role);
+		if(role.equals(Constants.ROLE_MANAGER)) this.currentUser.setDefaultRole(role);
+		if(role.equals(Constants.ROLE_INTERVIEWER)) this.currentUser.setDefaultRole(role);
+		if(role.equals(Constants.ROLE_CANDIDATE)) this.currentUser.setDefaultRole(role);
 
 		this.userBean.update(this.currentUser);	
 	}
@@ -127,15 +128,15 @@ public class UserManagementImp implements UserManagementInterface {
 		// Verifica primeiro se o email já está a uso
 		if(this.userBean.findUserByEmail(email)==null){
 			List<String> roles = new ArrayList<String>();
-			roles.add(UserEntity.ROLE_CANDIDATE);
+			roles.add(Constants.ROLE_CANDIDATE);
 
-			if(admin&&createdByAdmin)roles.add(UserEntity.ROLE_ADMIN);
-			if(manager&&createdByAdmin)roles.add(UserEntity.ROLE_MANAGER);
-			if(interviewer&&createdByAdmin)roles.add(UserEntity.ROLE_INTERVIEWER);
+			if(admin&&createdByAdmin)roles.add(Constants.ROLE_ADMIN);
+			if(manager&&createdByAdmin)roles.add(Constants.ROLE_MANAGER);
+			if(interviewer&&createdByAdmin)roles.add(Constants.ROLE_INTERVIEWER);
 
 			// Atributos do UserEntity
 			UserEntity newUser=new UserEntity(email, password, firstName, lastName, roles);
-			newUser.setDefaultRole(UserEntity.ROLE_CANDIDATE);	
+			newUser.setDefaultRole(Constants.ROLE_CANDIDATE);	
 
 			// Atributos do UserInfoEntity do respectivo UserEntity
 			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, address, city, homePhone, mobilePhone, 
@@ -175,16 +176,16 @@ public class UserManagementImp implements UserManagementInterface {
 			UserEntity newUser=new UserEntity();
 			List<String> roles = new ArrayList<String>();
 
-			if(admin)roles.add(UserEntity.ROLE_ADMIN);
-			if(manager)roles.add(UserEntity.ROLE_MANAGER);
-			if(interviewer)roles.add(UserEntity.ROLE_INTERVIEWER);
+			if(admin)roles.add(Constants.ROLE_ADMIN);
+			if(manager)roles.add(Constants.ROLE_MANAGER);
+			if(interviewer)roles.add(Constants.ROLE_INTERVIEWER);
 
 			newUser=new UserEntity(email, password, firstName, lastName, roles);
 
 			// Role por default
-			if(interviewer)newUser.setDefaultRole(UserEntity.ROLE_INTERVIEWER);
-			if(manager)newUser.setDefaultRole(UserEntity.ROLE_MANAGER);
-			if(admin)newUser.setDefaultRole(UserEntity.ROLE_ADMIN);
+			if(interviewer)newUser.setDefaultRole(Constants.ROLE_INTERVIEWER);
+			if(manager)newUser.setDefaultRole(Constants.ROLE_MANAGER);
+			if(admin)newUser.setDefaultRole(Constants.ROLE_ADMIN);
 
 			// Foi criado por um admin, esse admin é o currentUser, e a temporaryPassword=true
 			newUser.setCreatedBy(this.currentUser);
