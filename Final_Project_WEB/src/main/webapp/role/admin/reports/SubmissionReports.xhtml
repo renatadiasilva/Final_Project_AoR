@@ -1,4 +1,4 @@
-<ui:composition template="../../WEB-INF/template/Layout.xhtml"
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -6,15 +6,15 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="Título">
-	Admin - Relatórios de Entrevistas - IT Jobs
+	Admin - Relatórios de Candidaturas - IT Jobs
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Relatórios de entrevistas</h1>
+		<h1>Relatórios de candidaturas</h1>
 
-		<h:form id="interviewsReports">
+		<h:form id="submissionReports">
 
-			<h:panelGrid id="buttonsInterviewsReports" columns="5">
+			<h:panelGrid id="buttonsSubmissionReports" columns="5">
 
 				<p:commandButton value="Remover user"
 					action="#{dangerZoneCDI.removeUser()}"
@@ -43,10 +43,10 @@
 
 			</h:panelGrid>
 
-			<h:panelGrid id="gridInterviewReports" columns="4">
+			<h:panelGrid id="gridSubmissionReports" columns="4">
 
-				<p:outputLabel value="Id: " for="interview-reports-id" />
-				<p:inputText id="interview-reports-id" 
+				<p:outputLabel value="Id: " for="submission-reports-id" />
+				<p:inputText id="submission-reports-id" 
 					value="#{dangerZoneCDI.id}"
 					size="35" />
 
