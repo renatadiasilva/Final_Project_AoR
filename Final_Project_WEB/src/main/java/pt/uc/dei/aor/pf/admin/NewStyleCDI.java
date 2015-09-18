@@ -1,11 +1,7 @@
 package pt.uc.dei.aor.pf.admin;
 
-import java.util.Properties;
-
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -47,51 +43,40 @@ public class NewStyleCDI {
 	private boolean valid;
 
 	public void newStyle(FileUploadEvent event){
-		System.out.println("newStyle begin");
 		
 		this.valid=true;
 
 		this.file=event.getFile();
 
-		if(this.styleName.isEmpty()||this.companyName.isEmpty()||this.footerMessage.isEmpty())this.valid=false;
-
+		if(this.styleName==null||this.companyName==null||this.footerMessage==null)this.valid=false;
 
 		if(this.valid){
 			// Se for o novo padrão desmarca o padrão actual
-//			if(this.userDefault){
-//
-//				// Vai buscar o padrão actual
-//				StyleEntity defaultStyle=this.styleBean.findDefaulStyle();
-//
-//				// Se for padrão do padrão do sistema salta este ponto
-//				if(defaultStyle.isUserDefaultStyle()){
-//					// Se for padrão do utilizador marca a falso
-//					defaultStyle.setUserDefaultStyle(false);
-//					this.styleBean.update(defaultStyle);
-//				}
-//
-//			}
+			if(this.userDefault){
+
+				// Vai buscar o padrão actual
+				StyleEntity defaultStyle=this.styleBean.findDefaulStyle();
+
+				// Se for padrão do padrão do sistema salta este ponto
+				if(defaultStyle.isUserDefaultStyle()){
+					// Se for padrão do utilizador marca a falso
+					defaultStyle.setUserDefaultStyle(false);
+					this.styleBean.update(defaultStyle);
+				}
+
+			}
 
 			// Persiste e devolve o ID
-//			long id=this.styleBean.saveAndReturn(new StyleEntity(styleName, companyName, footerMessage, primaryColor, secondaryColor, userDefault)).getId();
-
-
-//			Properties props = System.getProperties();
-//			try {
-//				System.out.println(this.file.getFileName()+this.file.getSize());
-//				this.file.write(props.getProperty("user.dir")+"\\"+UploadFile.FOLDER_CUSTOM_LOGOS+"\\"+"ninja"+"."+UploadFile.IMAGE_EXTENSION);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				System.out.println("Erro a escrever o ficheiro");
-//				//			log.error("Error writing "+this.file.getFileName()+" to "+folder+" with new name "+id+"."+extension);
-//			}
+			long id=this.styleBean.saveAndReturn(new StyleEntity(styleName, companyName, footerMessage, primaryColor, secondaryColor, userDefault)).getId();
 
 			// Grava o ficheiro com o ID da Entidade Persistida
-			this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_CUSTOM_LOGOS, (long) 69, UploadFile.IMAGE_EXTENSION);
+			String fileName=this.file.getFileName();
+			String extension=fileName.substring(fileName.lastIndexOf('.'), fileName.length());
+			this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_CUSTOM_LOGOS, id, extension);
 
 			// Se for o novo padrão reinicia a apresentação
-//			if(this.userDefault) this.currentStyle.init();
-		}
+			if(this.userDefault) this.currentStyle.init();
+		} 
 	}
 	
 	public void dummy(){
