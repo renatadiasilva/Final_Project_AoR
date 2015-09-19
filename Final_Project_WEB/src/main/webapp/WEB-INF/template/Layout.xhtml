@@ -6,7 +6,12 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
+	<f:metadata>
+		<!-- Se o utilizador acedeu ao site através do serviço e ele deixou uma mensagem, é exibida por aqui -->
+		<f:viewAction actionListener="#{userSessionManagement.publishServiceMessage()}" />
+	</f:metadata>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
 	<title><ui:insert name="titulo">#{styleSessionManagement.companyName}</ui:insert></title>
 	<h:outputScript library="scripts" name="Calendar.js" />
 	<h:outputScript library="scripts" name="CapsLock.js" />

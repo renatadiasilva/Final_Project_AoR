@@ -64,5 +64,7 @@ public interface UserManagementInterface {
 	public abstract boolean recoverPassword(String email, String temporaryPassword);
 
 	public abstract List<String> getStyle();
+
+	public abstract boolean checkAuthentication(String email);
 	
 }

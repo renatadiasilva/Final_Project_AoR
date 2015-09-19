@@ -148,13 +148,22 @@ public class UserManagementImp implements UserManagementInterface {
 			if(createdByAdmin){
 				newUser.setCreatedBy(this.currentUser);
 				newUser.setTemporaryPassword(true);
+				newUser.setAuthenticated(true);
+			}else{
+				// Se vem da página do signup, vai ter de ser autenticado por email
+				newUser.setAuthenticated(false);
 			}
 			
 			// Grava o UserEntity
 			this.userBean.save(newUser);
 
 			log.info("Successfully created new user (candidate)");
-			if(createdByAdmin)log.info("New user: "+ newUser.getEmail()+" with temporary password "+password);
+			if(createdByAdmin){
+				log.info("New user: "+ newUser.getEmail()+" with temporary password "+password);
+			}else{
+				// Envia o email para o processo de autenticação
+				this.mail.candidateToAuthenticate(newUser);
+			}
 			return true;
 
 		}else {
@@ -188,8 +197,10 @@ public class UserManagementImp implements UserManagementInterface {
 			if(admin)newUser.setDefaultRole(Constants.ROLE_ADMIN);
 
 			// Foi criado por um admin, esse admin é o currentUser, e a temporaryPassword=true
+			// Se foi um administrador que criou é fiável, não precisa de autenticação
 			newUser.setCreatedBy(this.currentUser);
 			newUser.setTemporaryPassword(true);
+			newUser.setAuthenticated(true);
 
 			this.userBean.save(newUser);
 
@@ -340,6 +351,12 @@ public class UserManagementImp implements UserManagementInterface {
 		style.add("1");
 		
 		return style;
+	}
+
+	@Override
+	public boolean checkAuthentication(String email) {
+		if(this.userBean.findUserByEmail(email).isAuthenticated())return true;
+		return false;
 	}
 	
 }

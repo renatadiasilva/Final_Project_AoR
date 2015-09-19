@@ -2,8 +2,9 @@ package pt.uc.dei.aor.pf.mailManagement;
 
 import java.util.Properties;
 
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
-
+import javax.inject.Inject;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -15,9 +16,10 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.dao.servicesManagement.ServicesManagementImp;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
-@Stateless
+@Stateful
 public class MailManagementImp implements MailManagementInterface {
 
 	private static final Logger log = LoggerFactory.getLogger(MailManagementImp.class);
@@ -26,12 +28,15 @@ public class MailManagementImp implements MailManagementInterface {
 	private static final String PASSWORD = "RenataDuarte";
 
 
-	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
+//	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
+	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com";
 	private static final boolean OVERRIDE = true;
 
 	private Session session;
 
 	private Properties props;
+
+	private String serviceContext;
 
 	public MailManagementImp() {
 
@@ -49,7 +54,12 @@ public class MailManagementImp implements MailManagementInterface {
 
 	}
 
-	public void sendEmail (String receiver, String subject, String text){
+	@Override
+	public void setContext(String context) {
+		this.serviceContext=context+"/Services.xhtml";
+	}
+
+	private void sendEmail (String receiver, String subject, String text){
 
 		if(OVERRIDE)receiver=RECEIVER;
 
@@ -67,7 +77,7 @@ public class MailManagementImp implements MailManagementInterface {
 		} catch (MessagingException e) {
 			log.error("Error sending email to "+receiver);
 		}
-		
+
 	}
 
 	@Override
@@ -77,15 +87,28 @@ public class MailManagementImp implements MailManagementInterface {
 		String subject="Recuperação de password";
 		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","+
 				"\n\nA sua nova password para aceder à plataforma ITJobs: "+temporaryPassword
-				+"\n\n\nCumprimentos,\nA equipa ITJobs";
-		
+				+"\n\nCumprimentos,\nA equipa ITJobs";
+
 		log.info("Envio de email para "+user.getEmail()+" para notificar da password temporária "+temporaryPassword);
 		this.sendEmail(receiver, subject, text);
 	}
-	
+
 	@Override
 	public void testEmail(String receiver, String subject, String text){
 		this.sendEmail(receiver, subject, text);
+	}
+
+	@Override
+	public void candidateToAuthenticate(UserEntity newUser) {
+		// Envia um email a um novo candidato para autenticar o registo
+		// Link com a query para a autenticação do utilizador
+		String link=this.serviceContext+"?"+"subject="+ServicesManagementImp.AUTHENTICATE_CANDIDATE+"&email="+newUser.getEmail();
+		
+		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","+
+				"\n\nBem vindo à plataforma ITJobs. Para terminar o seu processo de incrição, por favor siga o link: "+link
+				+"\n\nCumprimentos,\nA equipa ITJobs";
+
+		this.sendEmail(newUser.getEmail(), "Registo na plataforma ITJobs - Autenticação do email", text);
 	}
 
 }

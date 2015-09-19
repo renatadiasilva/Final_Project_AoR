@@ -90,6 +90,8 @@ public class InitDB {
 					"Newton", null), // ulist[11]
 		};
 		
+		for(UserEntity u: ulist)u.setAuthenticated(true);
+		
 		UserInfoEntity [] uilist = {
 			new UserInfoEntity(ftDate.parse("1960-05-11"), 
 					"Avenida da Liberdade",

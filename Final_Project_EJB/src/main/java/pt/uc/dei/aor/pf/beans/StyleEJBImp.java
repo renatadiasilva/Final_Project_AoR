@@ -38,7 +38,7 @@ public class StyleEJBImp implements StyleEJBInterface{
 	}
 
 	@Override
-	public List<StyleEntity> findAll(StyleEntity style) {
+	public List<StyleEntity> findAll() {
 		log.info("Retreiving all styles.");
 		return styleDao.findAll();
 	}
@@ -48,6 +48,13 @@ public class StyleEJBImp implements StyleEJBInterface{
 		System.out.println("Início da pesquisa EJB");
 		log.info("Retreiving default style.");
 		return styleDao.findDefaultStyle();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void delete(StyleEntity style) {
+		styleDao.delete(style.getId(), (Class<StyleEntity>) style.getClass());
+		log.info("Style ("+style.getCompanyName()+") deleted.");
 	}
 
 }

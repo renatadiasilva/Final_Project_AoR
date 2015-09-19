@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.session;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -15,7 +16,9 @@ import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
 import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
 import java.io.IOException;
@@ -37,6 +40,12 @@ public class UserSessionManagement implements Serializable {
 	@EJB
 	UserManagementInterface userManagement;
 
+	@EJB
+	UserEJBInterface userEJB;
+
+	@EJB
+	MailManagementInterface mailEJB;
+
 	private UserEntity currentUser;
 
 	private FacesContext context;
@@ -48,8 +57,10 @@ public class UserSessionManagement implements Serializable {
 	private HttpSession session;
 
 	private String password, newPassword;
+	
+	private String serviceMessage;
 
-	public UserSessionManagement() {		
+	public UserSessionManagement() {
 		this.currentUser=new UserEntity();
 	}
 
@@ -95,34 +106,42 @@ public class UserSessionManagement implements Serializable {
 		// com um User logado na sessão é feito um logout
 		if(this.userManagement.isUserLogged()) this.logout();
 
-		try{
-			// Login no servidor - vai buscar os roles lá dentro
-			// Se falha salta os passos seguintes - excepção
-			this.request.login(email, password);
+		// Verifica se a conta está autenticada
+		if(this.userManagement.checkAuthentication(email)){
 
-			// Inicia na aplicação
-			this.userManagement.login(email, password);
+			try{
+				// Login no servidor - vai buscar os roles lá dentro
+				// Se falha salta os passos seguintes - excepção
+				this.request.login(email, password);
 
-			log.info("Login sucessfull");
-			this.context.addMessage(null, new FacesMessage("Login sucessfull: "+email));
+				// Inicia na aplicação
+				this.userManagement.login(email, password);
 
-			// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
-			// return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?facesRedirect=true";
+				log.info("Login sucessfull");
+				this.context.addMessage(null, new FacesMessage("Login sucessfull: "+email));
 
-			// Encaminha para...
-			this.response = (HttpServletResponse) context.getExternalContext().getResponse();
-
-			try {
 				// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
-				this.response.sendRedirect(request.getContextPath()+"/role/"+this.userManagement.getUserDefaultRole().toLowerCase()+"/landing/Landing.xhtml");
-			} catch (IOException e) {
-				log.error("Redirect failure");
-				this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
-			}
+				// return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?facesRedirect=true";
 
-		} catch (ServletException e){
-			log.error("Login failure");
-			this.context.addMessage(null, new FacesMessage("Login falhou."));
+				// Encaminha para...
+				this.response = (HttpServletResponse) context.getExternalContext().getResponse();
+
+				try {
+					// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
+					this.response.sendRedirect(request.getContextPath()+"/role/"+this.userManagement.getUserDefaultRole().toLowerCase()+"/landing/Landing.xhtml");
+				} catch (IOException e) {
+					log.error("Redirect failure");
+					this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
+				}
+
+			} catch (ServletException e){
+				log.error("Login failure");
+				this.context.addMessage(null, new FacesMessage("Login falhou."));
+			}
+			
+		}else{
+			// A conta não está autenticada, o utilizador é notificado
+			this.context.addMessage(null, new FacesMessage("Esta conta ainda não se encontra autenticada. Por favor, consulte a sua caixa de correio para terminar o processo de registo."));
 		}
 	}
 
@@ -260,6 +279,13 @@ public class UserSessionManagement implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	// Publica a mensagem do servico - se existir
+	// Despoletado pelo listener no Layout.xhtml
+	public void publishServiceMessage(){
+		if(this.serviceMessage!=null)FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(this.serviceMessage));
+		this.serviceMessage=null;
+	}
 
 	public boolean isAdmin() {
 		return this.userManagement.isAdmin();
@@ -300,9 +326,17 @@ public class UserSessionManagement implements Serializable {
 	public String getUserFullName(){
 		return this.userManagement.getUserFullName();
 	}
-	
+
 	public List<String>getStyle(){
 		return this.userManagement.getStyle();
+	}
+
+	public String getServiceMessage() {
+		return serviceMessage;
+	}
+
+	public void setServiceMessage(String serviceMessage) {
+		this.serviceMessage = serviceMessage;
 	}
 
 }

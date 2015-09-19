@@ -11,7 +11,8 @@ public interface StyleEJBInterface {
 	
 	public abstract void save(StyleEntity style);
 	public abstract void update(StyleEntity style);
-	public abstract List<StyleEntity> findAll(StyleEntity style);
+	public abstract void delete(StyleEntity style);
+	public abstract List<StyleEntity> findAll();
 	public abstract StyleEntity saveAndReturn(StyleEntity style);
 	public abstract StyleEntity findDefaulStyle();
 	

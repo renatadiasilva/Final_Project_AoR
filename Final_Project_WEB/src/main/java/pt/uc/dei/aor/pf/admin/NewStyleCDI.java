@@ -63,6 +63,7 @@ public class NewStyleCDI implements Serializable {
 	}
 
 	public void newStyle(){
+		this.userDefault=false;
 
 		this.valid=true;
 

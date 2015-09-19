@@ -11,4 +11,8 @@ public interface MailManagementInterface {
 
 	public abstract void testEmail(String receiver, String subject, String text);
 
+	public abstract void candidateToAuthenticate(UserEntity newUser);
+	
+	public abstract void setContext(String context);
+
 }

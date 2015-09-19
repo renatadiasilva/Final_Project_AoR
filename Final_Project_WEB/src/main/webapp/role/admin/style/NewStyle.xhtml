@@ -57,28 +57,27 @@
 
 				</h:panelGrid>
 
-				<p:outputLabel value="Definir como estilo padrão" />
-				<p:selectBooleanCheckbox value="#{newStyleCDI.userDefault}" />
-
 			</h:panelGroup>
-
+			<br />
+			<br />
 			<p:commandButton id="action-button" value="Continuar para Logo"
-				icon="ui-icon-folder-open" actionListener="#{newStyleCDI.newStyle()}"
-				onclick="PF('uploadLogo').show();"/>
+				icon="ui-icon-folder-open"
+				actionListener="#{newStyleCDI.newStyle()}"
+				onclick="PF('uploadLogo').show();" />
 
 		</h:form>
 
 		<h:form>
-		
+
 			<p:dialog header="Logotipo" widgetVar="uploadLogo" draggable="false"
 				resizable="false" modal="true">
 
 				<p:messages id="dialogMessages" />
 
-				<p:fileUpload id="file-upload" update="@all" 
+				<p:fileUpload id="file-upload" update="@all"
 					label="Escolha o logotipo (*.gif, *.jpg, *.png)"
-					uploadLabel="Submeter logo" cancelLabel="Cancelar"
-					required="true" requiredMessage="Submeta um logotipo."
+					uploadLabel="Submeter logo" cancelLabel="Cancelar" required="true"
+					requiredMessage="Submeta um logotipo."
 					fileUploadListener="#{newStyleCDI.uploadLogo}" mode="advanced"
 					dragDropSupport="true" sizeLimit="100000" fileLimit="1"
 					invalidSizeMessage="Ficheiro demaisado grande."
@@ -91,7 +90,37 @@
 
 			</p:dialog>
 		</h:form>
+		<br />
+		<br />
+		<h:form>
+			<p:dataTable var="style" value="#{viewStylesCDI.styles}"
+				emptyMessage="Não existem estilos">
 
+				<f:facet name="header">Estilos</f:facet>
+
+				<p:column>
+					<p:outputLabel value="#{style.styleTitle}" />
+				</p:column>
+
+				<p:column>
+					<p:commandButton value="Apagar o estilo"
+						actionListener="#{viewStylesCDI.deleteStyle(style)}"
+						icon="ui-icon-trash" style="width:100%" ajax="false" />
+				</p:column>
+
+				<p:column>
+					<p:commandButton rendered="#{!style.userDefaultStyle}"
+						value="Marcar como estilo padrão"
+						actionListener="#{viewStylesCDI.newDefaultStyle(style)}"
+						icon="ui-icon-check" style="width:100%" ajax="false" />
+
+					<p:commandButton rendered="#{style.userDefaultStyle}"
+						value="Estilo padrão" icon="ui-icon-image" style="width:100%"
+						ajax="false" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
 	</ui:define>
 
 </ui:composition>
