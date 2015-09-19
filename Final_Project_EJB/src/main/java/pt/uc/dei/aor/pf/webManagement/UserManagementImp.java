@@ -15,7 +15,6 @@ import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
-import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 
 

@@ -61,23 +61,24 @@ public class MailManagementImp implements MailManagementInterface {
 
 	@Asynchronous
 	private void sendEmail (String receiver, String subject, String text){
+		log.error("This class is disabled, please use SecureMailManagement(Imp/Interface)");
 
-		if(OVERRIDE)receiver=RECEIVER;
-
-		try {
-			Message message = new MimeMessage(this.session);
-			message.setFrom(new InternetAddress(USERNAME));
-			message.setRecipients(Message.RecipientType.TO,	InternetAddress.parse(receiver));
-			message.setSubject(subject);
-			message.setText(text);
-
-			Transport.send(message);
-
-			log.info("Email sent to "+receiver);
-
-		} catch (MessagingException e) {
-			log.error("Error sending email to "+receiver);
-		}
+//		if(OVERRIDE)receiver=RECEIVER;
+//
+//		try {
+//			Message message = new MimeMessage(this.session);
+//			message.setFrom(new InternetAddress(USERNAME));
+//			message.setRecipients(Message.RecipientType.TO,	InternetAddress.parse(receiver));
+//			message.setSubject(subject);
+//			message.setText(text);
+//
+//			Transport.send(message);
+//
+//			log.info("Email sent to "+receiver);
+//
+//		} catch (MessagingException e) {
+//			log.error("Error sending email to "+receiver);
+//		}
 
 	}
 
