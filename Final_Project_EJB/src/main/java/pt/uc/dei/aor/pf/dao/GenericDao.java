@@ -9,8 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
-import pt.uc.dei.aor.pf.constants.Constants;
-
 public abstract class GenericDao<E> {
 
 	@PersistenceContext(unitName = "ProjetoFinal")
@@ -72,19 +70,19 @@ public abstract class GenericDao<E> {
 
 	// used in accent insensitive searchs
 	protected static String makeQuery(String selectPart, String fromPart,
-			String extraPart, String[] attributesPart, String[] valuesPart,
+			String extraPart, String[] attributesPart,
 			String AND_OR, String wherePart, String orderbyPart) {
 		String query = "SELECT "+selectPart+" FROM "+fromPart+" WHERE "
 			+ extraPart+"TRANSLATE(UPPER(REPLACE("+attributesPart[0]
-			+",\' \',\'\')), "+Constants.ACCENT_LETTERS+","
-			+Constants.NO_ACCENT_LETTERS
-			+") LIKE \'"+valuesPart[0]+"\'";
+			+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
+			+ "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
+			+") LIKE :"+attributesPart[0];
 		
 		for (int i = 1; i < attributesPart.length; i++) 
 			query += AND_OR+"TRANSLATE(UPPER(REPLACE("+attributesPart[i]
-				+",\' \',\'\')), "+Constants.ACCENT_LETTERS+","
-				+Constants.NO_ACCENT_LETTERS
-				+") LIKE \'"+valuesPart[i]+"\'";
+				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
+				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
+				+") LIKE :"+attributesPart[i];
 		query += ")";
 		if (!wherePart.isEmpty()) query +=" AND "+wherePart;
 		if (!orderbyPart.isEmpty()) query +=" ORDER BY "+orderbyPart;

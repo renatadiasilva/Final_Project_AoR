@@ -9,7 +9,7 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pt.uc.dei.aor.pf.constants.Constants;
+import pt.uc.dei.aor.pf.constants.ConstantsRenata;
 import pt.uc.dei.aor.pf.dao.InterviewDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
@@ -54,7 +54,7 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 		log.info("Adding position to a spontaneous submission (cloning)");
 		// clone submission: na web???
 		SubmissionEntity newSubmission = new SubmissionEntity(
-				submission.getCandidate(), Constants.STATUS_SUBMITED,
+				submission.getCandidate(), ConstantsRenata.STATUS_SUBMITED,
 				submission.getMotivationLetter(),
 				submission.getSources(), false);
 		newSubmission.setPosition(position);
@@ -131,9 +131,10 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 	
 	@Override
-	public List<Object[]> countSubmissionsByPosition() {
+	public List<Object[]> countSubmissionsByPosition(Date date1,
+			Date date2) {
 		log.info("Counting submissions by position");
-		return submissionDAO.countSubmissionsByPosition();
+		return submissionDAO.countSubmissionsByPosition(date1, date2);
 	}
 
 	private void isSubmissionComplete(SubmissionEntity submission) {

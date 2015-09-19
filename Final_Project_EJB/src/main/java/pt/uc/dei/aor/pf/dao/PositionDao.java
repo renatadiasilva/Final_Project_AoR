@@ -26,19 +26,26 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			List<String> locations) {
 		
 		int sizel = locations.size(); 
-		String[] values = new String[sizel];
-		String[] attributes = new String[sizel];
-		int i = 0;
-		for (String l : locations) {
-			attributes[i] = "locations.location";
-			values[i] = l;
-			i++;
-		}
-		String queryS = makeQuery("DISTINCT positions.*", 
-			"positions, locations", "(", attributes, values, " OR ", 
-			"positions.id = locations.position_id", "code");
+		String queryS = "SELECT DISTINCT positions.*"
+				+" FROM positions, locations WHERE "
+				+"(TRANSLATE(UPPER(REPLACE(locations.location"
+				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
+				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
+				+") LIKE :loc0";
+			
+		for (int i = 1; i < sizel; i++) 
+			queryS += " OR TRANSLATE(UPPER(REPLACE(locations.location"
+				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
+				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
+				+") LIKE :loc"+i;
+		
+		queryS += ") AND positions.id = locations.position_id"
+				+" ORDER BY code";
 	
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+		for (int i = 0; i < sizel; i++) {
+			query.setParameter("loc"+i, locations.get(i));
+		}
 		return (List<PositionEntity>) query.getResultList();
 
 	}
@@ -52,13 +59,17 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			+ " (SELECT positions.*, count(positions.*)"
 			+ " FROM positions, locations"
 			+ " WHERE positions.id = locations.position_id AND"
-			+ " (locations.location LIKE \'"+locations.get(0)+"\'";
+			+ " (locations.location LIKE :loc0";
 		for (int i = 1; i < sizel; i++) 
-			queryS += " OR locations.location LIKE \'"+locations.get(i)+"\'";
-		queryS += ") GROUP BY id) AS c WHERE c.count = "+sizel+
-			" ORDER BY c.code";
+			queryS += " OR locations.location LIKE :loc"+i;
+		queryS += ") GROUP BY id) AS c WHERE c.count = :size"
+			+" ORDER BY c.code";
 		
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+		for (int i = 0; i < sizel; i++) {
+			query.setParameter("loc"+i, locations.get(i));
+		}
+		query.setParameter("size", sizel);
 		return (List<PositionEntity>) query.getResultList();
 	
 	}
@@ -86,19 +97,28 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			String company, String technicalArea, 
 			UserEntity positionManager) {
 
-		String[] attributes = {"code", "title", "location", "status",
+		String[] attributes = {"code", "title", "status",
 			"company", "technical_area"};		
-		String[] values = {positionCode, title, location, currentStatus,
-			company, technicalArea};
 
 		String extra = "";
-		if (positionManager != null) extra = " AND positions.manager = "
-				+positionManager.getId();
+		if (positionManager != null) extra = " AND positions.manager = :id";
 		String queryS = makeQuery("DISTINCT positions.*",
-				"positions, locations", "(", attributes, values, " AND ", 
+				"positions, locations", 
+				"(TRANSLATE(UPPER(REPLACE(locations.location"
+				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
+				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
+				+") LIKE :loc OR ", attributes, " AND ", 
 				"positions.id = locations.position_id"+extra, "code");
 
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+		query.setParameter("loc", location);
+		query.setParameter("code", positionCode);
+		query.setParameter("title", title);
+		query.setParameter("status", currentStatus);
+		query.setParameter("company", company);
+		query.setParameter("technical_area", technicalArea);
+		if (positionManager != null) 
+			query.setParameter("id", positionManager.getId());
 		return (List<PositionEntity>) query.getResultList();
 		
 	}
@@ -110,23 +130,32 @@ public class PositionDao extends GenericDao<PositionEntity> {
 			String company, String technicalArea, 
 			UserEntity positionManager) {
 		
-		String[] attributes = {"code", "title", "location", "status", 
+		String[] attributes = {"code", "title", "status", 
 			"company", "technical_area"};		
-		String[] values = {positionCode, title, location, currentStatus,
-			company, technicalArea};
 
 		String extra = "";
-		if (positionManager != null) extra = " AND positions.manager = "
-				+positionManager.getId();
+		if (positionManager != null) extra = " AND positions.manager = :id";
 		String queryS = makeQuery("DISTINCT positions.*",
-				"positions, locations", "(", attributes, values, " AND ", 
+				"positions, locations",
+				"(TRANSLATE(UPPER(REPLACE(locations.location"
+				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
+				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
+				+") LIKE :loc OR ", attributes, " AND ", 
 				"positions.id = locations.position_id"
 				+ " AND positions.opening_date BETWEEN :date1 AND :date2"
 				+extra, "opening_date");
 		
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+		query.setParameter("loc", location);
+		query.setParameter("code", positionCode);
+		query.setParameter("title", title);
+		query.setParameter("status", currentStatus);
+		query.setParameter("company", company);
+		query.setParameter("technical_area", technicalArea);
 		query.setParameter("date1", openingDate1);
 		query.setParameter("date2", openingDate2);
+		if (positionManager != null) 
+			query.setParameter("id", positionManager.getId());
 		return (List<PositionEntity>) query.getResultList();	
 		
 	}
@@ -149,19 +178,28 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	public List<PositionEntity> findPositionsByKeyword(String keyword,
 			UserEntity positionManager) {
 
-		String[] values = {keyword, keyword, keyword, keyword, keyword, 
-			keyword};
-		String[] attributes = {"code", "title", "locations.location",
+		String[] attributes = {"code", "title",
 			"company", "technical_area", "description"};
 
 		String extra = "";
-		if (positionManager != null) extra = " AND positions.manager = "
-				+positionManager.getId();
+		if (positionManager != null) extra = " AND positions.manager = :id";
+		
 		String queryS = makeQuery("DISTINCT positions.*",
-				"positions, locations", "(", attributes, values, " OR ", 
+				"positions, locations", 
+				"(TRANSLATE(UPPER(REPLACE(locations.location"
+				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
+				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
+				+") LIKE :loc OR ", attributes, " OR ", 
 				"positions.id = locations.position_id"+extra, "code");
 		
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+		query.setParameter("code", keyword);
+		query.setParameter("title", keyword);
+		query.setParameter("company", keyword);
+		query.setParameter("technical_area", keyword);
+		query.setParameter("description", keyword);
+		if (positionManager != null) 
+			query.setParameter("id", positionManager.getId());
 		return (List<PositionEntity>) query.getResultList();
 		
 	}

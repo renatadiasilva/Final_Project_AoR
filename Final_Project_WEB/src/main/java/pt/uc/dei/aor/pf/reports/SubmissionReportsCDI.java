@@ -37,11 +37,16 @@ public class SubmissionReportsCDI {
 	
 	// data input fields
 	private Date date1, date2;
+	private Long id;
+	private String period;
 
 	public void submissionsByPosition() {
 		log.info("Creating report with number of submissions by position");
 		
-		List<Object[]> result = submissionEJB.countSubmissionsByPosition();
+		
+		//period
+		List<Object[]> result = submissionEJB.countSubmissionsByPosition(
+				date1, date2);
 		List<SubmissionReportItem> resultItems =
 				new ArrayList<SubmissionReportItem>();
 		
@@ -139,6 +144,22 @@ public class SubmissionReportsCDI {
 	
 	private Long bigIntToLong(BigInteger value) {
 		return new Long(value.intValue());
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
 	}
 
 }

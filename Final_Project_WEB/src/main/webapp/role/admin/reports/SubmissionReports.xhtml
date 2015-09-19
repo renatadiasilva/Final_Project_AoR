@@ -22,6 +22,36 @@
 
 			</h:panelGrid>
 
+			<h:panelGrid id="gridSubReportSearch" columns="8">
+
+				<p:outputLabel value="Primeira Data: " for="subreport-date1" />
+				<p:calendar id="subreport-date1"
+					value="#{submissionReportsCDI.date1}" 
+					pattern="dd/MM/yyyy"
+					readonlyInput="true" navigator="true" 
+					yearRange="c-100:c+100"
+					locale="pt" size="35" />
+
+				<p:outputLabel value="Segunda Data: " for="subreport-date2" />
+				<p:calendar id="subreport-date2"
+					value="#{submissionReportsCDI.date2}" 
+					pattern="dd/MM/yyyy"
+					readonlyInput="true" navigator="true" 
+					yearRange="c-100:c+100"
+					locale="pt" size="35" />
+
+				<p:outputLabel value="Id: " for="subreport-id" />
+				<p:inputText id="subreport-id"
+					value="#{submissionReportsCDI.id}"
+					size="35" />
+
+				<p:outputLabel value="Período (d/m/a): "
+					 for="subreport-period" />
+				<p:inputText id="subreport-period"
+					value="#{submissionReportsCDI.id}"
+					size="35" />
+
+			</h:panelGrid>
 			<p:dataTable emptyMessage="Nada a mostrar." var="subreport"
 				value="#{submissionReportsCDI.sreports}">
 				<f:facet name="header">

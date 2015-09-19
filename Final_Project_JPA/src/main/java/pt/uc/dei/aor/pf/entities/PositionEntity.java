@@ -83,6 +83,10 @@ public class PositionEntity implements Serializable {
 	@Column(name = "openings", nullable = false)
 	private int openings;
 
+	@NotNull
+	@Column(name = "hired_people", nullable = false)
+	private int hired_people;
+
 	@Column(name = "closing_date")
 	@Temporal(TemporalType.DATE)
 	private Date closingDate;
@@ -159,6 +163,7 @@ public class PositionEntity implements Serializable {
 		this.description = description;
 		this.advertisingChannels = advertisingChannels;
 		this.defaultScript = defaultScript;
+		this.hired_people = 0;  // change each time a submission turns HIRED
 	}
 
 	public Long getId() {
@@ -295,6 +300,14 @@ public class PositionEntity implements Serializable {
 
 	public void setSubmissions(List<SubmissionEntity> submissions) {
 		this.submissions = submissions;
+	}
+
+	public int getHired_people() {
+		return hired_people;
+	}
+
+	public void setHired_people(int hired_people) {
+		this.hired_people = hired_people;
 	}
 
 }

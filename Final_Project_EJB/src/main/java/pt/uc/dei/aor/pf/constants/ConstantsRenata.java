@@ -12,5 +12,7 @@ public class ConstantsRenata {
 			"OFFER PROCESS (NEGOTIATION)";
 	public static final String STATUS_REJECTED = "REJECTED";
 	public static final String STATUS_HIRED = "HIRED";
+	
+	// tirar AAAAAAAAAAAAAA
 
 }

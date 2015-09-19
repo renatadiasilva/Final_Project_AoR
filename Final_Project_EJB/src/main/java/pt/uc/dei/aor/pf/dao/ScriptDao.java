@@ -23,12 +23,12 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 	@SuppressWarnings("unchecked")
 	public List<ScriptEntity> findScriptsByTitle(String title) {
 
-		String[] values = {title};
 		String[] attributes = {"title"};
 		String queryS = makeQuery("*", "scripts", "(", attributes,
-				values, " OR ", "", "title");
+				" OR ", "", "title");
 
 		Query query = em.createNativeQuery(queryS, ScriptEntity.class);
+		query.setParameter("title", title);
 		return (List<ScriptEntity>) query.getResultList();
 
 	}

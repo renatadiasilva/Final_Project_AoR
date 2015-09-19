@@ -13,9 +13,11 @@ import javax.inject.Named;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
+import pt.uc.dei.aor.pf.constants.ConstantsRenata;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
@@ -223,7 +225,7 @@ public class ReportCDI {
 					//query??
 					// submission status is hired
 					if (s.getStatus().equalsIgnoreCase(
-							Constants.STATUS_HIRED)) {
+							ConstantsRenata.STATUS_HIRED)) {
 
 						// colect submission date and hired date
 						Calendar sDate = Calendar.getInstance();
@@ -366,9 +368,8 @@ public class ReportCDI {
 					System.out.println(i.getSubmission().
 							getCandidate().getFirstName()+" "
 							+i.getSubmission().getCandidate().getLastName());
-					System.out.println("\n\nAprovado: "+
-							(i.isApproved()?"SIM":"NÃO"));
 					System.out.println("\nFeedback: "+i.getFeedback());
+					//path to excel questions&answers
 				}
 				break;
 			case 4:
@@ -388,19 +389,20 @@ public class ReportCDI {
 				// print info/results of submissions of the day, month, or year
 				for (SubmissionEntity s : listS) {
 					printCandidateInfo(s, listS.indexOf(s), true);
+					
 					String result = s.getStatus(); 
 					if (result.equalsIgnoreCase(
-							Constants.STATUS_PPROPOSAL))
-						System.out.println("\n\nProposta recebida"
-								+ " (ainda não avaliada)");
+							ConstantsRenata.STATUS_PROPOSAL))
+						System.out.println("\n\nProposta submetida"
+								+ " (ainda sem resultado)");
 					else if (result.equalsIgnoreCase(
-							Constants.STATUS_OPROPOSAL))
+							ConstantsRenata.STATUS_NEGOTIATION))
 						System.out.println("\n\nProposta em negociação.");
 					else if (result.equalsIgnoreCase(
-							Constants.STATUS_RPROPOSAL))
+							ConstantsRenata.STATUS_REJECTED))
 						System.out.println("\n\nProposta recusada.");
 					else if (result.equalsIgnoreCase(
-							Constants.STATUS_APROPOSAL))
+							ConstantsRenata.STATUS_HIRED))
 						System.out.println("\n\nProposta aceite.");
 				}
 			}

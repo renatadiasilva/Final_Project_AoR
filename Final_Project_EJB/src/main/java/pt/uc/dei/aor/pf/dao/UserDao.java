@@ -35,14 +35,15 @@ public class UserDao extends GenericDao<UserEntity> {
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findUsersByName(String name) {
 
-		String[] values = {name, name};
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
-				"(", attributes, values, " OR ", 
-				"users.id = roles.user_id AND roles.role <> \'"+
-				Constants.ROLE_CANDIDATE+"\'","email");
+				"(", attributes, " OR ", 
+				"users.id = roles.user_id AND roles.role <> :role","email");
 		
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("first_name", name);
+		query.setParameter("last_name", name);
+		query.setParameter("role", Constants.ROLE_CANDIDATE);
 		return (List<UserEntity>) query.getResultList();
 
 	}
@@ -50,14 +51,17 @@ public class UserDao extends GenericDao<UserEntity> {
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findUsersByRole(String keyword, String role) {
 
-		String[] values = {keyword, keyword};
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
-				"(UPPER(email) LIKE \'"+keyword+"\' OR ", attributes, values,
-				" OR ", "users.id = roles.user_id AND roles.role = \'"+
-				role+"\'", "email");
+				"(UPPER(email) LIKE :email OR ", attributes,
+				" OR ", "users.id = roles.user_id AND roles.role = :role",
+				"email");
 
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("email", keyword);
+		query.setParameter("first_name", keyword);
+		query.setParameter("last_name", keyword);
+		query.setParameter("role", role);
 		return (List<UserEntity>) query.getResultList();
 
 	}
@@ -65,14 +69,17 @@ public class UserDao extends GenericDao<UserEntity> {
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findUsersByKeyword(String keyword) {
 
-		String[] values = {keyword, keyword};
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
-				"(UPPER(email) LIKE \'"+keyword+"\' OR ", attributes, values,
-				" OR ", "users.id = roles.user_id AND roles.role <> \'"+
-				Constants.ROLE_CANDIDATE+"\'",	"email");
+				"(UPPER(email) LIKE :email OR ", attributes,
+				" OR ", "users.id = roles.user_id AND roles.role <> :role",
+				"email");
 
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("email", keyword);
+		query.setParameter("first_name", keyword);
+		query.setParameter("last_name", keyword);
+		query.setParameter("role", Constants.ROLE_CANDIDATE);
 		return (List<UserEntity>) query.getResultList();
 	}
 
@@ -85,14 +92,18 @@ public class UserDao extends GenericDao<UserEntity> {
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findCandidatesByKeyword(String keyword) {
 
-		String[] values = {keyword, keyword, keyword, keyword, keyword};
 		String[] attributes = {"address", "city", "country", "course",
 				"school"};
 		String queryS = makeQuery("users.*", "users, users_info", "(", 
-				attributes, values, " OR ",
+				attributes, " OR ",
 				"users.id = users_info.user_id", "email");
 
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("address", keyword);
+		query.setParameter("city", keyword);
+		query.setParameter("country", keyword);
+		query.setParameter("course", keyword);
+		query.setParameter("school", keyword);
 		return (List<UserEntity>) query.getResultList();
 
 	}
@@ -103,24 +114,31 @@ public class UserDao extends GenericDao<UserEntity> {
 			String country, String course, String school, 
 			PositionEntity position) {
 
-		String[] values = {fname, lname, address, city, country, course,
-			school};
 		String[] attributes = {"first_name", "last_name", "address", "city", 
 			"country", "course", "school"};
 		
 		String queryS;
 		if (position != null) queryS = makeQuery("users.*", 
 			"users, users_info, submissions, positions", 
-			"(UPPER(email) LIKE \'"+email+"\' AND ", attributes, 
-			values, " AND ", "users.id = users_info.user_id AND"
+			"(UPPER(email) LIKE :email AND ", attributes, 
+			" AND ", "users.id = users_info.user_id AND"
 			+ " users.id = submissions.candidate"
 			+ " AND submissions.position = positions.id AND"
-			+ " positions.id = "+position.getId(), "email");
+			+ " positions.id = :id", "email");
 		else queryS = makeQuery("users.*", "users, users_info", 
-			"(UPPER(email) LIKE \'"+email+"\' AND ", attributes, values, 
+			"(UPPER(email) LIKE :email AND ", attributes, 
 			" AND ", "users.id = users_info.user_id", "email");
 		
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("email", email);
+		query.setParameter("first_name", fname);
+		query.setParameter("last_name", lname);
+		query.setParameter("address", address);
+		query.setParameter("city", city);
+		query.setParameter("country", country);
+		query.setParameter("course", course);
+		query.setParameter("school", school);
+		if (position != null) query.setParameter("id", position.getId());
 		return (List<UserEntity>) query.getResultList();
 
 	}

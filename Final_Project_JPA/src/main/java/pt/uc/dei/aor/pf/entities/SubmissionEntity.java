@@ -44,8 +44,8 @@ import javax.validation.constraints.NotNull;
 					+ " AND s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findPresentedProposalsByDate",
 			query = "SELECT s FROM SubmissionEntity s"
-					+ " WHERE s.status LIKE :status AND s.date BETWEEN :date1"
-					+ " AND :date2 ORDER BY s.date"),
+					+ " WHERE s.proposalDate IS NOT NULL AND"
+					+ " s.date BETWEEN :date1 AND :date2 ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSubmissionsBySource",
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE :source MEMBER OF s.sources"
