@@ -1,4 +1,4 @@
-package pt.uc.dei.aor.pf.dao.servicesManagement;
+package pt.uc.dei.aor.pf.dao.urlQueriesManagement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +13,9 @@ import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
-public class ServicesManagementImp implements ServicesManagementInterface {
+public class URLQueriesManagementImp implements URLQueriesManagementInterface {
 	
-	private static final Logger log = LoggerFactory.getLogger(ServicesManagementImp.class);
+	private static final Logger log = LoggerFactory.getLogger(URLQueriesManagementImp.class);
 	
 	@EJB
 	private UserEJBInterface userEJB;
@@ -27,13 +27,12 @@ public class ServicesManagementImp implements ServicesManagementInterface {
 		user.setAuthenticated(true);
 		this.userEJB.update(user);
 		
-		List<String>response=new ArrayList<>();
-		response.add("Email "+user.getEmail()+" autenticado, registo conluido. Pode efectuar o seu login.");
-		response.add("/Home.xhtml");
+		List<String>responseList=new ArrayList<>();
+		responseList.add("Email "+user.getEmail()+" autenticado, registo conluído. Pode efectuar o seu login.");
 		
 		log.info("User with email "+email+" authenticated");
 		
-		return response;
+		return responseList;
 	}
 
 }

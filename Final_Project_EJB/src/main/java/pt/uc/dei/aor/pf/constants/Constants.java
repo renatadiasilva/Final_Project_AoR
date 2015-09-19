@@ -4,18 +4,18 @@ import javax.ejb.Stateless;
 
 @Stateless
 public class Constants {
-	
+
 	// SuperAdmin (the first admin to be created) email
 	public static final String SUPER_ADMIN = "admin@mail.com";	
 
 	// String used when removing data of users
 	public static final String REMOVED_DATA = "DADOS APAGADOS";	
-	
+
 	// Strings used in accent insensitive searchs (portuguese accents)
 	public static final String 
-		ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
+	ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
 	public static final String 
-		NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";	
+	NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";	
 
 	// Strings related to UserEntity
 	public static final String ROLE_ADMIN       = "ADMIN";
@@ -43,7 +43,7 @@ public class Constants {
 	public static final String SOCIAL_LINKEDIN  = "LINKEDIN";
 	public static final String SOCIAL_GLASSDOOR = "GLASSDOOR";
 	public static final String SOCIAL_FACEBOOK  = "FACEBOOK";
-	
+
 	// Strings related to SubmissionEntity
 	public static final String STATUS_SUBMITED   = "SUBMITED";
 	public static final String STATUS_REJECTED   = "REJECTED SUBMISSION";
@@ -51,7 +51,7 @@ public class Constants {
 	public static final String STATUS_PPROPOSAL  = "PRESENTED PROPOSAL";
 	public static final String STATUS_RPROPOSAL  = "REJECTED PROPOSAL";
 	public static final String STATUS_APROPOSAL  = "ACCEPTED PROPOSAL";
-	 //"Offer Process (Negotiation)";
+	//"Offer Process (Negotiation)";
 	public static final String STATUS_OPROPOSAL  = "ON NEGOTIATION PROPOSAL";
 	public static final String STATUS_HIRED      = "HIRED";
 	public static final String STATUS_NOTHIRED   = "NOT HIRED";
@@ -82,10 +82,18 @@ public class Constants {
 	// limit searching days by period
 	public static final long LIMITDAY   = 100;
 	public static final long LIMITMONTH = 1000;
-	
+
 	// Miliseconds per day (to convert on days)
 	public static final long MSPERDAY = 60 * 60 * 24 * 1000;
 
 	
-
+	// Queries from user emails
+	// "subject" parameter
+	public static final String QUERY_SUBJECT="subject";
+	// Returned Strings form QUERY_SUBJECT parameter 
+	// Ex: "?"+Constants.QUERY_SUBJECT+"="+Constants.QUERY_SUBJECT_AUTH_CANDIDATE translates to ?subject=authCand
+	// So, from this, request.getParameter(Constants.QUERY_SUBJECT) returns "authCand", wich equals QUERY_SUBJECT_AUTH_CANDIDATE and so on
+	public static final String QUERY_SUBJECT_AUTH_CANDIDATE="authCand";
+	// Query parameters	
+	public static final String QUERY_EMAIL="email";
 }

@@ -9,8 +9,10 @@
 
 	<ui:define name="header-menus">
 		<f:metadata>
+			<!-- Listener das queries vindas por URL -->
+			<!-- Se houver um user logado redirecciona para a respectiva Landing.xhtml -->
 			<f:viewAction
-				actionListener="#{userSessionManagement.checkForUser()}" />
+				actionListener="#{userSessionManagement.checkForUserAndQueries()}" />
 		</f:metadata>
 
 		<h:panelGrid columns="3">
@@ -38,7 +40,7 @@
 
 			<h:form id="header-signup">
 				<p:commandButton value="Signup" onclick="PF('signup').show();"
-					icon="ui-icon-person" style="margin:none" />
+					update="messages" icon="ui-icon-person" style="margin:none" />
 			</h:form>
 
 			<h:form id="header-recover">
@@ -75,7 +77,7 @@
 
 					<p:commandButton value="Recuperar Password"
 						actionListener="#{recoverPasswordCDI.recover()}"
-						update="recoverPasswordDialog" icon="ui-icon-mail-closed"
+						update="recoverPasswordDialog messages" icon="ui-icon-mail-closed"
 						style="width: 100%" />
 
 					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
@@ -214,9 +216,12 @@
 
 	<ui:define name="contents">
 		<h:form>
-			<p:commandButton value="Populate" actionListener="#{initDB.populate()}" />
-			<p:commandButton value="Test Email" actionListener="#{testEmailCDI.testMail()}" />
-			<p:commandButton value="Refrescar estilo" actionListener="#{styleSessionManagement.init()}" ajax="false" />
+			<p:commandButton value="Populate"
+				actionListener="#{initDB.populate()}" />
+			<p:commandButton value="Test Email"
+				actionListener="#{testEmailCDI.testMail()}" />
+			<p:commandButton value="Refrescar estilo"
+				actionListener="#{styleSessionManagement.init()}" ajax="false" />
 		</h:form>
 	</ui:define>
 

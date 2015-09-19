@@ -16,6 +16,7 @@ import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 
 
 @Stateful
@@ -30,7 +31,7 @@ public class UserManagementImp implements UserManagementInterface {
 	UserInfoEJBInterface userInfoBean;
 	
 	@EJB
-	MailManagementInterface mail;
+	SecureMailManagementInterface mail;
 
 	private UserEntity currentUser;
 
@@ -355,6 +356,7 @@ public class UserManagementImp implements UserManagementInterface {
 
 	@Override
 	public boolean checkAuthentication(String email) {
+		// Se chegou a este ponto (já está autenticado por esta altura no servidor) o email existe
 		if(this.userBean.findUserByEmail(email).isAuthenticated())return true;
 		return false;
 	}

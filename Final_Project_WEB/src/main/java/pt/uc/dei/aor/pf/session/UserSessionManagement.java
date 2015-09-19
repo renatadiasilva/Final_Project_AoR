@@ -1,10 +1,10 @@
 package pt.uc.dei.aor.pf.session;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
+import pt.uc.dei.aor.pf.urlQueries.URLQueriesCDI;
 import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
 import java.io.IOException;
@@ -46,6 +47,9 @@ public class UserSessionManagement implements Serializable {
 	@EJB
 	MailManagementInterface mailEJB;
 
+	@Inject
+	URLQueriesCDI urlQueries;
+
 	private UserEntity currentUser;
 
 	private FacesContext context;
@@ -57,32 +61,38 @@ public class UserSessionManagement implements Serializable {
 	private HttpSession session;
 
 	private String password, newPassword;
-	
-	private String serviceMessage;
 
 	public UserSessionManagement() {
 		this.currentUser=new UserEntity();
 	}
 
-	public void checkForUser(){
+	public void checkForUserAndQueries(){
 
-		log.info("Checking for logged user");
-		log.debug("User: "+ this.userManagement.getUserEmail());
+		// ActionListener para a página Home.xhtml
+		log.info("Checking for query in URL");
 
-		// ActionListener para a página Index.xhtml
-		// Se já existe um user logado reencaminha para o respectivo Landing.xhtml
-		if(this.userManagement.isUserLogged()){
-			this.context = FacesContext.getCurrentInstance();
-			this.response = (HttpServletResponse) context.getExternalContext().getResponse();
+		// Verifica se há queries para processar
+		if(!this.urlQueries.processQuery()){
+			log.info("No queries to process");
+			log.info("Checking for logged user");
+			log.debug("User: "+ this.userManagement.getUserEmail());
 
-			try {
-				// Encaminha para...
-				this.response.sendRedirect(this.request.getContextPath()+"/role/"+this.userManagement.getUserDefaultRole().toLowerCase()+"/landing/Landing.xhtml");
-			} catch (IOException e) {
-				log.error("Redirect failure");
-				this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
+			// Se já existe um user logado reencaminha para o respectivo Landing.xhtml
+			if(this.userManagement.isUserLogged()){
+				this.context = FacesContext.getCurrentInstance();
+				this.response = (HttpServletResponse) context.getExternalContext().getResponse();
+
+				try {
+					// Encaminha para...
+					this.response.sendRedirect(this.request.getContextPath()+"/role/"+this.userManagement.getUserDefaultRole().toLowerCase()+"/landing/Landing.xhtml");
+				} catch (IOException e) {
+					log.error("Redirect failure");
+					this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
+				}
 			}
-		}
+
+		} else log.info("Queries to process, user check bypassed");
+
 	}
 
 	public void checkTemporaryPassword(){
@@ -106,19 +116,19 @@ public class UserSessionManagement implements Serializable {
 		// com um User logado na sessão é feito um logout
 		if(this.userManagement.isUserLogged()) this.logout();
 
-		// Verifica se a conta está autenticada
-		if(this.userManagement.checkAuthentication(email)){
+		try{
+			// Login no servidor - vai buscar os roles lá dentro
+			// Se falha salta os passos seguintes - excepção
+			this.request.login(email, password);
 
-			try{
-				// Login no servidor - vai buscar os roles lá dentro
-				// Se falha salta os passos seguintes - excepção
-				this.request.login(email, password);
-
+			// Verifica se a conta está autenticada
+			if(this.userManagement.checkAuthentication(email)){
+				
 				// Inicia na aplicação
 				this.userManagement.login(email, password);
 
 				log.info("Login sucessfull");
-				this.context.addMessage(null, new FacesMessage("Login sucessfull: "+email));
+				this.context.addMessage(null, new FacesMessage("Login bem sucedido: "+email));
 
 				// Reencaminha consoante o defaultRole (exemplo do output: "/role/admin/Landing.xhtml")
 				// return "/role/"+this.currentUser.getDefaultRole().toLowerCase()+"/Landing?facesRedirect=true";
@@ -134,15 +144,18 @@ public class UserSessionManagement implements Serializable {
 					this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
 				}
 
-			} catch (ServletException e){
-				log.error("Login failure");
-				this.context.addMessage(null, new FacesMessage("Login falhou."));
+			}else{
+				// A conta não está autenticada, o utilizador é notificado e são anulados os passos do login efectuados até ao momento
+				this.request.logout();
+				this.context.addMessage(null, new FacesMessage("Esta conta ainda não se encontra autenticada. Por favor, consulte a sua caixa de correio para terminar o processo de registo."));
 			}
-			
-		}else{
-			// A conta não está autenticada, o utilizador é notificado
-			this.context.addMessage(null, new FacesMessage("Esta conta ainda não se encontra autenticada. Por favor, consulte a sua caixa de correio para terminar o processo de registo."));
+
+		} catch (ServletException e){
+			// Falhou a autenticação no servidor
+			log.error("Login failure");
+			this.context.addMessage(null, new FacesMessage("Login falhou."));
 		}
+
 	}
 
 	public void logout(){
@@ -217,14 +230,16 @@ public class UserSessionManagement implements Serializable {
 
 			this.context=FacesContext.getCurrentInstance();
 
-			// Se foi criado à mão, fecha o dialog (Index.xhtml)
+			// Se foi criado à mão, fecha o dialog (Home.xhtml)
 			if(!createdByAdmin){
 				RequestContext requestContext = RequestContext.getCurrentInstance();
 				requestContext.execute("PF('signup').hide();");
+				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
+				this.context.addMessage(null, new FacesMessage("Por favor consulte a sua caixa de correio e siga as instruções apresentadas."));
+			}else{
+				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
+				this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 			}
-
-			this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
-			if(createdByAdmin)this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 
 		}else {
 			log.info("Registration failure: the email already exists");
@@ -279,13 +294,6 @@ public class UserSessionManagement implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	// Publica a mensagem do servico - se existir
-	// Despoletado pelo listener no Layout.xhtml
-	public void publishServiceMessage(){
-		if(this.serviceMessage!=null)FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(this.serviceMessage));
-		this.serviceMessage=null;
-	}
 
 	public boolean isAdmin() {
 		return this.userManagement.isAdmin();
@@ -329,14 +337,6 @@ public class UserSessionManagement implements Serializable {
 
 	public List<String>getStyle(){
 		return this.userManagement.getStyle();
-	}
-
-	public String getServiceMessage() {
-		return serviceMessage;
-	}
-
-	public void setServiceMessage(String serviceMessage) {
-		this.serviceMessage = serviceMessage;
 	}
 
 }
