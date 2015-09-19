@@ -48,7 +48,7 @@ public class Constants {
 	public static final String STATUS_SUBMITED   = "SUBMITED";
 	public static final String STATUS_REJECTED   = "REJECTED SUBMISSION";
 	public static final String STATUS_ACCEPTED   = "ACCEPTED TO INTERVIEW";
-	public static final String STATUS_SPROPOSAL  = "SUBMITED PROPOSAL";
+	public static final String STATUS_PPROPOSAL  = "PRESENTED PROPOSAL";
 	public static final String STATUS_RPROPOSAL  = "REJECTED PROPOSAL";
 	public static final String STATUS_APROPOSAL  = "ACCEPTED PROPOSAL";
 	 //"Offer Process (Negotiation)";

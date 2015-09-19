@@ -388,7 +388,7 @@ public class InitDB {
 		
 		slist[8].setPosition(plist[0]);
 		slist[8].setSources(sources);
-		slist[8].setStatus(Constants.STATUS_SPROPOSAL);
+		slist[8].setStatus(Constants.STATUS_PPROPOSAL);
 		slist[8].setDate(ftDate.parse("2015-08-10"));
 		
 		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
@@ -415,7 +415,7 @@ public class InitDB {
 				Constants.SOURCE_EXPRESSO);
 		slist[12].setPosition(plist[2]);
 		slist[12].setSources(sources);
-		slist[12].setStatus(Constants.STATUS_SPROPOSAL);
+		slist[12].setStatus(Constants.STATUS_PPROPOSAL);
 		slist[12].setDate(ftDate.parse("2015-08-01"));
 
 		sources = Arrays.asList(Constants.SOURCE_EXPRESSO);

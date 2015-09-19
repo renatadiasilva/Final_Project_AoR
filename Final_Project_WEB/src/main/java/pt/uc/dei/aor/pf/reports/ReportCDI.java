@@ -390,7 +390,7 @@ public class ReportCDI {
 					printCandidateInfo(s, listS.indexOf(s), true);
 					String result = s.getStatus(); 
 					if (result.equalsIgnoreCase(
-							Constants.STATUS_SPROPOSAL))
+							Constants.STATUS_PPROPOSAL))
 						System.out.println("\n\nProposta recebida"
 								+ " (ainda não avaliada)");
 					else if (result.equalsIgnoreCase(
