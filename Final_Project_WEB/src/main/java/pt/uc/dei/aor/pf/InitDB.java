@@ -90,8 +90,6 @@ public class InitDB {
 					"Newton", null), // ulist[11]
 		};
 		
-		for(UserEntity u: ulist)u.setAuthenticated(true);
-		
 		UserInfoEntity [] uilist = {
 			new UserInfoEntity(ftDate.parse("1960-05-11"), 
 					"Avenida da Liberdade",
@@ -281,8 +279,10 @@ public class InitDB {
 			ulist[i+4].setDefaultRole(Constants.ROLE_CANDIDATE);
 			ulist[i+4].setRoles(roles);
 			ulist[i+4].setUserInfo(uilist[i]);
-			ulist[i+4].setCreatedBy(ulist[0]);
 		}
+		
+		// manual submission... saved by admin
+		ulist[4].setCreatedBy(ulist[0]);		
 		
 		roles = Arrays.asList(Constants.ROLE_MANAGER);
 		ulist[10].setDefaultRole(Constants.ROLE_MANAGER);
@@ -293,6 +293,8 @@ public class InitDB {
 		ulist[11].setDefaultRole(Constants.ROLE_INTERVIEWER);
 		ulist[11].setRoles(roles);
 		ulist[11].setCreatedBy(ulist[0]);
+		
+		for(UserEntity u: ulist) u.setAuthenticated(true);
 
 		// SCRIPT ATTRIBUTES
 		
