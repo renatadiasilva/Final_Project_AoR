@@ -67,14 +67,6 @@ public class NewStyleCDI implements Serializable {
 
 		this.valid=true;
 
-		
-
-		//		if(this.styleName==null||this.companyName==null||this.footerMessage==null){
-		//			this.valid=false;
-		//			System.out.println("Campos inválidos");
-		//			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Campos mal definidos no bean..."));
-		//		}
-
 		if(this.valid){
 
 			// Se for o novo padrão desmarca o padrão actual

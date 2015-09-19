@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.StyleEntity;
 import pt.uc.dei.aor.pf.session.StyleSessionManagement;
 
@@ -22,6 +23,12 @@ public class ViewStylesCDI {
 	private StyleSessionManagement currentSessionStyle;
 	
 	public List<StyleEntity> getStyles() {
+		
+		// Por alguma razão volta e meia o estilo default persiste. Não acredito em bruxas, mas que as há, há.
+		for(StyleEntity style:this.styleEJB.findAll())
+			if(style.getCompanyName().equals(Constants.DEFAULT_COMPANY_NAME))
+				this.styleEJB.delete(style);
+		
 		return this.styleEJB.findAll();
 	}
 	
@@ -44,6 +51,11 @@ public class ViewStylesCDI {
 		
 		// Reinicia o estilo da sessão
 		this.currentSessionStyle.init();
+	}
+	
+	public void unsetDefault(StyleEntity style){
+		style.setUserDefaultStyle(false);
+		this.styleEJB.update(style);
 	}
 
 }

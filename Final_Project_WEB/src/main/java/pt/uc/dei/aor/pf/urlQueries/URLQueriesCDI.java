@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.constants.Constants;
-import pt.uc.dei.aor.pf.dao.urlQueriesManagement.URLQueriesManagementInterface;
+import pt.uc.dei.aor.pf.urlQueriesManagement.URLQueriesManagementInterface;
 
 @RequestScoped
 public class URLQueriesCDI {

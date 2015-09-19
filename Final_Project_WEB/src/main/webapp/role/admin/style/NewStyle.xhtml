@@ -114,11 +114,12 @@
 					<p:commandButton rendered="#{!style.userDefaultStyle}"
 						value="Marcar como estilo padrão"
 						actionListener="#{viewStylesCDI.newDefaultStyle(style)}"
-						icon="ui-icon-check" style="width:100%" ajax="false" />
+						icon="ui-icon-image" style="width:100%" ajax="false" />
 
 					<p:commandButton rendered="#{style.userDefaultStyle}"
-						value="Estilo padrão" icon="ui-icon-image" style="width:100%"
-						ajax="false" />
+						value="Estilo padrão. Desmarcar?"
+						actionListener="#{viewStylesCDI.unsetDefault(style)}"
+						icon="ui-icon-cancel" style="width:100%" ajax="false" />
 				</p:column>
 
 			</p:dataTable>

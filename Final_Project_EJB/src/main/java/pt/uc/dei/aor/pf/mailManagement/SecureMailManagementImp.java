@@ -34,8 +34,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com";
 	private static final boolean OVERRIDE = true;
 
-	// REVER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	private String serviceContext="https://localhost/Final_Project_WEB/";
+	private static final String SERVICE_CONTEXT="https://localhost/Final_Project_WEB/";
 
 	public SecureMailManagementImp() {
 	}
@@ -65,11 +64,6 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	}
 
 	@Override
-	public void setContext(String context) {
-		this.serviceContext=context;
-	}
-
-	@Override
 	public void passwordRecovery (UserEntity user, String temporaryPassword){
 		// Envia um email ao user a notificar da nova password temporária
 		String receiver=user.getEmail();
@@ -91,7 +85,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	public void candidateToAuthenticate(UserEntity newUser) {
 		// Envia um email a um novo candidato para autenticar o registo
 		// Link com a query para a autenticação do utilizador
-		String link=this.serviceContext
+		String link=SecureMailManagementImp.SERVICE_CONTEXT
 				+"?"+Constants.QUERY_SUBJECT+"="+Constants.QUERY_SUBJECT_AUTH_CANDIDATE
 				+"&"+Constants.QUERY_EMAIL+"="+newUser.getEmail();
 

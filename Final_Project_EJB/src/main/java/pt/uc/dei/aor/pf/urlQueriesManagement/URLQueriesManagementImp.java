@@ -1,4 +1,4 @@
-package pt.uc.dei.aor.pf.dao.urlQueriesManagement;
+package pt.uc.dei.aor.pf.urlQueriesManagement;
 
 import java.util.ArrayList;
 import java.util.List;

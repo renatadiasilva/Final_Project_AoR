@@ -6,8 +6,6 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Local
 public interface SecureMailManagementInterface {
-	
-	public void setContext(String context);
 
 	public abstract void passwordRecovery(UserEntity user, String temporaryPassword);
 
