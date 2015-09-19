@@ -108,9 +108,6 @@ public class InterviewEntity implements Serializable {
 	@OneToMany(mappedBy = "interview")
 	private List<AnswerEntity> answers;
 
-	@Column(name = "approved")
-	private boolean approved;
-
 	@Column(name = "feedback", length = 100)
 	private String feedback;
 	
@@ -185,14 +182,6 @@ public class InterviewEntity implements Serializable {
 
 	public void setAnswers(List<AnswerEntity> answers) {
 		this.answers = answers;
-	}
-
-	public boolean isApproved() {
-		return approved;
-	}
-
-	public void setApproved(boolean approved) {
-		this.approved = approved;
 	}
 
 	public String getFeedback() {

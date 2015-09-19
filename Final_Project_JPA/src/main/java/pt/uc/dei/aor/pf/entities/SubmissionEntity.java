@@ -111,6 +111,10 @@ public class SubmissionEntity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date hiredDate;
 
+	@Column(name = "proposal_date")
+	@Temporal(TemporalType.DATE)
+	private Date proposalDate;
+
 	public SubmissionEntity() {
 	}
 
@@ -219,6 +223,14 @@ public class SubmissionEntity implements Serializable {
 
 	public void setHiredDate(Date hiredDate) {
 		this.hiredDate = hiredDate;
+	}
+
+	public Date getProposalDate() {
+		return proposalDate;
+	}
+
+	public void setProposalDate(Date proposalDate) {
+		this.proposalDate = proposalDate;
 	}
 
 }
