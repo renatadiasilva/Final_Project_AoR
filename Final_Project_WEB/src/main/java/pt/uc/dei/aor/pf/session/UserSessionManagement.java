@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 import pt.uc.dei.aor.pf.urlQueries.URLQueriesCDI;
 import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
@@ -45,7 +45,7 @@ public class UserSessionManagement implements Serializable {
 	UserEJBInterface userEJB;
 
 	@EJB
-	MailManagementInterface mailEJB;
+	SecureMailManagementInterface mailEJB;
 
 	@Inject
 	URLQueriesCDI urlQueries;
