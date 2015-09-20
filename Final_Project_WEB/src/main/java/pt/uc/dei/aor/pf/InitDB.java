@@ -153,14 +153,14 @@ public class InitDB {
 				ulist[10], ulist[1], "IT Grow", Constants.TECH_DOTNET,
 				"Procuram-se programadores .NET bla bla bla", 
 				null, sclist[2]), // plist[2]
-			new PositionEntity("Analistas de Integração", null, 0, 
+			new PositionEntity("Analistas de Integração", null, 2, 
 				Constants.STATUS_OPEN, ftDate.parse("2015-09-12"),
 				30, ulist[10], ulist[1], "BPI", 
 				Constants.TECH_INTEGRATION,
 				"O BPI procura analistas de integração para integrar"
 				+ " a sua equipa blablabla", 
 				null, sclist[1]), // plist[3]
-			new PositionEntity("Junior Programador de Java", null, 0, 
+			new PositionEntity("Junior Programador de Java", null, 1, 
 				Constants.STATUS_OPEN, ftDate.parse("2015-07-08"),
 				40, ulist[2], ulist[1], "BPI", 
 				Constants.TECH_JAVA,
