@@ -96,10 +96,6 @@ public class Constants {
 	public static final String REPORT_POS_PROPOPOS = REPORT_POS+".propoPos";
 	public static final String REPORT_POS_AVGCLOSE = REPORT_POS+".avgClose";
 
-	public static final char SUBMISSION = 's';
-	public static final char INTERVIEW = 'i';
-	public static final char POSITION = 'p';
-	
 	// Miliseconds per day (to convert on days)
 	public static final long MSPERDAY = 60 * 60 * 24 * 1000;
 	
