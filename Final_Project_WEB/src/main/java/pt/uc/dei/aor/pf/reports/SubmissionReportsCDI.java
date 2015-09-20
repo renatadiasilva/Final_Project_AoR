@@ -50,12 +50,9 @@ public class SubmissionReportsCDI {
 		List<SubmissionReportItem> resultItems =
 				new ArrayList<SubmissionReportItem>();
 		
-		for (Object[] ele : result) {
-			PositionEntity position = 
-					positionEJB.find(bigIntToLong((BigInteger) ele[0]));
-			resultItems.add(new SubmissionReportItem(position,
-					bigIntToLong((BigInteger) ele[1])));
-		}
+		for (Object[] ele : result)
+			resultItems.add(new SubmissionReportItem(
+					positionEJB.find((Long) ele[0]), (Long) ele[1]));
 		
 		SubmissionReport sreport = 
 				new SubmissionReport("Candidatos por posição", resultItems);

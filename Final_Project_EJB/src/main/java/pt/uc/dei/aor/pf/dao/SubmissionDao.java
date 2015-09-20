@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
@@ -98,18 +97,14 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 				parameters);	
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Object[]> countSubmissionsByPosition(Date date1, Date date2) {
 		
-		String queryS = "SELECT position, count(*) FROM submissions"
-			+ " WHERE position IS NOT NULL AND"
-			+ " date BETWEEN :date1 AND :date2 GROUP BY position";
-
-		Query query = em.createNativeQuery(queryS);
-		query.setParameter("date1", date1);
-		query.setParameter("date2", date2);
-		return query.getResultList();
-
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return super.findSomeResultsList(
+				"Submission.countSubmissionsByPosition", parameters);	
+		
 	}
 
 }
