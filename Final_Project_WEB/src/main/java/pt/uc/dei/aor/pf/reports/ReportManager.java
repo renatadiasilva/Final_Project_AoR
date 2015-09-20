@@ -272,41 +272,41 @@ public class ReportManager {
 				counts.add(n);
 				break;
 			case 3:
-				// get list of submissions of the day, month, or year
-				slist = submissionEJB.findSubmissionsByDate(
+//				slist = submissionEJB.findSubmissionsByDate(
+//						startDate.getTime(), interDate.getTime());
+//
+//				// compute the average time to be hired 
+//				countS = 0;
+//				avg = 0.0;
+//				for (SubmissionEntity s : slist) {
+//					//query??
+//					// submission status is hired
+//					if (s.getStatus().equalsIgnoreCase(
+//							Constants.STATUS_HIRED)) {
+//
+//						// colect submission date and hired date
+//						Calendar sDate = Calendar.getInstance();
+//						Calendar hDate = Calendar.getInstance();
+//						sDate.setTime(s.getDate());
+//						hDate.setTime(s.getHiredDate());
+//
+//						ndays = daysBetween(sDate, hDate);
+//						if (ndays < 0)  {
+//							// erro, datas não ordenadas
+//						}
+//						avg += ndays;
+//						countS++;
+//
+//						// countings for overall average time
+//						total += ndays;
+//						countTotal++;
+//					}
+//				}
+
+				// average time to hired of the day, month, or year
+				avg = submissionEJB.averageTimeToHired(
 						startDate.getTime(), interDate.getTime());
-
-				// compute the average time to be hired 
-				// (ignore submission without hired status)
-				countS = 0;
-				avg = 0.0;
-				for (SubmissionEntity s : slist) {
-					//query??
-					// submission status is hired
-					if (s.getStatus().equalsIgnoreCase(
-							Constants.STATUS_HIRED)) {
-
-						// colect submission date and hired date
-						Calendar sDate = Calendar.getInstance();
-						Calendar hDate = Calendar.getInstance();
-						sDate.setTime(s.getDate());
-						hDate.setTime(s.getHiredDate());
-
-						ndays = daysBetween(sDate, hDate);
-						if (ndays < 0)  {
-							// erro, datas não ordenadas
-						}
-						avg += ndays;
-						countS++;
-
-						// countings for overall average time
-						total += ndays;
-						countTotal++;
-					}
-				}
-				// average time of the day, month, or year
-				if (countS != 0) avg /= countS;
-				else avg = -1; // no submissions to compute average
+				
 				n = (Long) Math.round(avg);
 				counts.add(n);
 				break;

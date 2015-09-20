@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
@@ -105,6 +107,20 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		return super.findSomeResultsList(
 				"Submission.countSubmissionsByPosition", parameters);	
 		
+	}
+
+	public double averageTimeToHired(Date date1, Date date2) {
+		
+		String queryS = "SELECT AVG(DATE_PART(\'day\', "
+				+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)) FROM submissions "
+				+ " WHERE hired_date IS NOT NULL AND"
+				+ " date BETWEEN :date1 AND :date2";
+		Query query = em.createNativeQuery(queryS);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		Object result = query.getSingleResult();
+		if (result == null) return -1;
+		return (double) result;
 	}
 
 }

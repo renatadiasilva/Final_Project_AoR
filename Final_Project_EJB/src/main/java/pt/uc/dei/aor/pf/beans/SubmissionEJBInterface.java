@@ -33,4 +33,5 @@ public interface SubmissionEJBInterface {
 			UserEntity candidate);
 	public abstract List<Object[]> countSubmissionsByPosition(Date date1,
 			Date date2);
+	public abstract double averageTimeToHired(Date date1, Date date2);
 }
