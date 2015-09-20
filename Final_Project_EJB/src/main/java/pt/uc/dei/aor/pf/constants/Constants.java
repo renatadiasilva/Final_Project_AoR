@@ -84,6 +84,7 @@ public class Constants {
 	public static final String REPORT_SUB_CNTPROPO = REPORT_SUB+".cntPropo";
 	public static final String REPORT_SUB_CNTSOURC = REPORT_SUB+".cntSourc";
 	public static final String REPORT_SUB_CNTHIRED = REPORT_SUB+".cntHired";
+	public static final String REPORT_SUB_SUBMIPOS = REPORT_SUB+".submiPos";
 
 	public static final String REPORT_INT = "interview";
 	public static final String REPORT_INT_CNTINTER = REPORT_INT+".cntInter";
