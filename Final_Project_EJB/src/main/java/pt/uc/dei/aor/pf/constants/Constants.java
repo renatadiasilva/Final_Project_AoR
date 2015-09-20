@@ -88,12 +88,7 @@ public class Constants {
 
 	
 	// Queries from user emails
-	// "subject" parameter
-	public static final String QUERY_SUBJECT="subject";
-	// Returned Strings form QUERY_SUBJECT parameter 
-	// Ex: "?"+Constants.QUERY_SUBJECT+"="+Constants.QUERY_SUBJECT_AUTH_CANDIDATE translates to ?subject=authCand
-	// So, from this, request.getParameter(Constants.QUERY_SUBJECT) returns "authCand", wich equals QUERY_SUBJECT_AUTH_CANDIDATE and so on
-	public static final String QUERY_SUBJECT_AUTH_CANDIDATE="authCand";
-	// Query parameters	
-	public static final String QUERY_EMAIL="email";
+	public static final String SERVLET_SUBJECT="subject";
+	public static final String SERVLET_AUTH_CANDIDATE="authCand";
+	public static final String SERVLET_EMAIL="email";
 }

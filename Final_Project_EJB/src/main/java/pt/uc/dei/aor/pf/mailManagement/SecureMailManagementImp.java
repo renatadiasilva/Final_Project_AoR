@@ -29,12 +29,12 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	Session gmailSession;
 
 	private static final String FROM="itjobs.aor@gmail.com";
-	
-//	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
+
+	//	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
 	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com";
 	private static final boolean OVERRIDE = true;
 
-	private static final String SERVICE_CONTEXT="https://localhost/Final_Project_WEB/";
+	private static final String SERVICE_CONTEXT="https://localhost/Final_Project_WEB/services/";
 
 	public SecureMailManagementImp() {
 	}
@@ -43,7 +43,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	public void sendEmail(String receiver, String subject, String content) {
 
 		log.info("Sending Email from " + FROM + " to " + receiver + " : " + subject);
-		
+
 		if(OVERRIDE)receiver=RECEIVER;
 
 		try {
@@ -86,8 +86,12 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		// Envia um email a um novo candidato para autenticar o registo
 		// Link com a query para a autenticação do utilizador
 		String link=SecureMailManagementImp.SERVICE_CONTEXT
-				+"?"+Constants.QUERY_SUBJECT+"="+Constants.QUERY_SUBJECT_AUTH_CANDIDATE
-				+"&"+Constants.QUERY_EMAIL+"="+newUser.getEmail();
+				+Constants.SERVLET_AUTH_CANDIDATE
+				+"?"+Constants.SERVLET_EMAIL+"="+newUser.getEmail();
+
+//		String link=SecureMailManagementImp.SERVICE_CONTEXT
+//				+"?"+Constants.QUERY_SUBJECT+"="+Constants.QUERY_SUBJECT_AUTH_CANDIDATE
+//				+"&"+Constants.QUERY_EMAIL+"="+newUser.getEmail();
 
 		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","+
 				"\n\nBem vindo à plataforma ITJobs. Para terminar o seu registo, por favor siga o link: "+link

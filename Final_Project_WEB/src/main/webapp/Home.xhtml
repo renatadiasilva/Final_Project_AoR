@@ -9,10 +9,9 @@
 
 	<ui:define name="header-menus">
 		<f:metadata>
-			<!-- Listener das queries vindas por URL -->
 			<!-- Se houver um user logado redirecciona para a respectiva Landing.xhtml -->
 			<f:viewAction
-				actionListener="#{userSessionManagement.checkForUserAndQueries()}" />
+				actionListener="#{userSessionManagement.checkForUser()}" />
 		</f:metadata>
 
 		<h:panelGrid columns="3">
@@ -51,7 +50,7 @@
 
 		</h:panelGrid>
 
-		<!-- SignUp Dialog -->
+		<!-- Recuperação da password Dialog -->
 		<h:form id="recoverPasswordForm">
 
 			<p:dialog header="Recuperar Password" widgetVar="recoverPassword"
@@ -201,7 +200,7 @@
 
 					<p:commandButton value="Signup"
 						actionListener="#{signupCDI.signUp()}" update="signupDialog"
-						icon="ui-icon-person" style="width: 100%" />
+						icon="ui-icon-person" style="width: 100%" update="@all" />
 
 					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
 						onclick="PF('signup').hide();" update="@all" />

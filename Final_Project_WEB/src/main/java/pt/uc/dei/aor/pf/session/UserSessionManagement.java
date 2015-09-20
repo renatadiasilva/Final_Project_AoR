@@ -4,7 +4,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
-import pt.uc.dei.aor.pf.urlQueries.URLQueriesCDI;
 import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
 import java.io.IOException;
@@ -47,8 +45,8 @@ public class UserSessionManagement implements Serializable {
 	@EJB
 	SecureMailManagementInterface mailEJB;
 
-	@Inject
-	URLQueriesCDI urlQueries;
+	//	@Inject
+	//	URLQueriesCDI urlQueries;
 
 	private UserEntity currentUser;
 
@@ -66,32 +64,27 @@ public class UserSessionManagement implements Serializable {
 		this.currentUser=new UserEntity();
 	}
 
-	public void checkForUserAndQueries(){
+	public void checkForUser(){
 
-		// ActionListener para a página Home.xhtml
+		// Listener para a página Home.xhtml
 		log.info("Checking for query in URL");
 
-		// Verifica se há queries para processar
-		if(!this.urlQueries.processQuery()){
-			log.info("No queries to process");
-			log.info("Checking for logged user");
-			log.debug("User: "+ this.userManagement.getUserEmail());
+		log.info("Checking for logged user");
+		log.debug("User: "+ this.userManagement.getUserEmail());
 
-			// Se já existe um user logado reencaminha para o respectivo Landing.xhtml
-			if(this.userManagement.isUserLogged()){
-				this.context = FacesContext.getCurrentInstance();
-				this.response = (HttpServletResponse) context.getExternalContext().getResponse();
+		// Se já existe um user logado reencaminha para o respectivo Landing.xhtml
+		if(this.userManagement.isUserLogged()){
+			this.context = FacesContext.getCurrentInstance();
+			this.response = (HttpServletResponse) context.getExternalContext().getResponse();
 
-				try {
-					// Encaminha para...
-					this.response.sendRedirect(this.request.getContextPath()+"/role/"+this.userManagement.getUserDefaultRole().toLowerCase()+"/landing/Landing.xhtml");
-				} catch (IOException e) {
-					log.error("Redirect failure");
-					this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
-				}
+			try {
+				// Encaminha para...
+				this.response.sendRedirect(this.request.getContextPath()+"/role/"+this.userManagement.getUserDefaultRole().toLowerCase()+"/landing/Landing.xhtml");
+			} catch (IOException e) {
+				log.error("Redirect failure");
+				this.context.addMessage(null, new FacesMessage("Reencaminhamento falhou."));
 			}
-
-		} else log.info("Queries to process, user check bypassed");
+		}
 
 	}
 
@@ -123,7 +116,7 @@ public class UserSessionManagement implements Serializable {
 
 			// Verifica se a conta está autenticada
 			if(this.userManagement.checkAuthentication(email)){
-				
+
 				// Inicia na aplicação
 				this.userManagement.login(email, password);
 
