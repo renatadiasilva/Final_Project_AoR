@@ -11,12 +11,6 @@ public class Constants {
 	// String used when removing data of users
 	public static final String REMOVED_DATA = "DADOS APAGADOS";	
 
-	// Strings used in accent insensitive searchs (portuguese accents)
-	public static final String 
-	ACCENT_LETTERS    = "\'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\'";
-	public static final String 
-	NO_ACCENT_LETTERS = "\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'";	
-
 	// Strings related to UserEntity
 	public static final String ROLE_ADMIN       = "ADMIN";
 	public static final String ROLE_MANAGER     = "MANAGER";
@@ -45,18 +39,13 @@ public class Constants {
 	public static final String SOCIAL_FACEBOOK  = "FACEBOOK";
 
 	// Strings related to SubmissionEntity
-	public static final String STATUS_SUBMITED   = "SUBMITED";
-	public static final String STATUS_REJECTED   = "REJECTED SUBMISSION";
-	public static final String STATUS_ACCEPTED   = "ACCEPTED TO INTERVIEW";
-	public static final String STATUS_PPROPOSAL  = "PRESENTED PROPOSAL";
-	public static final String STATUS_RPROPOSAL  = "REJECTED PROPOSAL";
-	public static final String STATUS_APROPOSAL  = "ACCEPTED PROPOSAL";
-	//"Offer Process (Negotiation)";
-	public static final String STATUS_OPROPOSAL  = "ON NEGOTIATION PROPOSAL";
-	public static final String STATUS_HIRED      = "HIRED";
-	public static final String STATUS_NOTHIRED   = "NOT HIRED";
-	//para usar nas queries
-	public static final String STATUS_PROPOSAL   = "%PROPOSAL"; 
+	public static final String STATUS_SUBMITED = "SUBMITED";
+	public static final String STATUS_ACCEPTED = "ACCEPTED TO INTERVIEW";
+	public static final String STATUS_PROPOSAL = "PRESENTED PROPOSAL";
+	public static final String STATUS_NEGOTIATION =
+			"OFFER PROCESS (NEGOTIATION)";
+	public static final String STATUS_REJECTED = "REJECTED";
+	public static final String STATUS_HIRED = "HIRED";
 
 	// outros??
 	public static final String SOURCE_EXPRESSO   = "EXPRESSO";

@@ -17,7 +17,6 @@ import javax.inject.Named;
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
-import pt.uc.dei.aor.pf.constants.ConstantsRenata;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
@@ -225,7 +224,7 @@ public class ReportCDI {
 					//query??
 					// submission status is hired
 					if (s.getStatus().equalsIgnoreCase(
-							ConstantsRenata.STATUS_HIRED)) {
+							Constants.STATUS_HIRED)) {
 
 						// colect submission date and hired date
 						Calendar sDate = Calendar.getInstance();
@@ -392,17 +391,17 @@ public class ReportCDI {
 					
 					String result = s.getStatus(); 
 					if (result.equalsIgnoreCase(
-							ConstantsRenata.STATUS_PROPOSAL))
+							Constants.STATUS_PROPOSAL))
 						System.out.println("\n\nProposta submetida"
 								+ " (ainda sem resultado)");
 					else if (result.equalsIgnoreCase(
-							ConstantsRenata.STATUS_NEGOTIATION))
+							Constants.STATUS_NEGOTIATION))
 						System.out.println("\n\nProposta em negociação.");
 					else if (result.equalsIgnoreCase(
-							ConstantsRenata.STATUS_REJECTED))
+							Constants.STATUS_REJECTED))
 						System.out.println("\n\nProposta recusada.");
 					else if (result.equalsIgnoreCase(
-							ConstantsRenata.STATUS_HIRED))
+							Constants.STATUS_HIRED))
 						System.out.println("\n\nProposta aceite.");
 				}
 			}

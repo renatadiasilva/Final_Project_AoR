@@ -4,7 +4,6 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 
 @Named

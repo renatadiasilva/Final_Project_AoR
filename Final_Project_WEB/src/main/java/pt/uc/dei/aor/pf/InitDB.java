@@ -20,7 +20,6 @@ import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
-import pt.uc.dei.aor.pf.constants.ConstantsRenata;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
@@ -177,48 +176,48 @@ public class InitDB {
 			};
 			
 		SubmissionEntity [] slist = {
-			new SubmissionEntity(ulist[4], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[4], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[0]
-			new SubmissionEntity(ulist[4], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[4], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[1]
 			// espontânea
-			new SubmissionEntity(ulist[5], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[5], Constants.STATUS_SUBMITED, 
 					null, null, true), // slist[2] 
 			// espontânea mas posteriormente associada a posição
-			new SubmissionEntity(ulist[6], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[6], Constants.STATUS_SUBMITED, 
 					null, null, true), // slist[3]  
 			// clone da anterior (com posição)
-			new SubmissionEntity(ulist[6], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[6], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[4] 
-			new SubmissionEntity(ulist[7], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[7], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[5]			
-			new SubmissionEntity(ulist[8], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[6]			
-			new SubmissionEntity(ulist[8], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[7]			
-			new SubmissionEntity(ulist[9], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[9], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[8]			
-			new SubmissionEntity(ulist[4], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[4], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[9]			
-			new SubmissionEntity(ulist[7], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[7], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[10]			
-			new SubmissionEntity(ulist[8], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[11]			
-			new SubmissionEntity(ulist[9], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[9], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[12]			
-			new SubmissionEntity(ulist[4], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[4], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[13]			
-			new SubmissionEntity(ulist[7], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[7], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[14]			
-			new SubmissionEntity(ulist[8], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[15]			
-			new SubmissionEntity(ulist[9], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[9], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[16]			
-			new SubmissionEntity(ulist[7], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[7], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[17]			
-			new SubmissionEntity(ulist[8], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[8], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[18]			
-			new SubmissionEntity(ulist[9], ConstantsRenata.STATUS_SUBMITED, 
+			new SubmissionEntity(ulist[9], Constants.STATUS_SUBMITED, 
 					null, null, false), // slist[19]			
 		};
 		
@@ -373,7 +372,7 @@ public class InitDB {
 		Arrays.asList(Constants.SOURCE_EXPRESSO);
 		slist[5].setPosition(plist[0]);
 		slist[5].setSources(sources);
-		slist[5].setStatus(ConstantsRenata.STATUS_ACCEPTED);
+		slist[5].setStatus(Constants.STATUS_ACCEPTED);
 		slist[5].setDate(ftDate.parse("2015-08-05"));
 		
 		slist[6].setPosition(plist[0]);
@@ -387,7 +386,7 @@ public class InitDB {
 		
 		slist[8].setPosition(plist[0]);
 		slist[8].setSources(sources);
-		slist[8].setStatus(ConstantsRenata.STATUS_PROPOSAL);
+		slist[8].setStatus(Constants.STATUS_PROPOSAL);
 		slist[8].setDate(ftDate.parse("2015-08-10"));
 		slist[8].setProposalDate(ftDate.parse("2015-08-20"));
 		
@@ -396,7 +395,7 @@ public class InitDB {
 				Constants.SOURCE_LINKEDIN);
 		slist[9].setPosition(plist[2]);
 		slist[9].setSources(sources);
-		slist[9].setStatus(ConstantsRenata.STATUS_REJECTED);
+		slist[9].setStatus(Constants.STATUS_REJECTED);
 		slist[9].setDate(ftDate.parse("2015-08-10"));
 		slist[9].setRejectReason("O candidato não tem currículo "
 				+ "para a posição");
@@ -404,12 +403,12 @@ public class InitDB {
 		sources = Arrays.asList(Constants.SOURCE_EXPRESSO);
 		slist[10].setPosition(plist[2]);
 		slist[10].setSources(sources);
-		slist[10].setStatus(ConstantsRenata.STATUS_NEGOTIATION);
+		slist[10].setStatus(Constants.STATUS_NEGOTIATION);
 		slist[10].setDate(ftDate.parse("2015-08-20"));
 		slist[10].setProposalDate(ftDate.parse("2015-08-30"));
 
 		slist[11].setPosition(plist[2]);
-		slist[11].setStatus(ConstantsRenata.STATUS_HIRED);
+		slist[11].setStatus(Constants.STATUS_HIRED);
 		slist[11].setDate(ftDate.parse("2015-08-01"));
 		slist[11].setProposalDate(ftDate.parse("2015-08-21"));
 		slist[11].setHiredDate(ftDate.parse("2015-08-31"));
@@ -418,14 +417,14 @@ public class InitDB {
 				Constants.SOURCE_EXPRESSO);
 		slist[12].setPosition(plist[2]);
 		slist[12].setSources(sources);
-		slist[12].setStatus(ConstantsRenata.STATUS_PROPOSAL);
+		slist[12].setStatus(Constants.STATUS_PROPOSAL);
 		slist[12].setDate(ftDate.parse("2015-08-01"));
 		slist[12].setProposalDate(ftDate.parse("2015-08-11"));
 
 		sources = Arrays.asList(Constants.SOURCE_EXPRESSO);
 		slist[13].setPosition(plist[3]);
 		slist[13].setSources(sources);
-		slist[13].setStatus(ConstantsRenata.STATUS_HIRED);
+		slist[13].setStatus(Constants.STATUS_HIRED);
 		slist[13].setDate(ftDate.parse("2015-08-30"));
 		slist[13].setProposalDate(ftDate.parse("2015-09-02"));
 		slist[13].setHiredDate(ftDate.parse("2015-09-05"));
@@ -433,7 +432,7 @@ public class InitDB {
 		sources = Arrays.asList(Constants.SOURCE_FACEBOOK);
 		slist[14].setPosition(plist[3]);
 		slist[14].setSources(sources);
-		slist[14].setStatus(ConstantsRenata.STATUS_REJECTED);
+		slist[14].setStatus(Constants.STATUS_REJECTED);
 		slist[14].setDate(ftDate.parse("2015-08-17"));
 		slist[14].setRejectReason("O candidato não tem currículo "
 				+ "para a posição");
@@ -442,7 +441,7 @@ public class InitDB {
 				Constants.SOURCE_EXPRESSO);
 		slist[15].setPosition(plist[3]);
 		slist[15].setSources(sources);
-		slist[15].setStatus(ConstantsRenata.STATUS_HIRED);
+		slist[15].setStatus(Constants.STATUS_HIRED);
 		slist[15].setDate(ftDate.parse("2015-09-01"));
 		slist[15].setProposalDate(ftDate.parse("2015-09-09"));
 		slist[15].setHiredDate(ftDate.parse("2015-09-12"));
@@ -451,21 +450,21 @@ public class InitDB {
 				Constants.SOURCE_EXPRESSO);
 		slist[16].setPosition(plist[3]);
 		slist[16].setSources(sources);
-		slist[16].setStatus(ConstantsRenata.STATUS_ACCEPTED);
+		slist[16].setStatus(Constants.STATUS_ACCEPTED);
 		slist[16].setDate(ftDate.parse("2015-08-30"));
 
 		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
 				Constants.SOURCE_NETEMPREGO);
 		slist[17].setPosition(plist[4]);
 		slist[17].setSources(sources);
-		slist[17].setStatus(ConstantsRenata.STATUS_ACCEPTED);
+		slist[17].setStatus(Constants.STATUS_ACCEPTED);
 		slist[17].setDate(ftDate.parse("2015-07-12"));
 
 		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
 				Constants.SOURCE_LINKEDIN);
 		slist[18].setPosition(plist[4]);
 		slist[18].setSources(sources);
-		slist[18].setStatus(ConstantsRenata.STATUS_ACCEPTED);
+		slist[18].setStatus(Constants.STATUS_ACCEPTED);
 		slist[18].setDate(ftDate.parse("2015-07-01"));
 
 		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
@@ -473,7 +472,7 @@ public class InitDB {
 				Constants.SOURCE_LINKEDIN);
 		slist[19].setPosition(plist[4]);
 		slist[19].setSources(sources);
-		slist[19].setStatus(ConstantsRenata.STATUS_HIRED);
+		slist[19].setStatus(Constants.STATUS_HIRED);
 		slist[19].setDate(ftDate.parse("2015-07-20"));
 		slist[19].setProposalDate(ftDate.parse("2015-07-30"));
 		slist[19].setHiredDate(ftDate.parse("2015-08-07"));

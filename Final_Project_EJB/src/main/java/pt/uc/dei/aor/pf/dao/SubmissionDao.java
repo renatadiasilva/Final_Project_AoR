@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
-import pt.uc.dei.aor.pf.constants.ConstantsRenata;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -48,7 +48,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		parameters.put("status", ConstantsRenata.STATUS_REJECTED);
+		parameters.put("status", Constants.STATUS_REJECTED);
 		return super.findSomeResults("Submission.findRejectedSubmissionsByDate",
 			parameters);
 	}
