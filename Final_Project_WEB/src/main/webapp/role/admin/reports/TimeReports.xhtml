@@ -1,0 +1,68 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">
+	Admin - Relatórios de Tempos Médios - #{styleSessionManagement.companyName}
+	</ui:define>
+
+	<ui:define name="contents">
+		<h1>Relatórios de tempos médios</h1>
+
+		<h:form id="timeReports">
+
+			<h:panelGrid id="buttonsTimeReports" columns="5">
+
+				<p:commandButton value="Criar relatório"
+					action="#{submissionReportsCDI.averageTimeToBeHired()}"
+					update="@form, messages" icon="ui-icon-script" />
+
+			</h:panelGrid>
+
+			<h:panelGrid id="gridTimeSearch" columns="8">
+
+				<p:outputLabel value="Primeira Data: " for="time-date1" />
+				<p:calendar id="time-date1" value="#{submissionReportsCDI.d1}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+					yearRange="c-100:c+100" locale="pt" size="35" />
+
+				<p:outputLabel value="Segunda Data: " for="time-date2" />
+				<p:calendar id="time-date2" value="#{submissionReportsCDI.d2}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+					yearRange="c-100:c+100" locale="pt" size="35" />
+
+				<p:outputLabel value="Período (dia/mês/ano): " for="time-period" />
+				<p:inputText id="time-period" value="#{submissionReportsCDI.period}"
+					size="35" />
+
+			</h:panelGrid>
+			
+			<p:dataTable emptyMessage="Nada a mostrar." var="item"
+				value="#{submissionReportsCDI.treport}">
+				<f:facet name="header">
+					<h:outputText value="#{submissionReportsCDI.tableHeader}"/>
+    		    </f:facet>
+
+				<p:column headerText="#{submissionReportsCDI.periodHeader}">
+					<h:outputText value="#{item.dateHeader}" />
+				</p:column>
+				<p:column headerText="Tempo médio">
+					<h:outputText value="#{item.time}" />
+				</p:column>
+				<p:columnGroup type="footer">
+					<p:row>
+						<p:column footerText="Tempo médio total: "
+							style="text-align:right" />
+						<p:column footerText=
+							"#{submissionReportsCDI.totalResult}" />
+					</p:row>
+				</p:columnGroup>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

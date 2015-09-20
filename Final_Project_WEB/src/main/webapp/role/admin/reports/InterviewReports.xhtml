@@ -16,25 +16,9 @@
 
 			<h:panelGrid id="buttonsInterviewsReports" columns="5">
 
-				<p:commandButton value="Remover user"
-					action="#{dangerZoneCDI.removeUser()}" update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Remover candidatura"
-					action="#{dangerZoneCDI.removeSubmission()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Remover posição"
-					action="#{dangerZoneCDI.removePosition()}" update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Remover guião"
-					action="#{dangerZoneCDI.removeScript()}" update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Remover entrevista"
-					action="#{dangerZoneCDI.removeInterview()}"
-					update="@form, messages" icon="ui-icon-search" />
+				<p:commandButton value="Criar relatório"
+					action="#{submissionReportsCDI.averageTimeToBeHired()}"
+					update="@form, messages" icon="ui-icon-script" />
 
 			</h:panelGrid>
 

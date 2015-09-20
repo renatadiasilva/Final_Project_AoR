@@ -18,7 +18,7 @@
 
 				<p:commandButton value="Criar relatório"
 					action="#{submissionReportsCDI.submissionsByPosition()}"
-					update="@form, messages" icon="ui-icon-search" />
+					update="@form, messages" icon="ui-icon-script" />
 
 			</h:panelGrid>
 
@@ -26,7 +26,7 @@
 
 				<p:outputLabel value="Primeira Data: " for="subreport-date1" />
 				<p:calendar id="subreport-date1"
-					value="#{submissionReportsCDI.date1}" 
+					value="#{submissionReportsCDI.d1}" 
 					pattern="dd/MM/yyyy"
 					readonlyInput="true" navigator="true" 
 					yearRange="c-100:c+100"
@@ -34,7 +34,7 @@
 
 				<p:outputLabel value="Segunda Data: " for="subreport-date2" />
 				<p:calendar id="subreport-date2"
-					value="#{submissionReportsCDI.date2}" 
+					value="#{submissionReportsCDI.d2}" 
 					pattern="dd/MM/yyyy"
 					readonlyInput="true" navigator="true" 
 					yearRange="c-100:c+100"
@@ -48,20 +48,20 @@
 				<p:outputLabel value="Período (d/m/a): "
 					 for="subreport-period" />
 				<p:inputText id="subreport-period"
-					value="#{submissionReportsCDI.id}"
+					value="#{submissionReportsCDI.period}"
 					size="35" />
 
 			</h:panelGrid>
-			<p:dataTable emptyMessage="Nada a mostrar." var="subreport"
-				value="#{submissionReportsCDI.sreports}">
+			<p:dataTable emptyMessage="Nada a mostrar." var="preport"
+				value="#{submissionReportsCDI.preports}">
 				<f:facet name="header">
 					Relatório candidaturas por posição
     		    </f:facet>
 
-				<p:subTable var="item" value="#{subreport.subrep}">
-					<f:facet name="header">
-						<h:outputText value="#{subreport.dateHeader}" />
-					</f:facet>
+				<p:subTable var="item" value="#{preport.items}">
+<!-- 					<f:facet name="header"> -->
+<!-- 						<h:outputText value="#{submissionReportsCDI.header}" /> -->
+<!-- 					</f:facet> -->
 					<p:columnGroup type="header">
 						<p:row>
 							<p:column colspan="7" headerText="Posição" />
@@ -106,7 +106,8 @@
 							<p:column colspan="7"
 								footerText="Candidaturas totais: "
 								 style="text-align:right" />
-							<p:column footerText="#{subreport.totalCountings}" />
+							<p:column footerText=
+								"#{submissionReportsCDI.totalResult}" />
 						</p:row>
 					</p:columnGroup>
 				</p:subTable>
