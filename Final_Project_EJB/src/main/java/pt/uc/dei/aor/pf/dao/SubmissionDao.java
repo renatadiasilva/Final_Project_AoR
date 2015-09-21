@@ -100,7 +100,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> countSubmissionsByDate(Date date1, Date date2,
-			char period, String restriction) {
+			char period, String result, String restriction) {
 		
 		String m1 = "", m2 = "";
 		switch (period) {
@@ -133,11 +133,11 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		default: return null; // error
 		}
 		
-		String queryS = "SELECT COUNT(*), "+m1
+		String queryS = "SELECT COUNT(*) AS c, "+m1+result
 				+ " FROM submissions "
 				+ " WHERE date BETWEEN :date1 AND :date2"
 				+ restriction
-				+ " GROUP BY "+m2+" ORDER BY "+m2;
+				+ " GROUP BY "+m2+result+" ORDER BY "+m2+", c DESC"+result;
 		
 		Query query = em.createNativeQuery(queryS);
 		query.setParameter("date1", date1);

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 
 
+
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
@@ -488,5 +489,6 @@ public class ReportManager {
 	public Long intToLong(int value) {
 		return Long.valueOf(value);
 	}
+	
 
 }

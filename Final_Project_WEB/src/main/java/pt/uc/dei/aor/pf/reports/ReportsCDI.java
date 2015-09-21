@@ -1,6 +1,5 @@
 package pt.uc.dei.aor.pf.reports;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,6 +50,7 @@ public class ReportsCDI implements Serializable {
 	private String tableHeader;
 	private String periodHeader;
 	private String measureFooter;
+	private String resultHeader = "Por resultado";
 	private String totalResult;
 	private List<ReportItem> report = new ArrayList<ReportItem>();
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
@@ -136,11 +136,11 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+" (por "
 				+periodHeader.substring(0, 3)+")";
 		measureHeader = "Nº Candidaturas submetidas";
-		measureFooter = "Candidaturas total: ";
+		measureFooter = "Total Candidaturas: ";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				"");
+				"", "");
 
 		// extract date header and average times
 		report.clear();
@@ -153,7 +153,7 @@ public class ReportsCDI implements Serializable {
 
 	}
 
-	// spontaneous submission counts by period between two dates (file?)
+	// spontaneous submission counts by period between two dates
 	public void spontaneousCountResults() {
 		log.info("Creating report with spontaneous submissions");
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
@@ -179,11 +179,11 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+" (por "
 				+periodHeader.substring(0, 3)+")";
 		measureHeader = "Nº Candidaturas Espontâneas";
-		measureFooter = "Candidaturas Espontâneas total: ";
+		measureFooter = "Total Candidaturas Espontâneas: ";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				" AND spontaneous = TRUE");
+				"", " AND spontaneous = TRUE");
 
 		// extract date header and average times
 		report.clear();
@@ -193,7 +193,7 @@ public class ReportsCDI implements Serializable {
 		
 		// compute overall average
 		totalResult = summing(report)+"";
-}
+	}
 
 	// reject submission counts/rejected reasons by period between two dates
 	public void rejectedCountResults() {
@@ -221,29 +221,66 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+" (por "
 				+periodHeader.substring(0, 3)+")";
 		measureHeader = "Nº Candidaturas Rejeitadas";
-		measureFooter = "Candidaturas Rejeitadas total: ";
+		measureFooter = "Total Candidaturas Rejeitadas: ";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				" AND rejected_reason IS NOT NULL ");
+				", rejected_reason", " AND rejected_reason IS NOT NULL");
 
 		// extract date header and average times
 		report.clear();
+		int size = 0;
+		if (list != null) size = list.get(0).length;
 		for (Object[] o: list)
 			report.add(new ReportItem(null, makeDateHeader(p, o),
-					bigIntToInt((BigInteger) o[0]), ""));
+					bigIntToInt((BigInteger) o[0]), (String) o[size-1]));
 		
 		// compute overall average
 		totalResult = summing(report)+"";
 	}
 
-	// presented proposal counts/results by period between two dates (file?)
+	// presented proposal counts/results by period between two dates
 	public void proposalCountResults() {
 		log.info("Creating report with presented proposal countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
-		//		List<Object[]> list = report.reportCounting(d1, d2, period,
-		//				Constants.REPORT_SUB_CNTPROPO, null);
-		// if 0, no presented proposals, no report!
+
+		// all periods: daily, monthly, or yearly
+		char p = periodShort();
+		
+		// text for tables
+		switch(p) {
+		case Constants.DAILY:
+			periodHeader = Constants.PERIOD_DHEADER;
+			break;
+		case Constants.MONTHLY:
+			periodHeader = Constants.PERIOD_MHEADER;
+			break;
+		case Constants.YEARLY:
+			periodHeader = Constants.PERIOD_YHEADER;
+			break;
+		}
+		prepareDates();
+		tableHeader = "Número de Propostas Apresentadas "
+				+"entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+" (por "
+				+periodHeader.substring(0, 3)+")";
+		measureHeader = "Nº Propostas Apresentadas";
+		measureFooter = "Total Propostas Apresentadas: ";
+
+		//Nota: só são apresentados resultados quando há candidaturas
+		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
+				", status", " AND proposal_date IS NOT NULL");
+
+		// extract date header and average times
+		report.clear();
+		int size = 0;
+		if (list != null) size = list.get(0).length;
+		for (Object[] o: list)
+			report.add(new ReportItem(null, makeDateHeader(p, o),
+					bigIntToInt((BigInteger) o[0]), (String) o[size-1]));
+		
+		// compute overall average
+		totalResult = summing(report)+"";
 	}
 
 	// complicado??
@@ -266,11 +303,45 @@ public class ReportsCDI implements Serializable {
 	public void hiredCountResuls() {
 		log.info("Creating report with hired people countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);				
-		//		List<Object[]> list = report.reportCounting(d1, d2, period,
-		//				Constants.REPORT_SUB_CNTHIRED, null);
-		// if 0, no submissions, no report!
+
+		// all periods: daily, monthly, or yearly
+		char p = periodShort();
+		
+		// text for tables
+		switch(p) {
+		case Constants.DAILY:
+			periodHeader = Constants.PERIOD_DHEADER;
+			break;
+		case Constants.MONTHLY:
+			periodHeader = Constants.PERIOD_MHEADER;
+			break;
+		case Constants.YEARLY:
+			periodHeader = Constants.PERIOD_YHEADER;
+			break;
+		}
+		prepareDates();
+		tableHeader = "Número de contratações "
+				+"entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+" (por "
+				+periodHeader.substring(0, 3)+")";
+		measureHeader = "Nº Contratações";
+		measureFooter = "Total Contratações: ";
+
+		//Nota: só são apresentados resultados quando há candidaturas
+		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
+				"", " AND hired_date IS NOT NULL");
+
+		// extract date header and average times
+		report.clear();
+		for (Object[] o: list)
+			report.add(new ReportItem(null, makeDateHeader(p, o),
+					bigIntToInt((BigInteger) o[0]), ""));
+		
+		// compute overall average
+		totalResult = summing(report)+"";
 	}
 
+	// ver primeiro
 	public void rejectedCountByPosition() {
 		log.info("Creating report with number of rejected submissions"
 				+ " by position");
@@ -280,6 +351,7 @@ public class ReportsCDI implements Serializable {
 		// if -1, no valid submissions, no report!	
 	}
 
+	// ver primeiro
 	public void proposalCountByPosition() {
 		log.info("Creating report with number of presented proposal"
 				+ " by position");
@@ -289,7 +361,7 @@ public class ReportsCDI implements Serializable {
 		// if -1, no valid submissions, no report!	
 	}
 
-	//on hold e open??
+	// ver segundo
 	public void averageTimeToClose() {
 		log.info("Creating report with average time to close a positions");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
@@ -313,7 +385,8 @@ public class ReportsCDI implements Serializable {
 		} else log.info("No position with id "+id);
 	}
 
-	// interview counts and results by period between two dates (file?)
+	// amanhã
+	// interview counts and results by period between two dates
 	public void interviewCountResults() {
 		log.info("Creating report with interview countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
@@ -322,6 +395,7 @@ public class ReportsCDI implements Serializable {
 		// if 0, no interviews, no report!
 	}
 
+	// amanhã
 	// average time to first interview by period between two dates (file?)
 	public void averageTimeToInterview(Date d1, Date d2,
 			String period) {
@@ -332,6 +406,7 @@ public class ReportsCDI implements Serializable {
 		// if -1, no valid submissions, no report!
 	}
 
+	// complicado??
 	public void interviewDetailOfCandidate() {
 		log.info("Creating report with detaild interview info of candidate");
 		//		List<Object[]> list = report.reportCounting(null, null, "noperiod",
@@ -460,12 +535,60 @@ public class ReportsCDI implements Serializable {
 		else dateH += doubleToInt((Double) o[1]);
 		return dateH;
 	}
+	
+	public void report() {
+		
+		// all periods: daily, monthly, or yearly
+		char p = periodShort();
+		
+		// text for tables
+		switch(p) {
+		case Constants.DAILY:
+			periodHeader = Constants.PERIOD_DHEADER;
+			break;
+		case Constants.MONTHLY:
+			periodHeader = Constants.PERIOD_MHEADER;
+			break;
+		case Constants.YEARLY:
+			periodHeader = Constants.PERIOD_YHEADER;
+			break;
+		}
+		prepareDates();
+		tableHeader = "Número de candidaturas "
+				+"submetidas entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+" (por "
+				+periodHeader.substring(0, 3)+")";
+		measureHeader = "Nº Candidaturas submetidas";
+		measureFooter = "Total Candidaturas: ";
+
+		//Nota: só são apresentados resultados quando há candidaturas
+		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
+				"", "");
+
+		// extract date header and average times
+		report.clear();
+		for (Object[] o: list)
+			report.add(new ReportItem(null, makeDateHeader(p, o),
+					bigIntToInt((BigInteger) o[0]), ""));
+		
+		// compute overall average
+		totalResult = summing(report)+"";
+		
+	}
 
 	// getters and setters
 
 	public Date getD1() {
 		if (d1 != null) return d1;
 		return new Date();
+	}
+
+	public String getResultHeader() {
+		return resultHeader;
+	}
+
+	public void setResultHeader(String resultHeader) {
+		this.resultHeader = resultHeader;
 	}
 
 	public void setD1(Date d1) {
