@@ -225,9 +225,8 @@ public class UserSessionManagement implements Serializable {
 
 			// Se foi criado à mão, fecha o dialog (Home.xhtml)
 			if(!createdByAdmin){
-				System.out.println("newUser UserSessionManagement !createdByAdmin");
-//				RequestContext requestContext = RequestContext.getCurrentInstance();
-//				requestContext.execute("PF('signup').hide();");
+				RequestContext requestContext = RequestContext.getCurrentInstance();
+				requestContext.execute("PF('signup').hide();");
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
 				this.context.addMessage(null, new FacesMessage("Por favor consulte a sua caixa de correio e siga as instruções apresentadas."));
 			}else{
