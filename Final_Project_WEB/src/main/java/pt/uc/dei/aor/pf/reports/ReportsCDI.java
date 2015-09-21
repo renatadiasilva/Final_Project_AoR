@@ -220,12 +220,12 @@ public class ReportsCDI implements Serializable {
 				+"entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+" (por "
 				+periodHeader.substring(0, 3)+")";
-		measureHeader = "Nº Candidaturas Espontâneas";
-		measureFooter = "Candidaturas Espontâneas total: ";
+		measureHeader = "Nº Candidaturas Rejeitadas";
+		measureFooter = "Candidaturas Rejeitadas total: ";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				" AND spontaneous = TRUE");
+				" AND rejected_reason IS NOT NULL ");
 
 		// extract date header and average times
 		report.clear();
@@ -464,6 +464,7 @@ public class ReportsCDI implements Serializable {
 	// getters and setters
 
 	public Date getD1() {
+		if (d1 != null) return d1;
 		return new Date();
 	}
 
@@ -472,6 +473,7 @@ public class ReportsCDI implements Serializable {
 	}
 
 	public Date getD2() {
+		if (d2 != null) return d2;
 		return new Date();
 	}
 
