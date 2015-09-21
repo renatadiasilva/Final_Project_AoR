@@ -35,7 +35,7 @@
 					yearRange="c-100:c+100" locale="pt" size="35" />
 
 			</h:panelGrid>
-			<p:dataTable emptyMessage="Nada a mostrar." var="item"
+			<p:dataTable id="report" emptyMessage="Nada a mostrar." var="item"
 				value="#{reportsCDI.report}">
 				<f:facet name="header">
 					<h:outputText value="#{reportsCDI.tableHeader}" />
@@ -87,6 +87,21 @@
 					</p:row>
 				</p:columnGroup>
 			</p:dataTable>
+
+			<h:commandLink value="Exportar PDF">
+				<p:graphicImage library="images/logos" value="pdf.png" />
+				<p:dataExporter type="pdf" target="report"
+					fileName="report" />
+			</h:commandLink>
+
+			<p:commandButton value="Exportar PDF">
+				<p:dataExporter type="pdf" target="report" fileName="ninja" />
+			</p:commandButton>
+
+			<p:commandButton value="Exportar XLS">
+				<p:dataExporter type="xls" target="report" fileName="ninja" />
+			</p:commandButton>
+			
 		</h:form>
 
 	</ui:define>

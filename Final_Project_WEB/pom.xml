@@ -46,7 +46,7 @@
 			<version>1.2</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Upload dependencies -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -58,8 +58,21 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-		
-		
+
+		<!-- Criação de xls -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.13-beta1</version>
+		</dependency>
+
+		<!-- Criação de pdf -->
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>2.1.7</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
@@ -81,13 +94,13 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Para o flush das credenciais do servidor --> 
+		<!-- Para o flush das credenciais do servidor -->
 		<dependency>
 			<groupId>org.jboss.as</groupId>
 			<artifactId>jboss-as-security</artifactId>
 			<version>7.1.1.Final</version>
 		</dependency>
-		
+
 	</dependencies>
 	<repositories>
 		<repository>
