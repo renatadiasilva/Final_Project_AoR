@@ -16,8 +16,12 @@
 
 			<h:panelGrid id="buttonsTimeReports" columns="5">
 
-				<p:commandButton value="Criar relatório"
+				<p:commandButton value="Tempo médio para contratação"
 					action="#{reportsCDI.averageTimeToBeHired()}"
+					update="@form, messages" icon="ui-icon-script" />
+
+				<p:commandButton value="Número de candidaturas"
+					action="#{reportsCDI.submissionCountResults()}"
 					update="@form, messages" icon="ui-icon-script" />
 
 			</h:panelGrid>

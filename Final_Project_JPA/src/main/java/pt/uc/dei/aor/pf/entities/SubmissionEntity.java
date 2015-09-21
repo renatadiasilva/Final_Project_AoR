@@ -56,6 +56,9 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Submission.findSubmissionsOfCandidate",
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE s.candidate = :user ORDER BY s.date"),
+	@NamedQuery(name = "Submission.countSubmissionsByDate",
+			query = "SELECT COUNT(s), s.date FROM SubmissionEntity s"
+					+ " WHERE s.candidate = :user ORDER BY s.date"),
 })
 public class SubmissionEntity implements Serializable {
 

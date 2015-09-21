@@ -99,6 +99,39 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<Object[]> countSubmissionsByDate(Date date1, Date date2,
+			char period) {
+		
+		String queryS;
+		switch (period) {
+		case Constants.DAILY: 
+			queryS = "SELECT COUNT(*), "
+					+ " date FROM submissions "
+					+ " WHERE date BETWEEN :date1 AND :date2"
+					+ " GROUP BY date ORDER BY date";
+			break;
+		case Constants.MONTHLY: 
+			queryS = "SELECT COUNT(*),"
+					+ " DATE_PART(\'year\', date) AS y,"
+					+ " DATE_PART(\'month\', date) AS m FROM submissions "
+					+ " WHERE date BETWEEN :date1 AND :date2"
+					+ " GROUP BY y, m ORDER BY y, m";
+			break;
+		case Constants.YEARLY:
+			queryS = "SELECT COUNT(*),"
+					+ " DATE_PART(\'year\', date) AS y FROM submissions "
+					+ " WHERE date BETWEEN :date1 AND :date2"
+					+ " GROUP BY y ORDER BY y";
+			break;
+		default: return null; // error
+		}
+		Query query = em.createNativeQuery(queryS);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<Object[]> averageTimeToHired(Date date1, Date date2,
 			char period) {
 		

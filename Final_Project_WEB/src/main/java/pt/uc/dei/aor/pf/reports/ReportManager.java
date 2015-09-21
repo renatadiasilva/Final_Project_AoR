@@ -55,25 +55,25 @@ public class ReportManager {
 		char period = ' ';
 		period = periodType.toLowerCase().charAt(0);
 
-		// different reports
+//		// different reports
 		int report = 0;
-		if (reportType.equals(Constants.REPORT_INT_CNTINTER)) report = 1;
-		if (reportType.equals(Constants.REPORT_INT_AVGINTER)) report = 2;
-		if (reportType.equals(Constants.REPORT_SUB_AVGHIRED)) report = 3;
-		if (reportType.equals(Constants.REPORT_SUB_CNTSUBMI)) report = 4;
-		if (reportType.equals(Constants.REPORT_SUB_CNTSPONT)) report = 5;
-		if (reportType.equals(Constants.REPORT_SUB_CNTREJEC)) report = 6;
-		if (reportType.equals(Constants.REPORT_SUB_CNTPROPO)) report = 7;
-		if (reportType.equals(Constants.REPORT_SUB_CNTSOURC)) report = 8;
-
-		//new? TO IMPLEMENT
-		if (reportType.equals(Constants.REPORT_SUB_CNTHIRED)) report = 9;
-		if (reportType.equals(Constants.REPORT_INT_INTCANDI)) report = 10;
-		if (reportType.equals(Constants.REPORT_POS_AVGCLOSE)) report = 11;
-		if (reportType.equals(Constants.REPORT_POS_SUBMIPOS)) report = 12;
-		if (reportType.equals(Constants.REPORT_POS_PROPOPOS)) report = 13;
-		if (reportType.equals(Constants.REPORT_POS_REJECPOS)) report = 14;
-
+//		--if (reportType.equals(Constants.REPORT_INT_CNTINTER)) report = 1;
+//		--if (reportType.equals(Constants.REPORT_INT_AVGINTER)) report = 2;
+//		--if (reportType.equals(Constants.REPORT_SUB_AVGHIRED)) report = 3;
+//		--if (reportType.equals(Constants.REPORT_SUB_CNTSUBMI)) report = 4;
+//		--if (reportType.equals(Constants.REPORT_SUB_CNTSPONT)) report = 5;
+//		--if (reportType.equals(Constants.REPORT_SUB_CNTREJEC)) report = 6;
+//		--if (reportType.equals(Constants.REPORT_SUB_CNTPROPO)) report = 7;
+//		--if (reportType.equals(Constants.REPORT_SUB_CNTSOURC)) report = 8;
+//
+//		//new? TO IMPLEMENT
+//		--if (reportType.equals(Constants.REPORT_SUB_CNTHIRED)) report = 9;
+//		--if (reportType.equals(Constants.REPORT_INT_INTCANDI)) report = 10;
+//		--if (reportType.equals(Constants.REPORT_POS_AVGCLOSE)) report = 11;
+//		--if (reportType.equals(Constants.REPORT_POS_SUBMIPOS)) report = 12;
+//		--if (reportType.equals(Constants.REPORT_POS_PROPOPOS)) report = 13;
+//		--if (reportType.equals(Constants.REPORT_POS_REJECPOS)) report = 14;
+//
 		//tirar depois
 		// different report headers
 		switch (report) {
@@ -263,56 +263,7 @@ public class ReportManager {
 				counts.add(n);
 				break;
 			case 3:
-				//				slist = submissionEJB.findSubmissionsByDate(
-				//						startDate.getTime(), interDate.getTime());
-				//
-				//				// compute the average time to be hired 
-				//				countS = 0;
-				//				avg = 0.0;
-				//				for (SubmissionEntity s : slist) {
-				//					//query??
-				//					// submission status is hired
-				//					if (s.getStatus().equalsIgnoreCase(
-				//							Constants.STATUS_HIRED)) {
-				//
-				//						// colect submission date and hired date
-				//						Calendar sDate = Calendar.getInstance();
-				//						Calendar hDate = Calendar.getInstance();
-				//						sDate.setTime(s.getDate());
-				//						hDate.setTime(s.getHiredDate());
-				//
-				//						ndays = daysBetween(sDate, hDate);
-				//						if (ndays < 0)  {
-				//							// erro, datas não ordenadas
-				//						}
-				//						avg += ndays;
-				//						countS++;
-				//
-				//						// countings for overall average time
-				//						total += ndays;
-				//						countTotal++;
-				//					}
-				//				}
-				// average time to hired of the day, month, or year
-//				avg = submissionEJB.averageTimeToHired(
-//						startDate.getTime(), interDate.getTime());
-//
-//				n = (Long) Math.round(avg);
-//				counts.add(n);
-				break;
 			case 4:
-				// get list of submissions of the day, month, or year
-				slist = submissionEJB.findSubmissionsByDate(
-						startDate.getTime(), interDate.getTime());
-
-				// count the number of submissions of the day, month, or year
-				if (slist != null) n = intToLong(slist.size());
-				else n = 0L; // no submissions
-				counts.add(n);
-
-				// update overall number of submissions
-				total += n;
-				break;
 			case 5:
 				// get list of spontaneous submissions 
 				// of the day, month, or year

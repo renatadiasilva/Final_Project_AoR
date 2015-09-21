@@ -1,5 +1,7 @@
 package pt.uc.dei.aor.pf.reports;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -18,16 +19,15 @@ import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+
 import java.io.Serializable;
+import java.math.BigInteger;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class ReportsCDI implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 73652494292955311L;
+	private static final long serialVersionUID = -8997358625403246665L;
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(ReportsCDI.class);
@@ -49,27 +49,29 @@ public class ReportsCDI implements Serializable {
 	// results
 	private String measureHeader;
 	private String tableHeader;
-	private String totalResult;
 	private String periodHeader;
 	private String measureFooter;
+	private String totalResult;
 	private List<ReportItem> report = new ArrayList<ReportItem>();
+	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
 	// counts submission by position between two dates
 	public void submissionsByPosition() {
 		log.info("Creating report with number of submissions by position");
 
 		tableHeader = "Número de candidaturas por posição (posições "
-				+ "abertas entre "+d1+" e "+d2+")";
+				+ "abertas entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+")";
 
 		List<Object[]> result = positionEJB.countSubmissionsByPosition(
 				d1, d2);
 
+		report.clear();
 		for (Object[] ele : result)
 			report.add(new ReportItem(positionEJB.find((Long) ele[0]),
 					"", longToInt((Long) ele[1]), ""));
-		//			preport.add(new PositionReportItem(
-		//					positionEJB.find((Long) ele[0]), (Long) ele[1]));
 
+		//other headers
 		totalResult = summing(report)+"";
 	}
 
@@ -78,34 +80,28 @@ public class ReportsCDI implements Serializable {
 		log.info("Creating report with average time to be hired");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
 
+		// only periods monthly and yearly
+		char p = periodShort();
+		p = (p == Constants.DAILY)? p = Constants.MONTHLY : p;
+
+		// text for tables
+		if (p == Constants.MONTHLY) periodHeader = Constants.PERIOD_MHEADER;
+		else periodHeader = Constants.PERIOD_YHEADER;
 		prepareDates();
-		tableHeader = "Tempo Médio para Contratação (candidaturas "
-				+ "submetidas entre "+d1+" e "+d2+")";
+		tableHeader = "Tempo Médio para Contratação por "
+				+periodHeader.substring(0, 3)+" (candidaturas "
+				+"submetidas entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+")";
 		measureHeader = "Tempo médio (em dias)";
 		measureFooter = "Tempo médio total: ";
 
-		// only periods monthly and yearly
-		char p = periodShort(period);
-		p = (p == Constants.DAILY)? p = Constants.MONTHLY : p;
+		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.averageTimeToHired(d1, d2, p);
 
-		//Nota: só são apresentados resultados quando há candidaturas
-
-		if ( p == Constants.MONTHLY) periodHeader = Constants.PERIOD_MHEADER;
-		else periodHeader = Constants.PERIOD_YHEADER;
-
 		// extract date header and average times
+		report.clear();
 		for (Object[] o: list) {
-			String dateH = "";
-			if (p == Constants.MONTHLY) { 
-				Calendar cal = Calendar.getInstance();
-				cal.set(2015, doubleToInt((Double) o[2])-1, 1);
-				dateH = cal.getDisplayName(Calendar.MONTH, Calendar.LONG,
-						Locale.getDefault())+" ";
-			}
-			//			if (p == Constants.DAILY) dateH = ((Date) o[1])+"";
-			dateH += doubleToInt((Double) o[1]);
-			report.add(new ReportItem(null, dateH,
+			report.add(new ReportItem(null, makeDateHeader(p, o),
 					doubleToInt((Double) o[0]), ""));
 		}
 		int avg = average(report);
@@ -113,13 +109,52 @@ public class ReportsCDI implements Serializable {
 
 	}
 
-	// candidate counts by period between two dates (file?)
-	public void submisssionCountResults() {
-		log.info("Creating report with candidate countings");
+	// candidate counts by period between two dates
+	// tirar thorws...
+	public void submissionCountResults() throws ParseException {
+		
+		d1 = ftDate.parse("2015-07-01");
+		d2 = ftDate.parse("2015-09-30");
+		
+		
+		log.info("Creating report with submission countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		//		List<Object[]> list = report.reportCounting(d1, d2, period,
-		//				Constants.REPORT_SUB_CNTSUBMI, null);
-		// if 0, no candidates, no report!
+
+		// all periods: daily, monthly, or yearly
+		char p = periodShort();
+		
+		// text for tables
+		switch(p) {
+		case Constants.DAILY:
+			periodHeader = Constants.PERIOD_DHEADER;
+			break;
+		case Constants.MONTHLY:
+			periodHeader = Constants.PERIOD_MHEADER;
+			break;
+		case Constants.YEARLY:
+			periodHeader = Constants.PERIOD_YHEADER;
+			break;
+		}
+		prepareDates();
+		tableHeader = "Número de candidaturas "
+				+"submetidas entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+" (por "
+				+periodHeader.substring(0, 3)+")";
+		measureHeader = "Nº Candidaturas submetidas";
+		measureFooter = "Candidaturas total: ";
+
+		//Nota: só são apresentados resultados quando há candidaturas
+		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p);
+
+		// extract date header and average times
+		report.clear();
+		for (Object[] o: list)
+			report.add(new ReportItem(null, makeDateHeader(p, o),
+					bigIntToInt((BigInteger) o[0]), ""));
+		
+		// compute overall average
+		totalResult = summing(report)+"";
+
 	}
 
 	// spontaneous submission counts by period between two dates (file?)
@@ -212,6 +247,32 @@ public class ReportsCDI implements Serializable {
 		} else log.info("No position with id "+id);
 	}
 
+	// interview counts and results by period between two dates (file?)
+	public void interviewCountResults() {
+		log.info("Creating report with interview countings");
+		log.debug("From "+d1+" to "+d2+" with period "+period);
+		//		List<Object[]> list = report.reportCounting(d1, d2, period,
+		//				Constants.REPORT_INT_CNTINTER, null);
+		// if 0, no interviews, no report!
+	}
+
+	// average time to first interview by period between two dates (file?)
+	public void averageTimeToInterview(Date d1, Date d2,
+			String period) {
+		log.info("Creating report with average time to first interview");
+		log.debug("From "+d1+" to "+d2+" with period "+period);
+		//		List<Object[]> list = report.reportCounting(d1, d2, period,
+		//				Constants.REPORT_INT_AVGINTER, null);
+		// if -1, no valid submissions, no report!
+	}
+
+	public void interviewDetailOfCandidate() {
+		log.info("Creating report with detaild interview info of candidate");
+		//		List<Object[]> list = report.reportCounting(null, null, "noperiod",
+		//				Constants.REPORT_INT_INTCANDI, null);
+		// if 0, no interviews, no report!
+	}
+
 	// private methods
 	private int summing(List<ReportItem> list) {
 		// compute sum of all quantities
@@ -271,7 +332,7 @@ public class ReportsCDI implements Serializable {
 		return -1;
 	}
 
-	private char periodShort(String period) {
+	private char periodShort() {
 		char p = 'm';
 		if (period != null && !period.isEmpty()) {
 			long ndays = daysBetween(d1, d2);
@@ -315,6 +376,23 @@ public class ReportsCDI implements Serializable {
 
 	private int doubleToInt(Double d) {
 		return (int) Math.round(d);
+	}
+	
+	private int bigIntToInt(BigInteger value) {
+		return value.intValue();
+	}
+	
+	private String makeDateHeader(char p, Object[] o) {
+		String dateH = "";
+		if (p == Constants.MONTHLY) { 
+			Calendar cal = Calendar.getInstance();
+			cal.set(2015, doubleToInt((Double) o[2])-1, 1);
+			dateH = cal.getDisplayName(Calendar.MONTH, Calendar.LONG,
+					Locale.getDefault())+" ";
+		}
+		if (p == Constants.DAILY) dateH = ((Date) o[1])+"";
+		else dateH += doubleToInt((Double) o[1]);
+		return dateH;
 	}
 
 	// getters and setters

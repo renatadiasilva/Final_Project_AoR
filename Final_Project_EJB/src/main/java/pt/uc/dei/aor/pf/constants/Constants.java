@@ -80,27 +80,6 @@ public class Constants {
 	public static final long LIMITDAY   = 100;
 	public static final long LIMITMONTH = 1000;
 	
-	public static final String REPORT_SUB = "submission";
-	public static final String REPORT_SUB_AVGHIRED = REPORT_SUB+".avgHired";
-	public static final String REPORT_SUB_CNTSUBMI = REPORT_SUB+".cntSubmi";
-	public static final String REPORT_SUB_CNTSPONT = REPORT_SUB+".cntSpont";
-	public static final String REPORT_SUB_CNTREJEC = REPORT_SUB+".cntRejec";
-	public static final String REPORT_SUB_CNTPROPO = REPORT_SUB+".cntPropo";
-	public static final String REPORT_SUB_CNTSOURC = REPORT_SUB+".cntSourc";
-	public static final String REPORT_SUB_CNTHIRED = REPORT_SUB+".cntHired";
-	public static final String REPORT_SUB_SUBMIPOS = REPORT_SUB+".submiPos";
-
-	public static final String REPORT_INT = "interview";
-	public static final String REPORT_INT_CNTINTER = REPORT_INT+".cntInter";
-	public static final String REPORT_INT_AVGINTER = REPORT_INT+".avgInter";
-	public static final String REPORT_INT_INTCANDI = REPORT_INT+".intCandi";
-
-	public static final String REPORT_POS = "position";
-	public static final String REPORT_POS_SUBMIPOS = REPORT_POS+".submiPos";
-	public static final String REPORT_POS_REJECPOS = REPORT_POS+".rejecPos";
-	public static final String REPORT_POS_PROPOPOS = REPORT_POS+".propoPos";
-	public static final String REPORT_POS_AVGCLOSE = REPORT_POS+".avgClose";
-
 	// Miliseconds per day (to convert on days)
 	public static final long MSPERDAY = 60 * 60 * 24 * 1000;
 	
