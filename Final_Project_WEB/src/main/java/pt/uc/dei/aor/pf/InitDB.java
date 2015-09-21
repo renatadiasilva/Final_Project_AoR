@@ -333,7 +333,7 @@ public class InitDB {
 				Constants.SOCIAL_LINKEDIN);
 		plist[3].setLocations(locations);
 		plist[3].setAdvertisingChannels(channels);
-		plist[3].setOpeningDate(ftDate.parse("2015-08-15"));
+		plist[3].setOpeningDate(ftDate.parse("2015-08-02"));
 		plist[3].setStatus(Constants.STATUS_CLOSED);
 		
 		locations = Arrays.asList(Constants.LOCATION_COIMBRA);

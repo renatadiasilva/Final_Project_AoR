@@ -72,6 +72,10 @@ public class Constants {
 	public static final char MONTHLY = 'm';
 	public static final char YEARLY  = 'y';
 
+	public static final String PERIOD_DHEADER = "Dia";
+	public static final String PERIOD_MHEADER = "Mês (completo)";
+	public static final String PERIOD_YHEADER = "Ano (completo)";
+
 	// limit searching days by period
 	public static final long LIMITDAY   = 100;
 	public static final long LIMITMONTH = 1000;
@@ -99,6 +103,9 @@ public class Constants {
 
 	// Miliseconds per day (to convert on days)
 	public static final long MSPERDAY = 60 * 60 * 24 * 1000;
+	
+	// No occurencies
+	public static final String REPORT_NO_HIRED = "Sem contratações";
 	
 	// Queries from user emails
 	public static final String SERVLET_SUBJECT="subject";

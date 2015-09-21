@@ -2,8 +2,10 @@ package pt.uc.dei.aor.pf.reports;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -41,7 +43,7 @@ public class SubmissionReportsCDI {
 
 	// results
 	private String tableHeader;
-	private Long totalResult;
+	private String totalResult;
 	private String periodHeader;
 	private List<SubmissionReport> sreports = new ArrayList<SubmissionReport>();
 	private List<PositionReport> preports = new ArrayList<PositionReport>();
@@ -64,33 +66,43 @@ public class SubmissionReportsCDI {
 
 		preports.add(new PositionReport(resultItems));
 
-		//do better
-		int sum = 0;
-		for(PositionReportItem item : preports.get(0).getItems()) {
-			sum += item.getCounting();
-		}
-		totalResult = report.intToLong(sum);
+		totalResult = summing(preports.get(0).getItems())+"";
 	}
 
 	// average time to be hired by period between two dates
 	public void averageTimeToBeHired() {
 		log.info("Creating report with average time to be hired");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		periodHeader = "Tempo Médio para Contratação";
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_SUB_AVGHIRED, null);
+		
+		prepareDates();
+		tableHeader = "Tempo Médio para Contratação (candidaturas "
+				+ "submetidas entre "+d1+" e "+d2+")";
 
-		tableHeader = "Tempo Médio para Contratação";
-		periodHeader = (String) list.get(0)[0];
-		totalResult = (Long) list.get(0)[1];
+		// only periods monthly and yearly
+		char p = periodShort(period);
+		p = (p == Constants.DAILY)? p = Constants.MONTHLY : p;
+		List<Object[]> list = submissionEJB.averageTimeToHired(d1, d2, p);
 
-		int n = list.size();
-		for (int i = 1; i < n; i++) {
-			Long ntime = (Long) list.get(i)[1];
-			String time = (ntime >= 0)? ntime+"" : "Sem contratações"; 
-			treport.add(new TimeReportItem((String) list.get(i)[0],
-					time));
+		//Nota: só são apresentados resultados quando há candidaturas
+		
+		if ( p == Constants.MONTHLY) periodHeader = Constants.PERIOD_MHEADER;
+		else periodHeader = Constants.PERIOD_YHEADER;
+
+		// extract date header and average times
+		for (Object[] o: list) {
+			String dateH = "";
+			if (p == Constants.MONTHLY) { 
+				Calendar cal = Calendar.getInstance();
+				cal.set(2015, doubleToInt((Double) o[2])-1, 1);
+				dateH = cal.getDisplayName(Calendar.MONTH, Calendar.LONG,
+						Locale.getDefault())+" ";
+			}
+			//			if (p == Constants.DAILY) dateH = ((Date) o[1])+"";
+			dateH += doubleToInt((Double) o[1]);
+			treport.add(new TimeReportItem(dateH, doubleToInt((Double) o[0])));
 		}
+		int avg = average(treport);
+		totalResult = (avg >= 0)? avg+"" : Constants.REPORT_NO_HIRED;
 
 	}
 
@@ -164,6 +176,106 @@ public class SubmissionReportsCDI {
 		} else log.info("No position with id "+id);
 	}
 
+	// always look for info in the hole month if period is montly
+	// and look for info in the hole year if period is year
+	private void prepareDates() {
+		if (period.equals(Constants.PERIOD_DAILY)) return;
+		
+		Calendar start = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		start.setTime(d1);
+		end.setTime(d2);
+		
+		if (period.equals(Constants.PERIOD_MONTHLY)) {
+			// first day of the month of date 1 
+			start.set(Calendar.DAY_OF_MONTH, 1);
+			// last day of the month of date 2 
+			end.set(Calendar.DAY_OF_MONTH, 
+					end.getActualMaximum(Calendar.DAY_OF_MONTH));
+		} else {
+			// first day of the year of date 1 
+			start.set(Calendar.DAY_OF_YEAR, 1);
+			// last day of the year of date 2 
+			end.set(Calendar.DAY_OF_YEAR,
+					end.getActualMaximum(Calendar.DAY_OF_YEAR));
+			
+		}
+		
+		// update dates
+		d1 = start.getTime();
+		d2 = end.getTime();
+
+	}
+
+	// private methods
+	private int summing(List<PositionReportItem> list) {
+		// compute sum of all quantities
+		int sum = 0;
+		for(PositionReportItem item : list) {
+			sum += item.getCounting();
+		}
+		return sum;
+	}
+
+	private int average(List<TimeReportItem> list) {
+		// compute total average
+		double avg = 0.0;
+		int count = 0;
+		for(TimeReportItem item : list) {
+			avg += item.getTime();
+			count++;
+		}
+
+		if (count != 0) return (int) Math.round(avg / count);
+		return -1;
+	}
+
+	private char periodShort(String period) {
+		char p = 'm';
+		if (period != null && !period.isEmpty()) {
+			long ndays = daysBetween(d1, d2);
+			// if dates are no sorted, exchange them
+			if (ndays < 0) {
+				Date aux = d1;
+				d1 = d2;
+				d2 = aux;
+			}
+
+			// limit day for periods - aviso ao utilizador!!
+			if (ndays > Constants.LIMITMONTH) p = Constants.YEARLY;
+			else if (ndays > Constants.LIMITDAY && 
+					period.equals(Constants.PERIOD_DAILY))
+				p = Constants.MONTHLY;
+			else p = period.toLowerCase().charAt(0);
+		}
+		return p;
+	}
+
+	private long daysBetween(Date d1, Date d2) {
+
+		Calendar dateStartCal = Calendar.getInstance();
+		Calendar dateEndCal = Calendar.getInstance();
+		dateStartCal.setTime(d1);
+		dateEndCal.setTime(d2);
+
+		dateStartCal.set(Calendar.HOUR_OF_DAY, 0);
+		dateStartCal.set(Calendar.MINUTE, 0);
+		dateStartCal.set(Calendar.SECOND, 0);
+		dateStartCal.set(Calendar.MILLISECOND, 0);
+
+		dateEndCal.set(Calendar.HOUR_OF_DAY, 0);
+		dateEndCal.set(Calendar.MINUTE, 0);
+		dateEndCal.set(Calendar.SECOND, 0);
+		dateEndCal.set(Calendar.MILLISECOND, 0);
+
+		return (dateEndCal.getTimeInMillis() - 
+				dateStartCal.getTimeInMillis()) / Constants.MSPERDAY;
+	}
+
+	private int doubleToInt(Double d) {
+		return (int) Math.round(d);
+	}
+
 	// getters and setters
 
 	public Date getD1() {
@@ -230,11 +342,11 @@ public class SubmissionReportsCDI {
 		this.tableHeader = tableHeader;
 	}
 
-	public Long getTotalResult() {
+	public String getTotalResult() {
 		return totalResult;
 	}
 
-	public void setTotalResult(Long totalResult) {
+	public void setTotalResult(String totalResult) {
 		this.totalResult = totalResult;
 	}
 

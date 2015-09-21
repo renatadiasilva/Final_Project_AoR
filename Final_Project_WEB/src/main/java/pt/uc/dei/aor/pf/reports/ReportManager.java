@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+
+
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
@@ -44,10 +46,10 @@ public class ReportManager {
 			log.error("ReportType is null.");
 			return null;
 		}
-		
+
 		if (periodType == null || periodType.isEmpty())
 			periodType = Constants.PERIOD_MONTHLY;
-		
+
 		String header = " ";
 		// different periods (daily -> d, monthly -> m, yearly -> y)
 		char period = ' ';
@@ -112,25 +114,22 @@ public class ReportManager {
 			endDate = aux;
 			ndays = -ndays;
 		}
-		
-		System.out.println("início");
-		System.out.println(startDate.getTime());
-		System.out.println(endDate.getTime());
-		System.out.println(ndays);
 
 		// limit day for periods - aviso ao utilizador!!
 		if (ndays > Constants.LIMITMONTH) period = Constants.YEARLY;
-		else if (ndays > Constants.LIMITDAY) period = Constants.MONTHLY;
+		else if ( ndays > Constants.LIMITDAY && period == Constants.DAILY)
+			period = Constants.MONTHLY;
 
 		Long n = 0L;
 		List<Long> counts = new ArrayList<Long>();
 		List<String> headers = new ArrayList<String>();
 
+		//verificações fora
 		switch (period) {
 		case Constants.DAILY: headers.add("Dia"); break;
 		case Constants.MONTHLY: headers.add("Mês"); break;
 		case Constants.YEARLY: headers.add("Ano"); break;
-			default:
+		default:
 		}
 		switch (period) {
 		case Constants.YEARLY:
@@ -140,10 +139,6 @@ public class ReportManager {
 			startDate.set(Calendar.DAY_OF_MONTH, 1);
 			endDate.set(Calendar.DAY_OF_MONTH, 1);
 		}
-
-		System.out.println("acertos por período");
-		System.out.println(startDate.getTime());
-		System.out.println(endDate.getTime());
 
 		Long total = 0L;
 		Long countTotal = 0L;
@@ -155,14 +150,13 @@ public class ReportManager {
 
 		// auxiliary lists
 		List<InterviewEntity> ilist = new ArrayList<InterviewEntity>();
-//		List<PositionEntity> plist = new ArrayList<PositionEntity>();
+		//		List<PositionEntity> plist = new ArrayList<PositionEntity>();
 		List<SubmissionEntity> slist = new ArrayList<SubmissionEntity>();
 
-		System.out.println("!startDate.after(endDate)"+!startDate.after(endDate));
 		// each WHILE iteration corresponds to
 		// a single day, month, or year between d1 and d2
 		while (!startDate.after(endDate)) {
-			
+
 
 			// compute temporary end date
 			Calendar interDate = Calendar.getInstance();
@@ -187,9 +181,6 @@ public class ReportManager {
 				interDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
 				break;
 			}
-
-			System.out.println("data intermédia");
-			System.out.println(interDate.getTime());
 
 			switch (report) {
 			case 1:
@@ -272,43 +263,42 @@ public class ReportManager {
 				counts.add(n);
 				break;
 			case 3:
-//				slist = submissionEJB.findSubmissionsByDate(
+				//				slist = submissionEJB.findSubmissionsByDate(
+				//						startDate.getTime(), interDate.getTime());
+				//
+				//				// compute the average time to be hired 
+				//				countS = 0;
+				//				avg = 0.0;
+				//				for (SubmissionEntity s : slist) {
+				//					//query??
+				//					// submission status is hired
+				//					if (s.getStatus().equalsIgnoreCase(
+				//							Constants.STATUS_HIRED)) {
+				//
+				//						// colect submission date and hired date
+				//						Calendar sDate = Calendar.getInstance();
+				//						Calendar hDate = Calendar.getInstance();
+				//						sDate.setTime(s.getDate());
+				//						hDate.setTime(s.getHiredDate());
+				//
+				//						ndays = daysBetween(sDate, hDate);
+				//						if (ndays < 0)  {
+				//							// erro, datas não ordenadas
+				//						}
+				//						avg += ndays;
+				//						countS++;
+				//
+				//						// countings for overall average time
+				//						total += ndays;
+				//						countTotal++;
+				//					}
+				//				}
+				// average time to hired of the day, month, or year
+//				avg = submissionEJB.averageTimeToHired(
 //						startDate.getTime(), interDate.getTime());
 //
-//				// compute the average time to be hired 
-//				countS = 0;
-//				avg = 0.0;
-//				for (SubmissionEntity s : slist) {
-//					//query??
-//					// submission status is hired
-//					if (s.getStatus().equalsIgnoreCase(
-//							Constants.STATUS_HIRED)) {
-//
-//						// colect submission date and hired date
-//						Calendar sDate = Calendar.getInstance();
-//						Calendar hDate = Calendar.getInstance();
-//						sDate.setTime(s.getDate());
-//						hDate.setTime(s.getHiredDate());
-//
-//						ndays = daysBetween(sDate, hDate);
-//						if (ndays < 0)  {
-//							// erro, datas não ordenadas
-//						}
-//						avg += ndays;
-//						countS++;
-//
-//						// countings for overall average time
-//						total += ndays;
-//						countTotal++;
-//					}
-//				}
-
-				// average time to hired of the day, month, or year
-				avg = submissionEJB.averageTimeToHired(
-						startDate.getTime(), interDate.getTime());
-				
-				n = (Long) Math.round(avg);
-				counts.add(n);
+//				n = (Long) Math.round(avg);
+//				counts.add(n);
 				break;
 			case 4:
 				// get list of submissions of the day, month, or year
@@ -476,13 +466,10 @@ public class ReportManager {
 				// move to next year
 				startDate.add(Calendar.YEAR, 1); // check
 			}
-			
-			System.out.println("novo período");
-			System.out.println(startDate.getTime());
-			System.out.println("!startDate.after(endDate)"+!startDate.after(endDate));
 
 		}
 
+		//fazer isso fora...
 		// overall counts in the beginning of the list (count) to be returned
 		switch (report) {
 		case 1: case 4: case 5: case 6: case 7:
@@ -501,18 +488,16 @@ public class ReportManager {
 			for(int i = ns-1; i >= 0; i--)
 				counts.add(0, totalS.get(i));
 		}
-		
-		System.out.println(counts);
-		
+
 		List<Object[]> list = new ArrayList<Object[]>(counts.size());
-		
+
 		for (int i = 0; i < counts.size(); i++) {
 			Object[] o = new Object[3];
 			o[0] = headers.get(i);
 			o[1] = counts.get(i);
 			list.add(o);
 		}
-		
+
 		return list;
 
 	}
@@ -566,4 +551,5 @@ public class ReportManager {
 	public Long intToLong(int value) {
 		return Long.valueOf(value);
 	}
+
 }

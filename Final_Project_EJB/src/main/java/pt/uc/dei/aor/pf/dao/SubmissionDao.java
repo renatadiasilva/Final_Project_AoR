@@ -109,18 +109,44 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		
 	}
 
-	public double averageTimeToHired(Date date1, Date date2) {
+	@SuppressWarnings("unchecked")
+	public List<Object[]> averageTimeToHired(Date date1, Date date2,
+			char period) {
 		
-		String queryS = "SELECT AVG(DATE_PART(\'day\', "
-				+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)) FROM submissions "
-				+ " WHERE hired_date IS NOT NULL AND"
-				+ " date BETWEEN :date1 AND :date2";
+		String queryS;
+		switch (period) {
+		// not applicable
+//		case Constants.DAILY: 
+//			queryS = "SELECT AVG(DATE_PART(\'DAY\', "
+//					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
+//					+ " date FROM submissions "
+//					+ " WHERE date BETWEEN :date1 AND :date2"
+//					+ " AND hired_date IS NOT NULL"
+//					+ " GROUP BY date ORDER BY date";
+//			break;
+		case Constants.MONTHLY: 
+			queryS = "SELECT AVG(DATE_PART(\'day\', "
+					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
+					+ " DATE_PART(\'year\', date) AS y,"
+					+ " DATE_PART(\'month\', date) AS m FROM submissions "
+					+ " WHERE date BETWEEN :date1 AND :date2"
+					+ " AND hired_date IS NOT NULL"
+					+ " GROUP BY y, m ORDER BY y, m";
+			break;
+		case Constants.YEARLY:
+			queryS = "SELECT AVG(DATE_PART(\'day\', "
+					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
+					+ " DATE_PART(\'year\', date) AS y FROM submissions "
+					+ " WHERE date BETWEEN :date1 AND :date2"
+					+ " AND hired_date IS NOT NULL"
+					+ " GROUP BY y ORDER BY y";
+			break;
+		default: return null; // error
+		}
 		Query query = em.createNativeQuery(queryS);
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
-		Object result = query.getSingleResult();
-		if (result == null) return -1;
-		return (double) result;
+		return query.getResultList();
 	}
 
 }

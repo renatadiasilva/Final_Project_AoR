@@ -138,10 +138,10 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 
 	@Override
-	public double averageTimeToHired(Date date1, Date date2) {
+	public List<Object[]> averageTimeToHired(Date date1, Date date2, char p) {
 		// TODO Auto-generated method stub
 		log.info("Computing the average time to Hired between two dates");
-		return submissionDAO.averageTimeToHired(date1, date2);
+		return submissionDAO.averageTimeToHired(date1, date2, p);
 	}
 
 	private void isSubmissionComplete(SubmissionEntity submission) {

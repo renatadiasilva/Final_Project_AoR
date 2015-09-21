@@ -8,9 +8,9 @@ public class TimeReportItem implements Serializable {
 
 	private String dateHeader;
 	
-	private String time;
+	private int time;
 
-	public TimeReportItem(String dateHeader, String time) {
+	public TimeReportItem(String dateHeader, int time) {
 		this.dateHeader = dateHeader;
 		this.time = time;
 	}
@@ -23,11 +23,11 @@ public class TimeReportItem implements Serializable {
 		this.dateHeader = dateHeader;
 	}
 
-	public String getTime() {
+	public int getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(int time) {
 		this.time = time;
 	}
 
