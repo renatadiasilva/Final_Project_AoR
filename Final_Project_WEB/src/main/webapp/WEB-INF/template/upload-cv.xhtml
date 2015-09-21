@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+
+		<h:form id="uploadCVForm">
+
+			<p:dialog header="Upload CV" widgetVar="uploadCV" draggable="false"
+				resizable="false" modal="true">
+
+				<p:messages />
+
+				<p:fileUpload id="file-upload" update="@all"
+					label="Escolha o CV (*.pdf)" uploadLabel="Submeter CV"
+					cancelLabel="Cancelar" required="true"
+					requiredMessage="Submeta um CV"
+					fileUploadListener="#{uploadCVCDI.uploadCV}" mode="advanced"
+					dragDropSupport="true" sizeLimit="1000000" fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .pdf"
+					allowTypes="/(\.|\/)(pdf)$/" />
+
+				<p:commandButton value="Fechar" onclick="PF('uploadCV').hide();"
+					icon="ui-icon-close" style="width:100%" ajax="false" />
+
+			</p:dialog>
+
+		</h:form>
+	</ui:composition>
+
+</h:body>
+</html>

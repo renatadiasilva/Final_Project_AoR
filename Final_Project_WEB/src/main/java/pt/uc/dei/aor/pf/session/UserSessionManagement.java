@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.session;
 
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -12,12 +13,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
+import pt.uc.dei.aor.pf.upload.UploadFile;
 import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
 import java.io.IOException;
@@ -48,8 +51,6 @@ public class UserSessionManagement implements Serializable {
 	//	@Inject
 	//	URLQueriesCDI urlQueries;
 
-	private UserEntity currentUser;
-
 	private FacesContext context;
 
 	private HttpServletRequest request;
@@ -61,7 +62,6 @@ public class UserSessionManagement implements Serializable {
 	private String password, newPassword;
 
 	public UserSessionManagement() {
-		this.currentUser=new UserEntity();
 	}
 
 	public void checkForUser(){
@@ -154,7 +154,7 @@ public class UserSessionManagement implements Serializable {
 	public void logout(){
 
 		log.info("Doing logout");
-		log.debug("User: "+ currentUser.getEmail());
+		log.debug("User: "+ this.userManagement.getUserEmail());
 
 		this.context = FacesContext.getCurrentInstance();
 		this.request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -193,7 +193,7 @@ public class UserSessionManagement implements Serializable {
 
 	public void changePassword (){
 		log.info("Changing password");
-		log.debug("User: "+ currentUser.getEmail());
+		log.debug("User: "+ this.userManagement.getUserEmail());
 
 		this.context=FacesContext.getCurrentInstance();
 
@@ -225,8 +225,9 @@ public class UserSessionManagement implements Serializable {
 
 			// Se foi criado à mão, fecha o dialog (Home.xhtml)
 			if(!createdByAdmin){
-				RequestContext requestContext = RequestContext.getCurrentInstance();
-				requestContext.execute("PF('signup').hide();");
+				System.out.println("newUser UserSessionManagement !createdByAdmin");
+//				RequestContext requestContext = RequestContext.getCurrentInstance();
+//				requestContext.execute("PF('signup').hide();");
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
 				this.context.addMessage(null, new FacesMessage("Por favor consulte a sua caixa de correio e siga as instruções apresentadas."));
 			}else{
@@ -262,7 +263,7 @@ public class UserSessionManagement implements Serializable {
 			String course, String school, String linkedin) {
 
 		log.info("Updating user info");
-		log.debug("New user: "+ currentUser.getEmail());
+		log.debug("New user: "+ this.userManagement.getUserEmail());
 
 		// Vai para a camada de negócio
 		this.userManagement.updateUserInfo(firstName, lastName, address, city, homePhone, mobilePhone, country, course, school, linkedin);
@@ -286,6 +287,12 @@ public class UserSessionManagement implements Serializable {
 			// Erro a redireccionar
 			e.printStackTrace();
 		}
+	}
+
+
+
+	public long uploadCV(){
+		return this.userManagement.uploadCV();
 	}
 
 	public boolean isAdmin() {
@@ -330,6 +337,16 @@ public class UserSessionManagement implements Serializable {
 
 	public List<String>getStyle(){
 		return this.userManagement.getStyle();
+	}
+
+	public boolean isCv() {
+		return this.userManagement.isCv();
+	}
+
+	public String getCvPath(){
+		// (.pdf)
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/userCV/"+this.userManagement.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
 	}
 
 }

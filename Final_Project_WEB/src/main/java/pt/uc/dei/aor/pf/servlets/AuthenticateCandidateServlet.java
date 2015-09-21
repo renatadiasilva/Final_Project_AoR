@@ -3,6 +3,7 @@ package pt.uc.dei.aor.pf.servlets;
 import java.io.IOException;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,9 @@ public class AuthenticateCandidateServlet extends HttpServlet{
 
 	@EJB
 	private UserEJBInterface userEJB;
+	
+//	@Inject
+//	private ServletMessage message;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response){
 		
@@ -39,6 +43,8 @@ public class AuthenticateCandidateServlet extends HttpServlet{
 				user.setAuthenticated(true);
 				this.userEJB.update(user);
 			} else log.info("Email not found: "+request.getParameter(Constants.SERVLET_EMAIL));
+			
+//			this.message.addMessage("Email "+request.getParameter(Constants.SERVLET_EMAIL)+" autenticado, registo concluído, pode efectuar o seu login.");
 			
 			try {
 				// Reencaminha para a página inicial

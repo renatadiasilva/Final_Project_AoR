@@ -66,5 +66,11 @@ public interface UserManagementInterface {
 	public abstract List<String> getStyle();
 
 	public abstract boolean checkAuthentication(String email);
+
+	public abstract long uploadCV();
+
+	public abstract boolean isCv();
+
+	public abstract long getId();
 	
 }

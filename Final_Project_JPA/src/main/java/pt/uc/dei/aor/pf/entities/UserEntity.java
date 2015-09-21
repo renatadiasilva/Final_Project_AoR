@@ -75,6 +75,10 @@ public class UserEntity implements Serializable {
 	@NotNull
 	@Column(name = "default_role", nullable = false)
 	private String defaultRole;
+	
+	@NotNull
+	@Column(name = "uploaded_cv", nullable = false)
+	private boolean uploadedCV;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "roles",
@@ -131,6 +135,7 @@ public class UserEntity implements Serializable {
 		this.lastName = lastName;
 		this.roles = roles;
 		this.temporaryPassword = false;
+		this.uploadedCV=false;
 	}
 
 	public Long getId() {
@@ -171,6 +176,14 @@ public class UserEntity implements Serializable {
 
 	public void setTemporaryPassword(boolean temporaryPassword) {
 		this.temporaryPassword = temporaryPassword;
+	}
+
+	public boolean isUploadedCV() {
+		return uploadedCV;
+	}
+
+	public void setUploadedCV(boolean uploadedCV) {
+		this.uploadedCV = uploadedCV;
 	}
 
 	public String getFirstName() {

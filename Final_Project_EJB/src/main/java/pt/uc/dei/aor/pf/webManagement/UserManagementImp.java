@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -359,5 +361,24 @@ public class UserManagementImp implements UserManagementInterface {
 		if(this.userBean.findUserByEmail(email).isAuthenticated())return true;
 		return false;
 	}
+
+	@Override
+	public long uploadCV() {
+		this.currentUser.setUploadedCV(true);
+		this.userBean.update(this.currentUser);
+		
+		log.info("CV uploaded, User uploaded, id returned: "+this.currentUser.getEmail());
+		return this.currentUser.getId();
+	}
+
+	@Override
+	public boolean isCv() {
+		return this.currentUser.isUploadedCV();
+	}
+
+	@Override
+	public long getId() {
+		return this.currentUser.getId();
+	}	
 	
 }

@@ -32,6 +32,7 @@ public class UploadFile {
 		System.out.println(extension);
 		
 		try {
+			// 'contexto'/userCV/63.pdf
 			file.write(props.getProperty("user.dir")+"\\"+folder+"\\"+id+extension);
 		} catch (Exception e) {
 			e.printStackTrace();
