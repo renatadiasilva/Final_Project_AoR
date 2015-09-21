@@ -17,7 +17,7 @@
 			<h:panelGrid id="buttonsPositionReports" columns="5">
 
 				<p:commandButton value="Criar relatório"
-					action="#{positionReportsCDI.submissionsByPosition()}"
+					action="#{reportsCDI.submissionsByPosition()}"
 					update="@form, messages" icon="ui-icon-script" />
 
 			</h:panelGrid>
@@ -25,79 +25,67 @@
 			<h:panelGrid id="gridPositionReport" columns="8">
 
 				<p:outputLabel value="Primeira Data: " for="posreport-date1" />
-				<p:calendar id="posreport-date1"
-					value="#{positionReportsCDI.d1}" 
-					pattern="dd/MM/yyyy"
-					readonlyInput="true" navigator="true" 
-					yearRange="c-100:c+100"
-					locale="pt" size="35" />
+				<p:calendar id="posreport-date1" value="#{reportsCDI.d1}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+					yearRange="c-100:c+100" locale="pt" size="35" />
 
 				<p:outputLabel value="Segunda Data: " for="posreport-date2" />
-				<p:calendar id="posreport-date2"
-					value="#{positionReportsCDI.d2}" 
-					pattern="dd/MM/yyyy"
-					readonlyInput="true" navigator="true" 
-					yearRange="c-100:c+100"
-					locale="pt" size="35" />
+				<p:calendar id="posreport-date2" value="#{reportsCDI.d2}"
+					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+					yearRange="c-100:c+100" locale="pt" size="35" />
 
 			</h:panelGrid>
-			<p:dataTable emptyMessage="Nada a mostrar." var="preport"
-				value="#{positionReportsCDI.preports}">
+			<p:dataTable emptyMessage="Nada a mostrar." var="item"
+				value="#{reportsCDI.report}">
 				<f:facet name="header">
-					<h:outputText value="#{positionReportsCDI.tableHeader}" />
-    		    </f:facet>
-
-				<p:subTable var="item" value="#{preport.items}">
-					<p:columnGroup type="header">
-						<p:row>
-							<p:column colspan="7" headerText="Posição" />
-							<p:column rowspan="2" 
-								headerText="Nº Candidaturas submetidas" />
-						</p:row>
-						<p:row>
-							<p:column headerText="Código" />
-							<p:column headerText="Título" />
-							<p:column headerText="Data de Abertura" />
-							<p:column headerText="Estado" />
-							<p:column headerText="Vagas" />
-							<p:column headerText="Empresa" />
-							<p:column headerText="Área Técnica" />
-						</p:row>
-					</p:columnGroup>
-					<p:column>
-						<h:outputText value="#{item.position.positionCode}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{item.position.title}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{item.position.openingDate}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{item.position.status}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{item.position.openings}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{item.position.company}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{item.position.technicalArea}" />
-					</p:column>
-					<p:column>
-						<h:outputText value="#{item.counting}" />
-					</p:column>
-					<p:columnGroup type="footer">
-						<p:row>
-							<p:column colspan="7"
-								footerText="Candidaturas totais: "
-								 style="text-align:right" />
-							<p:column footerText=
-								"#{positionReportsCDI.totalResult}" />
-						</p:row>
-					</p:columnGroup>
-				</p:subTable>
+					<h:outputText value="#{reportsCDI.tableHeader}" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="7" headerText="Posição" />
+						<p:column rowspan="2" headerText="Nº Candidaturas submetidas" />
+					</p:row>
+					<p:row>
+						<p:column headerText="Código" />
+						<p:column headerText="Título" />
+						<p:column headerText="Data de Abertura" />
+						<p:column headerText="Estado" />
+						<p:column headerText="Vagas" />
+						<p:column headerText="Empresa" />
+						<p:column headerText="Área Técnica" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{item.position.positionCode}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.position.title}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.position.openingDate}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.position.status}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.position.openings}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.position.company}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.position.technicalArea}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.measure}" />
+				</p:column>
+				<p:columnGroup type="footer">
+					<p:row>
+						<p:column colspan="7" footerText="Candidaturas totais: "
+							style="text-align:right" />
+						<p:column footerText="#{reportsCDI.totalResult}" />
+					</p:row>
+				</p:columnGroup>
 			</p:dataTable>
 		</h:form>
 
