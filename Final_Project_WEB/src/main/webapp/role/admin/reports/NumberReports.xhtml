@@ -17,7 +17,7 @@
 			<h:panelGrid id="buttonsTimeReports" columns="5">
 
 				<p:commandButton value="Criar relatório"
-					action="#{submissionReportsCDI.averageTimeToBeHired()}"
+					action="#{reportsCDI.averageTimeToBeHired()}"
 					update="@form, messages" icon="ui-icon-script" />
 
 			</h:panelGrid>
@@ -25,40 +25,40 @@
 			<h:panelGrid id="gridTimeSearch" columns="8">
 
 				<p:outputLabel value="Primeira Data: " for="time-date1" />
-				<p:calendar id="time-date1" value="#{submissionReportsCDI.d1}"
+				<p:calendar id="time-date1" value="#{reportsCDI.d1}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 					yearRange="c-100:c+100" locale="pt" size="35" />
 
 				<p:outputLabel value="Segunda Data: " for="time-date2" />
-				<p:calendar id="time-date2" value="#{submissionReportsCDI.d2}"
+				<p:calendar id="time-date2" value="#{reportsCDI.d2}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 					yearRange="c-100:c+100" locale="pt" size="35" />
 
 				<p:outputLabel value="Período (dia/mês/ano): " for="time-period" />
-				<p:inputText id="time-period" value="#{submissionReportsCDI.period}"
+				<p:inputText id="time-period" value="#{reportsCDI.period}"
 					size="35" />
 
 			</h:panelGrid>
 			
 			<p:dataTable emptyMessage="Nada a mostrar." var="item"
-				value="#{submissionReportsCDI.treport}">
+				value="#{reportsCDI.report}">
 				<f:facet name="header">
-					<h:outputText value="#{submissionReportsCDI.tableHeader}"/>
+					<h:outputText value="#{reportsCDI.tableHeader}"/>
     		    </f:facet>
 
-				<p:column headerText="#{submissionReportsCDI.periodHeader}">
+				<p:column headerText="#{reportsCDI.periodHeader}">
 					<h:outputText value="#{item.dateHeader}" />
 				</p:column>
-				<p:column headerText="#{submissionReportsCDI.measureHeader}">
-					<h:outputText value="#{item.time}" />
+				<p:column headerText="#{reportsCDI.measureHeader}">
+					<h:outputText value="#{item.measure}" />
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
 						<p:column 
-							footerText="#{submissionReportsCDI.measureFooter} "
+							footerText="#{reportsCDI.measureFooter} "
 							style="text-align:right" />
 						<p:column footerText=
-							"#{submissionReportsCDI.totalResult}" />
+							"#{reportsCDI.totalResult}" />
 					</p:row>
 				</p:columnGroup>
 			</p:dataTable>

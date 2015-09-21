@@ -20,10 +20,10 @@ import pt.uc.dei.aor.pf.entities.PositionEntity;
 
 @Named
 @RequestScoped
-public class SubmissionReportsCDI {
+public class ReportsCDI {
 
 	private static final Logger log = 
-			LoggerFactory.getLogger(SubmissionReportsCDI.class);
+			LoggerFactory.getLogger(ReportsCDI.class);
 
 //	@Inject
 //	private ReportManager report;
@@ -45,8 +45,26 @@ public class SubmissionReportsCDI {
 	private String totalResult;
 	private String periodHeader;
 	private String measureFooter;
-	private List<SubmissionReport> sreports = new ArrayList<SubmissionReport>();
-	private List<TimeReportItem> treport = new ArrayList<TimeReportItem>();
+	private List<ReportItem> report = new ArrayList<ReportItem>();
+
+	// counts submission by position between two dates
+	public void submissionsByPosition() {
+		log.info("Creating report with number of submissions by position");
+
+		tableHeader = "Número de candidaturas por posição (posições "
+				+ "abertas entre "+d1+" e "+d2+")";
+
+		List<Object[]> result = positionEJB.countSubmissionsByPosition(
+				d1, d2);
+
+		for (Object[] ele : result)
+			report.add(new ReportItem(positionEJB.find((Long) ele[0]),
+					"", longToInt((Long) ele[1]), ""));
+//			preport.add(new PositionReportItem(
+//					positionEJB.find((Long) ele[0]), (Long) ele[1]));
+
+		totalResult = summing(report)+"";
+	}
 
 	// average time to be hired by period between two dates
 	public void averageTimeToBeHired() {
@@ -80,9 +98,10 @@ public class SubmissionReportsCDI {
 			}
 			//			if (p == Constants.DAILY) dateH = ((Date) o[1])+"";
 			dateH += doubleToInt((Double) o[1]);
-			treport.add(new TimeReportItem(dateH, doubleToInt((Double) o[0])));
+			report.add(new ReportItem(null, dateH,
+					doubleToInt((Double) o[0]), ""));
 		}
-		int avg = average(treport);
+		int avg = average(report);
 		totalResult = (avg >= 0)? avg+"" : Constants.REPORT_NO_HIRED;
 
 	}
@@ -143,6 +162,33 @@ public class SubmissionReportsCDI {
 //				Constants.REPORT_SUB_CNTHIRED, null);
 		// if 0, no submissions, no report!
 	}
+	
+	public void rejectedCountByPosition() {
+		log.info("Creating report with number of rejected submissions"
+				+ " by position");
+		log.debug("From "+d1+" to "+d2+" with period "+period);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_POS_REJECPOS, null);
+		// if -1, no valid submissions, no report!	
+	}
+
+	public void proposalCountByPosition() {
+		log.info("Creating report with number of presented proposal"
+				+ " by position");
+		log.debug("From "+d1+" to "+d2+" with period "+period);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_POS_PROPOPOS, null);
+		// if -1, no valid submissions, no report!	
+	}
+
+	//on hold e open??
+	public void averageTimeToClose() {
+		log.info("Creating report with average time to close a positions");
+		log.debug("From "+d1+" to "+d2+" with period "+period);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_POS_AVGCLOSE, null);
+		// if -1, no valid submissions, no report!	
+	}
 
 	// complicado?
 	public void submissionDetailsOfPosition() {
@@ -157,6 +203,20 @@ public class SubmissionReportsCDI {
 //					Constants.REPORT_POS_SUBMIPOS, null);
 			// if 0, no submissions, no report!
 		} else log.info("No position with id "+id);
+	}
+
+	// private methods
+	private int summing(List<ReportItem> list) {
+		// compute sum of all quantities
+		int sum = 0;
+		for(ReportItem item : list) {
+			sum += item.getMeasure();
+		}
+		return sum;
+	}
+
+	private int longToInt(Long value) {
+		return value.intValue();
 	}
 
 	// always look for info in the hole month if period is montly
@@ -191,12 +251,12 @@ public class SubmissionReportsCDI {
 	}
 
 	// private methods
-	private int average(List<TimeReportItem> list) {
+	private int average(List<ReportItem> list) {
 		// compute total average
 		double avg = 0.0;
 		int count = 0;
-		for(TimeReportItem item : list) {
-			avg += item.getTime();
+		for(ReportItem item : list) {
+			avg += item.getMeasure();
 			count++;
 		}
 
@@ -268,14 +328,6 @@ public class SubmissionReportsCDI {
 		this.d2 = d2;
 	}
 
-	public List<SubmissionReport> getSreports() {
-		return sreports;
-	}
-
-	public void setSreports(List<SubmissionReport> sreports) {
-		this.sreports = sreports;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -332,12 +384,12 @@ public class SubmissionReportsCDI {
 		this.totalResult = totalResult;
 	}
 
-	public List<TimeReportItem> getTreport() {
-		return treport;
+	public List<ReportItem> getReport() {
+		return report;
 	}
 
-	public void setTreport(List<TimeReportItem> treport) {
-		this.treport = treport;
+	public void setReport(List<ReportItem> report) {
+		this.report = report;
 	}
 
 }
