@@ -138,9 +138,9 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 
 	@Override
 	public List<Object[]> countSubmissionsByDate(Date date1, Date date2,
-			char p) {
+			char p, String r) {
 		log.info("Computing number of submissions between two dates");
-		return submissionDAO.countSubmissionsByDate(date1, date2, p);
+		return submissionDAO.countSubmissionsByDate(date1, date2, p, r);
 	}
 
 	private void isSubmissionComplete(SubmissionEntity submission) {

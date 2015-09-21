@@ -34,6 +34,6 @@ public interface SubmissionEJBInterface {
 	public abstract List<Object[]> averageTimeToHired(Date date1, Date date2,
 			char p);
 	public abstract List<Object[]> countSubmissionsByDate(Date date1,
-			Date date2, char p);
+			Date date2, char p, String r);
 	
 }

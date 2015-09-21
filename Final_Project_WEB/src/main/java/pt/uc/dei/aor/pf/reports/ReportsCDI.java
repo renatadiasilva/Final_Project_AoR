@@ -110,12 +110,7 @@ public class ReportsCDI implements Serializable {
 	}
 
 	// candidate counts by period between two dates
-	// tirar thorws...
-	public void submissionCountResults() throws ParseException {
-		
-		d1 = ftDate.parse("2015-07-01");
-		d2 = ftDate.parse("2015-09-30");
-		
+	public void submissionCountResults() {
 		
 		log.info("Creating report with submission countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
@@ -144,7 +139,8 @@ public class ReportsCDI implements Serializable {
 		measureFooter = "Candidaturas total: ";
 
 		//Nota: só são apresentados resultados quando há candidaturas
-		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p);
+		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
+				"");
 
 		// extract date header and average times
 		report.clear();
@@ -161,18 +157,84 @@ public class ReportsCDI implements Serializable {
 	public void spontaneousCountResults() {
 		log.info("Creating report with spontaneous submissions");
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
-		//		List<Object[]> list = report.reportCounting(d1, d2, period,
-		//				Constants.REPORT_SUB_CNTSPONT, null);
-		// if 0, no spontaneous submissions, no report!
-	}
+
+		// all periods: daily, monthly, or yearly
+		char p = periodShort();
+		
+		// text for tables
+		switch(p) {
+		case Constants.DAILY:
+			periodHeader = Constants.PERIOD_DHEADER;
+			break;
+		case Constants.MONTHLY:
+			periodHeader = Constants.PERIOD_MHEADER;
+			break;
+		case Constants.YEARLY:
+			periodHeader = Constants.PERIOD_YHEADER;
+			break;
+		}
+		prepareDates();
+		tableHeader = "Número de Candidaturas Espontâneas "
+				+"submetidas entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+" (por "
+				+periodHeader.substring(0, 3)+")";
+		measureHeader = "Nº Candidaturas Espontâneas";
+		measureFooter = "Candidaturas Espontâneas total: ";
+
+		//Nota: só são apresentados resultados quando há candidaturas
+		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
+				" AND spontaneous = TRUE");
+
+		// extract date header and average times
+		report.clear();
+		for (Object[] o: list)
+			report.add(new ReportItem(null, makeDateHeader(p, o),
+					bigIntToInt((BigInteger) o[0]), ""));
+		
+		// compute overall average
+		totalResult = summing(report)+"";
+}
 
 	// reject submission counts/rejected reasons by period between two dates
 	public void rejectedCountResults() {
 		log.info("Creating report with reject candidates countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		//		List<Object[]> list = report.reportCounting(d1, d2, period,
-		//				Constants.REPORT_SUB_CNTREJEC, null);
-		// if 0, no rejected submitions, no report!
+
+		// all periods: daily, monthly, or yearly
+		char p = periodShort();
+		
+		// text for tables
+		switch(p) {
+		case Constants.DAILY:
+			periodHeader = Constants.PERIOD_DHEADER;
+			break;
+		case Constants.MONTHLY:
+			periodHeader = Constants.PERIOD_MHEADER;
+			break;
+		case Constants.YEARLY:
+			periodHeader = Constants.PERIOD_YHEADER;
+			break;
+		}
+		prepareDates();
+		tableHeader = "Número de Candidaturas Rejeitadas "
+				+"entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+" (por "
+				+periodHeader.substring(0, 3)+")";
+		measureHeader = "Nº Candidaturas Espontâneas";
+		measureFooter = "Candidaturas Espontâneas total: ";
+
+		//Nota: só são apresentados resultados quando há candidaturas
+		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
+				" AND spontaneous = TRUE");
+
+		// extract date header and average times
+		report.clear();
+		for (Object[] o: list)
+			report.add(new ReportItem(null, makeDateHeader(p, o),
+					bigIntToInt((BigInteger) o[0]), ""));
+		
+		// compute overall average
+		totalResult = summing(report)+"";
 	}
 
 	// presented proposal counts/results by period between two dates (file?)
@@ -187,6 +249,10 @@ public class ReportsCDI implements Serializable {
 	// complicado??
 	// submission source counts by period between two dates (file?)
 	public void sourceCount() {
+//		d1 = ftDate.parse("2015-07-01");
+//		d2 = ftDate.parse("2015-09-30");
+		
+		
 		log.info("Creating report with submissions source countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
 		//		List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,
@@ -398,7 +464,7 @@ public class ReportsCDI implements Serializable {
 	// getters and setters
 
 	public Date getD1() {
-		return d1;
+		return new Date();
 	}
 
 	public void setD1(Date d1) {
@@ -406,7 +472,7 @@ public class ReportsCDI implements Serializable {
 	}
 
 	public Date getD2() {
-		return d2;
+		return new Date();
 	}
 
 	public void setD2(Date d2) {

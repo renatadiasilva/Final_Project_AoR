@@ -100,31 +100,45 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> countSubmissionsByDate(Date date1, Date date2,
-			char period) {
+			char period, String restriction) {
 		
-		String queryS;
+		String m1 = "", m2 = "";
 		switch (period) {
 		case Constants.DAILY: 
-			queryS = "SELECT COUNT(*), "
-					+ " date FROM submissions "
-					+ " WHERE date BETWEEN :date1 AND :date2"
-					+ " GROUP BY date ORDER BY date";
+			m1 = "date";
+			m2 = "date";
+//			queryS = "SELECT COUNT(*), "
+//					+ " date FROM submissions "
+//					+ " WHERE date BETWEEN :date1 AND :date2"
+//					+ " GROUP BY date ORDER BY date";
 			break;
 		case Constants.MONTHLY: 
-			queryS = "SELECT COUNT(*),"
-					+ " DATE_PART(\'year\', date) AS y,"
-					+ " DATE_PART(\'month\', date) AS m FROM submissions "
-					+ " WHERE date BETWEEN :date1 AND :date2"
-					+ " GROUP BY y, m ORDER BY y, m";
+			m1 = "DATE_PART(\'year\', date) AS y,"
+					+ " DATE_PART(\'month\', date) AS m";
+			m2 = "y, m";
+//			queryS = "SELECT COUNT(*),"
+//					+ " DATE_PART(\'year\', date) AS y,"
+//					+ " DATE_PART(\'month\', date) AS m FROM submissions "
+//					+ " WHERE date BETWEEN :date1 AND :date2"
+//					+ " GROUP BY y, m ORDER BY y, m";
 			break;
 		case Constants.YEARLY:
-			queryS = "SELECT COUNT(*),"
-					+ " DATE_PART(\'year\', date) AS y FROM submissions "
-					+ " WHERE date BETWEEN :date1 AND :date2"
-					+ " GROUP BY y ORDER BY y";
+			m1 = "DATE_PART(\'year\', date) AS y";
+			m2 = "y";
+//			queryS = "SELECT COUNT(*),"
+//					+ " DATE_PART(\'year\', date) AS y FROM submissions "
+//					+ " WHERE date BETWEEN :date1 AND :date2"
+//					+ " GROUP BY y ORDER BY y";
 			break;
 		default: return null; // error
 		}
+		
+		String queryS = "SELECT COUNT(*), "+m1
+				+ " FROM submissions "
+				+ " WHERE date BETWEEN :date1 AND :date2"
+				+ restriction
+				+ " GROUP BY "+m2+" ORDER BY "+m2;
+		
 		Query query = em.createNativeQuery(queryS);
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
@@ -135,8 +149,8 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 	public List<Object[]> averageTimeToHired(Date date1, Date date2,
 			char period) {
 		
-		String queryS;
-		switch (period) {
+		String m1 = "", m2 = "";
+//		switch (period) {
 		// not applicable
 //		case Constants.DAILY: 
 //			queryS = "SELECT AVG(DATE_PART(\'DAY\', "
@@ -146,25 +160,35 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 //					+ " AND hired_date IS NOT NULL"
 //					+ " GROUP BY date ORDER BY date";
 //			break;
-		case Constants.MONTHLY: 
-			queryS = "SELECT AVG(DATE_PART(\'day\', "
-					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
-					+ " DATE_PART(\'year\', date) AS y,"
-					+ " DATE_PART(\'month\', date) AS m FROM submissions "
-					+ " WHERE date BETWEEN :date1 AND :date2"
-					+ " AND hired_date IS NOT NULL"
-					+ " GROUP BY y, m ORDER BY y, m";
-			break;
-		case Constants.YEARLY:
-			queryS = "SELECT AVG(DATE_PART(\'day\', "
-					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
-					+ " DATE_PART(\'year\', date) AS y FROM submissions "
-					+ " WHERE date BETWEEN :date1 AND :date2"
-					+ " AND hired_date IS NOT NULL"
-					+ " GROUP BY y ORDER BY y";
-			break;
-		default: return null; // error
+//		case Constants.MONTHLY: 
+		if (period == Constants.MONTHLY) {
+			m1 = ", DATE_PART(\'month\', date) AS m";
+			m2 = ", m";
+//			queryS = "SELECT AVG(DATE_PART(\'day\', "
+//					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
+//					+ " DATE_PART(\'year\', date) AS y,"
+//					+ " DATE_PART(\'month\', date) AS m FROM submissions "
+//					+ " WHERE date BETWEEN :date1 AND :date2"
+//					+ " AND hired_date IS NOT NULL"
+//					+ " GROUP BY y, m ORDER BY y, m";
+//			break;
+//		case Constants.YEARLY:
+//			queryS = "SELECT AVG(DATE_PART(\'day\', "
+//					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
+//					+ " DATE_PART(\'year\', date) AS y FROM submissions "
+//					+ " WHERE date BETWEEN :date1 AND :date2"
+//					+ " AND hired_date IS NOT NULL"
+//					+ " GROUP BY y ORDER BY y";
+//			break;
+//		default: return null; // error
 		}
+		String queryS = "SELECT AVG(DATE_PART(\'day\', "
+				+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
+				+ " DATE_PART(\'year\', date) AS y"+m1
+				+ " FROM submissions "
+				+ " WHERE date BETWEEN :date1 AND :date2"
+				+ " AND hired_date IS NOT NULL"
+				+ " GROUP BY y"+m2+" ORDER BY y"+m2;
 		Query query = em.createNativeQuery(queryS);
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);

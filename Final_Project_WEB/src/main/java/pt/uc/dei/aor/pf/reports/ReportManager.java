@@ -265,20 +265,6 @@ public class ReportManager {
 			case 3:
 			case 4:
 			case 5:
-				// get list of spontaneous submissions 
-				// of the day, month, or year
-				slist = submissionEJB.findSpontaneousSubmissionsByDate(
-						startDate.getTime(), interDate.getTime());
-
-				// count the number of spontaneous submissions
-				// of the day, month, or year
-				if (slist != null) n = intToLong(slist.size());
-				else n = 0L; // no submissions
-				counts.add(n);
-
-				// update overall number of submissions
-				total += n;
-				break;
 			case 6:
 				// get list of rejected submissions of the day, month, or year
 				slist = submissionEJB.findRejectedSubmissions(
