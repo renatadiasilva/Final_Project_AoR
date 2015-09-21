@@ -14,9 +14,7 @@
 			<p:dialog header="Upload CV" widgetVar="uploadCV" draggable="false"
 				resizable="false" modal="true">
 
-				<p:messages />
-
-				<p:fileUpload id="file-upload" update="uploadCVForm"
+				<p:fileUpload id="file-upload" update="uploadCVForm messages headerMenu"
 					label="Escolha o CV (*.pdf)" uploadLabel="Submeter CV"
 					cancelLabel="Cancelar" required="true"
 					requiredMessage="Submeta um CV"
@@ -27,7 +25,7 @@
 					allowTypes="/(\.|\/)(pdf)$/" />
 
 				<p:commandButton value="Fechar" onclick="PF('uploadCV').hide();"
-					icon="ui-icon-close" style="width:100%" ajax="false" />
+					icon="ui-icon-close" style="width:100%" />
 
 			</p:dialog>
 
