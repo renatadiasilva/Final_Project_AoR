@@ -6,11 +6,11 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="Título">
-	Admin - Relatórios de Tempos Médios - #{styleSessionManagement.companyName}
+	Admin - Relatórios Gerais - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Relatórios de tempos médios</h1>
+		<h1>Relatórios gerais</h1>
 
 		<h:form id="timeReports">
 
@@ -49,12 +49,13 @@
 				<p:column headerText="#{submissionReportsCDI.periodHeader}">
 					<h:outputText value="#{item.dateHeader}" />
 				</p:column>
-				<p:column headerText="Tempo médio (em dias)">
+				<p:column headerText="#{submissionReportsCDI.measureHeader}">
 					<h:outputText value="#{item.time}" />
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
-						<p:column footerText="Tempo médio total: "
+						<p:column 
+							footerText="#{submissionReportsCDI.measureFooter} "
 							style="text-align:right" />
 						<p:column footerText=
 							"#{submissionReportsCDI.totalResult}" />

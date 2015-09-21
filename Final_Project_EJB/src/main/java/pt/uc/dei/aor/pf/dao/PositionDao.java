@@ -238,4 +238,12 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				parameters);
 	}
 
+	public List<Object[]> countSubmissionsByPosition(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return super.findSomeResultsList("Position.countSubmissionsByPosition",
+				parameters);	
+	}
+
 }

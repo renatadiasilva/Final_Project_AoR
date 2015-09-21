@@ -10,7 +10,6 @@ import javax.persistence.Query;
 
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
@@ -97,16 +96,6 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		parameters.put("user", candidate);
 		return super.findSomeResults("Submission.findSubmissionsOfCandidate",
 				parameters);	
-	}
-
-	public List<Object[]> countSubmissionsByPosition(Date date1, Date date2) {
-		
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("date1", date1);
-		parameters.put("date2", date2);
-		return super.findSomeResultsList(
-				"Submission.countSubmissionsByPosition", parameters);	
-		
 	}
 
 	@SuppressWarnings("unchecked")

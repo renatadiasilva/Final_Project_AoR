@@ -6,66 +6,53 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="Título">
-	Admin - Relatórios de Candidaturas - #{styleSessionManagement.companyName}
+	Admin - Relatórios por Posições - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Relatórios de candidaturas</h1>
+		<h1>Relatórios por Posições</h1>
 
-		<h:form id="submissionReports">
+		<h:form id="positionReports">
 
-			<h:panelGrid id="buttonsSubmissionReports" columns="5">
+			<h:panelGrid id="buttonsPositionReports" columns="5">
 
 				<p:commandButton value="Criar relatório"
-					action="#{submissionReportsCDI.submissionsByPosition()}"
+					action="#{positionReportsCDI.submissionsByPosition()}"
 					update="@form, messages" icon="ui-icon-script" />
 
 			</h:panelGrid>
 
-			<h:panelGrid id="gridSubReportSearch" columns="8">
+			<h:panelGrid id="gridPositionReport" columns="8">
 
-				<p:outputLabel value="Primeira Data: " for="subreport-date1" />
-				<p:calendar id="subreport-date1"
-					value="#{submissionReportsCDI.d1}" 
+				<p:outputLabel value="Primeira Data: " for="posreport-date1" />
+				<p:calendar id="posreport-date1"
+					value="#{positionReportsCDI.d1}" 
 					pattern="dd/MM/yyyy"
 					readonlyInput="true" navigator="true" 
 					yearRange="c-100:c+100"
 					locale="pt" size="35" />
 
-				<p:outputLabel value="Segunda Data: " for="subreport-date2" />
-				<p:calendar id="subreport-date2"
-					value="#{submissionReportsCDI.d2}" 
+				<p:outputLabel value="Segunda Data: " for="posreport-date2" />
+				<p:calendar id="posreport-date2"
+					value="#{positionReportsCDI.d2}" 
 					pattern="dd/MM/yyyy"
 					readonlyInput="true" navigator="true" 
 					yearRange="c-100:c+100"
 					locale="pt" size="35" />
-
-				<p:outputLabel value="Id: " for="subreport-id" />
-				<p:inputText id="subreport-id"
-					value="#{submissionReportsCDI.id}"
-					size="35" />
-
-				<p:outputLabel value="Período (d/m/a): "
-					 for="subreport-period" />
-				<p:inputText id="subreport-period"
-					value="#{submissionReportsCDI.period}"
-					size="35" />
 
 			</h:panelGrid>
 			<p:dataTable emptyMessage="Nada a mostrar." var="preport"
-				value="#{submissionReportsCDI.preports}">
+				value="#{positionReportsCDI.preports}">
 				<f:facet name="header">
-					Relatório candidaturas por posição
+					<h:outputText value="#{positionReportsCDI.tableHeader}" />
     		    </f:facet>
 
 				<p:subTable var="item" value="#{preport.items}">
-<!-- 					<f:facet name="header"> -->
-<!-- 						<h:outputText value="#{submissionReportsCDI.header}" /> -->
-<!-- 					</f:facet> -->
 					<p:columnGroup type="header">
 						<p:row>
 							<p:column colspan="7" headerText="Posição" />
-							<p:column rowspan="2" headerText="Nº Candidaturas" />
+							<p:column rowspan="2" 
+								headerText="Nº Candidaturas submetidas" />
 						</p:row>
 						<p:row>
 							<p:column headerText="Código" />
@@ -107,7 +94,7 @@
 								footerText="Candidaturas totais: "
 								 style="text-align:right" />
 							<p:column footerText=
-								"#{submissionReportsCDI.totalResult}" />
+								"#{positionReportsCDI.totalResult}" />
 						</p:row>
 					</p:columnGroup>
 				</p:subTable>

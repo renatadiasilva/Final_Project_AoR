@@ -1,7 +1,6 @@
 package pt.uc.dei.aor.pf.reports;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -27,8 +25,8 @@ public class SubmissionReportsCDI {
 	private static final Logger log = 
 			LoggerFactory.getLogger(SubmissionReportsCDI.class);
 
-	@Inject
-	private ReportManager report;
+//	@Inject
+//	private ReportManager report;
 
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
@@ -39,35 +37,16 @@ public class SubmissionReportsCDI {
 	// data input fields
 	private Date d1, d2;
 	private Long id;
-	private String period; // mudar?
+	private String period;
 
 	// results
+	private String measureHeader;
 	private String tableHeader;
 	private String totalResult;
 	private String periodHeader;
+	private String measureFooter;
 	private List<SubmissionReport> sreports = new ArrayList<SubmissionReport>();
-	private List<PositionReport> preports = new ArrayList<PositionReport>();
 	private List<TimeReportItem> treport = new ArrayList<TimeReportItem>();
-
-	// tirar (detalhar por período??)
-	public void submissionsByPosition() {
-		log.info("Creating report with number of submissions by position");
-
-		tableHeader = "Número de Candidaturas por posição";
-		//period
-		List<Object[]> result = submissionEJB.countSubmissionsByPosition(
-				d1, d2);
-		List<PositionReportItem> resultItems =
-				new ArrayList<PositionReportItem>();
-
-		for (Object[] ele : result)
-			resultItems.add(new PositionReportItem(
-					positionEJB.find((Long) ele[0]), (Long) ele[1]));
-
-		preports.add(new PositionReport(resultItems));
-
-		totalResult = summing(preports.get(0).getItems())+"";
-	}
 
 	// average time to be hired by period between two dates
 	public void averageTimeToBeHired() {
@@ -77,7 +56,9 @@ public class SubmissionReportsCDI {
 		prepareDates();
 		tableHeader = "Tempo Médio para Contratação (candidaturas "
 				+ "submetidas entre "+d1+" e "+d2+")";
-
+		measureHeader = "Tempo médio (em dias)";
+		measureFooter = "Tempo médio total: ";
+		
 		// only periods monthly and yearly
 		char p = periodShort(period);
 		p = (p == Constants.DAILY)? p = Constants.MONTHLY : p;
@@ -110,8 +91,8 @@ public class SubmissionReportsCDI {
 	public void submisssionCountResults() {
 		log.info("Creating report with candidate countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_SUB_CNTSUBMI, null);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_SUB_CNTSUBMI, null);
 		// if 0, no candidates, no report!
 	}
 
@@ -119,8 +100,8 @@ public class SubmissionReportsCDI {
 	public void spontaneousCountResults() {
 		log.info("Creating report with spontaneous submissions");
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_SUB_CNTSPONT, null);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_SUB_CNTSPONT, null);
 		// if 0, no spontaneous submissions, no report!
 	}
 
@@ -128,8 +109,8 @@ public class SubmissionReportsCDI {
 	public void rejectedCountResults() {
 		log.info("Creating report with reject candidates countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_SUB_CNTREJEC, null);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_SUB_CNTREJEC, null);
 		// if 0, no rejected submitions, no report!
 	}
 
@@ -137,31 +118,33 @@ public class SubmissionReportsCDI {
 	public void proposalCountResults() {
 		log.info("Creating report with presented proposal countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_SUB_CNTPROPO, null);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_SUB_CNTPROPO, null);
 		// if 0, no presented proposals, no report!
 	}
 
+	// complicado??
 	// submission source counts by period between two dates (file?)
 	public void sourceCount() {
 		log.info("Creating report with submissions source countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,
-				Constants.SOURCE_FACEBOOK, Constants.SOURCE_LINKEDIN, 
-				Constants.SOURCE_NETEMPREGO); // more?
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_SUB_CNTSOURC, sources);
+//		List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,
+//				Constants.SOURCE_FACEBOOK, Constants.SOURCE_LINKEDIN, 
+//				Constants.SOURCE_NETEMPREGO); // more?
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_SUB_CNTSOURC, sources);
 		// if 0, no submissions, no report!
 	}
 
 	public void hiredCountResuls() {
 		log.info("Creating report with hired people countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);				
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_SUB_CNTHIRED, null);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_SUB_CNTHIRED, null);
 		// if 0, no submissions, no report!
 	}
 
+	// complicado?
 	public void submissionDetailsOfPosition() {
 		log.info("Creating report with detailed submissions info "
 				+ "of a given positions");
@@ -170,8 +153,8 @@ public class SubmissionReportsCDI {
 		if (position != null) {
 			// ver se é para usar... cuidado data null
 			log.debug("Position "+position.getPositionCode());				
-			List<Object[]> list = report.reportCounting(null, null, "noperiod",
-					Constants.REPORT_POS_SUBMIPOS, null);
+//			List<Object[]> list = report.reportCounting(null, null, "noperiod",
+//					Constants.REPORT_POS_SUBMIPOS, null);
 			// if 0, no submissions, no report!
 		} else log.info("No position with id "+id);
 	}
@@ -208,15 +191,6 @@ public class SubmissionReportsCDI {
 	}
 
 	// private methods
-	private int summing(List<PositionReportItem> list) {
-		// compute sum of all quantities
-		int sum = 0;
-		for(PositionReportItem item : list) {
-			sum += item.getCounting();
-		}
-		return sum;
-	}
-
 	private int average(List<TimeReportItem> list) {
 		// compute total average
 		double avg = 0.0;
@@ -322,16 +296,24 @@ public class SubmissionReportsCDI {
 		return periodHeader;
 	}
 
+	public String getMeasureHeader() {
+		return measureHeader;
+	}
+
+	public void setMeasureHeader(String measureHeader) {
+		this.measureHeader = measureHeader;
+	}
+
 	public void setPeriodHeader(String header) {
 		this.periodHeader = header;
 	}
 
-	public List<PositionReport> getPreports() {
-		return preports;
+	public String getMeasureFooter() {
+		return measureFooter;
 	}
 
-	public void setPreports(List<PositionReport> preports) {
-		this.preports = preports;
+	public void setMeasureFooter(String measureFooter) {
+		this.measureFooter = measureFooter;
 	}
 
 	public String getTableHeader() {

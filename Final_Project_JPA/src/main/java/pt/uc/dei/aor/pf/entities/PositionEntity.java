@@ -46,6 +46,14 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Position.findOpenPositionsManagedByUser",
 			query = "SELECT p FROM PositionEntity p WHERE"
 					+ " p.positionManager = :user AND p.status = :status"),
+	@NamedQuery(name = "Position.countSubmissionsByPosition",
+			query = "SELECT s.position.id, COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.position IS NOT NULL AND"
+					+ " s.position.openingDate BETWEEN :date1 AND :date2"
+					+ " GROUP BY s.position.id, s.position.openingDate,"
+					+ " s.position.positionCode"
+					+ " ORDER BY s.position.openingDate,"
+					+ " s.position.positionCode"),
 })
 public class PositionEntity implements Serializable {
 

@@ -131,15 +131,7 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 	
 	@Override
-	public List<Object[]> countSubmissionsByPosition(Date date1,
-			Date date2) {
-		log.info("Counting submissions by position");
-		return submissionDAO.countSubmissionsByPosition(date1, date2);
-	}
-
-	@Override
 	public List<Object[]> averageTimeToHired(Date date1, Date date2, char p) {
-		// TODO Auto-generated method stub
 		log.info("Computing the average time to Hired between two dates");
 		return submissionDAO.averageTimeToHired(date1, date2, p);
 	}

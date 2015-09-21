@@ -6,14 +6,12 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
-import pt.uc.dei.aor.pf.constants.Constants;
 
 @Named
 @RequestScoped
@@ -25,49 +23,44 @@ public class PositionReportsCDI {
 	@EJB
 	private PositionEJBInterface positionEJB;
 
-	@Inject
-	private ReportManager report;
-
-	private List<SubmissionReport> sreports = new ArrayList<SubmissionReport>();
+	// results
+	private String tableHeader;
+	private String totalResult;
+	private String periodHeader;
+	private List<PositionReport> preports = new ArrayList<PositionReport>();
 
 	// data input fields
 	private Date d1, d2;
 	private Long id;
 	private String period;
 
-	// PositionReports.java
 	public void submissionsByPosition() {
 		log.info("Creating report with number of submissions by position");
 
-		//period
-		//		List<Object[]> result = submissionEJB.countSubmissionsByPosition(
-		//				date1, date2);
-		//		List<SubmissionReportItem> resultItems =
-		//				new ArrayList<SubmissionReportItem>();
-		//
-		//		for (Object[] ele : result)
-		//			resultItems.add(new SubmissionReportItem(
-		//					positionEJB.find((Long) ele[0]), (Long) ele[1]));
-		//
-		//		SubmissionReport sreport = 
-		//				new SubmissionReport("Candidatos por posição", resultItems);
-		//
-		//		sreports.add(sreport);
+		tableHeader = "Número de candidaturas por posição (posições "
+				+ "abertas entre "+d1+" e "+d2+")";
 
-		log.debug("From "+d1+" to "+d2+" with period "+period);
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_POS_SUBMIPOS, null);
-		// if -1, no valid submissions, no report!	
+		List<Object[]> result = positionEJB.countSubmissionsByPosition(
+				d1, d2);
+		List<PositionReportItem> resultItems =
+				new ArrayList<PositionReportItem>();
+
+		for (Object[] ele : result)
+			resultItems.add(new PositionReportItem(
+					positionEJB.find((Long) ele[0]), (Long) ele[1]));
+
+		preports.add(new PositionReport(resultItems));
+
+		totalResult = summing(preports.get(0).getItems())+"";
 	}
 
 
-	// pôr na PositionReports
 	public void rejectedCountByPosition() {
 		log.info("Creating report with number of rejected submissions"
 				+ " by position");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_POS_REJECPOS, null);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_POS_REJECPOS, null);
 		// if -1, no valid submissions, no report!	
 	}
 
@@ -75,8 +68,8 @@ public class PositionReportsCDI {
 		log.info("Creating report with number of presented proposal"
 				+ " by position");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_POS_PROPOPOS, null);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_POS_PROPOPOS, null);
 		// if -1, no valid submissions, no report!	
 	}
 
@@ -84,20 +77,22 @@ public class PositionReportsCDI {
 	public void averageTimeToClose() {
 		log.info("Creating report with average time to close a positions");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
-		List<Object[]> list = report.reportCounting(d1, d2, period,
-				Constants.REPORT_POS_AVGCLOSE, null);
+//		List<Object[]> list = report.reportCounting(d1, d2, period,
+//				Constants.REPORT_POS_AVGCLOSE, null);
 		// if -1, no valid submissions, no report!	
+	}
+	
+	// private methods
+	private int summing(List<PositionReportItem> list) {
+		// compute sum of all quantities
+		int sum = 0;
+		for(PositionReportItem item : list) {
+			sum += item.getCounting();
+		}
+		return sum;
 	}
 
 	// getters e setters
-
-	public List<SubmissionReport> getSreports() {
-		return sreports;
-	}
-
-	public void setSreports(List<SubmissionReport> sreports) {
-		this.sreports = sreports;
-	}
 
 	public Long getId() {
 		return id;
@@ -133,6 +128,46 @@ public class PositionReportsCDI {
 
 	public void setD2(Date d2) {
 		this.d2 = d2;
+	}
+
+
+	public String getTableHeader() {
+		return tableHeader;
+	}
+
+
+	public void setTableHeader(String tableHeader) {
+		this.tableHeader = tableHeader;
+	}
+
+
+	public String getTotalResult() {
+		return totalResult;
+	}
+
+
+	public void setTotalResult(String totalResult) {
+		this.totalResult = totalResult;
+	}
+
+
+	public String getPeriodHeader() {
+		return periodHeader;
+	}
+
+
+	public void setPeriodHeader(String periodHeader) {
+		this.periodHeader = periodHeader;
+	}
+
+
+	public List<PositionReport> getPreports() {
+		return preports;
+	}
+
+
+	public void setPreports(List<PositionReport> preports) {
+		this.preports = preports;
 	}
 
 }

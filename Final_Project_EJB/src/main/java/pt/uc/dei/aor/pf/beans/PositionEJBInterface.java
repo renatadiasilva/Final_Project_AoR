@@ -54,5 +54,7 @@ public interface PositionEJBInterface {
 			UserEntity manager);
 	public List<PositionEntity> findOpenPositionsManagedByUser(
 			UserEntity manager);
+	public abstract List<Object[]> countSubmissionsByPosition(Date date1,
+			Date date2);
 
 }

@@ -214,6 +214,13 @@ public class PositionEJBImp implements PositionEJBInterface {
 		log.info("Finding open positions managed by a user");
 		return positionDAO.findOpenPositionsManagedByUser(manager);
 	}
+	
+	@Override
+	public List<Object[]> countSubmissionsByPosition(Date date1,
+			Date date2) {
+		log.info("Counting submissions by position");
+		return positionDAO.countSubmissionsByPosition(date1, date2);
+	}
 
 	private void isPositionComplete(PositionEntity position) {
 		boolean hasError = false;
