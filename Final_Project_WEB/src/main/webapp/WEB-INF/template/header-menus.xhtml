@@ -139,12 +139,6 @@
 						<p:submenu label="Posições (público)">
 							<p:menuitem value="Procurar Posições" url="#" />
 						</p:submenu>
-						<p:submenu label="Perfil Inicial"
-							rendered="#{!userSessionManagement.checkDefault('CANDIDATE')}">
-							<p:menuitem value="Definir Por Defeito"
-								actionListener="#{userSessionManagement.defaultRole('CANDIDATE')}"
-								update="@form" icon="ui-icon-home" />
-						</p:submenu>
 
 						<p:submenu label="CV">
 							<p:menuitem value="Upload CV"
@@ -157,6 +151,13 @@
 							<p:menuitem value="Actualizar CV"
 								rendered="#{userSessionManagement.cv}"
 								onclick="PF('uploadCV').show();" />
+						</p:submenu>
+
+						<p:submenu label="Perfil Inicial"
+							rendered="#{!userSessionManagement.checkDefault('CANDIDATE')}">
+							<p:menuitem value="Definir Por Defeito"
+								actionListener="#{userSessionManagement.defaultRole('CANDIDATE')}"
+								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
 
