@@ -98,70 +98,70 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 				parameters);	
 	}
 
-	public Long countTotalSubmissionsPos(Date date1, Date date2) {
+	public List<Object[]> countTotalSubmissionsPos(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findCount("Submission.countTotalSubmissionsPos",
+		return super.findSomeResultsList("Submission.countTotalSubmissionsPos",
 				parameters);	
 	}
 
-	public Long countTotalSubmissions(Date date1, Date date2) {
+	public List<Object[]> countTotalSubmissions(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findCount("Submission.countTotalSubmissions",
+		return super.findSomeResultsList("Submission.countTotalSubmissions",
 				parameters);	
 	}
 
-	public Long countTotalSpontaneous(Date date1, Date date2) {
+	public List<Object[]> countTotalSpontaneous(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findCount("Submission.countTotalSpontaneous",
+		return super.findSomeResultsList("Submission.countTotalSpontaneous",
 				parameters);	
 	}
 
-	public Long countTotalRejected(Date date1, Date date2) {
+	public List<Object[]> countTotalRejected(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
 		parameters.put("rejected", Constants.STATUS_REJECTED);
-		return super.findCount("Submission.countTotalRejected",
+		return super.findSomeResultsList("Submission.countTotalRejected",
 				parameters);	
 	}
 	
-	public Long countTotalProposals(Date date1, Date date2) {
+	public List<Object[]> countTotalProposals(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findCount("Submission.countTotalProposals",
+		return super.findSomeResultsList("Submission.countTotalProposals",
 				parameters);	
 	}
 	
-	public Long countTotalHired(Date date1, Date date2) {
+	public List<Object[]> countTotalHired(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
 		parameters.put("hired", Constants.STATUS_HIRED);
-		return super.findCount("Submission.countTotalHired",
+		return super.findSomeResultsList("Submission.countTotalHired",
 				parameters);	
 	}
 	
-	public Long countTotalRejectedPos(Date date1, Date date2) {
+	public List<Object[]> countTotalRejectedPos(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
 		parameters.put("rejected", Constants.STATUS_REJECTED);
-		return super.findCount("Submission.countTotalRejectedPos",
+		return super.findSomeResultsList("Submission.countTotalRejectedPos",
 				parameters);	
 	}
 	
-	public Long countTotalProposalsPos(Date date1, Date date2) {
+	public List<Object[]> countTotalProposalsPos(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return (Long) super.findCount("Submission.countTotalProposalsPos",
+		return super.findSomeResultsList("Submission.countTotalProposalsPos",
 				parameters);	
 	}
 	

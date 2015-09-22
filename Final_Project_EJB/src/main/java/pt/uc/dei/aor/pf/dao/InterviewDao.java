@@ -127,15 +127,14 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		return super.findSomeResults(
 				"Interview.findScheduledInterviewsWithScript", parameters);
 	}
-	
 
-	public Long findTotalCarriedOutInterviews(Date date1,
+	public List<Object[]> findTotalCarriedOutInterviews(Date date1,
 			Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();		
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return super.findCount("Interview.findTotalCarriedOutInterviews",
-				parameters);
+		return super.findSomeResultsList(
+				"Interview.findTotalCarriedOutInterviews", parameters);
 	}
 
 	@SuppressWarnings("unchecked")
