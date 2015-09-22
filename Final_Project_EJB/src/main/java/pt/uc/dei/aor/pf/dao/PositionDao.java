@@ -107,9 +107,10 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				"(TRANSLATE(UPPER(REPLACE(locations.location"
 				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
 				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
-				+") LIKE :loc OR ", attributes, " AND ", 
+				+") LIKE :loc AND ", attributes, " AND ", 
 				"positions.id = locations.position_id"+extra, "code");
 
+		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		query.setParameter("loc", location);
 		query.setParameter("code", positionCode);
@@ -140,7 +141,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				"(TRANSLATE(UPPER(REPLACE(locations.location"
 				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
 				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
-				+") LIKE :loc OR ", attributes, " AND ", 
+				+") LIKE :loc AND ", attributes, " AND ", 
 				"positions.id = locations.position_id"
 				+ " AND positions.opening_date BETWEEN :date1 AND :date2"
 				+extra, "opening_date");

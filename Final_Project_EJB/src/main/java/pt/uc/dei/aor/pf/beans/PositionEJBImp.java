@@ -3,6 +3,7 @@ package pt.uc.dei.aor.pf.beans;
 import java.util.Date;
 import java.util.List;
 
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
@@ -147,7 +148,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	public List<PositionEntity> findOpenPositions() {
 		log.info("Finding all open positions");
 		return positionDAO.findPositions("%", "%", "%",
-				"OPEN", "%", "%", null);
+				Constants.STATUS_OPEN, "%", "%", null);
 	}
 
 	@Override

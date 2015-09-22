@@ -349,6 +349,10 @@ public class InitDB {
 		plist[4].setLocations(locations);
 		plist[4].setAdvertisingChannels(channels);
 
+		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
+		channels = Arrays.asList(Constants.SOCIAL_CRITICAL);
+		plist[5].setLocations(locations);
+		plist[5].setAdvertisingChannels(channels);
 		
 		// SUBMISSION ATTRIBUTES
 		
