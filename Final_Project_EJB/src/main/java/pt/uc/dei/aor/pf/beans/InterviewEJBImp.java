@@ -175,10 +175,7 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	@Override
 	public Long findTotalCarriedOutInterviews(Date date1, Date date2) {
 		log.info("Finding total of carried out interviews of a position");
-		List<Object[]> result = 
-				interviewDAO.findTotalCarriedOutInterviews(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return interviewDAO.findTotalCarriedOutInterviews(date1, date2);
 	}
 
 	@Override

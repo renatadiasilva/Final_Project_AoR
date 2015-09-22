@@ -148,77 +148,53 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	public Long countTotalSubmissions(Date date1,
 			Date date2) {
 		log.info("Counting total submissions between two dates");
-		List<Object[]> result = 
-				submissionDAO.countTotalSubmissions(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return submissionDAO.countTotalSubmissions(date1, date2);
 	}
 
 	@Override
 	public Long countTotalSubmissionsPos(Date date1,
 			Date date2) {
 		log.info("Counting total submissions between two dates");
-		List<Object[]> result = 
-				submissionDAO.countTotalSubmissionsPos(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return submissionDAO.countTotalSubmissionsPos(date1, date2);
 	}
 
 	@Override
 	public Long countTotalSpontaneous(Date date1,
 			Date date2) {
 		log.info("Counting total spontaneous submissions between two dates");
-		List<Object[]> result = 
-				submissionDAO.countTotalSpontaneous(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return submissionDAO.countTotalSpontaneous(date1, date2);
 	}
 
 	@Override
 	public Long countTotalRejected(Date date1, Date date2) {
 		log.info("Counting total rejected submissions between two dates");
-		List<Object[]> result = 
-				submissionDAO.countTotalRejected(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return submissionDAO.countTotalRejected(date1, date2);
 	}
 	
 	@Override
 	public Long countTotalProposals(Date date1, Date date2) {
 		log.info("Counting total presented proposals between two dates");
-		List<Object[]> result = 
-				submissionDAO.countTotalProposals(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return submissionDAO.countTotalProposals(date1, date2);
 	}
 	
 	@Override
 	public Long countTotalHired(Date date1, Date date2) {
 		log.info("Counting total hired people between two dates");
-		List<Object[]> result = 
-				submissionDAO.countTotalHired(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return submissionDAO.countTotalHired(date1, date2);
 	}
 	
 	@Override
 	public Long countTotalRejectedPos(Date date1, Date date2) {
 		log.info("Counting total rejected submissions between two dates"
 				+ "(by position date)");
-		List<Object[]> result = 
-				submissionDAO.countTotalRejectedPos(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return submissionDAO.countTotalRejectedPos(date1, date2);
 	}
 	
 	@Override
 	public Long countTotalProposalsPos(Date date1, Date date2) {
 		log.info("Counting total presented proposals between two dates"
 				+ "(by position date)");
-		List<Object[]> result = 
-				submissionDAO.countTotalProposalsPos(date1, date2); 
-		if (result == null || result.isEmpty()) return -1L;
-		return (Long) result.get(0)[0];
+		return submissionDAO.countTotalProposalsPos(date1, date2);
 	}
 	
 	@Override
