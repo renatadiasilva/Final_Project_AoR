@@ -60,7 +60,7 @@ public class ReportsCDI implements Serializable {
 		log.info("Creating report with number of submissions by position");
 
 		tableHeader = "Número de candidaturas por posição (posições "
-				+ "abertas entre "+ftDate.format(d1)+" e "
+				+ "criadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
 
 		List<Object[]> result = positionEJB.countSubmissionsByPosition(
