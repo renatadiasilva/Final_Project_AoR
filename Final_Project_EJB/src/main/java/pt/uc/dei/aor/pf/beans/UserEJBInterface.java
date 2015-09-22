@@ -13,6 +13,8 @@ public interface UserEJBInterface {
 	public abstract int delete(UserEntity user);
 	public abstract UserEntity find(Long id);
 	public abstract List<UserEntity> findAll();
+	public abstract List<UserEntity> findAllNotRemoved();
+	public abstract List<UserEntity> findRemovedEmails();
 	public abstract UserEntity findUserByEmail(String email);
 	public abstract List<UserEntity> findUsersByEmail(String emailPattern); 
 	public abstract List<UserEntity> findUsersByName(String name);
@@ -48,9 +50,5 @@ public interface UserEJBInterface {
 	public abstract List<UserEntity> findCandidatesByKeywordShort(
 			String keyword);
 	public abstract boolean checkPassword(UserEntity user, String password);
-	
-	// eager??
-//	public abstract List<UserEntity> findInterviewers(
-//			InterviewEntity interview);
 	
 }

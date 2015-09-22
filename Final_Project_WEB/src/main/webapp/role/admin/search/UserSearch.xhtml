@@ -14,8 +14,12 @@
 
 			<h:panelGrid id="buttonsUserSearch" columns="5">
 
-				<p:commandButton value="Todos users"
+				<p:commandButton value="Todos users (não apagados)"
 					action="#{userSearchCDI.searchAll()}" update="@form, messages"
+					icon="ui-icon-search" />
+
+				<p:commandButton value="Todos users (apagados)"
+					action="#{userSearchCDI.searchRemoved()}" update="@form, messages"
 					icon="ui-icon-search" />
 
 				<p:commandButton value="Todos admin"

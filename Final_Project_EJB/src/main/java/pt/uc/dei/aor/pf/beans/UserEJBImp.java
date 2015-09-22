@@ -164,6 +164,12 @@ public class UserEJBImp implements UserEJBInterface {
 	}
 
 	@Override
+	public List<UserEntity> findAllNotRemoved() {
+		log.info("Creating Query for all not removed users");
+		return userDAO.findAllNotRemoved();
+	}
+
+	@Override
 	public UserEntity findUserByEmail(String email) {
 		log.info("Finding user by exact email");
 		// email is unique
@@ -329,6 +335,12 @@ public class UserEJBImp implements UserEJBInterface {
 		return userDAO.findCandidatesByKeyword(keyword);
 	}
 
+	@Override
+	public List<UserEntity> findRemovedEmails() {
+		log.info("Finding all removed User emails");
+		return userDAO.findRemovedEmails();
+	}
+
 	private String securePass(String pass) throws NoSuchAlgorithmException,
 	UnsupportedEncodingException {
 
@@ -363,35 +375,5 @@ public class UserEJBImp implements UserEJBInterface {
 			throw new IllegalArgumentException("The user is missing data. "
 					+ "Check the notnull attributes.");
 	}
-
-	//Cloning... Think about it...
-
-	//	@Override
-	//	public List<Utilizador> findAllWS() {
-	//		List<Utilizador> novos= new ArrayList<Utilizador>();
-	//		List<Utilizador> list=userDao.findAll();
-	//		for (Utilizador u:list){
-	//			Utilizador user2=new Utilizador();
-	//			user2.setId(u.getId());
-	//			user2.setNome(u.getNome());
-	//			user2.setMail(u.getMail());
-	//			user2.setPassword("");	
-	//			novos.add(user2);
-	//		}
-	//		return novos;
-	//		
-	//	}
-	//
-	//	@Override
-	//	public Utilizador findSimpleUser(int id) {
-	//		Utilizador user=userDao.find(id);
-	//		Utilizador user2=new Utilizador();
-	//		user2.setId(user.getId());
-	//		user2.setNome(user.getNome());
-	//		user2.setMail(user.getMail());
-	//		user2.setPassword("");
-	//		return user2;
-	//	}
-
 
 }

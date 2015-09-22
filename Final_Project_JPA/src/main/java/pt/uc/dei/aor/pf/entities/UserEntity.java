@@ -34,11 +34,19 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "User.findUsersByEmailPattern",
 			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r"
 					+ " WHERE UPPER(u.email) LIKE :email"
-					+ " AND (r <> :role) ORDER BY u.email"),
+					+ " AND (r <> :role) AND u.email NOT LIKE :removed"
+					+ " ORDER BY u.email"),
 	@NamedQuery(name = "User.findCandidatesByPhone",
 			query = "SELECT u.owner FROM UserInfoEntity u WHERE"
 					+ " u.homePhone LIKE :phone OR u.mobilePhone LIKE :phone"
+					+ " AND u.owner.email NOT LIKE :removed"
 					+ " ORDER BY u.owner.email"),
+	@NamedQuery(name = "User.findRemovedEmails",
+			query = "SELECT u FROM UserEntity u WHERE"
+					+ " u.email LIKE :removed"),
+	@NamedQuery(name = "User.findAllNotRemoved",
+			query = "SELECT u FROM UserEntity u WHERE"
+					+ " u.email NOT LIKE :removed"),
 })
 public class UserEntity implements Serializable {
 

@@ -86,7 +86,14 @@ public class UserSearchCDI {
 
 	public void searchAll() {
 		log.info("Searching for all users");
-		this.ulist = userEJB.findAll();
+//		this.ulist = userEJB.findAll();
+		this.ulist = userEJB.findAllNotRemoved();
+	}
+
+	//mostrar só emails...
+	public void searchRemoved() {
+		log.info("Searching for all removed users");
+		this.ulist = userEJB.findRemovedEmails();
 	}
 
 	public void searchAllAdmins() {
