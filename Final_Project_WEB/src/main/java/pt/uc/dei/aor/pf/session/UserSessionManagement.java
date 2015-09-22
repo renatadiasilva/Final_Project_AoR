@@ -1,6 +1,5 @@
 package pt.uc.dei.aor.pf.session;
 
-import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -13,12 +12,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
-import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 import pt.uc.dei.aor.pf.upload.UploadFile;
 import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;

@@ -14,32 +14,45 @@
 
 		<h:form id="positionReports">
 
-			<h:panelGrid id="buttonsPositionReports" columns="5">
+			<h:panelGrid id="buttonsPositionReports" columns="2">
 
 				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.submissionsByPosition()}"
 					update="@form, messages" icon="ui-icon-script" />
 
+				<h:commandLink rendered="#{!reportsCDI.report.isEmpty()}">
+					<p:graphicImage library="images/logos" name="pdf.png" />
+					<p:dataExporter type="pdf" target="report" fileName="report"
+						preProcessor="#{preProcessPDFCDI.preProcessPDF}" />
+				</h:commandLink>
+
 			</h:panelGrid>
 
-			<h:panelGrid id="gridPositionReport" columns="8">
+			<h:panelGrid id="gridPositionReport" columns="2">
 
-				<p:outputLabel value="Primeira Data: " for="posreport-date1" />
-				<p:calendar id="posreport-date1" value="#{reportsCDI.d1}"
-					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+100" locale="pt" size="35" />
+				<h:panelGroup>
+					<p:outputLabel value="De: " for="posreport-date1" />
+					<p:calendar id="posreport-date1" value="#{reportsCDI.d1}"
+						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" mode="inline" />
+				</h:panelGroup>
 
-				<p:outputLabel value="Segunda Data: " for="posreport-date2" />
-				<p:calendar id="posreport-date2" value="#{reportsCDI.d2}"
-					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+100" locale="pt" size="35" />
+				<h:panelGroup>
+					<p:outputLabel value="Até: " for="posreport-date2" />
+					<p:calendar id="posreport-date2" value="#{reportsCDI.d2}"
+						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" mode="inline" />
+				</h:panelGroup>
 
 			</h:panelGrid>
 			<p:dataTable id="report" emptyMessage="Nada a mostrar." var="item"
-				value="#{reportsCDI.report}">
+				value="#{reportsCDI.report}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
 				<f:facet name="header">
 					<h:outputText value="#{reportsCDI.tableHeader}" />
 				</f:facet>
+
 				<p:columnGroup type="header">
 					<p:row>
 						<p:column colspan="7" headerText="Posição" />
@@ -55,28 +68,53 @@
 						<p:column headerText="Área Técnica" />
 					</p:row>
 				</p:columnGroup>
+
 				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Código" />
+					</f:facet>
 					<h:outputText value="#{item.position.positionCode}" />
 				</p:column>
 				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Título" />
+					</f:facet>
 					<h:outputText value="#{item.position.title}" />
 				</p:column>
 				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Data de Abertura" />
+					</f:facet>
 					<h:outputText value="#{item.position.openingDate}" />
 				</p:column>
 				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Estado" />
+					</f:facet>
 					<h:outputText value="#{item.position.status}" />
 				</p:column>
 				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Vagas" />
+					</f:facet>
 					<h:outputText value="#{item.position.openings}" />
 				</p:column>
 				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Empresa" />
+					</f:facet>
 					<h:outputText value="#{item.position.company}" />
 				</p:column>
 				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Área Técnica" />
+					</f:facet>
 					<h:outputText value="#{item.position.technicalArea}" />
 				</p:column>
 				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nº Candidaturas submetidas" />
+					</f:facet>
 					<h:outputText value="#{item.measure}" />
 				</p:column>
 				<p:columnGroup type="footer">
@@ -88,20 +126,6 @@
 				</p:columnGroup>
 			</p:dataTable>
 
-			<h:commandLink value="Exportar PDF">
-				<p:graphicImage library="images/logos" value="pdf.png" />
-				<p:dataExporter type="pdf" target="report"
-					fileName="report" />
-			</h:commandLink>
-
-			<p:commandButton value="Exportar PDF">
-				<p:dataExporter type="pdf" target="report" fileName="ninja" />
-			</p:commandButton>
-
-			<p:commandButton value="Exportar XLS">
-				<p:dataExporter type="xls" target="report" fileName="ninja" />
-			</p:commandButton>
-			
 		</h:form>
 
 	</ui:define>
