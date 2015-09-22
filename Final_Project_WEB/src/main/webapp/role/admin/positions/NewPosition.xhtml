@@ -10,9 +10,260 @@
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Nova Posições</h1>
-		
-			
+		<h1>Nova Posição</h1>
+
+		<h:form id="newPositionPart1">
+
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Título: " for="new-position-title" />
+				<p:inputText id="new-position-title" value="#{newPositionCDI.title}"
+					size="70" required="true" requiredMessage="Insira um título."
+					maxlength="#{max.length.positionTitle()}">
+					<p:ajax update="newPositionPart1" />
+				</p:inputText>
+
+				<p:outputLabel value="Empresa" for="new-position-company" />
+				<p:inputText id="new-position-company"
+					value="#{newPositionCDI.company}" size="70" required="true"
+					requiredMessage="Insira o nome da Empresa."
+					maxlength="#{max.length.positionCompany()}">
+					<p:ajax update="newPositionPart1" />
+				</p:inputText>
+
+				<p:outputLabel value="Descrição" for="new-position-description" />
+				<h:panelGroup>
+					<p:inputTextarea id="new-position-description"
+						value="#{newPositionCDI.description}" cols="70" required="true"
+						counterTemplate=" - {0}" rows="15"
+						requiredMessage="Insira a descrição da Posição."
+						maxlength="#{max.length.positionDescription()}"
+						counter="maxDescription">
+						<p:ajax update="newPositionPart1" />
+					</p:inputTextarea>
+					<h:outputText id="maxDescription" />
+				</h:panelGroup>
+
+			</h:panelGrid>
+
+			<br />
+			<h2>Localização:</h2>
+			<!-- Locations -->
+			<h:panelGrid columns="8">
+
+				<p:outputLabel value="Lisboa: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.lisboa}">
+					<p:ajax update="newPositionPart1" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Porto: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.porto}">
+					<p:ajax update="newPositionPart1" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Coimbra: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.coimbra}">
+					<p:ajax update="newPositionPart1" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Outro: " />
+				<p:inputText value="#{newPositionCDI.extraLocation}" maxlength="40"
+					size="35">
+					<p:ajax update="newPositionPart1" />
+				</p:inputText>
+
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="newPositionPart2">
+
+			<br />
+			<h2>Canais de Publicidade:</h2>
+			<!-- Advertisement Channels -->
+			<h:panelGrid id="newPositionAd" columns="4">
+
+				<p:outputLabel value="Critical Software site: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.critical}" />
+
+				<p:outputLabel value="LinkedIn: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.linkedin}" />
+
+				<p:outputLabel value="Glassdoor: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.glassdoor}" />
+
+				<p:outputLabel value="Facebook: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.facebook}" />
+
+			</h:panelGrid>
+			<p:outputLabel />
+			<p:outputLabel />
+
+		</h:form>
+
+		<h:form id="newPositionPart2b">
+			<p:dataTable id="altAdvertisementChannels" var="advertisingChannel"
+				value="#{newPositionCDI.altAdvertisingChannels}" style="width:300px"
+				emptyMessage="Sem canais de publicidade alternativos">
+				<p:column headerText="Outros canais">
+					<p:outputLabel value="#{advertisingChannel.ad}" />
+				</p:column>
+				<p:column headerText="Remover">
+					<p:commandButton
+						actionListener="#{newPositionCDI.deleteAltAdvertisingChannels(advertisingChannel)}"
+						icon="ui-icon-trash" update="altAdvertisementChannels" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="newPositionPart2c">
+			<h:panelGrid columns="3" style="widht:300px">
+				<p:inputText id="new-position-extra-ad"
+					value="#{newPositionCDI.extraAdvertising}" />
+				<p:watermark for="new-position-extra-ad"
+					value="Insira mais canais de publicidade" />
+				<p:commandButton icon="ui-icon-plus"
+					update="newPositionPart2b newPositionPart2c"
+					actionListener="#{newPositionCDI.addAltAdvertisingChannels()}" />
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="newPositionPart3">
+
+			<br />
+			<h2>Área Técnica:</h2>
+			<!-- Technical Area -->
+			<h:panelGrid id="newPositionTech" columns="12">
+
+				<p:outputLabel value="SSPA: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.sspa}">
+					<p:ajax update="newPositionTech" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value=".Net Development: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.dotnet}">
+					<p:ajax update="newPositionTech" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Java Development: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.java}">
+					<p:ajax update="newPositionTech" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Safety Critical: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.safety}">
+					<p:ajax update="newPositionTech" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Project Management: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.management}">
+					<p:ajax update="newPositionTech" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Integration: " />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.integration}">
+					<p:ajax update="newPositionTech" />
+				</p:selectBooleanCheckbox>
+
+			</h:panelGrid>
+
+			<br />
+			<h2>Vagas e Prazos:</h2>
+			<h:panelGrid columns="4">
+
+				<p:outputLabel value="Número de vagas: " for="new-position-openings" />
+				<p:spinner id="new-position-openings"
+					value="#{newPositionCDI.openings}" required="true"
+					requiredMessage="Defina o número de vagas." max="100">
+					<p:ajax update="newPositionPart3" />
+				</p:spinner>
+
+				<p:outputLabel value="SLA (dias): " for="new-position-sla" />
+				<p:spinner id="new-position-sla" value="#{newPositionCDI.slaDays}"
+					required="true" requiredMessage="Defina o SLA." max="1000">
+					<p:ajax update="newPositionPart3" />
+				</p:spinner>
+
+			</h:panelGrid>
+
+		</h:form>
+
+		<h:form id="newPositionPart4">
+
+			<br />
+			<h2>Gestor Responsável:</h2>
+			<p:dataTable id="managersTable"
+				emptyMessage="Não foram encontrados utilizadores." var="manager"
+				value="#{newPositionCDI.managers}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Gestores</f:facet>
+				<p:column headerText="Primeiro nome">
+					<h:outputText value="#{manager.firstName}" />
+				</p:column>
+				<p:column headerText="Sobrenome">
+					<h:outputText value="#{manager.lastName}" />
+				</p:column>
+				<p:column headerText="Email">
+					<h:outputText value="#{manager.email}" />
+				</p:column>
+				<p:column headerText="Seleccionar">
+					<p:commandButton value="Seleccionar" style="width:100%"
+						rendered="#{!newPositionCDI.checkManager(manager)}"
+						actionListener="#{newPositionCDI.setManager(manager)}"
+						icon="ui-icon-person" update="newPositionPart4" />
+					<p:commandButton rendered="#{newPositionCDI.checkManager(manager)}"
+						style="width:100%" value="Manager Seleccionado"
+						icon="ui-icon-check" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+		<h:form id="newPositionPart5">
+
+			<br />
+			<h2>Guião Padrão:</h2>
+			<p:dataTable id="scriptsTable"
+				emptyMessage="Não foram encontrados utilizadores." var="script"
+				value="#{newPositionCDI.scripts}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Listagem users</f:facet>
+				<p:column headerText="Título">
+					<h:outputText value="#{script.title}" />
+				</p:column>
+				<p:column headerText="Criado em">
+					<h:outputText value="#{script.creationDate}" />
+				</p:column>
+				<p:column headerText="Seleccionar">
+					<p:commandButton value="Seleccionar" style="width:100%"
+						rendered="#{!newPositionCDI.checkScript(script)}"
+						actionListener="#{newPositionCDI.setScript(script)}"
+						icon="ui-icon-script" update="scriptsTable" />
+					<p:commandButton value="Guião Seleccionado" style="width:100%"
+						rendered="#{newPositionCDI.checkScript(script)}"
+						icon="ui-icon-check" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+		<br />
+		<br />
+		<h:form id="createPosition">
+			<p:messages />
+			<p:commandButton value="Limpar Campos" style="width:100%"
+				action="#{newPositionCDI.cleanBean()}" ajax="false" />
+			<br />
+			<p:commandButton value="Criar Posição"
+				style="width:100%; height:30px"
+				action="#{newPositionCDI.createPosition()}" update="messages" />
+		</h:form>
+
+		<h:form>
+			<p:dialog widgetVar="checkScript">
+
+			</p:dialog>
+		</h:form>
+
 	</ui:define>
 
 </ui:composition>

@@ -344,5 +344,9 @@ public class UserSessionManagement implements Serializable {
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/userCV/"+this.userManagement.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
 	}
+	
+	public String getUserMail(){
+		return this.userManagement.getUserEmail();
+	}
 
 }
