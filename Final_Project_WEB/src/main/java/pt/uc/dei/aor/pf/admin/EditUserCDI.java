@@ -2,11 +2,15 @@ package pt.uc.dei.aor.pf.admin;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
+import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -28,21 +32,28 @@ public class EditUserCDI implements Serializable {
 
 	@EJB
 	private UserEJBInterface userEJB;
+	
+	@EJB
+	private PositionEJBInterface positionEJB;
+
+	@EJB
+	private InterviewEJBInterface interviewEJB;
 
 	private UserEntity userToEdit;
 
 	private boolean admin, manager, interviewer, candidate;
+	
+	private String managerMessage, interviewerMessage;
 	
 	public void meh(){
 		System.out.println("meh");
 	}
 
 	public void editUser(UserEntity userToEdit){
-		System.out.println("Ninjas!");
+		this.userToEdit=userToEdit;
 		
 		log.info("Loading up user "+this.userToEdit.getEmail()+" to edit his roles.");
 
-		this.userToEdit=userToEdit;
 		this.admin=this.manager=this.interviewer=this.candidate=false;
 
 		for(String role:this.userToEdit.getRoles()){
@@ -51,28 +62,43 @@ public class EditUserCDI implements Serializable {
 			if(role.equals(Constants.ROLE_INTERVIEWER))this.interviewer=true;
 			if(role.equals(Constants.ROLE_CANDIDATE))this.candidate=true;
 		}
-		
-		System.out.println(admin);
-		System.out.println(manager);
-		System.out.println(interviewer);
-		System.out.println(admin);
+
+		this.isShowInterviewer();
+		this.isShowManager();
 	}
 
 	public void saveUser(){
-		// Ver o role por defeito!!!
-		// Tem de ter pelo menos um role!!!
 		List<String>roles=new ArrayList<>();
+		
+		// Verifica se tem pelo menos um role
+		if(this.admin||this.manager||this.interviewer||this.candidate){
+			if(this.candidate){
+				roles.add(Constants.ROLE_CANDIDATE);
+				this.userToEdit.setDefaultRole(Constants.ROLE_CANDIDATE);
+			}
+			if(this.interviewer){
+				roles.add(Constants.ROLE_INTERVIEWER);
+				this.userToEdit.setDefaultRole(Constants.ROLE_INTERVIEWER);
+			}
+			if(this.manager){
+				roles.add(Constants.ROLE_MANAGER);
+				this.userToEdit.setDefaultRole(Constants.ROLE_MANAGER);
+			}
+			if(this.admin){
+				roles.add(Constants.ROLE_ADMIN);
+				this.userToEdit.setDefaultRole(Constants.ROLE_ADMIN);
+			}
 
-		if(this.admin)roles.add(Constants.ROLE_ADMIN);
-		if(this.manager)roles.add(Constants.ROLE_MANAGER);
-		if(this.interviewer)roles.add(Constants.ROLE_INTERVIEWER);
-		if(this.candidate)roles.add(Constants.ROLE_CANDIDATE);
+			this.userToEdit.setRoles(roles);
 
-		this.userToEdit.setRoles(roles);
+			this.userEJB.update(userToEdit);
+			
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Roles do user "+this.userToEdit.getEmail()+" actualizados."));
 
-		this.userEJB.update(userToEdit);
-
-		log.info("Edited "+this.userToEdit.getEmail()+" roles.");
+			log.info("Edited "+this.userToEdit.getEmail()+" roles.");
+			
+		}else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("O utilizador precisa de pelo menos um role, dados não actualizados."));
+		
 	}
 
 	public void deleteUser(UserEntity user){
@@ -116,6 +142,34 @@ public class EditUserCDI implements Serializable {
 
 	public void setCandidate(boolean candidate) {
 		this.candidate = candidate;
+	}
+
+	public boolean isShowManager() {
+		if(!this.positionEJB.findOpenPositionsManagedByUser(this.userToEdit).isEmpty()){
+			this.managerMessage="Este gestor tem posições à sua dependência.";
+			this.manager=true;
+			return false;
+		}
+		this.managerMessage="";
+		return true;
+	}
+
+	public boolean isShowInterviewer() {
+		if(!this.interviewEJB.findScheduledInterviewsByUser(this.userToEdit).isEmpty()){
+			this.interviewerMessage="Este entrevistador tem entrevistas à sua dependência.";
+			this.interviewer=true;
+			return false;
+		}
+		this.interviewerMessage="";
+		return true;
+	}
+
+	public String getManagerMessage() {
+		return managerMessage;
+	}
+
+	public String getInterviewerMessage() {
+		return interviewerMessage;
 	}
 
 }

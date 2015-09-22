@@ -3,7 +3,7 @@ package pt.uc.dei.aor.pf.admin;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -16,14 +16,19 @@ import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import java.io.Serializable;
 
 
 @Named
-@RequestScoped
-public class UserSearchCDI {
+@SessionScoped
+public class UserSearchCDI implements Serializable {
 
-	private static final Logger log = 
-			LoggerFactory.getLogger(UserSearchCDI.class);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1886694735685187920L;
+
+	private static final Logger log = LoggerFactory.getLogger(UserSearchCDI.class);
 
 	@EJB
 	private UserEJBInterface userEJB;
@@ -83,6 +88,11 @@ public class UserSearchCDI {
 	}
 
 	// ALL
+	
+	public List<UserEntity> getAllUlist() {
+		this.searchAll();
+		return ulist;
+	}
 
 	public void searchAll() {
 		log.info("Searching for all users");
