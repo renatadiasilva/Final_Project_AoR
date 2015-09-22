@@ -56,5 +56,11 @@ public interface PositionEJBInterface {
 			UserEntity manager);
 	public abstract List<Object[]> countSubmissionsByPosition(Date date1,
 			Date date2);
-
+	public abstract List<Object[]> countRejectedByPosition(Date date1,
+			Date date2);
+	public abstract List<Object[]> countProposalsByPosition(Date date1,
+			Date date2);
+	public abstract  List<Object[]> averageTimeToClose(Date date1, Date date2,
+			char period);
+	
 }

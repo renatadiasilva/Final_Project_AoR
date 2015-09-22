@@ -2,6 +2,7 @@ package pt.uc.dei.aor.pf.reports;
 
 import java.io.Serializable;
 
+import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 
 public class ReportItem implements Serializable {
@@ -9,6 +10,8 @@ public class ReportItem implements Serializable {
 	private static final long serialVersionUID = 2087758556006248256L;
 
 	private PositionEntity position;
+
+	private InterviewEntity interview;
 	
 	private String dateHeader;
 	
@@ -16,8 +19,9 @@ public class ReportItem implements Serializable {
 	
 	private String result;
 
-	public ReportItem(PositionEntity position,
+	public ReportItem(PositionEntity position, InterviewEntity interview,
 			String dateHeader, int measure, String result) {
+		this.interview = interview;
 		this.position = position;
 		this.dateHeader = dateHeader;
 		this.measure = measure;
@@ -54,6 +58,14 @@ public class ReportItem implements Serializable {
 
 	public void setPosition(PositionEntity position) {
 		this.position = position;
+	}
+
+	public InterviewEntity getInterview() {
+		return interview;
+	}
+
+	public void setInterview(InterviewEntity interview) {
+		this.interview = interview;
 	}
 
 }

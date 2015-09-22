@@ -223,6 +223,28 @@ public class PositionEJBImp implements PositionEJBInterface {
 		return positionDAO.countSubmissionsByPosition(date1, date2);
 	}
 
+	@Override
+	public List<Object[]> countRejectedByPosition(Date date1,
+			Date date2) {
+		log.info("Counting rejected submissions by position");
+		return positionDAO.countRejectedByPosition(date1, date2);
+	}
+
+	@Override
+	public List<Object[]> countProposalsByPosition(Date date1,
+			Date date2) {
+		log.info("Counting presented proposals by position");
+		return positionDAO.countProposalsByPosition(date1, date2);
+	}
+
+	@Override
+	public List<Object[]> averageTimeToClose(Date date1, Date date2,
+			char period) {
+		log.info("Computing the average time to Close a position"
+				+ "created between two dates (by period)");
+		return positionDAO.averageTimeToClose(date1, date2, period);
+	}
+
 	private void isPositionComplete(PositionEntity position) {
 		boolean hasError = false;
 		

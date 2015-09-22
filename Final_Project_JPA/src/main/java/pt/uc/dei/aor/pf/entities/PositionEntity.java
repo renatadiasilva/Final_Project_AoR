@@ -48,7 +48,23 @@ import javax.validation.constraints.NotNull;
 					+ " p.positionManager = :user AND p.status = :status"),
 	@NamedQuery(name = "Position.countSubmissionsByPosition",
 			query = "SELECT s.position.id, COUNT(s) FROM SubmissionEntity s"
-					+ " WHERE s.position IS NOT NULL AND"
+					+ " WHERE "
+					+ " s.position.openingDate BETWEEN :date1 AND :date2"
+					+ " GROUP BY s.position.id, s.position.openingDate,"
+					+ " s.position.positionCode"
+					+ " ORDER BY s.position.openingDate,"
+					+ " s.position.positionCode"),
+	@NamedQuery(name = "Position.countRejectedByPosition",
+			query = "SELECT s.position.id, COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.status = :rejected AND "
+					+ " s.position.openingDate BETWEEN :date1 AND :date2"
+					+ " GROUP BY s.position.id, s.position.openingDate,"
+					+ " s.position.positionCode"
+					+ " ORDER BY s.position.openingDate,"
+					+ " s.position.positionCode"),
+	@NamedQuery(name = "Position.countProposalsByPosition",
+			query = "SELECT s.position.id, COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.proposalDate IS NOT NULL AND"
 					+ " s.position.openingDate BETWEEN :date1 AND :date2"
 					+ " GROUP BY s.position.id, s.position.openingDate,"
 					+ " s.position.positionCode"

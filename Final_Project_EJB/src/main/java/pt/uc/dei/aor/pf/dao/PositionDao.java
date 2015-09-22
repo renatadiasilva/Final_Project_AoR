@@ -247,4 +247,44 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				parameters);	
 	}
 
+	public List<Object[]> countRejectedByPosition(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		parameters.put("rejected", Constants.STATUS_REJECTED);
+		return super.findSomeResultsList("Position.countRejectedByPosition",
+				parameters);	
+	}
+
+	public List<Object[]> countProposalsByPosition(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return super.findSomeResultsList("Position.countProposalsByPosition",
+				parameters);	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> averageTimeToClose(Date date1, Date date2,
+			char period) {
+		
+		String m1 = "", m2 = "";
+		if (period == Constants.MONTHLY) {
+			m1 = ", DATE_PART(\'MONTH\', opening_date) AS m";
+			m2 = ", m";
+		}
+		String queryS = "SELECT AVG(DATE_PART(\'DAY\', "
+				+ " closing_date\\:\\:timestamp -"
+				+ " opening_date\\:\\:timestamp)),"
+				+ " DATE_PART(\'YEAR\', opening_date) AS y"+m1
+				+ " FROM positions "
+				+ " WHERE opening_date BETWEEN :date1 AND :date2"
+				+ " AND closing_date IS NOT NULL"
+				+ " GROUP BY y"+m2+" ORDER BY y"+m2;
+		Query query = em.createNativeQuery(queryS);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		return query.getResultList();
+	}
+
 }

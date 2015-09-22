@@ -32,6 +32,10 @@
 					action="#{reportsCDI.hiredCountResuls()}"
 					update="@form, messages" icon="ui-icon-script" />
 
+				<p:commandButton value="Tempo médio para fecho de posição"
+					action="#{reportsCDI.averageTimeToClose()}"
+					update="@form, messages" icon="ui-icon-script" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridTimeSearch" columns="8">

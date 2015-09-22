@@ -14,10 +14,18 @@
 
 		<h:form id="positionReports">
 
-			<h:panelGrid id="buttonsPositionReports" columns="2">
+			<h:panelGrid id="buttonsPositionReports" columns="3">
 
-				<p:commandButton value="Criar relatório"
+				<p:commandButton value="Candidaturas por posição"
 					action="#{reportsCDI.submissionsByPosition()}"
+					update="@form, messages" icon="ui-icon-script" />
+
+				<p:commandButton value="Candidaturas rejeitadas por posição"
+					action="#{reportsCDI.rejectedCountByPosition()}"
+					update="@form, messages" icon="ui-icon-script" />
+
+				<p:commandButton value="Propostas apresentadas por posição"
+					action="#{reportsCDI.proposalCountByPosition()}"
 					update="@form, messages" icon="ui-icon-script" />
 
 				<h:commandLink rendered="#{!reportsCDI.report.isEmpty()}">
@@ -56,7 +64,8 @@
 				<p:columnGroup type="header">
 					<p:row>
 						<p:column colspan="7" headerText="Posição" />
-						<p:column rowspan="2" headerText="Nº Candidaturas submetidas" />
+						<p:column rowspan="2" 
+							headerText="#{reportsCDI.measureHeader}" />
 					</p:row>
 					<p:row>
 						<p:column headerText="Código" />
@@ -112,14 +121,12 @@
 					<h:outputText value="#{item.position.technicalArea}" />
 				</p:column>
 				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Nº Candidaturas submetidas" />
-					</f:facet>
 					<h:outputText value="#{item.measure}" />
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
-						<p:column colspan="7" footerText="Candidaturas totais: "
+						<p:column colspan="7" 
+							footerText="#{reportsCDI.measureFooter}"
 							style="text-align:right" />
 						<p:column footerText="#{reportsCDI.totalResult}" />
 					</p:row>

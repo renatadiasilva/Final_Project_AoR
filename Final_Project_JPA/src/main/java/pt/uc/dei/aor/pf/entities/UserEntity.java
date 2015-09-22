@@ -43,10 +43,10 @@ import javax.validation.constraints.NotNull;
 					+ " ORDER BY u.owner.email"),
 	@NamedQuery(name = "User.findRemovedEmails",
 			query = "SELECT u FROM UserEntity u WHERE"
-					+ " u.email LIKE :removed"),
+					+ " u.email LIKE :removed ORDER BY u.email"),
 	@NamedQuery(name = "User.findAllNotRemoved",
 			query = "SELECT u FROM UserEntity u WHERE"
-					+ " u.email NOT LIKE :removed"),
+					+ " u.email NOT LIKE :removed ORDER BY u.email"),
 })
 public class UserEntity implements Serializable {
 

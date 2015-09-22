@@ -107,28 +107,15 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		case Constants.DAILY: 
 			m1 = "date";
 			m2 = "date";
-//			queryS = "SELECT COUNT(*), "
-//					+ " date FROM submissions "
-//					+ " WHERE date BETWEEN :date1 AND :date2"
-//					+ " GROUP BY date ORDER BY date";
 			break;
 		case Constants.MONTHLY: 
 			m1 = "DATE_PART(\'year\', date) AS y,"
 					+ " DATE_PART(\'month\', date) AS m";
 			m2 = "y, m";
-//			queryS = "SELECT COUNT(*),"
-//					+ " DATE_PART(\'year\', date) AS y,"
-//					+ " DATE_PART(\'month\', date) AS m FROM submissions "
-//					+ " WHERE date BETWEEN :date1 AND :date2"
-//					+ " GROUP BY y, m ORDER BY y, m";
 			break;
 		case Constants.YEARLY:
 			m1 = "DATE_PART(\'year\', date) AS y";
 			m2 = "y";
-//			queryS = "SELECT COUNT(*),"
-//					+ " DATE_PART(\'year\', date) AS y FROM submissions "
-//					+ " WHERE date BETWEEN :date1 AND :date2"
-//					+ " GROUP BY y ORDER BY y";
 			break;
 		default: return null; // error
 		}
@@ -150,41 +137,13 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 			char period) {
 		
 		String m1 = "", m2 = "";
-//		switch (period) {
-		// not applicable
-//		case Constants.DAILY: 
-//			queryS = "SELECT AVG(DATE_PART(\'DAY\', "
-//					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
-//					+ " date FROM submissions "
-//					+ " WHERE date BETWEEN :date1 AND :date2"
-//					+ " AND hired_date IS NOT NULL"
-//					+ " GROUP BY date ORDER BY date";
-//			break;
-//		case Constants.MONTHLY: 
 		if (period == Constants.MONTHLY) {
-			m1 = ", DATE_PART(\'month\', date) AS m";
+			m1 = ", DATE_PART(\'MONTH\', date) AS m";
 			m2 = ", m";
-//			queryS = "SELECT AVG(DATE_PART(\'day\', "
-//					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
-//					+ " DATE_PART(\'year\', date) AS y,"
-//					+ " DATE_PART(\'month\', date) AS m FROM submissions "
-//					+ " WHERE date BETWEEN :date1 AND :date2"
-//					+ " AND hired_date IS NOT NULL"
-//					+ " GROUP BY y, m ORDER BY y, m";
-//			break;
-//		case Constants.YEARLY:
-//			queryS = "SELECT AVG(DATE_PART(\'day\', "
-//					+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
-//					+ " DATE_PART(\'year\', date) AS y FROM submissions "
-//					+ " WHERE date BETWEEN :date1 AND :date2"
-//					+ " AND hired_date IS NOT NULL"
-//					+ " GROUP BY y ORDER BY y";
-//			break;
-//		default: return null; // error
 		}
-		String queryS = "SELECT AVG(DATE_PART(\'day\', "
+		String queryS = "SELECT AVG(DATE_PART(\'DAY\', "
 				+ " hired_date\\:\\:timestamp - date\\:\\:timestamp)),"
-				+ " DATE_PART(\'year\', date) AS y"+m1
+				+ " DATE_PART(\'YEAR\', date) AS y"+m1
 				+ " FROM submissions "
 				+ " WHERE date BETWEEN :date1 AND :date2"
 				+ " AND hired_date IS NOT NULL"
