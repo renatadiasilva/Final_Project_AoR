@@ -234,9 +234,11 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Query query = em.createNativeQuery(queryS);
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
-		List<Object[]> result = query.getResultList();
-		if (result == null || result.isEmpty()) return -1.0;
-		return (Double) result.get(0)[0];
+		List<Double> result = (List<Double>) query.getResultList();
+		if (result == null || result.isEmpty() || result.get(0) == null)
+			return -1.0;
+		return (Double) result.get(0);
+		
 	}
 
 }

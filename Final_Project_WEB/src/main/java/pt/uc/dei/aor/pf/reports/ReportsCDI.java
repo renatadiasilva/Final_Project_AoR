@@ -22,8 +22,6 @@ import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
-import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -232,7 +230,7 @@ public class ReportsCDI implements Serializable {
 //			}
 //		}
 //
-//	}
+//	} reject???
 
 
 	// reject submission countings/rejected reasons by period between two dates
@@ -328,10 +326,10 @@ public class ReportsCDI implements Serializable {
 	public void sourceCount() {		
 		
 		log.info("Creating report with submissions source countings");
-		log.debug("From "+d1+" to "+d2+" with period "+period);
-				List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,
-						Constants.SOURCE_FACEBOOK, Constants.SOURCE_LINKEDIN, 
-						Constants.SOURCE_NETEMPREGO); // more?
+		log.debug("From "+d1+" to "+d2);
+		List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,
+				Constants.SOURCE_FACEBOOK, Constants.SOURCE_LINKEDIN, 
+				Constants.SOURCE_NETEMPREGO); // more?
 		int ns = 0;
 		if (sources != null) ns = sources.size();
 		List<Long> totalS = new ArrayList<Long>(ns);
@@ -341,8 +339,8 @@ public class ReportsCDI implements Serializable {
 		for (String so : sources) {
 			// get list of submissions by a source
 			// of the day, month, or year
-			List<SubmissionEntity> slist = submissionEJB.findSubmissionsBySource(so,
-					d1, d2);
+			List<SubmissionEntity> slist = 
+					submissionEJB.findSubmissionsBySource(so, d1, d2);
 
 			// count the number of submissions by a source
 			// of the day, month, or year

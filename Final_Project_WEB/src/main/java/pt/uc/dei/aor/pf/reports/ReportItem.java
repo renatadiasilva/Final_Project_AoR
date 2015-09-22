@@ -75,15 +75,18 @@ public class ReportItem implements Serializable {
 	}
 	
 	public String getDateInterview() {
+		if (interview == null) return "";
 		return ftDate.format(interview.getDate());
 	}
 
 	public String getHourInterview() {
+		if (interview == null) return "";
 		return ftHour.format(interview.getDate());
 	}
 
 	public String getInterviewers() {
 		String s = "";
+		if (interview == null) return "";
 		List<UserEntity> interviewers = interview.getInterviewers();
 		int limit = (int) Math.min(interviewers.size(), 3)-1;
 		for(int i = 0; i < limit; i++)
