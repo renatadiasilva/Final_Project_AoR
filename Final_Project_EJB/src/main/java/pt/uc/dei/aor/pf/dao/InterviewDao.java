@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
@@ -124,6 +126,56 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		parameters.put("script", script);
 		return super.findSomeResults(
 				"Interview.findScheduledInterviewsWithScript", parameters);
+	}
+	
+
+	public Long findTotalCarriedOutInterviews(Date date1,
+			Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();		
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return (Long) super.findSingleNumber(
+				"Interview.findTotalCarriedOutInterviews", parameters);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> averageTimeToFirstInterview(Date date1, Date date2,
+			char period) {
+		
+		String m1 = "", m2 = "";
+		if (period == Constants.MONTHLY) {
+			m1 = ", DATE_PART(\'MONTH\', s.date) AS m";
+			m2 = ", m";
+		}
+		String queryS = "SELECT AVG(DATE_PART(\'DAY\', "
+				+ " i.date\\:\\:timestamp - s.date\\:\\:timestamp)),"
+				+ " DATE_PART(\'YEAR\', s.date) AS y"+m1
+				+ " FROM interviews AS i, submissions AS s"
+				+ " WHERE i.submission = s.id"
+				+ " AND s.date BETWEEN :date1 AND :date2"
+				+ " AND i.first = TRUE"
+				+ " GROUP BY y"+m2+" ORDER BY y"+m2;
+		Query query = em.createNativeQuery(queryS);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Double overallAverageTimeToFirstInterview(Date date1, Date date2) {
+		
+		String queryS = "SELECT AVG(DATE_PART(\'DAY\', "
+				+ " i.date\\:\\:timestamp - s.date\\:\\:timestamp))"
+				+ " FROM interviews AS i, submissions AS s"
+				+ " WHERE i.submission = s.id"
+				+ " AND s.date BETWEEN :date1 AND :date2"
+				+ " AND i.first = TRUE";
+		Query query = em.createNativeQuery(queryS);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		List<Object[]> result = query.getResultList();
+		if (result == null || result.isEmpty()) return -1.0;
+		return (Double) result.get(0)[0];
 	}
 
 }

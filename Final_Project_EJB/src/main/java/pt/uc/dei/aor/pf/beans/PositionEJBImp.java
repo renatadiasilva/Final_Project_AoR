@@ -219,7 +219,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	@Override
 	public List<Object[]> countSubmissionsByPosition(Date date1,
 			Date date2) {
-		log.info("Counting submissions by position");
+		log.info("Counting submissions by position between two dates");
 		return positionDAO.countSubmissionsByPosition(date1, date2);
 	}
 
@@ -243,6 +243,13 @@ public class PositionEJBImp implements PositionEJBInterface {
 		log.info("Computing the average time to Close a position"
 				+ "created between two dates (by period)");
 		return positionDAO.averageTimeToClose(date1, date2, period);
+	}
+	
+	@Override
+	public Double overallAverageTimeToClose(Date date1, Date date2) {
+		log.info("Computing the overall average time to close a position"
+				+ "created between two dates");
+		return positionDAO.overallAverageTimeToClose(date1, date2);
 	}
 
 	private void isPositionComplete(PositionEntity position) {

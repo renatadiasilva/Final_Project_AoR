@@ -1,0 +1,98 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="Título">
+	Admin - Relatórios de Entrevistas - #{styleSessionManagement.companyName}
+	</ui:define>
+
+	<ui:define name="contents">
+		<h1>Relatórios de Entrevistas</h1>
+
+		<h:form id="interviewReports">
+
+			<h:panelGrid id="buttonsInterviewReports" columns="3">
+
+				<p:commandButton value="Resultados de Entrevistas"
+					action="#{reportsCDI.interviewCountResults()}"
+					update="@form, messages" icon="ui-icon-script" />
+
+			</h:panelGrid>
+
+			<h:panelGrid id="gridInterviewsReport" columns="2">
+
+				<h:panelGroup>
+					<p:outputLabel value="De: " for="intreport-date1" />
+					<p:calendar id="intreport-date1" value="#{reportsCDI.d1}"
+						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" mode="inline" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Até: " for="intreport-date2" />
+					<p:calendar id="intreport-date2" value="#{reportsCDI.d2}"
+						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" mode="inline" />
+				</h:panelGroup>
+
+			</h:panelGrid>
+			<p:dataTable emptyMessage="Nada a mostrar." var="item"
+				value="#{reportsCDI.report}">
+				<f:facet name="header">
+					<h:outputText value="#{reportsCDI.tableHeader}"/>
+    		    </f:facet>
+
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="5" headerText="Entrevista" />
+						<p:column rowspan="2" 
+							headerText="#{reportsCDI.measureHeader}" />
+					</p:row>
+					<p:row>
+						<p:column headerText="Data" />
+						<p:column headerText="Hora" />
+						<p:column headerText="Candidato" />
+						<p:column headerText="Posição" />
+						<p:column headerText="Entrevistadores" />
+					</p:row>
+				</p:columnGroup>
+
+				<p:column>
+					<h:outputText value="#{item.dateInterview}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.hourInterview}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="
+					#{item.interview.submission.candidate.firstName} 
+					#{item.interview.submission.candidate.lastName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value=
+						"#{item.interview.submission.position.positionCode}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.interviewers}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{item.interview.feedback}" />
+				</p:column>
+				<p:columnGroup type="footer">
+					<p:row>
+						<p:column colspan="5" 
+							footerText="#{reportsCDI.measureFooter}"
+							style="text-align:right" />
+						<p:column footerText="#{reportsCDI.totalResult}" />
+					</p:row>
+				</p:columnGroup>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

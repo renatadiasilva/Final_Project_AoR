@@ -1,9 +1,12 @@
 package pt.uc.dei.aor.pf.reports;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 public class ReportItem implements Serializable {
 
@@ -18,6 +21,9 @@ public class ReportItem implements Serializable {
 	private int measure;
 	
 	private String result;
+
+	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
+	private SimpleDateFormat ftHour = new SimpleDateFormat ("HH:mm"); 
 
 	public ReportItem(PositionEntity position, InterviewEntity interview,
 			String dateHeader, int measure, String result) {
@@ -67,5 +73,24 @@ public class ReportItem implements Serializable {
 	public void setInterview(InterviewEntity interview) {
 		this.interview = interview;
 	}
+	
+	public String getDateInterview() {
+		return ftDate.format(interview.getDate());
+	}
 
+	public String getHourInterview() {
+		return ftHour.format(interview.getDate());
+	}
+
+	public String getInterviewers() {
+		String s = "";
+		List<UserEntity> interviewers = interview.getInterviewers();
+		int limit = (int) Math.min(interviewers.size(), 3)-1;
+		for(int i = 0; i < limit; i++)
+			s += interviewers.get(i).getFirstName()+" "
+					+interviewers.get(i).getLastName()+", ";
+		s += interviewers.get(limit).getFirstName()+" "
+				+interviewers.get(limit).getLastName();
+		return s;
+	}
 }

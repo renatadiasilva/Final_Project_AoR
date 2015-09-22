@@ -110,7 +110,6 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				+") LIKE :loc AND ", attributes, " AND ", 
 				"positions.id = locations.position_id"+extra, "code");
 
-		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		query.setParameter("loc", location);
 		query.setParameter("code", positionCode);
@@ -285,6 +284,23 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
 		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Double overallAverageTimeToClose(Date date1, Date date2) {
+		
+		String queryS = "SELECT AVG(DATE_PART(\'DAY\', "
+				+ " closing_date\\:\\:timestamp -"
+				+ " opening_date\\:\\:timestamp))"
+				+ " FROM positions "
+				+ " WHERE opening_date BETWEEN :date1 AND :date2"
+				+ " AND closing_date IS NOT NULL";
+		Query query = em.createNativeQuery(queryS);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		List<Object[]> result = query.getResultList();
+		if (result == null || result.isEmpty()) return -1.0;
+		return (Double) result.get(0)[0];
 	}
 
 }

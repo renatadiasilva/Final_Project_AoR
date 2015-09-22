@@ -68,6 +68,17 @@ public abstract class GenericDao<E> {
 		return nq.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
+	protected Object findSingleNumber(String namedQuery,
+			Map<String, Object> parameters) {
+		Query nq = em.createNamedQuery(namedQuery);
+		if (parameters != null && !parameters.isEmpty())
+			populateQueryParameters(nq, parameters);
+		List<Object[]> result = nq.getResultList(); 
+		if (result == null || result.isEmpty()) return -1L;
+		return (Object) result.get(0)[0];
+	}
+
 	// used in accent insensitive searchs
 	protected static String makeQuery(String selectPart, String fromPart,
 			String extraPart, String[] attributesPart,

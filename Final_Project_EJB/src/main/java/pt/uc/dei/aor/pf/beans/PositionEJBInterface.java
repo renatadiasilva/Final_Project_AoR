@@ -60,7 +60,8 @@ public interface PositionEJBInterface {
 			Date date2);
 	public abstract List<Object[]> countProposalsByPosition(Date date1,
 			Date date2);
-	public abstract  List<Object[]> averageTimeToClose(Date date1, Date date2,
+	public abstract List<Object[]> averageTimeToClose(Date date1, Date date2,
 			char period);
+	public abstract Double overallAverageTimeToClose(Date date1, Date date2);
 	
 }

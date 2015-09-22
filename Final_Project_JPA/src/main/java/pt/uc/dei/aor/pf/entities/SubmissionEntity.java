@@ -56,6 +56,44 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Submission.findSubmissionsOfCandidate",
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE s.candidate = :user ORDER BY s.date"),
+	@NamedQuery(name = "Submission.countTotalSubmissionsPos",
+			query = "SELECT COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.position.openingDate"
+					+ " BETWEEN :date1 AND :date2"),
+	@NamedQuery(name = "Submission.countTotalRejectedPos",
+			query = "SELECT COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.position.openingDate"
+					+ " BETWEEN :date1 AND :date2"
+					+ " AND s.status = :rejected"),
+	@NamedQuery(name = "Submission.countTotalProposalsPos",
+			query = "SELECT COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.position.openingDate"
+					+ " BETWEEN :date1 AND :date2"
+					+ " AND s.proposalDate IS NOT NULL"),
+	@NamedQuery(name = "Submission.countTotalSubmissions",
+			query = "SELECT COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.date"
+					+ " BETWEEN :date1 AND :date2"),
+	@NamedQuery(name = "Submission.countTotalSpontaneous",
+			query = "SELECT COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.date"
+					+ " BETWEEN :date1 AND :date2"
+					+ " AND s.spontaneous = TRUE"),
+	@NamedQuery(name = "Submission.countTotalRejected",
+			query = "SELECT COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.date"
+					+ " BETWEEN :date1 AND :date2"
+					+ " AND s.status = :rejected"),
+	@NamedQuery(name = "Submission.countTotalProposals",
+			query = "SELECT COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.date"
+					+ " BETWEEN :date1 AND :date2"
+					+ " AND s.proposalDate IS NOT NULL"),
+	@NamedQuery(name = "Submission.countTotalHired",
+			query = "SELECT COUNT(s) FROM SubmissionEntity s"
+					+ " WHERE s.date"
+					+ " BETWEEN :date1 AND :date2"
+					+ " AND s.status = :hired"),
 	@NamedQuery(name = "Submission.countSubmissionsByDate",
 			query = "SELECT COUNT(s), s.date FROM SubmissionEntity s"
 					+ " WHERE s.candidate = :user ORDER BY s.date"),

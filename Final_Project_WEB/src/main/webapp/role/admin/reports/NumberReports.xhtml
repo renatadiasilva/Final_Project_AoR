@@ -36,6 +36,10 @@
 					action="#{reportsCDI.averageTimeToClose()}"
 					update="@form, messages" icon="ui-icon-script" />
 
+				<p:commandButton value="Tempo médio para primeira entrevista"
+					action="#{reportsCDI.averageTimeToInterview()}"
+					update="@form, messages" icon="ui-icon-script" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridTimeSearch" columns="8">

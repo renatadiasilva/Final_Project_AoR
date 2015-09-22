@@ -30,6 +30,10 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Interview.findCarriedOutInterviews",
 			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE"
 					+ " AND i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
+	@NamedQuery(name = "Interview.findTotalCarriedOutInterviews",
+			query = "SELECT COUNT(i) FROM InterviewEntity i"
+					+ " WHERE i.carriedOut = TRUE"
+					+ " AND i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findCarriedOutInterviewsByUser",
 			query = "SELECT i FROM InterviewEntity i JOIN i.interviewers u "
 					+ "WHERE i.carriedOut = TRUE AND u = :user"
@@ -98,6 +102,9 @@ public class InterviewEntity implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
+	@Column(name = "first")
+	private boolean first;
+	
 	@Column(name = "carried_out")
 	private boolean carriedOut;
 	
@@ -110,7 +117,7 @@ public class InterviewEntity implements Serializable {
 
 	@Column(name = "feedback", length = 100)
 	private String feedback;
-	
+
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "scheduled_by", nullable = false)
@@ -126,6 +133,7 @@ public class InterviewEntity implements Serializable {
 		this.script = script;
 		this.scheduledBy = interviewScheduledBy;
 		this.carriedOut = false;
+		this.first = true;
 	}
 
 	public Long getId() {
@@ -207,6 +215,14 @@ public class InterviewEntity implements Serializable {
 
 	public void removeInterviewer(UserEntity user) {
 		if (interviewers != null) interviewers.remove(user);
+	}
+
+	public boolean isFirst() {
+		return first;
+	}
+
+	public void setFirst(boolean first) {
+		this.first = first;
 	}
 	
 }

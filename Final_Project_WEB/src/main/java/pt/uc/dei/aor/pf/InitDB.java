@@ -229,11 +229,11 @@ public class InitDB {
 			new InterviewEntity(slist[10], ftDateHour.parse("2015-08-21 12:00"),
 					sclist[2], ulist[10]), // ilist[2]				
 			new InterviewEntity(slist[11], ftDateHour.parse("2015-08-06 14:00"),
-					sclist[2], ulist[10]), // ilist[3]				
+					sclist[2], ulist[10]), // ilist[3]	 false			
 			new InterviewEntity(slist[12], ftDateHour.parse("2015-08-06 15:00"),
 					sclist[2], ulist[10]), // ilist[4]				
 			new InterviewEntity(slist[12], ftDateHour.parse("2015-08-10 09:00"),
-					sclist[2], ulist[10]), // ilist[5]				
+					sclist[2], ulist[10]), // ilist[5]			
 			new InterviewEntity(slist[13], ftDateHour.parse("2015-09-05 09:00"),
 					sclist[1], ulist[10]), // ilist[6]				
 			new InterviewEntity(slist[15], ftDateHour.parse("2015-09-05 10:00"),
@@ -511,6 +511,7 @@ public class InitDB {
 		ilist[5].addInterviewer(ulist[11]);
 		ilist[5].setCarriedOut(true);
 		ilist[5].setFeedback("O candidato satisfez plenamente blablabla");
+		ilist[5].setFirst(false);
 
 		ilist[6].addInterviewer(ulist[3]);
 		ilist[6].addInterviewer(ulist[11]);

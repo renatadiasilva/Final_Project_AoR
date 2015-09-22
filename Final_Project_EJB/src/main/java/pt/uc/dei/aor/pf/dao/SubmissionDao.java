@@ -98,6 +98,73 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 				parameters);	
 	}
 
+	public Long countTotalSubmissionsPos(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return (Long) super.findSingleNumber(
+				"Submission.countTotalSubmissionsPos", parameters);	
+	}
+
+	public Long countTotalSubmissions(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return (Long) super.findSingleNumber(
+				"Submission.countTotalSubmissions", parameters);	
+	}
+
+	public Long countTotalSpontaneous(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return (Long) super.findSingleNumber(
+				"Submission.countTotalSpontaneous", parameters);	
+	}
+
+	public Long countTotalRejected(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		parameters.put("rejected", Constants.STATUS_REJECTED);
+		return (Long) super.findSingleNumber("Submission.countTotalRejected",
+				parameters);	
+	}
+	
+	public Long countTotalProposals(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return (Long) super.findSingleNumber("Submission.countTotalProposals",
+				parameters);	
+	}
+	
+	public Long countTotalHired(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		parameters.put("hired", Constants.STATUS_HIRED);
+		return (Long) super.findSingleNumber("Submission.countTotalHired",
+				parameters);	
+	}
+	
+	public Long countTotalRejectedPos(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		parameters.put("rejected", Constants.STATUS_REJECTED);
+		return (Long) super.findSingleNumber("Submission.countTotalRejectedPos",
+				parameters);	
+	}
+	
+	public Long countTotalProposalsPos(Date date1, Date date2) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("date1", date1);
+		parameters.put("date2", date2);
+		return (Long) super.findSingleNumber(
+				"Submission.countTotalProposalsPos", parameters);	
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> countSubmissionsByDate(Date date1, Date date2,
 			char period, String result, String restriction) {
@@ -152,6 +219,24 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);
 		return query.getResultList();
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public Double overallAverageTimeToHired(Date date1, Date date2) {
+		
+		String queryS = "SELECT AVG(DATE_PART(\'DAY\', "
+				+ " hired_date\\:\\:timestamp - date\\:\\:timestamp))"
+				+ " FROM submissions "
+				+ " WHERE date BETWEEN :date1 AND :date2"
+				+ " AND hired_date IS NOT NULL";
+
+		Query query = em.createNativeQuery(queryS);
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		List<Object[]> result = query.getResultList();
+		if (result == null || result.isEmpty()) return -1.0;
+		return (Double) result.get(0)[0];
 	}
 
 }

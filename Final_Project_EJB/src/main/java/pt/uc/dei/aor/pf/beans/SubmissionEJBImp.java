@@ -132,7 +132,7 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	
 	@Override
 	public List<Object[]> averageTimeToHired(Date date1, Date date2, char p) {
-		log.info("Computing the average time to Hired between two dates");
+		log.info("Computing the average time to hired between two dates");
 		return submissionDAO.averageTimeToHired(date1, date2, p);
 	}
 
@@ -144,6 +144,66 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 				result, restriction);
 	}
 
+	@Override
+	public Long countTotalSubmissions(Date date1,
+			Date date2) {
+		log.info("Counting total submissions between two dates");
+		return submissionDAO.countTotalSubmissions(date1, date2);
+	}
+
+	@Override
+	public Long countTotalSubmissionsPos(Date date1,
+			Date date2) {
+		log.info("Counting total submissions between two dates");
+		return submissionDAO.countTotalSubmissionsPos(date1, date2);
+	}
+
+	@Override
+	public Long countTotalSpontaneous(Date date1,
+			Date date2) {
+		log.info("Counting total spontaneous submissions between two dates");
+		return submissionDAO.countTotalSpontaneous(date1, date2);
+	}
+
+	@Override
+	public Long countTotalRejected(Date date1, Date date2) {
+		log.info("Counting total rejected submissions between two dates");
+		return submissionDAO.countTotalRejected(date1, date2);
+	}
+	
+	@Override
+	public Long countTotalProposals(Date date1, Date date2) {
+		log.info("Counting total presented proposals between two dates");
+		return submissionDAO.countTotalProposals(date1, date2);
+	}
+	
+	@Override
+	public Long countTotalHired(Date date1, Date date2) {
+		log.info("Counting total hired people between two dates");
+		return submissionDAO.countTotalHired(date1, date2);
+	}
+	
+	@Override
+	public Long countTotalRejectedPos(Date date1, Date date2) {
+		log.info("Counting total rejected submissions between two dates"
+				+ "(by position date)");
+		return submissionDAO.countTotalRejectedPos(date1, date2);
+	}
+	
+	@Override
+	public Long countTotalProposalsPos(Date date1, Date date2) {
+		log.info("Counting total presented proposals between two dates"
+				+ "(by position date)");
+		return submissionDAO.countTotalProposalsPos(date1, date2);
+	}
+	
+	@Override
+	public Double overallAverageTimeToHired(Date date1, Date date2) {
+		log.info("Computing the overall average time to hired"
+				+ " between two dates");
+		return submissionDAO.overallAverageTimeToHired(date1, date2);
+	}
+	
 	private void isSubmissionComplete(SubmissionEntity submission) {
 		boolean hasError = false;
 		

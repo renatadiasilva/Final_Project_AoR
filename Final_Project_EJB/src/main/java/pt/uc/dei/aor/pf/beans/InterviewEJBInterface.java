@@ -42,5 +42,9 @@ public interface InterviewEJBInterface {
 			ScriptEntity script);
 	public abstract List<InterviewEntity> findScheduledInterviewsWithScript(
 			ScriptEntity script);
-
+	public abstract List<Object[]> averageTimeToFirstInterview(Date date1,
+			Date date2, char period);
+	public abstract Long findTotalCarriedOutInterviews(Date date1, Date date2);
+	public abstract Double overallAverageTimeToFirstInterview(Date date1,
+			Date date2);
 }

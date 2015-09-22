@@ -164,6 +164,27 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 		return interviewDAO.findScheduledInterviewsWithScript(script);
 	}
 
+	@Override
+	public List<Object[]> averageTimeToFirstInterview(Date date1, Date date2,
+			char period) {
+		log.info("Computing the average time to first interview"
+				+ " between two dates by period");
+		return interviewDAO.averageTimeToFirstInterview(date1, date2, period);
+	}
+
+	@Override
+	public Long findTotalCarriedOutInterviews(Date date1, Date date2) {
+		log.info("Finding total of carried out interviews of a position");
+		return interviewDAO.findTotalCarriedOutInterviews(date1, date2);
+	}
+
+	@Override
+	public Double overallAverageTimeToFirstInterview(Date date1, Date date2) {
+		log.info("Computing the overall average time to first interview"
+				+ " between two dates");
+		return interviewDAO.overallAverageTimeToFirstInterview(date1, date2);
+	}
+
 	private void isInterviewComplete(InterviewEntity interview) {
 		boolean hasError = false;
 		

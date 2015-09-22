@@ -35,5 +35,17 @@ public interface SubmissionEJBInterface {
 			char p);
 	public abstract List<Object[]> countSubmissionsByDate(Date date1,
 			Date date2, char p, String result, String restriction);
+	public abstract Long countTotalSubmissions(Date date1,
+			Date date2);
+	public abstract Long countTotalSubmissionsPos(Date date1,
+			Date date2);
+	public abstract Long countTotalSpontaneous(Date date1,
+			Date date2);
+	public abstract Long countTotalRejected(Date date1, Date date2);
+	public abstract Long countTotalProposals(Date date1, Date date2);
+	public abstract Long countTotalHired(Date date1, Date date2);
+	public abstract Long countTotalRejectedPos(Date date1, Date date2);
+	public abstract Long countTotalProposalsPos(Date date1, Date date2);
+	public abstract Double overallAverageTimeToHired(Date date1, Date date2);
 	
 }
