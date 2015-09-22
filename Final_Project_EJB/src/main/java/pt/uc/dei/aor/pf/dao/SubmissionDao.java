@@ -102,24 +102,24 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return (Long) super.findSingleNumber(
-				"Submission.countTotalSubmissionsPos", parameters);	
+		return super.findCount("Submission.countTotalSubmissionsPos",
+				parameters);	
 	}
 
 	public Long countTotalSubmissions(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return (Long) super.findSingleNumber(
-				"Submission.countTotalSubmissions", parameters);	
+		return super.findCount("Submission.countTotalSubmissions",
+				parameters);	
 	}
 
 	public Long countTotalSpontaneous(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return (Long) super.findSingleNumber(
-				"Submission.countTotalSpontaneous", parameters);	
+		return super.findCount("Submission.countTotalSpontaneous",
+				parameters);	
 	}
 
 	public Long countTotalRejected(Date date1, Date date2) {
@@ -127,7 +127,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
 		parameters.put("rejected", Constants.STATUS_REJECTED);
-		return (Long) super.findSingleNumber("Submission.countTotalRejected",
+		return super.findCount("Submission.countTotalRejected",
 				parameters);	
 	}
 	
@@ -135,7 +135,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return (Long) super.findSingleNumber("Submission.countTotalProposals",
+		return super.findCount("Submission.countTotalProposals",
 				parameters);	
 	}
 	
@@ -144,7 +144,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
 		parameters.put("hired", Constants.STATUS_HIRED);
-		return (Long) super.findSingleNumber("Submission.countTotalHired",
+		return super.findCount("Submission.countTotalHired",
 				parameters);	
 	}
 	
@@ -153,7 +153,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
 		parameters.put("rejected", Constants.STATUS_REJECTED);
-		return (Long) super.findSingleNumber("Submission.countTotalRejectedPos",
+		return super.findCount("Submission.countTotalRejectedPos",
 				parameters);	
 	}
 	
@@ -161,8 +161,8 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return (Long) super.findSingleNumber(
-				"Submission.countTotalProposalsPos", parameters);	
+		return (Long) super.findCount("Submission.countTotalProposalsPos",
+				parameters);	
 	}
 	
 	@SuppressWarnings("unchecked")

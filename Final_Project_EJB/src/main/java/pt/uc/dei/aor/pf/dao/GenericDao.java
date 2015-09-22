@@ -69,14 +69,14 @@ public abstract class GenericDao<E> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Object findSingleNumber(String namedQuery,
+	protected Long findCount(String namedQuery,
 			Map<String, Object> parameters) {
 		Query nq = em.createNamedQuery(namedQuery);
 		if (parameters != null && !parameters.isEmpty())
 			populateQueryParameters(nq, parameters);
 		List<Object[]> result = nq.getResultList(); 
 		if (result == null || result.isEmpty()) return -1L;
-		return (Object) result.get(0)[0];
+		return (Long) result.get(0)[0];
 	}
 
 	// used in accent insensitive searchs

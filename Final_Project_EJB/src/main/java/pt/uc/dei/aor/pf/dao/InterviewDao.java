@@ -134,8 +134,8 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();		
 		parameters.put("date1", date1);
 		parameters.put("date2", date2);
-		return (Long) super.findSingleNumber(
-				"Interview.findTotalCarriedOutInterviews", parameters);
+		return super.findCount("Interview.findTotalCarriedOutInterviews",
+				parameters);
 	}
 
 	@SuppressWarnings("unchecked")
