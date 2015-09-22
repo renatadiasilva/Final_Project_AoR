@@ -12,6 +12,8 @@
 			<!-- Se houver um user logado redirecciona para a respectiva Landing.xhtml -->
 			<f:viewAction
 				actionListener="#{userSessionManagement.checkForUser()}" />
+			<f:viewAction actionListener =
+				 "#{positionSearchCDI.searchOpenPositions()}" />
 		</f:metadata>
 
 		<h:panelGrid columns="3">
@@ -216,11 +218,40 @@
 	<ui:define name="contents">
 		<h:form>
 			<p:commandButton value="Populate"
-				actionListener="#{initDB.populate()}" />
+				actionListener="#{initDB.populate()}"
+				action="#{positionSearchCDI.searchOpenPositions()}" 
+				update="tableHome"/>
 			<p:commandButton value="Test Email"
 				actionListener="#{testEmailCDI.testMail()}" />
 			<p:commandButton value="Refrescar estilo"
 				actionListener="#{styleSessionManagement.init()}" ajax="false" />
+
+			<p:dataTable emptyMessage="Não foram encontradas posições." var="p"
+				value="#{positionSearchCDI.plist}" id = "tableHome">
+				<f:facet name="header">Posições Abertas</f:facet>
+				<p:column headerText="Código">
+					<h:outputText value="#{p.positionCode}" />
+				</p:column>
+				<p:column headerText="Título">
+					<h:outputText value="#{p.title}" />
+				</p:column>
+				<p:column headerText="Data Abert">
+					<h:outputText value="#{p.openingDate}" />
+				</p:column>
+				<p:column headerText="Vagas">
+					<h:outputText value="#{p.openings}" />
+				</p:column>
+				<p:column headerText="Empresa">
+					<h:outputText value="#{p.company}" />
+				</p:column>
+				<p:column headerText="Área Técnica">
+					<h:outputText value="#{p.technicalArea}" />
+				</p:column>
+				<p:column headerText="Descrição">
+					<h:outputText value="#{p.description}" />
+				</p:column>
+			</p:dataTable>
+
 		</h:form>
 	</ui:define>
 
