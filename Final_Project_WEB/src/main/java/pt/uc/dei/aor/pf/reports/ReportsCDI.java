@@ -60,16 +60,19 @@ public class ReportsCDI implements Serializable {
 	private String periodHeader;
 	private String measureFooter;
 	private String totalResult;
+	private String emptyMessage;
 	private List<ReportItem> report = new ArrayList<ReportItem>();
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
 	public void clean() {
+		id = 0L;
 		period = "MONTHLY";
 		measureHeader = "";
 		tableHeader = "";
 		periodHeader = "";
 		measureFooter = "";
 		totalResult = "";
+		emptyMessage = "";
 		report = new ArrayList<ReportItem>();
 	}
 	
@@ -83,6 +86,7 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+")";
 		measureHeader = "Nº Candidaturas submetidas";
 		measureFooter = "Total Candidaturas: ";
+		emptyMessage = "Sem candidaturas.";
 
 		List<Object[]> result = positionEJB.countSubmissionsByPosition(
 				d1, d2);
@@ -114,6 +118,7 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+")";
 		measureHeader = "Tempo médio (em dias)";
 		measureFooter = "Tempo médio total: ";
+		emptyMessage = "Sem contratações.";
 
 		List<Object[]> list = submissionEJB.averageTimeToHired(d1, d2, p);
 
@@ -159,6 +164,7 @@ public class ReportsCDI implements Serializable {
 				+periodHeader.substring(0, 3)+")";
 		measureHeader = "Nº Candidaturas submetidas";
 		measureFooter = "Total Candidaturas: ";
+		emptyMessage = "Sem candidaturas.";
 
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
 				"");
@@ -201,6 +207,7 @@ public class ReportsCDI implements Serializable {
 				+periodHeader.substring(0, 3)+")";
 		measureHeader = "Nº Candidaturas Espontâneas";
 		measureFooter = "Total Candidaturas Espontâneas: ";
+		emptyMessage = "Sem candidaturas espontâneas.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
@@ -244,6 +251,7 @@ public class ReportsCDI implements Serializable {
 				+periodHeader.substring(0, 3)+")";
 		measureHeader = "Nº Candidaturas Rejeitadas";
 		measureFooter = "Total Candidaturas Rejeitadas: ";
+		emptyMessage = "Sem candidaturas rejeitadas.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
@@ -252,7 +260,7 @@ public class ReportsCDI implements Serializable {
 		// extract date header and average times
 		report.clear();
 		int size = 0;
-		if (list != null) size = list.get(0).length;
+		if (list != null && !list.isEmpty()) size = list.get(0).length;
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), (String) o[size-1]));
@@ -289,6 +297,7 @@ public class ReportsCDI implements Serializable {
 				+periodHeader.substring(0, 3)+")";
 		measureHeader = "Nº Propostas Apresentadas";
 		measureFooter = "Total Propostas Apresentadas: ";
+		emptyMessage = "Sem propostas apresentadas.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
@@ -297,7 +306,7 @@ public class ReportsCDI implements Serializable {
 		// extract date header and average times
 		report.clear();
 		int size = 0;
-		if (list != null) size = list.get(0).length;
+		if (list != null && !list.isEmpty()) size = list.get(0).length;
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), (String) o[size-1]));
@@ -323,6 +332,7 @@ public class ReportsCDI implements Serializable {
 		measureHeader = "Nº Candidaturas";
 		measureFooter = "Total Candidaturas do período (cada candidatura pode"
 				+ " ter várias fontes): ";
+		emptyMessage = "Nada a apresentar.";
 
 		List<Object[]> list = submissionEJB.countSubmissionsBySourceTable(d1,
 				d2, sources);
@@ -365,6 +375,7 @@ public class ReportsCDI implements Serializable {
 				+periodHeader.substring(0, 3)+")";
 		measureHeader = "Nº Contratações";
 		measureFooter = "Total Contratações: ";
+		emptyMessage = "Sem contratações.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
@@ -391,6 +402,7 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+")";
 		measureHeader = "Nº Candidaturas rejeitadas";
 		measureFooter = "Total Candidaturas rejeitadas: ";
+		emptyMessage = "Sem candidaturas rejeitadas.";
 
 		List<Object[]> result = positionEJB.countRejectedByPosition(
 				d1, d2);
@@ -415,6 +427,7 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+")";
 		measureHeader = "Nº Propostas Apresentadas";
 		measureFooter = "Total Propostas Apresentadas: ";
+		emptyMessage = "Sem propostas apresentadas.";
 
 		List<Object[]> result = positionEJB.countProposalsByPosition(d1, d2);
 
@@ -446,6 +459,7 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+")";
 		measureHeader = "Tempo médio (em dias)";
 		measureFooter = "Tempo médio total: ";
+		emptyMessage = "Nada a apresentar.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = positionEJB.averageTimeToClose(d1, d2, p);
@@ -480,6 +494,7 @@ public class ReportsCDI implements Serializable {
 					+ftDate.format(position.getOpeningDate())
 					+" até "+ftDate.format(position.getClosingDate())+")";
 			measureFooter = "Total Candidaturas: ";
+			emptyMessage = "Sem candidaturas.";
 
 			List<SubmissionEntity> list = 
 					submissionEJB.findDetailOfPosition(position);
@@ -506,6 +521,7 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2);
 		measureHeader = "Resultado";
 		measureFooter = "Total Entrevistas: ";
+		emptyMessage = "Sem entrevistas.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<InterviewEntity> list = 
@@ -540,6 +556,7 @@ public class ReportsCDI implements Serializable {
 				+ftDate.format(d2)+")";
 		measureHeader = "Tempo médio (em dias)";
 		measureFooter = "Tempo médio total: ";
+		emptyMessage = "Nada a apresentar.";
 
 		List<Object[]> list = 
 				interviewEJB.averageTimeToFirstInterview(d1, d2, p);
@@ -574,6 +591,7 @@ public class ReportsCDI implements Serializable {
 					+candidate.getLastName()+" ("+candidate.getEmail()+")";
 			measureHeader = "Resultado";
 			measureFooter = "Total Entrevistas: ";
+			emptyMessage = "Sem entrevistas.";
 
 			List<InterviewEntity> list = 
 				interviewEJB.findCarriedOutInterviewsByCandidate(candidate);
@@ -771,6 +789,14 @@ public class ReportsCDI implements Serializable {
 
 	public void setReport(List<ReportItem> report) {
 		this.report = report;
+	}
+
+	public String getEmptyMessage() {
+		return emptyMessage;
+	}
+
+	public void setEmptyMessage(String emptyMessage) {
+		this.emptyMessage = emptyMessage;
 	}
 
 }

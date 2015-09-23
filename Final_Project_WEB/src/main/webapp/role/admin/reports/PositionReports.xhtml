@@ -58,7 +58,7 @@
 				</h:panelGroup>
 
 			</h:panelGrid>
-			<p:dataTable id="report" emptyMessage="Nada a mostrar." var="item"
+			<p:dataTable id="report" emptyMessage="#{reportsCDI.emptyMessage}" var="item"
 				value="#{reportsCDI.report}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">

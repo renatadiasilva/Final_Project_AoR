@@ -49,7 +49,7 @@
 
 			</h:panelGrid>
 			
-			<p:dataTable emptyMessage="Nada a mostrar." var="item"
+			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
 				value="#{reportsCDI.report}">
 				<f:facet name="header">
 					<h:outputText value="#{reportsCDI.tableHeader}"/>
