@@ -38,14 +38,16 @@
 					<p:outputLabel value="De: " for="intreport-date1" />
 					<p:calendar id="intreport-date1" value="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-						yearRange="c-100:c+100" locale="pt" size="35" mode="inline" />
+						yearRange="c-100:c+0" locale="pt" size="35" />
 				</h:panelGroup>
 
 				<h:panelGroup>
 					<p:outputLabel value="Até: " for="intreport-date2" />
 					<p:calendar id="intreport-date2" value="#{reportsCDI.d2}"
+						mindate="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-						yearRange="c-100:c+100" locale="pt" size="35" mode="inline" />
+						yearRange="c-100:c+0" locale="pt" size="35" />
+
 				</h:panelGroup>
 
 				<p:outputLabel value="Id (candidato): " for="intrepor-id" />
@@ -54,7 +56,11 @@
 
 			</h:panelGrid>
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
-				value="#{reportsCDI.report}">
+				value="#{reportsCDI.report}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10"
+				rendered="#{reportsCDI.checkIfNotNull()}">
 				<f:facet name="header">
 					<h:outputText value="#{reportsCDI.tableHeader}"/>
     		    </f:facet>

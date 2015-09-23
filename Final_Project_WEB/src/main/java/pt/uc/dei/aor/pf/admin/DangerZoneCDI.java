@@ -51,6 +51,16 @@ public class DangerZoneCDI {
 
 	private List<String> info = new ArrayList<String>();	
 
+	public void listRemovedEmails() {
+		List<UserEntity> list = userEJB.findRemovedEmails();
+		for (UserEntity u : list) {
+			String emailR = u.getEmail();
+			int sizeOfRemovedData = Constants.REMOVED_DATA.length();
+			info.add("Email "+
+				emailR.substring(0, emailR.length()-sizeOfRemovedData));
+		}
+	}
+	
 	public void removeUser() {
 		log.info("Removing user by id");
 		log.debug("Id "+id);

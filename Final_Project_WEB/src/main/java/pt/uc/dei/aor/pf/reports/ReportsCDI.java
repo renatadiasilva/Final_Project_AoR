@@ -2,7 +2,6 @@ package pt.uc.dei.aor.pf.reports;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -61,9 +60,12 @@ public class ReportsCDI implements Serializable {
 	private String measureFooter;
 	private String totalResult;
 	private String emptyMessage;
-	private List<ReportItem> report = new ArrayList<ReportItem>();
+	private List<ReportItem> report;
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
+	public boolean checkIfNotNull() {
+		return report != null;
+	}
 	public void clean() {
 		id = 0L;
 		period = "MONTHLY";
@@ -73,7 +75,7 @@ public class ReportsCDI implements Serializable {
 		measureFooter = "";
 		totalResult = "";
 		emptyMessage = "";
-		report = new ArrayList<ReportItem>();
+		report = null;
 	}
 	
 	// counting submissions by position between two dates
@@ -91,7 +93,7 @@ public class ReportsCDI implements Serializable {
 		List<Object[]> result = positionEJB.countSubmissionsByPosition(
 				d1, d2);
 
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] ele : result)
 			report.add(new ReportItem(positionEJB.find((Long) ele[0]), null,
 					null, "", longToInt((Long) ele[1]), ""));
@@ -123,7 +125,7 @@ public class ReportsCDI implements Serializable {
 		List<Object[]> list = submissionEJB.averageTimeToHired(d1, d2, p);
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] o: list) {
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					doubleToInt((Double) o[0]), ""));
@@ -170,7 +172,7 @@ public class ReportsCDI implements Serializable {
 				"");
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
@@ -214,7 +216,7 @@ public class ReportsCDI implements Serializable {
 				Constants.QUERY_SPONT);
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
@@ -258,7 +260,7 @@ public class ReportsCDI implements Serializable {
 				Constants.QUERY_REJEC);
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		int size = 0;
 		if (list != null && !list.isEmpty()) size = list.get(0).length;
 		for (Object[] o: list)
@@ -304,7 +306,7 @@ public class ReportsCDI implements Serializable {
 				Constants.QUERY_PROPO);
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		int size = 0;
 		if (list != null && !list.isEmpty()) size = list.get(0).length;
 		for (Object[] o: list)
@@ -321,24 +323,20 @@ public class ReportsCDI implements Serializable {
 		log.info("Creating report with submissions source countings");
 		log.debug("From "+d1+" to "+d2);
 		
-		// change if necessary (table with that?)
-		List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,
-				Constants.SOURCE_FACEBOOK, Constants.SOURCE_LINKEDIN, 
-				Constants.SOURCE_NETEMPREGO);
-
 		tableHeader = "Número de Candidaturas por Fonte "
-				+"entre "+ftDate.format(d1)+" e "
-				+ftDate.format(d2);
+				+"(submetidas entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2)+")";
 		measureHeader = "Nº Candidaturas";
-		measureFooter = "Total Candidaturas do período (cada candidatura pode"
+		measureFooter = "Total Candidaturas do período"
+				+ " (cada candidatura pode"
 				+ " ter várias fontes): ";
 		emptyMessage = "Nada a apresentar.";
 
 		List<Object[]> list = submissionEJB.countSubmissionsBySourceTable(d1,
-				d2, sources);
+				d2, Constants.ALL_SOURCES);
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, (String) o[0],
 					bigIntToInt((BigInteger) o[1]), ""));
@@ -382,7 +380,7 @@ public class ReportsCDI implements Serializable {
 				Constants.QUERY_HIRED);
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
@@ -407,7 +405,7 @@ public class ReportsCDI implements Serializable {
 		List<Object[]> result = positionEJB.countRejectedByPosition(
 				d1, d2);
 
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] ele : result)
 			report.add(new ReportItem(positionEJB.find((Long) ele[0]), null,
 					null, "", longToInt((Long) ele[1]), ""));
@@ -431,7 +429,7 @@ public class ReportsCDI implements Serializable {
 
 		List<Object[]> result = positionEJB.countProposalsByPosition(d1, d2);
 
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] ele : result)
 			report.add(new ReportItem(positionEJB.find((Long) ele[0]), null,
 					null, "", longToInt((Long) ele[1]), ""));
@@ -465,7 +463,7 @@ public class ReportsCDI implements Serializable {
 		List<Object[]> list = positionEJB.averageTimeToClose(d1, d2, p);
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] o: list) {
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					doubleToInt((Double) o[0]), ""));
@@ -499,7 +497,7 @@ public class ReportsCDI implements Serializable {
 			List<SubmissionEntity> list = 
 					submissionEJB.findDetailOfPosition(position);
 			
-			report.clear();
+			report = new ArrayList<ReportItem>();
 			for (SubmissionEntity s: list) {
 				report.add(new ReportItem(null, null, s, " ", 0, ""));
 			}
@@ -528,7 +526,7 @@ public class ReportsCDI implements Serializable {
 				interviewEJB.findCarriedOutInterviews(d1, d2);
 				
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (InterviewEntity i: list)
 			report.add(new ReportItem(null, i, null, "", 0, ""));
 		
@@ -562,7 +560,7 @@ public class ReportsCDI implements Serializable {
 				interviewEJB.averageTimeToFirstInterview(d1, d2, p);
 
 		// extract date header and average times
-		report.clear();
+		report = new ArrayList<ReportItem>();
 		for (Object[] o: list) {
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					doubleToInt((Double) o[0]), ""));
@@ -596,7 +594,7 @@ public class ReportsCDI implements Serializable {
 			List<InterviewEntity> list = 
 				interviewEJB.findCarriedOutInterviewsByCandidate(candidate);
 			
-			report.clear();
+			report = new ArrayList<ReportItem>();
 			for (InterviewEntity i: list) {
 				report.add(new ReportItem(null, i, null, " ", 0, ""));
 			}
