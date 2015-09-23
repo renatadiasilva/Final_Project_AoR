@@ -56,8 +56,7 @@ public class DangerZoneCDI {
 		for (UserEntity u : list) {
 			String emailR = u.getEmail();
 			int sizeOfRemovedData = Constants.REMOVED_DATA.length();
-			info.add("Email "+
-				emailR.substring(0, emailR.length()-sizeOfRemovedData));
+			info.add(emailR.substring(0, emailR.length()-sizeOfRemovedData));
 		}
 	}
 	

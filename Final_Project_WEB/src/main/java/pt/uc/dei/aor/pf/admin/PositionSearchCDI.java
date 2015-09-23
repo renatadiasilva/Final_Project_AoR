@@ -58,6 +58,10 @@ public class PositionSearchCDI {
 	public PositionSearchCDI() {
 	}
 
+	public boolean checkIfNotEmpty() {
+		return plist != null && !plist.isEmpty();
+	}
+
 	public void remove() {
 		log.info("Removing position by id");
 		log.debug("Id "+idPSc);
@@ -105,23 +109,33 @@ public class PositionSearchCDI {
 	public void searchPositionsByLocationsOne() {
 		log.info("Searching for positions with one of the given locations");
 		addLocations();
+		List<String> pattern = new ArrayList<String>(locations.size());
 		log.debug("Locations: ");
-		for(String l : locations) log.debug(l); 
-		this.plist = positionEJB.findPositionsByLocationsOne(locations);
+		for(String l : locations) {
+			log.debug(l);
+			pattern.add(SearchPattern.preparePattern(l));
+		}
+		this.plist = positionEJB.findPositionsByLocationsOne(pattern);
 	}	
 
 	public void searchPositionsByLocationsAll() {
 		log.info("Searching for positions with all the given locations");
 		addLocations();
 		log.debug("Locations: ");
-		for(String l : locations) log.debug(l); 
-		this.plist = positionEJB.findPositionsByLocationsAll(locations);
+		List<String> pattern = new ArrayList<String>(locations.size());
+		log.debug("Locations: ");
+		for(String l : locations) {
+			log.debug(l);
+			pattern.add(SearchPattern.preparePattern(l));
+		}
+		this.plist = positionEJB.findPositionsByLocationsAll(pattern);
 	}	
 
 	public void searchPositionsByStatus() {
 		log.info("Searching for positions by status");
 		log.debug("Status "+status);
-		this.plist = positionEJB.findPositionsByStatus(status);
+		String pattern = SearchPattern.preparePattern(status);
+		this.plist = positionEJB.findPositionsByStatus(pattern);
 	}	
 
 	public void searchPositionsByCompany() {

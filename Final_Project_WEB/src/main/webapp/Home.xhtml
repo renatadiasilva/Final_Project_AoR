@@ -217,17 +217,25 @@
 
 	<ui:define name="contents">
 		<h:form>
+			
+		
+		
 			<p:commandButton value="Populate"
 				actionListener="#{initDB.populate()}"
 				action="#{positionSearchCDI.searchOpenPositions()}" 
-				update="tableHome"/>
+				update="@form"/>
 			<p:commandButton value="Test Email"
 				actionListener="#{testEmailCDI.testMail()}" />
 			<p:commandButton value="Refrescar estilo"
 				actionListener="#{styleSessionManagement.init()}" ajax="false" />
 
 			<p:dataTable emptyMessage="Não foram encontradas posições." var="p"
-				value="#{positionSearchCDI.plist}" id = "tableHome">
+				value="#{positionSearchCDI.plist}" id = "tableHome"
+				rendered="#{positionSearchCDI.checkIfNotEmpty()}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+
 				<f:facet name="header">Posições Abertas</f:facet>
 				<p:column headerText="Código">
 					<h:outputText value="#{p.positionCode}" />

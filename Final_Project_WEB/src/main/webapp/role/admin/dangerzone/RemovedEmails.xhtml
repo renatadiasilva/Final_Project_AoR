@@ -5,6 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
+	<f:metadata>
+		<f:viewAction actionListener =
+			 "#{dangerZoneCDI.listRemovedEmails()}" />
+	</f:metadata>
+
 	<ui:define name="Título">Admin - Emails Removidos
 	 - #{styleSessionManagement.companyName}
 	 </ui:define>
@@ -16,8 +21,10 @@
 
 			<p:dataTable emptyMessage="Sem emails removidos." 
 				var="info" value="#{dangerZoneCDI.info}">
-				<f:facet name="header">Listagem</f:facet>
-				<p:column headerText="Info">
+				<f:facet name="header">
+				Emails de utilizadores com dados apagados
+				</f:facet>
+				<p:column>
 					<h:outputText value="#{info}" />
 				</p:column>
 			</p:dataTable>

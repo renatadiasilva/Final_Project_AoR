@@ -148,7 +148,7 @@ public class PositionEJBImp implements PositionEJBInterface {
 	public List<PositionEntity> findOpenPositions() {
 		log.info("Finding all open positions");
 		return positionDAO.findPositions("%", "%", "%",
-				Constants.STATUS_OPEN, "%", "%", null);
+				Constants.STATUS_OPEN.toUpperCase(), "%", "%", null);
 	}
 
 	@Override
