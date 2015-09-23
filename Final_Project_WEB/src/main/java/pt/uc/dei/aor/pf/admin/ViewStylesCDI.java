@@ -56,6 +56,9 @@ public class ViewStylesCDI {
 	public void unsetDefault(StyleEntity style){
 		style.setUserDefaultStyle(false);
 		this.styleEJB.update(style);
+
+		// Reinicia o estilo da sessão
+		this.currentSessionStyle.init();
 	}
 
 }

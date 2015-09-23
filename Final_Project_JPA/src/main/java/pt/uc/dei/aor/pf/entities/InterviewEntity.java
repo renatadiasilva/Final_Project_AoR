@@ -46,6 +46,10 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
 					+ "WHERE i.carriedOut = FALSE AND s.candidate = :candidate"
 					+ " ORDER BY i.date"),
+	@NamedQuery(name = "Interview.findCarriedOutInterviewsByCandidate",
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s "
+					+ "WHERE i.carriedOut = TRUE AND s.candidate = :candidate"
+					+ " ORDER BY i.date DESC"),
 	@NamedQuery(name = "Interview.findByDateAndInterviewer",
 			query = "SELECT i FROM UserEntity u JOIN u.interviews i "
 					+ "WHERE u = :user AND i.date = :date"),

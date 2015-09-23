@@ -18,7 +18,7 @@
 			<h:panelGrid id="buttonsDetailPositionReports" columns="5">
 
 				<p:commandButton value="Criar relatório"
-					action="#{positionReportsCDI.submissionsByPosition()}"
+					action="#{reportsCDI.submissionDetailsOfPosition()}"
 					update="@form, messages" icon="ui-icon-script" />
 
 			</h:panelGrid>
@@ -26,7 +26,7 @@
 			<h:panelGrid id="gridDetailPositionReport" columns="8">
 
 				<p:outputLabel value="Id (posição): " for="detailpos-id" />
-				<p:inputText id="detailpos-id" value="#{submissionReportsCDI.period}"
+				<p:inputText id="detailpos-id" value="#{reportsCDI.id}"
 					size="35" />
 
 			</h:panelGrid>

@@ -18,10 +18,12 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -43,6 +45,9 @@ public class ReportsCDI implements Serializable {
 	
 	@EJB
 	private InterviewEJBInterface interviewEJB;
+	
+	@EJB
+	private UserEJBInterface userEJB;
 
 	// data input fields
 	private Date d1, d2;
@@ -508,7 +513,7 @@ public class ReportsCDI implements Serializable {
 
 	}
 
-	// average time to first interview by period between two dates (file?)
+	// average time to first interview by period between two dates
 	public void averageTimeToInterview() {
 		log.info("Creating report with average time to first interview");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
@@ -545,13 +550,35 @@ public class ReportsCDI implements Serializable {
 
 	}
 
-	// complicado??
+	// print past interviews of candidate
 	public void interviewDetailOfCandidate() {
 		log.info("Creating report with detaild interview info of candidate");
-		//		List<Object[]> list = report.reportCounting(null, null, "noperiod",
-		//				Constants.REPORT_INT_INTCANDI, null);
-		// if 0, no interviews, no report!
-//		"Detalhes de entrevistas do candidato"
+
+		// choose from the list of candidates
+		UserEntity candidate = userEJB.find(id);
+		if (candidate != null && 
+				candidate.getRoles().contains(Constants.ROLE_CANDIDATE)) {
+			log.debug("Candidate "+candidate.getFirstName()+" "
+					+candidate.getLastName());				
+
+			tableHeader = "Detalhes de entrevistas do candidato "
+					+candidate.getFirstName()+" "
+					+candidate.getLastName()+"("+candidate.getEmail()+")";
+			measureFooter = "Total Entrevistas: ";
+
+			List<InterviewEntity> list = 
+					interviewEJB.findInterviewsOfUser(candidate); // mal
+			
+			report.clear();
+			for (InterviewEntity i: list) {
+				report.add(new ReportItem(null, i, null, " ", 0, ""));
+			}
+			
+		} else log.info("No closed position with id "+id);
+
+		// compute overall submissions of position
+		totalResult = interviewEJB.averageTimeToFirstInterview(d1, d2, ' ')+"";
+		// mal
 	}
 
 	// private methods
