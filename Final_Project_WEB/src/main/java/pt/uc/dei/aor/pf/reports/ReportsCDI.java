@@ -562,7 +562,7 @@ public class ReportsCDI implements Serializable {
 
 			tableHeader = "Detalhes de entrevistas do candidato "
 					+candidate.getFirstName()+" "
-					+candidate.getLastName()+"("+candidate.getEmail()+")";
+					+candidate.getLastName()+" ("+candidate.getEmail()+")";
 			measureFooter = "Total Entrevistas: ";
 
 			List<InterviewEntity> list = 
@@ -576,7 +576,7 @@ public class ReportsCDI implements Serializable {
 			// compute overall interviews of candidate
 			totalResult = list.size()+"";
 
-		} else log.info("No closed position with id "+id);
+		} else log.info("No candidate with id "+id);
 
 	}
 

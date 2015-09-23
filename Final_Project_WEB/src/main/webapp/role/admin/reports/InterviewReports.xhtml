@@ -20,6 +20,11 @@
 					action="#{reportsCDI.interviewCountResults()}"
 					update="@form, messages" icon="ui-icon-script" />
 
+				<p:commandButton 
+					value="Detalhe Entrevistas passadas (candidato)"
+					action="#{reportsCDI.interviewDetailOfCandidate()}"
+					update="@form, messages" icon="ui-icon-script" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridInterviewsReport" columns="2">
@@ -37,6 +42,10 @@
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 						yearRange="c-100:c+100" locale="pt" size="35" mode="inline" />
 				</h:panelGroup>
+
+				<p:outputLabel value="Id (candidato): " for="intrepor-id" />
+				<p:inputText id="intrepor-id" value="#{reportsCDI.id}"
+					size="35" />
 
 			</h:panelGrid>
 			<p:dataTable emptyMessage="Nada a mostrar." var="item"
