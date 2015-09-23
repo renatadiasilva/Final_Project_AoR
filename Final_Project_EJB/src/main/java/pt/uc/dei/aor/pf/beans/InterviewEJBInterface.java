@@ -47,4 +47,7 @@ public interface InterviewEJBInterface {
 	public abstract Long findTotalCarriedOutInterviews(Date date1, Date date2);
 	public abstract Double overallAverageTimeToFirstInterview(Date date1,
 			Date date2);
+	public abstract List<InterviewEntity> findCarriedOutInterviewsByCandidate(
+			UserEntity candidate);
+			
 }

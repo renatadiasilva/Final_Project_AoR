@@ -180,4 +180,12 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 		return (Double) result.get(0);
 	}
 
+	public List<InterviewEntity> findCarriedOutInterviewsByCandidate(
+			UserEntity candidate) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("candidate", candidate);
+		return super.findSomeResults(
+				"Interview.findCarriedOutInterviewsByCandidate", parameters);
+	}
+
 }

@@ -467,7 +467,7 @@ public class ReportsCDI implements Serializable {
 			log.debug("Position "+position.getPositionCode());				
 
 			tableHeader = "Detalhes de candidaturas da posição "
-					+position.getPositionCode()+"(aberta de "
+					+position.getPositionCode()+" (aberta de "
 					+ftDate.format(position.getOpeningDate())
 					+" até "+ftDate.format(position.getClosingDate())+")";
 			measureFooter = "Total Candidaturas: ";
@@ -480,11 +480,10 @@ public class ReportsCDI implements Serializable {
 				report.add(new ReportItem(null, null, s, " ", 0, ""));
 			}
 			
-		} else log.info("No closed position with id "+id);
+			// compute overall submissions of position
+			totalResult = list.size()+"";
 
-		// compute overall submissions of position
-		totalResult = submissionEJB.countTotalSubmissionsPos(
-				position.getOpeningDate(), position.getClosingDate())+"";
+		} else log.info("No closed position with id "+id);
 
 	}
 
@@ -509,7 +508,7 @@ public class ReportsCDI implements Serializable {
 			report.add(new ReportItem(null, i, null, "", 0, ""));
 		
 		// compute overall average
-		totalResult = interviewEJB.findTotalCarriedOutInterviews(d1, d2)+"";
+		totalResult = list.size()+"";
 
 	}
 
@@ -567,18 +566,18 @@ public class ReportsCDI implements Serializable {
 			measureFooter = "Total Entrevistas: ";
 
 			List<InterviewEntity> list = 
-					interviewEJB.findInterviewsOfUser(candidate); // mal
+				interviewEJB.findCarriedOutInterviewsByCandidate(candidate);
 			
 			report.clear();
 			for (InterviewEntity i: list) {
 				report.add(new ReportItem(null, i, null, " ", 0, ""));
 			}
 			
+			// compute overall interviews of candidate
+			totalResult = list.size()+"";
+
 		} else log.info("No closed position with id "+id);
 
-		// compute overall submissions of position
-		totalResult = interviewEJB.averageTimeToFirstInterview(d1, d2, ' ')+"";
-		// mal
 	}
 
 	// private methods

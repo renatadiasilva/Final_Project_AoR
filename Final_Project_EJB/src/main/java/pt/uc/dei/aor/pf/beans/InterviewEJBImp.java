@@ -179,6 +179,13 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
+	public List<InterviewEntity> findCarriedOutInterviewsByCandidate(
+			UserEntity candidate) {
+		log.info("Finding all carried out interviews of a candidate");
+		return interviewDAO.findCarriedOutInterviewsByCandidate(candidate);
+	}
+
+	@Override
 	public Double overallAverageTimeToFirstInterview(Date date1, Date date2) {
 		log.info("Computing the overall average time to first interview"
 				+ " between two dates");
