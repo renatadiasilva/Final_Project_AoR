@@ -33,14 +33,15 @@
 							requiredMessage="Insira um nome." style="width:100%" />
 					</h:panelGroup>
 
-					<h:panelGroup style="width:100%">
-						<p:outputLabel value="Descrição da Empresa" for="new-style-description" />
-						<p:inputTextarea id="new-style-description" cols="3"
-							value="#{newStyleCDI.companyDescritpion}" required="true"
-							requiredMessage="Insira uma Descrição." style="width:100%" />
-					</h:panelGroup>
-
 				</h:panelGrid>
+
+				<h:panelGroup style="width:100%">
+					<p:outputLabel value="Descrição da Empresa"
+						for="new-style-description" />
+					<p:inputTextarea id="new-style-description" cols="3"
+						value="#{newStyleCDI.companyDescritpion}" required="true"
+						requiredMessage="Insira uma Descrição." style="width:100%" />
+				</h:panelGroup>
 
 				<h:panelGroup style="width:100%">
 
@@ -91,8 +92,7 @@
 					dragDropSupport="true" sizeLimit="100000" fileLimit="1"
 					invalidSizeMessage="Ficheiro demaisado grande."
 					invalidFileMessage="Só são permitidos os formatos .gif, .jpg e .png"
-					allowTypes="/(\.|\/)(gif|jpg|png)$/"
-					oncomplete="PF('uploadLogo').hide();" />
+					allowTypes="/(\.|\/)(gif|jpg|png)$/" />
 
 				<p:commandButton value="Fechar" onclick="PF('uploadLogo').hide();"
 					icon="ui-icon-close" style="width:100%" />

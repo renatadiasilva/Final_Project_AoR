@@ -112,7 +112,7 @@ public class NewStyleCDI implements Serializable {
 		log.info("New style created ("+this.styleName+")");
 
 		// Mete as Strings a null
-		this.companyName=this.footerMessage=this.styleName=null;
+		this.companyName=this.companyDescritpion=this.footerMessage=this.styleName=null;
 	}
 
 	public UploadedFile getFile() {
