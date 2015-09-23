@@ -59,12 +59,17 @@ public class ReportsCDI implements Serializable {
 	private String tableHeader;
 	private String periodHeader;
 	private String measureFooter;
-	private String resultHeader = "Por resultado";
 	private String totalResult;
 	private List<ReportItem> report = new ArrayList<ReportItem>();
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
 	public void clean() {
+		period = "MONTHLY";
+		measureHeader = "";
+		tableHeader = "";
+		periodHeader = "";
+		measureFooter = "";
+		totalResult = "";
 		report = new ArrayList<ReportItem>();
 	}
 	
@@ -689,14 +694,6 @@ public class ReportsCDI implements Serializable {
 	public Date getD1() {
 		if (d1 != null) return d1;
 		return new Date();
-	}
-
-	public String getResultHeader() {
-		return resultHeader;
-	}
-
-	public void setResultHeader(String resultHeader) {
-		this.resultHeader = resultHeader;
 	}
 
 	public void setD1(Date d1) {
