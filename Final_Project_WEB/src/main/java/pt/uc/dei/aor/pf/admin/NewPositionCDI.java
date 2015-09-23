@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.admin;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -37,7 +38,7 @@ public class NewPositionCDI implements Serializable {
 
 	@EJB
 	private PositionEJBInterface positionEJB;
-	
+
 	private String creatorEmail;
 
 	private UserEntity manager;
@@ -61,25 +62,58 @@ public class NewPositionCDI implements Serializable {
 	private String description;
 
 	private List<String> advertisingChannels;
-	
+
 	private List<NewPositionCDIextraAd>altAdvertisingChannels;
-	
+
 	private String extraAdvertising;
 
 	private boolean critical, linkedin, glassdoor, facebook;
+	
+	private List<ScriptEntity>scripts;
 
 	private ScriptEntity script;
 
+	private ScriptEntity checkScript;
+
 	private boolean lisboa, porto, coimbra;
 
-	public NewPositionCDI() {
-		this.cleanBean();
+	@PostConstruct
+	public void cleanBean() {
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+		this.creatorEmail=request.getRemoteUser();
+
+		this.title="";
+		this.company="";
+		this.description="";
+
+		System.out.println(this.creatorEmail);
+
+		this.manager=null;
+
+		this.script=null;
+		this.scripts=this.scriptEJB.findAll();
+
+		this.openings=this.slaDays=0;
+
+		this.locations=new ArrayList<String>();
+
+		this.advertisingChannels=new ArrayList<String>();
+		this.altAdvertisingChannels=new ArrayList<NewPositionCDIextraAd>();
+		this.extraAdvertising="";
+
+		this.cleanTechnicalAreas();
+		this.technicalArea="";
+
+		this.lisboa=this.porto=this.coimbra=false;
+		this.extraLocation="";
+
+		this.script=null;
 	}
 
-	@Asynchronous
 	public void createPosition() {
 		System.out.println("A criar posição");
-		
+
 		boolean valid=true;
 
 		// locations
@@ -105,44 +139,59 @@ public class NewPositionCDI implements Serializable {
 		if(this.management)this.technicalArea=Constants.TECH_MANAGEMENT;
 		if(this.integration)this.technicalArea=Constants.TECH_INTEGRATION;
 
+		if(this.title.isEmpty()){
+			valid=false;
+			this.error("Defina um título.");
+		}
+
+		if(this.company.isEmpty()){
+			valid=false;
+			this.error("Defina o nome da Empresa.");
+		}
+
+		if(this.description.isEmpty()){
+			valid=false;
+			this.error("Insira a descrição.");
+		}
+
 		if(this.locations.isEmpty()){
 			valid=false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escolha uma localização."));
+			this.error("Escolha uma localização.");
 		}
-		
+
 		if(this.advertisingChannels.isEmpty()){
 			valid=false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escolha os canais de publicidade."));
+			this.error("Escolha os canais de publicidade.");
 		}
-		
+
 		if(this.technicalArea.isEmpty()){
 			valid=false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escolha uma área técnica."));
+			this.error("Escolha uma área técnica.");
 		}
-		
+
 		if(this.script==null){
 			valid=false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escolha um guião padrão."));
+			this.error("Defina um guião padrão.");
 		}
-		
+
 		if(this.manager==null){
 			valid=false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escolha um gestor."));
+			this.error("Escolha um gestor.");
 		}
-		
+
 		if(this.openings==0){
 			valid=false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Defina o número de vagas."));
+			this.error("Defina o número de vagas.");
 		}
-		
+
 		if(this.slaDays==0){
 			valid=false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Defina o SLA."));
+			this.error("Defina o SLA.");
 		}
 
 		if(valid){
 			UserEntity creator=this.userEJB.findUserByEmail(this.creatorEmail);
-			
+
 			PositionEntity newPositionEntity=new PositionEntity(title, locations,
 					openings, Constants.STATUS_OPEN, null, slaDays, manager, creator,
 					company, technicalArea, description, advertisingChannels, script);
@@ -150,47 +199,22 @@ public class NewPositionCDI implements Serializable {
 			this.positionEJB.save(newPositionEntity);
 
 			this.cleanBean();
-			
+
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova posição criada."));
 		}
 
 	}
 
-	public void cleanBean() {
-		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		
-		this.creatorEmail=request.getRemoteUser();
-		
-		System.out.println(this.creatorEmail);
-		
-		this.manager=null;
-		
-		this.script=null;
-		
-		this.openings=this.slaDays=0;
-		
-		this.locations=new ArrayList<String>();
-		
-		this.advertisingChannels=new ArrayList<String>();
-		this.altAdvertisingChannels=new ArrayList<NewPositionCDIextraAd>();
-		this.extraAdvertising="";
-
-		this.cleanTechnicalAreas();
-
-		this.lisboa=this.porto=this.coimbra=false;
-		this.extraLocation="";
-
-		this.sspa=this.dotnet=this.java=this.safety=this.management=this.integration=false;
-		
-		this.script=null;
+	private void error(String message){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
-	
+
 	public boolean checkManager(UserEntity manager){
 		if(this.manager==null)return false;
 		if(this.manager.getId()==manager.getId())return true;
 		return false;
 	}
-	
+
 	public boolean checkScript(ScriptEntity script){
 		if(this.script==null)return false;
 		if(this.script.getId()==script.getId())return true;
@@ -205,11 +229,11 @@ public class NewPositionCDI implements Serializable {
 		this.altAdvertisingChannels.add(new NewPositionCDIextraAd(this.extraAdvertising));
 		this.extraAdvertising="";
 	}
-	
+
 	public void deleteAltAdvertisingChannels(NewPositionCDIextraAd ad) {
 		this.altAdvertisingChannels.remove(ad);
 	}
-	
+
 	public String getExtraAdvertising() {
 		return extraAdvertising;
 	}
@@ -222,10 +246,14 @@ public class NewPositionCDI implements Serializable {
 		return this.userEJB.findAllManagers();
 	}
 
-	public List<ScriptEntity> getScripts(){
-		return this.scriptEJB.findAll();
+	public void setScripts(List<ScriptEntity> scripts) {
+		this.scripts = scripts;
 	}
-	
+
+	public List<ScriptEntity> getScripts(){
+		return this.scripts;
+	}
+
 	public void setScript(ScriptEntity script){
 		System.out.println("Set Script" +script.getTitle());
 		this.script=script;
@@ -277,6 +305,7 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setCritical(boolean critical) {
+		this.advertisingChannels.clear();
 		this.critical = critical;
 	}
 
@@ -285,6 +314,7 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setLinkedin(boolean linkedin) {
+		this.advertisingChannels.clear();
 		this.linkedin = linkedin;
 	}
 
@@ -293,10 +323,12 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setGlassdoor(boolean glassdoor) {
+		this.advertisingChannels.clear();
 		this.glassdoor = glassdoor;
 	}
 
 	public boolean isFacebook() {
+		this.advertisingChannels.clear();
 		return facebook;
 	}
 
@@ -318,17 +350,10 @@ public class NewPositionCDI implements Serializable {
 		this.manager = manager;
 	}
 
-	public String getExtraLocation() {
-		return extraLocation;
-	}
-
-	public void setExtraLocation(String extraLocation) {
-		this.extraLocation = extraLocation;
-	}
-
 	// technicalAreas Start
 	private void cleanTechnicalAreas(){
 		this.sspa=this.dotnet=this.java=this.safety=this.management=this.integration=false;
+		this.technicalArea="";
 	}
 
 	public boolean isSspa() {
@@ -387,11 +412,22 @@ public class NewPositionCDI implements Serializable {
 	// technicalAreas End
 
 	// locations Start
+
+	public String getExtraLocation() {
+		return extraLocation;
+	}
+
+	public void setExtraLocation(String extraLocation) {
+		this.locations.clear();
+		this.extraLocation = extraLocation;
+	}
+	
 	public boolean isLisboa() {
 		return lisboa;
 	}
 
 	public void setLisboa(boolean lisboa) {
+		this.locations.clear();
 		this.lisboa = lisboa;
 	}
 
@@ -400,6 +436,7 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setPorto(boolean porto) {
+		this.locations.clear();
 		this.porto = porto;
 	}
 
@@ -408,8 +445,17 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setCoimbra(boolean coimbra) {
+		this.locations.clear();
 		this.coimbra = coimbra;
 	}
 	// locations End
+
+	public ScriptEntity getCheckScript() {
+		return checkScript;
+	}
+
+	public void setCheckScript(ScriptEntity checkScript) {
+		this.checkScript = checkScript;
+	}
 
 }

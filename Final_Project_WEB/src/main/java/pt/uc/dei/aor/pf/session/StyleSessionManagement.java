@@ -25,6 +25,10 @@ public class StyleSessionManagement implements Serializable{
 	private Long id;
 
 	private String companyName;
+	
+	private String welcomeMessage;
+	
+	private String companyDescription;
 
 	private String footerMessage;
 
@@ -38,6 +42,8 @@ public class StyleSessionManagement implements Serializable{
 
 	public StyleSessionManagement() {
 		this.companyName=Constants.DEFAULT_COMPANY_NAME;
+		this.welcomeMessage=Constants.DEFAULT_WELCOME_MESSAGE+Constants.DEFAULT_COMPANY_NAME;
+		this.companyDescription=Constants.DEFAULT_COMPANY_DESCRIPTION;
 		this.footerMessage=Constants.DEFAULT_FOOTER_MESSAGE;
 		this.primaryColor=Constants.DEFAULT_PRIMARY_COLOR;
 		this.secondaryColor=Constants.DEFAULT_SECONDARY_COLOR;
@@ -50,6 +56,8 @@ public class StyleSessionManagement implements Serializable{
 
 		this.id=style.getId();
 		this.companyName=style.getCompanyName();
+		this.welcomeMessage=Constants.DEFAULT_WELCOME_MESSAGE+style.getCompanyName();
+		this.companyDescription=style.getCompanyDescription();
 		this.footerMessage=style.getFooterMessage();
 		this.primaryColor=style.getPrimaryColor();
 		this.secondaryColor=style.getSecondaryColor();
@@ -67,6 +75,14 @@ public class StyleSessionManagement implements Serializable{
 		return companyName;
 	}
 
+	public String getWelcomeMessage() {
+		return welcomeMessage;
+	}
+
+	public String getCompanyDescription() {
+		return companyDescription;
+	}
+
 	public String getFooterMessage() {
 		return footerMessage;
 	}
@@ -81,15 +97,13 @@ public class StyleSessionManagement implements Serializable{
 
 	public String getLogoPath() {
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		System.out.println("1 "+request.getScheme());
-		System.out.println("2 "+request.getContextPath());
-		System.out.println("3 "+request.getServletPath());
-		System.out.println("4 "+request.getRequestURI());
-		System.out.println("5 "+request.getRequestURL());
-		System.out.println("6 "+request.getServerName());
-		System.out.println("7 "+request.getServerPort());
-		
-//		return request.getContextPath()+"/customLogos/"+"critical"+".jpg";
+//		System.out.println("1 "+request.getScheme());
+//		System.out.println("2 "+request.getContextPath());
+//		System.out.println("3 "+request.getServletPath());
+//		System.out.println("4 "+request.getRequestURI());
+//		System.out.println("5 "+request.getRequestURL());
+//		System.out.println("6 "+request.getServerName());
+//		System.out.println("7 "+request.getServerPort());
 
 		if(this.companyName.equals(Constants.DEFAULT_COMPANY_NAME)){
 			return "";

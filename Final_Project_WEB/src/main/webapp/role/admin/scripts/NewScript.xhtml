@@ -1,0 +1,48 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+	Admin - Novo Guião - #{styleSessionManagement.companyName}
+	</ui:define>
+
+	<ui:define name="contents">
+		<h1>Novo Guião</h1>
+		<h:form>
+			<p:pickList id="scriptBuilder" value="Construtor de Guião"
+				var="question" itemValue="#{question}"
+				itemLabel="#{question.question}" showSourceControls="true"
+				showTargetControls="true" showCheckbox="true" responsive="true"
+				showSourceFilter="true" showTargetFilter="true"
+				filterMatchMode="contains">
+
+				<f:facet name="sourceCaption">Questões Disponíveis</f:facet>
+				<f:facet name="targetCaption">Questões do Guião</f:facet>
+
+				<p:ajax event="transfer" listener="#{newScriptCDI.onTransfer}"
+					update="msg" />
+				<p:ajax event="select" listener="#{newScriptCDI.onSelect}"
+					update="msg" />
+				<p:ajax event="unselect" listener="#{newScriptCDI.onUnselect}"
+					update="msg" />
+				<p:ajax event="reorder" listener="#{newScriptCDI.onReorder}"
+					update="msg" />
+
+				<p:column style="width:100%;">
+					<h:outputText value="#{question.question}" />
+				</p:column>
+			</p:pickList>
+		</h:form>
+
+		<h:form id="avalableScriptsForm">
+			<p:dialog>
+			
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -10,7 +10,8 @@ public interface QuestionEJBInterface {
 	public abstract void update(QuestionEntity question);
 	public abstract void delete(QuestionEntity question);
 	public abstract QuestionEntity find(Long id);
-	public abstract List<QuestionEntity> findAll(); 
+	public abstract List<QuestionEntity> findAll();
+	public abstract QuestionEntity saveAndReturn(QuestionEntity question); 
 	
 //	public abstract List<QuestionEntity> findQuestionsByScript(
 //				ScriptEntity script); // needed??

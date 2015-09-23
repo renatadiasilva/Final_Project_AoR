@@ -44,16 +44,16 @@ public class QuestionEntity implements Serializable{
 
 	public QuestionEntity() {
 	}
-
+	
 	public QuestionEntity(String type, String question) {
-
+		
 		if (type.equals(QuestionEntity.VALUE)) 
 			this.type = QuestionEntity.VALUE;
 		if (type.equals(QuestionEntity.ISTRUE)) 
 			this.type = QuestionEntity.ISTRUE;
 		if (type.equals(QuestionEntity.ANSWER)) 
 			this.type = QuestionEntity.ANSWER;
-
+		
 		this.question = question;
 	}
 

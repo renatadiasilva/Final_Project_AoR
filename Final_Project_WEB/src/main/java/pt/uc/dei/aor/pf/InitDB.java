@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
+import pt.uc.dei.aor.pf.beans.QuestionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
 import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
@@ -22,6 +23,7 @@ import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -41,6 +43,9 @@ public class InitDB {
 
 	@EJB
 	ScriptEJBInterface scriptEJB;
+	
+	@EJB
+	QuestionEJBInterface questionEJB;
 
 	@EJB
 	PositionEJBInterface positionEJB;
@@ -135,6 +140,14 @@ public class InitDB {
 			new ScriptEntity(null, "Guião (entrevista passada)", null, 
 					"Só para testar", true, ulist[1]), // sclist[5]
 			};
+		
+		QuestionEntity [] qList = {
+				new QuestionEntity(QuestionEntity.ANSWER, "Qual é a sua idade?"),
+				new QuestionEntity(QuestionEntity.ANSWER, "Qual é o seu clube?"),
+				new QuestionEntity(QuestionEntity.ANSWER, "Você é ninja?"),
+				new QuestionEntity(QuestionEntity.ANSWER, "Qual é o significado da vida?"),
+				new QuestionEntity(QuestionEntity.ANSWER, "O Benfica é o maior?"),
+		};
 
 		PositionEntity [] plist = {
 			new PositionEntity("Programadores Java", null, 4, 
@@ -546,6 +559,10 @@ public class InitDB {
 
 		for (ScriptEntity sc : sclist) {
 			this.scriptEJB.save(sc);
+		}
+		
+		for (QuestionEntity q : qList){
+			this.questionEJB.save(q);
 		}
 
 		for (PositionEntity p : plist) {

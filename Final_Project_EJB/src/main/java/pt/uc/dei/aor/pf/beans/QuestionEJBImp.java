@@ -26,6 +26,13 @@ public class QuestionEJBImp implements QuestionEJBInterface {
 		isQuestionComplete(question);
 		questionDAO.save(question);
 	}
+	
+	@Override
+	public QuestionEntity saveAndReturn(QuestionEntity question){
+		log.info("Saving question in DB and returning persisted question");
+		isQuestionComplete(question);
+		return questionDAO.saveAndReturn(question);
+	}
 
 	@Override
 	public void update(QuestionEntity question) {

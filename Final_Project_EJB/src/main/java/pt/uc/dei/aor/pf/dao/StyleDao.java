@@ -18,9 +18,11 @@ public class StyleDao extends GenericDao<StyleEntity> {
 		List<StyleEntity> styles=
 				super.findSomeResults("Style.findDefaultStyle", null);
 
+		// Se não houver um estilo por defeito na BD, devolve o estilo por defeito da máquina
 		if(styles.isEmpty()){
 			return new StyleEntity(Constants.DEFAULT_COMPANY_NAME, 
 					Constants.DEFAULT_COMPANY_NAME, 
+					Constants.DEFAULT_COMPANY_DESCRIPTION,
 					Constants.DEFAULT_FOOTER_MESSAGE,
 					Constants.DEFAULT_PRIMARY_COLOR, 
 					Constants.DEFAULT_SECONDARY_COLOR, false);

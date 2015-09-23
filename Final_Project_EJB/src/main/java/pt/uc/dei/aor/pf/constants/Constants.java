@@ -65,6 +65,8 @@ public class Constants {
 	// Strings related to StyleEntity
 	public static final String DEFAULT_COMPANY_NAME = "ITJobs";
 	public static final String DEFAULT_LOGO = "logo_49px.png";
+	public static final String DEFAULT_WELCOME_MESSAGE = "Seja bem-vind@ à Plataforma de Gestão de Candidaturas da ";
+	public static final String DEFAULT_COMPANY_DESCRIPTION = "Fazemos a gestão das suas candidaturas.";
 	public static final String DEFAULT_FOOTER_MESSAGE = "ITJobs -"
 			+ " Projecto Final | Programação Avançada em JAVA |"
 			+ " Duarte Gonçalves | Renata Silva";

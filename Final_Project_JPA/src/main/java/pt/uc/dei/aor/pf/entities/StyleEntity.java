@@ -35,6 +35,10 @@ public class StyleEntity implements Serializable{
 	private String companyName;
 
 	@NotNull
+	@Column(name = "company_description", nullable = false)
+	private String companyDescription;
+	
+	@NotNull
 	@Column(name = "footer_message", nullable = false)
 	private String footerMessage;
 
@@ -57,10 +61,11 @@ public class StyleEntity implements Serializable{
 	public StyleEntity() {
 	}
 
-	public StyleEntity(String styleTitle, String companyName, String footerMessage,
+	public StyleEntity(String styleTitle, String companyName, String companyDescription, String footerMessage,
 			String primaryColor, String secondaryColor, boolean userDefaultStyle) {
 		this.styleTitle = styleTitle;
 		this.companyName = companyName;
+		this.companyDescription = companyDescription;
 		this.footerMessage = footerMessage;
 		this.primaryColor = primaryColor;
 		this.secondaryColor = secondaryColor;
@@ -89,6 +94,14 @@ public class StyleEntity implements Serializable{
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	public String getCompanyDescription() {
+		return companyDescription;
+	}
+
+	public void setCompanyDescription(String companyDescription) {
+		this.companyDescription = companyDescription;
 	}
 
 	public String getFooterMessage() {

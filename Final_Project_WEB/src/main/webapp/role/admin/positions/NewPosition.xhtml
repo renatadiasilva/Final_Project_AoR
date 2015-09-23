@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="Título">
+	<ui:define name="titulo">
 	Admin -Nova Posição - #{styleSessionManagement.companyName}
 	</ui:define>
 
@@ -82,16 +82,24 @@
 			<h:panelGrid id="newPositionAd" columns="4">
 
 				<p:outputLabel value="Critical Software site: " />
-				<p:selectBooleanCheckbox value="#{newPositionCDI.critical}" />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.critical}">
+					<p:ajax update="@this" />
+				</p:selectBooleanCheckbox>
 
 				<p:outputLabel value="LinkedIn: " />
-				<p:selectBooleanCheckbox value="#{newPositionCDI.linkedin}" />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.linkedin}">
+					<p:ajax update="@this" />
+				</p:selectBooleanCheckbox>
 
 				<p:outputLabel value="Glassdoor: " />
-				<p:selectBooleanCheckbox value="#{newPositionCDI.glassdoor}" />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.glassdoor}">
+					<p:ajax update="@this" />
+				</p:selectBooleanCheckbox>
 
 				<p:outputLabel value="Facebook: " />
-				<p:selectBooleanCheckbox value="#{newPositionCDI.facebook}" />
+				<p:selectBooleanCheckbox value="#{newPositionCDI.facebook}">
+					<p:ajax update="@this" />
+				</p:selectBooleanCheckbox>
 
 			</h:panelGrid>
 			<p:outputLabel />
@@ -234,6 +242,12 @@
 				<p:column headerText="Criado em">
 					<h:outputText value="#{script.creationDate}" />
 				</p:column>
+				<p:column headerText="Consultar">
+					<p:commandButton value="Consultar" style="width:100%"
+						icon="ui-icon-zoomin"
+						actionListener="#{newPositionCDI.setCheckScript(script)}"
+						oncomplete="PF('checkScript').show();" update="checkScriptForm"/>
+				</p:column>
 				<p:column headerText="Seleccionar">
 					<p:commandButton value="Seleccionar" style="width:100%"
 						rendered="#{!newPositionCDI.checkScript(script)}"
@@ -246,21 +260,38 @@
 			</p:dataTable>
 
 		</h:form>
+
 		<br />
 		<br />
+
 		<h:form id="createPosition">
 			<p:messages />
 			<p:commandButton value="Limpar Campos" style="width:100%"
-				action="#{newPositionCDI.cleanBean()}" ajax="false" />
-			<br />
-			<p:commandButton value="Criar Posição"
-				style="width:100%; height:30px"
-				action="#{newPositionCDI.createPosition()}" update="messages" />
+				action="#{newPositionCDI.cleanBean()}"
+				update="messages newPositionPart1 newPositionPart2
+				newPositionPart2b newPositionPart2c newPositionPart3
+				newPositionPart4 newPositionPart5 createPosition" />
+			<p:outputLabel />
+			<p:commandButton value="Criar Posição" style="width:100%"
+				action="#{newPositionCDI.createPosition()}"
+				update="messages newPositionPart1 newPositionPart2
+				newPositionPart2b newPositionPart2c newPositionPart3
+				newPositionPart4 newPositionPart5 createPosition" />
 		</h:form>
 
-		<h:form>
-			<p:dialog widgetVar="checkScript">
-
+		<h:form id="checkScriptForm">
+			<p:dialog widgetVar="checkScript" draggable="false" resizable="false"
+				modal="true" style="max-width:300px" header="Guião">
+				<h:panelGrid>
+					<p:outputLabel value="Título: #{newPositionCDI.checkScript.title}" />
+					<br />
+					<p:outputLabel
+						value="Comentários: #{newPositionCDI.checkScript.comments}" />
+					<br />
+					<p:outputLabel value="Meter aqui a lista de perguntas" />
+					<br />
+				</h:panelGrid>
+				<p:commandButton value="Fechar" onclick="PF('checkScript').hide();" />
 			</p:dialog>
 		</h:form>
 

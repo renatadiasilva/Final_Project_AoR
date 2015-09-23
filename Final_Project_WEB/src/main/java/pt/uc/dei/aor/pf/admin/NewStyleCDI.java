@@ -47,6 +47,8 @@ public class NewStyleCDI implements Serializable {
 	private String styleName;
 
 	private String companyName;
+	
+	private String companyDescritpion;
 
 	private String footerMessage;
 
@@ -85,7 +87,7 @@ public class NewStyleCDI implements Serializable {
 			}
 
 			// Persiste e devolve a entidade
-			this.newStyle=this.styleBean.saveAndReturn(new StyleEntity(styleName, companyName, footerMessage, primaryColor, secondaryColor, userDefault));
+			this.newStyle=this.styleBean.saveAndReturn(new StyleEntity(styleName, companyName, companyDescritpion, footerMessage, primaryColor, secondaryColor, userDefault));
 			this.id=this.newStyle.getId();
 		}
 
@@ -135,6 +137,14 @@ public class NewStyleCDI implements Serializable {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	public String getCompanyDescritpion() {
+		return companyDescritpion;
+	}
+
+	public void setCompanyDescritpion(String companyDescritpion) {
+		this.companyDescritpion = companyDescritpion;
 	}
 
 	public String getFooterMessage() {
