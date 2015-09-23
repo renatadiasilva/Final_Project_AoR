@@ -5,6 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
+	<f:metadata>
+		<f:viewAction actionListener =
+			 "#{reportsCDI.clean()}" />
+	</f:metadata>
+	
 	<ui:define name="Título">
 	Admin - Relatórios de Entrevistas - #{styleSessionManagement.companyName}
 	</ui:define>
@@ -56,7 +61,7 @@
 
 				<p:columnGroup type="header">
 					<p:row>
-						<p:column colspan="5" headerText="Entrevista" />
+						<p:column colspan="6" headerText="Entrevista" />
 						<p:column rowspan="2" 
 							headerText="#{reportsCDI.measureHeader}" />
 					</p:row>
@@ -65,6 +70,7 @@
 						<p:column headerText="Hora" />
 						<p:column headerText="Candidato" />
 						<p:column headerText="Posição" />
+						<p:column headerText="Área Técnica" />
 						<p:column headerText="Entrevistadores" />
 					</p:row>
 				</p:columnGroup>
@@ -85,6 +91,10 @@
 						"#{item.interview.submission.position.positionCode}" />
 				</p:column>
 				<p:column>
+					<h:outputText value="#{
+						item.interview.submission.position.technicalArea}" />
+				</p:column>
+				<p:column>
 					<h:outputText value="#{item.interviewers}" />
 				</p:column>
 				<p:column>
@@ -92,7 +102,7 @@
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
-						<p:column colspan="5" 
+						<p:column colspan="6" 
 							footerText="#{reportsCDI.measureFooter}"
 							style="text-align:right" />
 						<p:column footerText="#{reportsCDI.totalResult}" />

@@ -64,6 +64,10 @@ public class ReportsCDI implements Serializable {
 	private List<ReportItem> report = new ArrayList<ReportItem>();
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
+	public void clean() {
+		report = new ArrayList<ReportItem>();
+	}
+	
 	// counting submissions by position between two dates
 	public void submissionsByPosition() {
 		log.info("Creating report with number of submissions by position");
@@ -563,6 +567,7 @@ public class ReportsCDI implements Serializable {
 			tableHeader = "Detalhes de entrevistas do candidato "
 					+candidate.getFirstName()+" "
 					+candidate.getLastName()+" ("+candidate.getEmail()+")";
+			measureHeader = "Resultado";
 			measureFooter = "Total Entrevistas: ";
 
 			List<InterviewEntity> list = 
