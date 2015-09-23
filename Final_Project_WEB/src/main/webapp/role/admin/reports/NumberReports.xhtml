@@ -40,6 +40,10 @@
 					action="#{reportsCDI.averageTimeToInterview()}"
 					update="@form, messages" icon="ui-icon-script" />
 
+				<p:commandButton value="Candidaturas por fonte"
+					action="#{reportsCDI.sourceCount()}"
+					update="@form, messages" icon="ui-icon-script" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridTimeSearch" columns="8">

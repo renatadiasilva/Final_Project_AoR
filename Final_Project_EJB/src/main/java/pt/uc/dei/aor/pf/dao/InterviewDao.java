@@ -170,6 +170,7 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 				+ " WHERE i.submission = s.id"
 				+ " AND s.date BETWEEN :date1 AND :date2"
 				+ " AND i.first = TRUE";
+		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS);
 		query.setParameter("date1", date1);
 		query.setParameter("date2", date2);

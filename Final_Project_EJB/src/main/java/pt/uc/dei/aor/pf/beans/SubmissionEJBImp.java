@@ -138,10 +138,10 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 
 	@Override
 	public List<Object[]> countSubmissionsByDate(Date date1, Date date2,
-			char p, String result, String restriction) {
+			char p, String restriction) {
 		log.info("Computing number of submissions between two dates");
 		return submissionDAO.countSubmissionsByDate(date1, date2, p,
-				result, restriction);
+				restriction);
 	}
 
 	@Override
@@ -198,12 +198,26 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 	
 	@Override
+	public List<Object[]> countSubmissionsBySourceTable(Date date1, Date date2,
+			List<String> sources) {
+		log.info("Finding number of submissions by source between two dates");
+		return submissionDAO.countSubmissionsBySourceTable(date1,
+				date2, sources);
+	}
+
+	@Override
 	public Double overallAverageTimeToHired(Date date1, Date date2) {
 		log.info("Computing the overall average time to hired"
 				+ " between two dates");
 		return submissionDAO.overallAverageTimeToHired(date1, date2);
 	}
 	
+	@Override
+	public List<SubmissionEntity> findDetailOfPosition(PositionEntity position) {
+		log.info("Finding submissions details of a position");
+		return submissionDAO.findDetailOfPosition(position);
+	}
+
 	private void isSubmissionComplete(SubmissionEntity submission) {
 		boolean hasError = false;
 		

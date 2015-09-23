@@ -34,7 +34,7 @@ public interface SubmissionEJBInterface {
 	public abstract List<Object[]> averageTimeToHired(Date date1, Date date2,
 			char p);
 	public abstract List<Object[]> countSubmissionsByDate(Date date1,
-			Date date2, char p, String result, String restriction);
+			Date date2, char p, String restriction);
 	public abstract Long countTotalSubmissions(Date date1,
 			Date date2);
 	public abstract Long countTotalSubmissionsPos(Date date1,
@@ -47,5 +47,8 @@ public interface SubmissionEJBInterface {
 	public abstract Long countTotalRejectedPos(Date date1, Date date2);
 	public abstract Long countTotalProposalsPos(Date date1, Date date2);
 	public abstract Double overallAverageTimeToHired(Date date1, Date date2);
-	
+	public abstract List<Object[]> countSubmissionsBySourceTable(Date date1, 
+			Date date2, List<String> sources);	
+	public abstract List<SubmissionEntity> findDetailOfPosition(
+			PositionEntity position);
 }

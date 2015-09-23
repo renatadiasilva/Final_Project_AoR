@@ -76,7 +76,7 @@ public class ReportsCDI implements Serializable {
 		report.clear();
 		for (Object[] ele : result)
 			report.add(new ReportItem(positionEJB.find((Long) ele[0]), null,
-					"", longToInt((Long) ele[1]), ""));
+					null, "", longToInt((Long) ele[1]), ""));
 
 		totalResult = submissionEJB.countTotalSubmissionsPos(d1, d2)+"";
 	}
@@ -106,7 +106,7 @@ public class ReportsCDI implements Serializable {
 		// extract date header and average times
 		report.clear();
 		for (Object[] o: list) {
-			report.add(new ReportItem(null, null, makeDateHeader(p, o),
+			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					doubleToInt((Double) o[0]), ""));
 		}
 		
@@ -147,12 +147,12 @@ public class ReportsCDI implements Serializable {
 		measureFooter = "Total Candidaturas: ";
 
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				"", "");
+				"");
 
 		// extract date header and average times
 		report.clear();
 		for (Object[] o: list)
-			report.add(new ReportItem(null, null, makeDateHeader(p, o),
+			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
 		
 		// compute overall average
@@ -190,12 +190,12 @@ public class ReportsCDI implements Serializable {
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				"", " AND spontaneous = TRUE");
+				Constants.QUERY_SPONT);
 
 		// extract date header and average times
 		report.clear();
 		for (Object[] o: list)
-			report.add(new ReportItem(null, null, makeDateHeader(p, o),
+			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
 		
 		// compute overall average
@@ -203,36 +203,6 @@ public class ReportsCDI implements Serializable {
 				+"";
 	}
 	
-//	public void printCandidateInfo(SubmissionEntity s, int index,
-//			boolean printPosition) {
-//		UserEntity cand = s.getCandidate();
-//		System.out.print("\nCandidato "+ index+" ");
-//		System.out.println("\nNome: "+cand.getFirstName()+" "
-//				+cand.getLastName());					
-//		UserInfoEntity info = cand.getUserInfo();
-//		System.out.println("\nCidade: "+info.getCity()+", "
-//				+info.getCountry());
-//		System.out.println("\nCurso: "+info.getCourse()+" ("
-//				+info.getSchool()+")");
-//		System.out.println("\nContactos: "+cand.getEmail()+" "
-//				+info.getMobilePhone()+" "+info.getHomePhone());
-//
-//		if (printPosition) {
-//			PositionEntity pos = s.getPosition();
-//			if (!s.isSpontaneous()) 
-//				System.out.println("\n\nConcorreu à posição :"+pos.getTitle()+
-//						" ("+pos.getPositionCode()+")"); //truncate title??
-//			else { // spontaneous submission
-//				if (pos != null) 
-//					System.out.println("\n\nFoi associado à posição :"
-//							+pos.getTitle()+" ("+pos.getPositionCode()+")");
-//				else System.out.println("\n\nCandidatura espontânea");
-//			}
-//		}
-//
-//	} reject???
-
-
 	// reject submission countings/rejected reasons by period between two dates
 	public void rejectedCountResults() {
 		log.info("Creating report with reject candidates countings");
@@ -263,14 +233,14 @@ public class ReportsCDI implements Serializable {
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				", rejected_reason", " AND rejected_reason IS NOT NULL");
+				Constants.QUERY_REJEC);
 
 		// extract date header and average times
 		report.clear();
 		int size = 0;
 		if (list != null) size = list.get(0).length;
 		for (Object[] o: list)
-			report.add(new ReportItem(null, null, makeDateHeader(p, o),
+			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), (String) o[size-1]));
 		
 		// compute overall average
@@ -308,14 +278,14 @@ public class ReportsCDI implements Serializable {
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				", status", " AND proposal_date IS NOT NULL");
+				Constants.QUERY_PROPO);
 
 		// extract date header and average times
 		report.clear();
 		int size = 0;
 		if (list != null) size = list.get(0).length;
 		for (Object[] o: list)
-			report.add(new ReportItem(null, null, makeDateHeader(p, o),
+			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), (String) o[size-1]));
 		
 		// compute overall average
@@ -327,39 +297,31 @@ public class ReportsCDI implements Serializable {
 		
 		log.info("Creating report with submissions source countings");
 		log.debug("From "+d1+" to "+d2);
+		
+		// change if necessary (table with that?)
 		List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,
 				Constants.SOURCE_FACEBOOK, Constants.SOURCE_LINKEDIN, 
-				Constants.SOURCE_NETEMPREGO); // more?
-		int ns = 0;
-		if (sources != null) ns = sources.size();
-		List<Long> totalS = new ArrayList<Long>(ns);
-		for (int i = 0; i < ns; i++) totalS.add(0L);
-		int index = 0;
-		// count submissions for each source of the list of sources
-		for (String so : sources) {
-			// get list of submissions by a source
-			// of the day, month, or year
-			List<SubmissionEntity> slist = 
-					submissionEJB.findSubmissionsBySource(so, d1, d2);
+				Constants.SOURCE_NETEMPREGO);
 
-			// count the number of submissions by a source
-			// of the day, month, or year
-			int n;
-			if (slist != null) n = slist.size();
-			else n = 0; // no submissions
-//			counts.add(n);
+		tableHeader = "Número de Candidaturas por Fonte "
+				+"entre "+ftDate.format(d1)+" e "
+				+ftDate.format(d2);
+		measureHeader = "Nº Candidaturas";
+		measureFooter = "Total Candidaturas do período (cada candidatura pode"
+				+ " ter várias fontes): ";
 
-			// update overall number of submissions by source
-			Long value = totalS.get(index);
-			totalS.set(index, value+n);
-			index++;
-			
-			for(int i = ns-1; i >= 0; i--);
-//				counts.add(0, totalS.get(i));
+		List<Object[]> list = submissionEJB.countSubmissionsBySourceTable(d1,
+				d2, sources);
 
-		}
-
-//		"Número de Candidaturas por Fonte"
+		// extract date header and average times
+		report.clear();
+		for (Object[] o: list)
+			report.add(new ReportItem(null, null, null, (String) o[0],
+					bigIntToInt((BigInteger) o[1]), ""));
+		
+		// compute overall average
+		totalResult = submissionEJB.countTotalSubmissions(d1, d2)+"";
+		
 	}
 
 	// hired people countings by period between two dates
@@ -392,12 +354,12 @@ public class ReportsCDI implements Serializable {
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
-				"", " AND hired_date IS NOT NULL");
+				Constants.QUERY_HIRED);
 
 		// extract date header and average times
 		report.clear();
 		for (Object[] o: list)
-			report.add(new ReportItem(null, null, makeDateHeader(p, o),
+			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
 		
 		// compute overall average
@@ -422,7 +384,7 @@ public class ReportsCDI implements Serializable {
 		report.clear();
 		for (Object[] ele : result)
 			report.add(new ReportItem(positionEJB.find((Long) ele[0]), null,
-					"", longToInt((Long) ele[1]), ""));
+					null, "", longToInt((Long) ele[1]), ""));
 
 		//other headers
 		totalResult = submissionEJB.countTotalRejectedPos(d1, d2)+"";
@@ -445,7 +407,7 @@ public class ReportsCDI implements Serializable {
 		report.clear();
 		for (Object[] ele : result)
 			report.add(new ReportItem(positionEJB.find((Long) ele[0]), null,
-					"", longToInt((Long) ele[1]), ""));
+					null, "", longToInt((Long) ele[1]), ""));
 
 		//other headers
 		totalResult = submissionEJB.countTotalProposalsPos(d1, d2)+"";
@@ -477,7 +439,7 @@ public class ReportsCDI implements Serializable {
 		// extract date header and average times
 		report.clear();
 		for (Object[] o: list) {
-			report.add(new ReportItem(null, null, makeDateHeader(p, o),
+			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					doubleToInt((Double) o[0]), ""));
 		}
 
@@ -488,21 +450,37 @@ public class ReportsCDI implements Serializable {
 
 	}
 
-	// complicado?
+	// print details of submissions of a given closed position
 	public void submissionDetailsOfPosition() {
 		log.info("Creating report with detailed submissions info "
-				+ "of a given positions");
+				+ "of a given closed position");
+
 		// choose from the list of positions
 		PositionEntity position = positionEJB.find(id);
-		if (position != null) {
-			// ver se é para usar... cuidado data null
+		if (position != null && 
+				position.getStatus().equals(Constants.STATUS_CLOSED)) {
 			log.debug("Position "+position.getPositionCode());				
-			//			List<Object[]> list = report.reportCounting(null, null, "noperiod",
-			//					Constants.REPORT_POS_SUBMIPOS, null);
-			// if 0, no submissions, no report!
-		} else log.info("No position with id "+id);
-		
-//		"Detalhes de candidaturas da posição"
+
+			tableHeader = "Detalhes de candidaturas da posição "
+					+position.getPositionCode()+"(aberta de "
+					+ftDate.format(position.getOpeningDate())
+					+" até "+ftDate.format(position.getClosingDate())+")";
+			measureFooter = "Total Candidaturas: ";
+
+			List<SubmissionEntity> list = 
+					submissionEJB.findDetailOfPosition(position);
+			
+			report.clear();
+			for (SubmissionEntity s: list) {
+				report.add(new ReportItem(null, null, s, " ", 0, ""));
+			}
+			
+		} else log.info("No closed position with id "+id);
+
+		// compute overall submissions of position
+		totalResult = submissionEJB.countTotalSubmissionsPos(
+				position.getOpeningDate(), position.getClosingDate())+"";
+
 	}
 
 	// interview countings/results by period between two dates
@@ -523,7 +501,7 @@ public class ReportsCDI implements Serializable {
 		// extract date header and average times
 		report.clear();
 		for (InterviewEntity i: list)
-			report.add(new ReportItem(null, i, "", 0, ""));
+			report.add(new ReportItem(null, i, null, "", 0, ""));
 		
 		// compute overall average
 		totalResult = interviewEJB.findTotalCarriedOutInterviews(d1, d2)+"";
@@ -556,7 +534,7 @@ public class ReportsCDI implements Serializable {
 		// extract date header and average times
 		report.clear();
 		for (Object[] o: list) {
-			report.add(new ReportItem(null, null, makeDateHeader(p, o),
+			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					doubleToInt((Double) o[0]), ""));
 		}
 

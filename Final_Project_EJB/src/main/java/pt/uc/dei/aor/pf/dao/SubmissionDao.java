@@ -167,8 +167,21 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> countSubmissionsByDate(Date date1, Date date2,
-			char period, String result, String restriction) {
+			char period, String restriction) {
 		
+		String rest = "", result = "";
+		if (restriction.equals(Constants.QUERY_SPONT)) {
+			rest = " AND spontaneous = TRUE";
+		} else if (restriction.equals(Constants.QUERY_REJEC)) {
+			result = ", rejected_reason";
+			rest = " AND rejected_reason IS NOT NULL";
+		} else if (restriction.equals(Constants.QUERY_PROPO)) {
+			result = ", status"; 
+			rest = " AND proposal_date IS NOT NULL";
+		} else if (restriction.equals(Constants.QUERY_HIRED)) {
+			rest = " AND hired_date IS NOT NULL";
+		}
+				
 		String m1 = "", m2 = "";
 		switch (period) {
 		case Constants.DAILY: 
@@ -190,7 +203,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		String queryS = "SELECT COUNT(*) AS c, "+m1+result
 				+ " FROM submissions "
 				+ " WHERE date BETWEEN :date1 AND :date2"
-				+ restriction
+				+ rest
 				+ " GROUP BY "+m2+result+" ORDER BY "+m2+", c DESC"+result;
 		
 		Query query = em.createNativeQuery(queryS);
@@ -241,4 +254,40 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> countSubmissionsBySourceTable(Date date1, 
+			Date date2, List<String> sources) {
+		
+		//always one source at least
+		int n = sources.size();
+		String sourcesPar = "(:source0)";
+		for(int i = 1; i < n; i++) {
+			sourcesPar += ", (:source"+i+")";
+		}
+		
+		String queryS = "WITH x(source) AS (VALUES "
+				+sourcesPar+") SELECT x.source, COUNT(t.source) AS c"
+				+ " FROM x LEFT JOIN (SELECT * FROM submissions as s,"
+				+ " sources as so WHERE s.id = so.submission_id"
+				+ " AND date BETWEEN :date1 AND :date2) AS t"
+				+ " ON x.source = t.source"
+				+ " GROUP BY x.source ORDER BY c DESC, x.source";
+		
+		Query query = em.createNativeQuery(queryS);
+		for (int i = 0; i < n; i++ )
+			query.setParameter("source"+i, sources.get(i));
+		query.setParameter("date1", date1);
+		query.setParameter("date2", date2);
+		return query.getResultList();
+	
+	}
+
+	public List<SubmissionEntity> findDetailOfPosition(
+			PositionEntity position) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("position", position);
+		return super.findSomeResults(
+				"Submission.findDetailOfPosition", parameters);	
+	}
+	
 }

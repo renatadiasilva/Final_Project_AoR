@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Interview.findTotalCarriedOutInterviews",
 			query = "SELECT COUNT(i) FROM InterviewEntity i"
 					+ " WHERE i.carriedOut = TRUE"
-					+ " AND i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
+					+ " AND i.date BETWEEN :date1 AND :date2"),
 	@NamedQuery(name = "Interview.findCarriedOutInterviewsByUser",
 			query = "SELECT i FROM InterviewEntity i JOIN i.interviewers u "
 					+ "WHERE i.carriedOut = TRUE AND u = :user"

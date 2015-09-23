@@ -6,6 +6,7 @@ import java.util.List;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 public class ReportItem implements Serializable {
@@ -15,6 +16,8 @@ public class ReportItem implements Serializable {
 	private PositionEntity position;
 
 	private InterviewEntity interview;
+
+	private SubmissionEntity submission;
 	
 	private String dateHeader;
 	
@@ -26,9 +29,11 @@ public class ReportItem implements Serializable {
 	private SimpleDateFormat ftHour = new SimpleDateFormat ("HH:mm"); 
 
 	public ReportItem(PositionEntity position, InterviewEntity interview,
+			SubmissionEntity submission,
 			String dateHeader, int measure, String result) {
 		this.interview = interview;
 		this.position = position;
+		this.submission = submission;
 		this.dateHeader = dateHeader;
 		this.measure = measure;
 		this.result = result;
@@ -95,5 +100,13 @@ public class ReportItem implements Serializable {
 		s += interviewers.get(limit).getFirstName()+" "
 				+interviewers.get(limit).getLastName();
 		return s;
+	}
+
+	public SubmissionEntity getSubmission() {
+		return submission;
+	}
+
+	public void setSubmission(SubmissionEntity submission) {
+		this.submission = submission;
 	}
 }

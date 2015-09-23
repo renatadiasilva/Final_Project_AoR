@@ -82,7 +82,14 @@ public class Constants {
 	
 	// Miliseconds per day (to convert on days)
 	public static final long MSPERDAY = 60 * 60 * 24 * 1000;
+
+	// native queries
+	public static final String QUERY_SPONT = "SPONTANEOUS";
+	public static final String QUERY_REJEC = "REJECTED";
+	public static final String QUERY_PROPO = "PROPOSAL";
+	public static final String QUERY_HIRED = "HIRED";
 	
+
 	// No occurencies
 	public static final String REPORT_NO_HIRED = "Sem contratações";
 	
