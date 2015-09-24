@@ -89,15 +89,20 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+Constants.SERVLET_AUTH_CANDIDATE
 				+"?"+Constants.SERVLET_EMAIL+"="+newUser.getEmail();
 
-//		String link=SecureMailManagementImp.SERVICE_CONTEXT
-//				+"?"+Constants.QUERY_SUBJECT+"="+Constants.QUERY_SUBJECT_AUTH_CANDIDATE
-//				+"&"+Constants.QUERY_EMAIL+"="+newUser.getEmail();
-
 		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","+
 				"\n\nBem vindo à plataforma ITJobs. Para terminar o seu registo, por favor siga o link: "+link
 				+"\n\nCumprimentos,\nA equipa ITJobs";
 
 		this.sendEmail(newUser.getEmail(), "Registo na plataforma ITJobs - Autenticação do email", text);
+	}
+
+	@Override
+	public void authenticatedEmail(UserEntity user) {
+		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","+
+				"\n\nO seu email encontra-se autenticado e o seu registo concluído. Boa sorte na procura do seu próximo emprego!"
+				+"\n\nCumprimentos,\nA equipa ITJobs";
+		
+		this.sendEmail(user.getEmail(), "Registo na plataforma ITJobs - Registo concluído", text);
 	}
 
 }

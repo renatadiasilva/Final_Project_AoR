@@ -13,4 +13,6 @@ public interface SecureMailManagementInterface {
 
 	public abstract void candidateToAuthenticate(UserEntity newUser);
 
+	public abstract void authenticatedEmail(UserEntity user);
+
 }

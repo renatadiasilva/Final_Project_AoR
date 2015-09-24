@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 
 @WebServlet(name="/"+Constants.SERVLET_AUTH_CANDIDATE, urlPatterns="/services/*")
 public class AuthenticateCandidateServlet extends HttpServlet{
@@ -28,8 +30,8 @@ public class AuthenticateCandidateServlet extends HttpServlet{
 	@EJB
 	private UserEJBInterface userEJB;
 	
-//	@Inject
-//	private ServletMessage message;
+	@EJB
+	private SecureMailManagementInterface mailEJB;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response){
 		
@@ -43,10 +45,10 @@ public class AuthenticateCandidateServlet extends HttpServlet{
 				this.userEJB.update(user);
 			} else log.info("Email not found: "+request.getParameter(Constants.SERVLET_EMAIL));
 			
-//			this.message.addMessage("Email "+request.getParameter(Constants.SERVLET_EMAIL)+" autenticado, registo concluído, pode efectuar o seu login.");
 			
 			try {
 				// Reencaminha para a página inicial
+				this.mailEJB.authenticatedEmail(user);
 				response.sendRedirect(request.getContextPath()+"/Home.xhtml");
 			} catch (IOException e) {
 				log.error("Error redirecting");

@@ -13,8 +13,8 @@
 			<f:viewAction
 				actionListener="#{userSessionManagement.checkForUser()}" />
 			<!-- Always load open positions list -->
-			<f:viewAction actionListener =
-				 "#{positionSearchCDI.searchOpenPositions()}" />
+			<f:viewAction
+				actionListener="#{positionSearchCDI.searchOpenPositions()}" />
 		</f:metadata>
 
 		<h:panelGrid columns="3">
@@ -41,13 +41,15 @@
 			</h:form>
 
 			<h:form id="header-signup">
-				<p:commandButton value="Signup" onclick="PF('signup').show();"
-					update="messages" icon="ui-icon-person" style="margin:none" />
+				<p:commandButton value="Signup" oncomplete="PF('signup').show();"
+					update="messages signupForm" icon="ui-icon-person"
+					style="margin:none" />
 			</h:form>
 
 			<h:form id="header-recover">
 				<p:commandButton value="Recuperar password"
-					onclick="PF('recoverPassword').show();" icon="ui-icon-help"
+					update="messages recoverPasswordForm"
+					oncomplete="PF('recoverPassword').show();" icon="ui-icon-help"
 					style="margin:none" />
 			</h:form>
 
@@ -222,8 +224,7 @@
 
 			<p:commandButton value="Populate"
 				actionListener="#{initDB.populate()}"
-				action="#{positionSearchCDI.searchOpenPositions()}" 
-				update="@form"/>
+				action="#{positionSearchCDI.searchOpenPositions()}" update="@form" />
 			<p:commandButton value="Test Email"
 				actionListener="#{testEmailCDI.testMail()}" />
 			<p:commandButton value="Refrescar estilo"
@@ -241,7 +242,7 @@
 			<br />
 
 			<p:dataTable emptyMessage="Não foram encontradas posições." var="p"
-				value="#{positionSearchCDI.plist}" id = "tableHome"
+				value="#{positionSearchCDI.plist}" id="tableHome"
 				rendered="#{positionSearchCDI.checkIfNotEmpty()}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
