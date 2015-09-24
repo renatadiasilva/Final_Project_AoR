@@ -2,7 +2,10 @@ package pt.uc.dei.aor.pf.admin;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +17,17 @@ import org.primefaces.model.DualListModel;
 
 import pt.uc.dei.aor.pf.beans.QuestionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import java.io.Serializable;
 
 @Named
 @SessionScoped
 public class NewScriptCDI implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -30,34 +35,44 @@ public class NewScriptCDI implements Serializable {
 
 	@EJB
 	private QuestionEJBInterface questionsEJB;
-	
+
 	@EJB
 	private ScriptEJBInterface scriptEJB;
-	
+
+	@EJB
+	private UserEJBInterface userEJB;
+
 	private DualListModel<QuestionEntity> questions;
-	
+
 	private List<QuestionEntity> questionsDB;
-	
+
 	private List<QuestionEntity> questionsSource;
-	
+
 	private List<QuestionEntity> questionsTarget;
-	
+
 	private List<ScriptEntity>availableScripts;
-	
+
 	private ScriptEntity scriptToStartFrom;
-	
+
 	private String newQuestion;
-	
+
+	private boolean numeric, trueFalse, textual;
+
 	private String title;
-	
+
 	private String comments;
-	
+
 	@PostConstruct
 	public void init() {
+		this.textual=true;
+		this.trueFalse=this.numeric=false;
+
+		this.title=this.comments="";
+
 		this.scriptToStartFrom=null;
-		
+
 		this.availableScripts=scriptEJB.findReusableScripts();
-		
+
 		this.title=this.comments=this.newQuestion="";
 		this.questionsDB = this.questionsEJB.findAll();
 		this.questionsSource = this.questionsDB;
@@ -65,7 +80,48 @@ public class NewScriptCDI implements Serializable {
 
 		this.questions = new DualListModel<QuestionEntity>(questionsSource, questionsTarget);
 	}
-	
+
+	public void createScript(){
+		boolean valid=true;
+
+		if(this.title.isEmpty()){
+			valid=false;
+			this.error("Insíra um título");
+		}
+
+		if(this.comments.isEmpty()){
+			valid=false;
+			this.error("Insira comentários");
+		}
+
+		if(this.questions.getTarget().isEmpty()){
+			valid=false;
+			this.error("Crie uma lista de perguntas.");
+		}
+
+		if(valid){
+			HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String creatorEmail=request.getRemoteUser();
+			UserEntity creator=this.userEJB.findUserByEmail(creatorEmail);
+			
+			System.out.println(creatorEmail);
+			System.out.println(creator.getFirstName()+" "+creator.getLastName());
+
+			ScriptEntity newScript=new ScriptEntity(this.scriptToStartFrom, this.title, this.questions.getTarget(),
+					this.comments, true, creator);
+
+			this.scriptEJB.save(newScript);
+
+			this.init();
+
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo guião criado com sucesso"));
+		}
+	}
+
+	private void error(String message){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -86,36 +142,42 @@ public class NewScriptCDI implements Serializable {
 		if(this.scriptToStartFrom==null) return false;
 		return this.scriptToStartFrom.equals(script);
 	}
-	
+
 	public void useScript(ScriptEntity script){
 		this.scriptToStartFrom=script;
-		
+
 		this.title=this.scriptToStartFrom.getTitle();
 		this.comments=this.scriptToStartFrom.getComments();
-		
+
 		// Põe as questões do script no target
 		this.questions.setTarget(this.scriptToStartFrom.getQuestions());
-		
+
 		// Retira as questões do target do source
 		this.questionsSource = this.questionsDB;
 		for(QuestionEntity q:this.scriptToStartFrom.getQuestions())
 			if(this.questionsSource.contains(q))
 				this.questionsTarget.remove(q);
-		
+
 		// Sets
 		this.questions.setSource(questionsSource);
 		this.questions.setTarget(questionsTarget);
 	}
 
 	public void createNewQuestion(){
+		// Tipo de questão		
+		String questionType="";
+		if(this.numeric)questionType=QuestionEntity.VALUE;
+		if(this.textual)questionType=QuestionEntity.ANSWER;
+		if(this.trueFalse)questionType=QuestionEntity.ISTRUE;
+
 		// Cria, persiste e retorna a questão
-		QuestionEntity newQuestion=new QuestionEntity(QuestionEntity.ANSWER, this.newQuestion);
+		QuestionEntity newQuestion=new QuestionEntity(questionType, this.newQuestion);
 		newQuestion=this.questionsEJB.saveAndReturn(newQuestion);
 		this.newQuestion="";
-		
+
 		// Actualiza a lista de questões - também é utilizada pelo converter
 		this.questionsDB = this.questionsEJB.findAll();
-		
+
 		// Adiciona a questão ao guião
 		this.questions.getTarget().add(newQuestion);
 	}
@@ -166,5 +228,36 @@ public class NewScriptCDI implements Serializable {
 	public void setAvailableScripts(List<ScriptEntity> availableScripts) {
 		this.availableScripts=scriptEJB.findReusableScripts();;
 	}
-	
+
+	public boolean isNumeric() {
+		return numeric;
+	}
+
+	public void setNumeric(boolean numeric) {
+		this.cleanQuestionType();
+		this.numeric = numeric;
+	}
+
+	public boolean isTrueFalse() {
+		return trueFalse;
+	}
+
+	public void setTrueFalse(boolean trueFalse) {
+		this.cleanQuestionType();
+		this.trueFalse = trueFalse;
+	}
+
+	public boolean isTextual() {
+		return textual;
+	}
+
+	public void setTextual(boolean textual) {
+		this.cleanQuestionType();
+		this.textual = textual;
+	}
+
+	private void cleanQuestionType(){
+		this.textual=this.numeric=this.trueFalse=false;
+	}
+
 }
