@@ -2,6 +2,7 @@ package pt.uc.dei.aor.pf.mailManagement;
 
 import javax.annotation.Resource;
 import javax.ejb.Asynchronous;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.mail.Message;
@@ -14,12 +15,11 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
-/**
- * Session Bean implementation class GwMessage
- */
 @Stateless
 @LocalBean
 public class SecureMailManagementImp implements SecureMailManagementInterface{
@@ -27,6 +27,9 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 	@Resource(mappedName="java:jboss/mail/Gmail")
 	Session gmailSession;
+	
+	@EJB
+	private StyleEJBInterface styleEJB;
 
 	private static final String FROM="itjobs.aor@gmail.com";
 
@@ -40,7 +43,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	}
 
 	@Asynchronous
-	public void sendEmail(String receiver, String subject, String content) {
+	private void sendEmail(String receiver, String subject, String content) {
 
 		log.info("Sending Email from " + FROM + " to " + receiver + " : " + subject);
 
@@ -68,11 +71,14 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		// Envia um email ao user a notificar da nova password temporária
 		String receiver=user.getEmail();
 		String subject="Recuperação de password";
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","+
-				"\n\nA sua nova password para aceder à plataforma ITJobs: "+temporaryPassword
-				+"\n\nCumprimentos,\nA equipa ITJobs";
+				"\n\nA sua nova password para aceder à plataforma "
+				+companyName+": "
+				+temporaryPassword+"\n\nCumprimentos,\nA equipa "+companyName;
 
-		log.info("Envio de email para "+user.getEmail()+" para notificar da password temporária "+temporaryPassword);
+		log.info("Envio de email para "+user.getEmail()+" para "
+				+ "notificar da password temporária "+temporaryPassword);
 		this.sendEmail(receiver, subject, text);
 	}
 
@@ -89,20 +95,27 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+Constants.SERVLET_AUTH_CANDIDATE
 				+"?"+Constants.SERVLET_EMAIL+"="+newUser.getEmail();
 
-		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","+
-				"\n\nBem vindo à plataforma ITJobs. Para terminar o seu registo, por favor siga o link: "+link
-				+"\n\nCumprimentos,\nA equipa ITJobs";
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","
+				+"\n\nBem vindo à plataforma "+companyName+". Para terminar o "
+				+ "seu registo, por favor siga o link: "+link
+				+"\n\nCumprimentos,\nA equipa "
+				+companyName;
 
-		this.sendEmail(newUser.getEmail(), "Registo na plataforma ITJobs - Autenticação do email", text);
+		this.sendEmail(newUser.getEmail(), "Registo na plataforma "
+				+ companyName+" - Autenticação do email", text);
 	}
 
 	@Override
 	public void authenticatedEmail(UserEntity user) {
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","+
-				"\n\nO seu email encontra-se autenticado e o seu registo concluído. Boa sorte na procura do seu próximo emprego!"
-				+"\n\nCumprimentos,\nA equipa ITJobs";
+				"\n\nO seu email encontra-se autenticado e o seu registo "
+				+ "concluído. Boa sorte na procura do seu próximo emprego!"
+				+"\n\nCumprimentos,\nA equipa "+companyName;
 		
-		this.sendEmail(user.getEmail(), "Registo na plataforma ITJobs - Registo concluído", text);
+		this.sendEmail(user.getEmail(), "Registo na plataforma "
+				+ companyName+" - Registo concluído", text);
 	}
 
 }

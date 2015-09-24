@@ -45,7 +45,6 @@ public class StyleEJBImp implements StyleEJBInterface{
 	
 	@Override
 	public StyleEntity findDefaulStyle(){
-		System.out.println("Início da pesquisa EJB");
 		log.info("Retreiving default style.");
 		return styleDao.findDefaultStyle();
 	}
