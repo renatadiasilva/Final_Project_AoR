@@ -96,5 +96,10 @@ public class QuestionEntity implements Serializable{
 	public void setAnswers(List<AnswerEntity> answers) {
 		this.answers = answers;
 	}
+	
+	@Override 
+	public String toString() {
+		return this.question;
+	}
 
 }

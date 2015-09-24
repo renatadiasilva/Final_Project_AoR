@@ -1,7 +1,6 @@
 package pt.uc.dei.aor.pf.admin;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -92,7 +91,7 @@ public class NewPositionCDI implements Serializable {
 		this.manager=null;
 
 		this.script=null;
-		this.scripts=this.scriptEJB.findAll();
+		this.scripts=this.scriptEJB.findReusableScripts();
 
 		this.openings=this.slaDays=0;
 

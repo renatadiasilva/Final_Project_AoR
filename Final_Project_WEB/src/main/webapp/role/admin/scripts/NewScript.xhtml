@@ -11,36 +11,75 @@
 
 	<ui:define name="contents">
 		<h1>Novo Guião</h1>
-		<h:form>
-			<p:pickList id="scriptBuilder" value="Construtor de Guião"
-				var="question" itemValue="#{question}"
-				itemLabel="#{question.question}" showSourceControls="true"
-				showTargetControls="true" showCheckbox="true" responsive="true"
-				showSourceFilter="true" showTargetFilter="true"
-				filterMatchMode="contains">
+
+		<!-- Scripts Disponíveis -->
+		<h:form id="avalableScriptsForm">
+			<p:dataTable id="avalableScriptsData" var="script"
+				value="#{newScriptCDI.availableScripts}" emptyMessage="Sem scripts"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<p:column headerText="Título">
+					<p:outputLabel value="#{script.title}" />
+				</p:column>
+				<p:column headerText="Usar como ponto de partida">
+					<p:commandButton value="Usar Guião" style="width:100%;"
+						rendered="#{!newScriptCDI.checkScriptToStartFrom(script)}"
+						actionListener="#{newScriptCDI.useScript(script)}"
+						icon="ui-icon-script"
+						update="avalableScriptsForm pickListForm scriptAttributesForm" />
+					<p:commandButton value="Em uso. Cancelar?" style="width:100%;"
+						rendered="#{newScriptCDI.checkScriptToStartFrom(script)}"
+						actionListener="#{newScriptCDI.init()}" icon="ui-icon-cancel"
+						update="avalableScriptsForm pickListForm scriptAttributesForm" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<!-- Título, Comentários -->
+		<h:form id="scriptAttributesForm">
+			<br />
+			<br />
+			<h:panelGrid columns="2" style="width:550px;">
+				<p:outputLabel value="Título: " />
+				<p:inputText value="#{newScriptCDI.title}" style="width:100%;" />
+				<p:outputLabel value="Comentários: " />
+				<p:inputTextarea value="#{newScriptCDI.comments}"
+					style="width:100%;" rows="3" />
+			</h:panelGrid>
+			<br />
+			<br />
+		</h:form>
+
+		<h:form id="pickListForm">
+			<!-- Adicionar questões -->
+			<h:panelGrid columns="3" id="addQuestion">
+				<p:inputText id="new-script-ad-question"
+					value="#{newScriptCDI.newQuestion}" style="width:500px;" />
+				<p:watermark for="new-script-ad-question"
+					value="Insira uma questão nova." />
+				<p:commandButton icon="ui-icon-plus" update="pickListForm"
+					actionListener="#{newScriptCDI.createNewQuestion()}" />
+			</h:panelGrid>
+			<br />
+			<br />
+			
+			<!-- Gerar lista de questões -->
+			<p:pickList id="scriptBuilder" value="#{newScriptCDI.questions}"
+				var="question" itemValue="#{question}" itemLabel="#{question}"
+				showSourceControls="true" showTargetControls="true"
+				showCheckbox="true" responsive="true" showSourceFilter="true"
+				showTargetFilter="true" filterMatchMode="contains"
+				converter="questionConverter">
 
 				<f:facet name="sourceCaption">Questões Disponíveis</f:facet>
 				<f:facet name="targetCaption">Questões do Guião</f:facet>
 
-				<p:ajax event="transfer" listener="#{newScriptCDI.onTransfer}"
-					update="msg" />
-				<p:ajax event="select" listener="#{newScriptCDI.onSelect}"
-					update="msg" />
-				<p:ajax event="unselect" listener="#{newScriptCDI.onUnselect}"
-					update="msg" />
-				<p:ajax event="reorder" listener="#{newScriptCDI.onReorder}"
-					update="msg" />
+				<p:ajax event="transfer" listener="#{newScriptCDI.onTransfer}" />
 
 				<p:column style="width:100%;">
-					<h:outputText value="#{question.question}" />
+					<h:outputText value="#{question}" />
 				</p:column>
 			</p:pickList>
-		</h:form>
-
-		<h:form id="avalableScriptsForm">
-			<p:dialog>
-			
-			</p:dialog>
 		</h:form>
 
 	</ui:define>
