@@ -25,7 +25,7 @@
 							requiredMessage="Insira o primeiro nome."
 							maxlength="#{max.length.userFirstName()}" />
 
-						<p:outputLabel value="Último Nome: " for="signup-lastName" />
+						<p:outputLabel value="Sobrenome: " for="signup-lastName" />
 						<p:inputText id="signup-lastName"
 							value="#{editUserInfoCDI.lastName}" size="35" required="true"
 							requiredMessage="Insira o sobrenome"
@@ -41,7 +41,7 @@
 						<p:inputMask mask="999 999 999" id="signup-homePhone"
 							value="#{editUserInfoCDI.homePhone}" size="35" />
 
-						<p:outputLabel value="Telefone móvel: " for="signup-mobilePhone" />
+						<p:outputLabel value="Telemóvel: " for="signup-mobilePhone" />
 						<p:inputMask mask="999 999 999" id="signup-mobilePhone"
 							value="#{editUserInfoCDI.mobilePhone}" size="35" maxlength="20" />
 
