@@ -56,12 +56,13 @@
 				<p:outputLabel value="Primeira Data: " for="time-date1" />
 				<p:calendar id="time-date1" value="#{reportsCDI.d1}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+100" locale="pt" size="35" />
+					yearRange="c-100:c+0" locale="pt" size="35" />
 
 				<p:outputLabel value="Segunda Data: " for="time-date2" />
 				<p:calendar id="time-date2" value="#{reportsCDI.d2}"
+					mindate="#{reportsCDI.d1}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+100" locale="pt" size="35" />
+					yearRange="c-100:c+0" locale="pt" size="35" />
 
 				<p:outputLabel value="Período (dia/mês/ano): " for="time-period" />
 				<p:inputText id="time-period" value="#{reportsCDI.period}"

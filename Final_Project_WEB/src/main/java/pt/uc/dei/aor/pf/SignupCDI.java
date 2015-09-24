@@ -42,9 +42,9 @@ public class SignupCDI {
 					lastName, birthday, address, 
 					city, homePhone,mobilePhone, country, course, school, 
 					linkedin, false, false, false, false);
-
 		} else FacesContext.getCurrentInstance().addMessage(null, 
-				new FacesMessage("Email inválido."));
+				new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Email inválido.", "Email inválido."));
 
 	}
 

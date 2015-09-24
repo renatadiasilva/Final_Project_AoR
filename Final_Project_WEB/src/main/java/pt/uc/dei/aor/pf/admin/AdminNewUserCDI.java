@@ -45,7 +45,8 @@ public class AdminNewUserCDI {
 					interviewer);
 
 		} else FacesContext.getCurrentInstance().addMessage(null, 
-				new FacesMessage("Email inválido."));
+				new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Email inválido.", "Email inválido."));
 
 	}
 
@@ -63,7 +64,8 @@ public class AdminNewUserCDI {
 					new FacesMessage("Defina o tipo de utilizador."));
 
 		} else FacesContext.getCurrentInstance().addMessage(null, 
-				new FacesMessage("Email inválido."));
+				new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Email inválido.", "Email inválido."));
 
 	}
 

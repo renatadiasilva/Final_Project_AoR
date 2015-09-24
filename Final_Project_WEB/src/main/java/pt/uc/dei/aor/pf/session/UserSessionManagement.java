@@ -232,7 +232,7 @@ public class UserSessionManagement implements Serializable {
 //				RequestContext requestContext = RequestContext.getCurrentInstance();
 //				requestContext.execute("PF('signup').hide();");
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
-				this.context.addMessage(null, new FacesMessage("Por favor consulte a sua caixa de correio e siga as instruções apresentadas."));
+				this.context.addMessage(null, new FacesMessage("Consulte a sua caixa de correio e siga as instruções apresentadas."));
 			}else{
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
 				this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
