@@ -8,41 +8,42 @@
 <h:body>
 
 	<ui:composition>
-		<h:form id="editUserInfoForm">
+		<h:form id="editCandidateInfoForm">
 
-			<p:dialog header="Dados do utilizador" widgetVar="editUserInfo"
+			<p:dialog header="Dados do utilizador" widgetVar="editCandidateInfo"
 				draggable="false" resizable="false" modal="true" height="441" >				
 
-				<h:panelGroup id="editUserInfoDialog">
+				<h:panelGroup id="editCandidateInfoDialog">
 
 					<p:messages style="width: 100%" />
 
 					<h:panelGrid columns="2">
 
-						<p:outputLabel value="Primeiro Nome: " for="signup-firstName" />
-						<p:inputText id="signup-firstName"
+						<p:outputLabel value="Primeiro Nome: " for="signup2-firstName" />
+						<p:inputText id="signup2-firstName"
 							value="#{editUserInfoCDI.firstName}" size="35" required="true"
 							requiredMessage="Insira o primeiro nome."
 							maxlength="#{max.length.userFirstName()}" />
 
-						<p:outputLabel value="Último Nome: " for="signup-lastName" />
-						<p:inputText id="signup-lastName"
+						<p:outputLabel value="Último Nome: " for="signup2-lastName" />
+						<p:inputText id="signup2-lastName"
 							value="#{editUserInfoCDI.lastName}" size="35" required="true"
 							requiredMessage="Insira o sobrenome"
 							maxlength="#{max.length.userLastName()}" />
 
-						<p:outputLabel value="Data de Nascimento: " for="signup-birthday" />
-						<p:calendar id="signup-birthday"
+						<p:outputLabel value="Data de Nascimento: " for="signup2-birthday" />
+						<p:calendar id="signup2-birthday"
 							value="#{editUserInfoCDI.birthday}" pattern="dd/MM/yyyy"
 							readonlyInput="true" navigator="true" yearRange="c-100:c+50"
 							locale="pt" size="35" />
 
-						<p:outputLabel value="Telefone: " for="signup-homePhone" />
-						<p:inputMask mask="999 999 999" id="signup-homePhone"
+						<p:outputLabel value="Telefone: " for="signup2-homePhone" />
+						<p:inputMask mask="999 999 999" id="signup2-homePhone"
 							value="#{editUserInfoCDI.homePhone}" size="35" />
 
-						<p:outputLabel value="Telefone móvel: " for="signup-mobilePhone" />
-						<p:inputMask mask="999 999 999" id="signup-mobilePhone"
+						<p:outputLabel value="Telefone móvel: " for="signup2-mobilePhone" />
+						<p:inputMask mask="999 999 999" id="signup2-mobilePhone"
+							required="true"
 							value="#{editUserInfoCDI.mobilePhone}" size="35" maxlength="20" />
 
 						<p:outputLabel />
@@ -50,22 +51,25 @@
 						<p:outputLabel />
 						<p:outputLabel />
 
-						<p:outputLabel value="Morada: " for="signup-adress" />
+						<p:outputLabel value="Morada: " for="signup2-adress" />
 						<h:panelGroup>
-							<p:inputTextarea id="signup-adress"
+							<p:inputTextarea id="signup2-adress"
 								value="#{editUserInfoCDI.address}" cols="35" rows="3"
-								counter="maxAdress" counterTemplate=" - {0}"
+								counter="maxAdress2" counterTemplate=" - {0}"
+								required="true"
 								maxlength="#{max.length.userInfoAddress()}" />
-							<h:outputText id="maxAdress" />
+							<h:outputText id="maxAdress2" />
 						</h:panelGroup>
 
-						<p:outputLabel value="Cidade: " for="signup-city" />
-						<p:inputText id="signup-city" value="#{editUserInfoCDI.city}"
+						<p:outputLabel value="Cidade: " for="signup2-city" />
+						<p:inputText id="signup2-city" value="#{editUserInfoCDI.city}"
+							required="true"
 							size="35" maxlength="#{max.length.userInfoCity()}" />
 
-						<p:outputLabel value="País: " for="signup-country" />
-						<p:inputText id="signup-country"
+						<p:outputLabel value="País: " for="signup2-country" />
+						<p:inputText id="signup2-country"
 							value="#{editUserInfoCDI.country}" size="35"
+							required="true"
 							maxlength="#{max.length.userInfoCountry()}" />
 
 						<p:outputLabel />
@@ -73,16 +77,18 @@
 						<p:outputLabel />
 						<p:outputLabel />
 
-						<p:outputLabel value="Curso: " for="signup-course" />
-						<p:inputText id="signup-course" value="#{editUserInfoCDI.course}"
+						<p:outputLabel value="Curso: " for="signup2-course" />
+						<p:inputText id="signup2-course" value="#{editUserInfoCDI.course}"
+							required="true"
 							size="35" maxlength="#{max.length.userInfoCourse()}" />
 
-						<p:outputLabel value="Escola: " for="signup-school" />
-						<p:inputText id="signup-school" value="#{editUserInfoCDI.school}"
+						<p:outputLabel value="Escola: " for="signup2-school" />
+						<p:inputText id="signup2-school" value="#{editUserInfoCDI.school}"
+							required="true"
 							size="35" maxlength="#{max.length.userInfoSchool()}" />
 
-						<p:outputLabel value="LinkedIn: " for="signup-linkedin" />
-						<p:inputText id="signup-linkedin"
+						<p:outputLabel value="LinkedIn: " for="signup2-linkedin" />
+						<p:inputText id="signup2-linkedin"
 							value="#{editUserInfoCDI.linkedin}" size="35" />
 
 					</h:panelGrid>
@@ -91,10 +97,10 @@
 
 				<p:commandButton value="Guardar"
 					actionListener="#{editUserInfoCDI.update()}" icon="ui-icon-disk"
-					update="editUserInfoDialog" style="width: 100%" />
+					update="editCandidateInfoDialog" style="width: 100%" />
 
 				<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
-					onclick="PF('editUserInfo').hide();" />
+					onclick="PF('editCandidateInfo').hide();" />
 
 			</p:dialog>
 

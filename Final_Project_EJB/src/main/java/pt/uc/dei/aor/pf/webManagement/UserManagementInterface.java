@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import pt.uc.dei.aor.pf.entities.UserEntity;
+
 @Local
 public interface UserManagementInterface {
 
@@ -28,7 +30,8 @@ public interface UserManagementInterface {
 	public abstract boolean newUserNC(String email, String password, String firstName,
 			String lastName, boolean admin, boolean manager, boolean interviewer);
 
-	public abstract void updateUserInfo(String firstName, String lastName, String address,
+	public abstract void updateUserData(String firstName, String lastName,
+			Date birthday, String address,
 			String city, String homePhone, String mobilePhone, String country,
 			String course, String school, String linkedin);
 
@@ -72,5 +75,7 @@ public interface UserManagementInterface {
 	public abstract boolean isCv();
 
 	public abstract long getId();
-	
+
+	public abstract UserEntity getUserData();
+
 }

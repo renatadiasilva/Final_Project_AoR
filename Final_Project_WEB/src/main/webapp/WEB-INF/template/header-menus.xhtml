@@ -11,6 +11,7 @@
 
 		<ui:include src="change-password.xhtml" />
 		<ui:include src="edit-user-info.xhtml" />
+		<ui:include src="edit-candidate-info.xhtml" />
 		<ui:include src="upload-cv.xhtml" />
 
 		<h:form id="headerMenu">
@@ -178,9 +179,16 @@
 					<p:column>
 						<p:submenu label="Utilizador">
 							<p:menuitem value="Dados Pessoais"
-								actionListener="#{editUserInfoCDI.init()}"
+								actionListener="#{editUserInfoCDI.updateInfo()}"
 								update="editUserInfoForm"
-								oncomplete="PF('editUserInfo').show();" />
+								oncomplete="PF('editUserInfo').show();"
+								rendered="#{!userSessionManagement.candidate}" />
+
+							<p:menuitem value="Dados Pessoais"
+								actionListener="#{editUserInfoCDI.updateInfo()}"
+								update="editCandidateInfoForm"
+								oncomplete="PF('editCandidateInfo').show();"
+								rendered="#{userSessionManagement.candidate}" />
 
 							<p:menuitem value="Mudar Password"
 								onclick="PF('changePassword').show();" />

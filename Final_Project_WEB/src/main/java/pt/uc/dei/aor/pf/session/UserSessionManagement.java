@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 import pt.uc.dei.aor.pf.upload.UploadFile;
 import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
@@ -57,6 +58,9 @@ public class UserSessionManagement implements Serializable {
 	private HttpSession session;
 
 	private String password, newPassword;
+	
+	// clone of current user
+	private UserEntity currentUserClone;
 
 	public UserSessionManagement() {
 	}
@@ -116,6 +120,9 @@ public class UserSessionManagement implements Serializable {
 
 				// Inicia na aplicação
 				this.userManagement.login(email, password);
+				
+				//keep info of current user in user clone
+				this.currentUserClone = this.userManagement.getUserData();
 
 				log.info("Login sucessfull");
 				this.context.addMessage(null, new FacesMessage("Login bem sucedido: "+email));
@@ -253,8 +260,9 @@ public class UserSessionManagement implements Serializable {
 
 		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
 	}
-
-	public void updateUserInfo(String firstName, String lastName, String address, 
+	
+	public void updateUserData(String firstName, String lastName, 
+			Date birthday, String address, 
 			String city, String homePhone, String mobilePhone, String country, 
 			String course, String school, String linkedin) {
 
@@ -262,9 +270,16 @@ public class UserSessionManagement implements Serializable {
 		log.debug("New user: "+ this.userManagement.getUserEmail());
 
 		// Vai para a camada de negócio
-		this.userManagement.updateUserInfo(firstName, lastName, address, city, homePhone, mobilePhone, country, course, school, linkedin);
+		this.userManagement.updateUserData(firstName, lastName, 
+				birthday, address, city, homePhone, mobilePhone,
+				country, course, school, linkedin);
 
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dados actualizados."));
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage("Dados atualizados."));
+		
+		//update data in user clone
+		this.currentUserClone = this.userManagement.getUserData();
+
 	}
 
 	public void recoverPassword(String email, String temporaryPassword){
@@ -347,6 +362,14 @@ public class UserSessionManagement implements Serializable {
 	
 	public String getUserMail(){
 		return this.userManagement.getUserEmail();
+	}
+
+	public UserEntity getCurrentUserClone() {
+		return currentUserClone;
+	}
+
+	public void setCurrentUserClone(UserEntity currentUserClone) {
+		this.currentUserClone = currentUserClone;
 	}
 
 }

@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +28,7 @@ public class UserManagementImp implements UserManagementInterface {
 
 	@EJB
 	UserInfoEJBInterface userInfoBean;
-	
+
 	@EJB
 	SecureMailManagementInterface mail;
 
@@ -54,7 +52,7 @@ public class UserManagementImp implements UserManagementInterface {
 		// Se o servidor consegue logar o utilizador não cria a excepção 
 		// (vem do UserSessionManagement) e chega aqui: logo a password está correcta
 		this.currentUser = this.userBean.findUserByEmail(email);
-		
+
 		// Se houver um pirata que consiga chegar aqui com a 
 		// password errada o user vai para null e eventualmente
 		// a aplicação vai rebentar de propósito
@@ -63,7 +61,7 @@ public class UserManagementImp implements UserManagementInterface {
 			// Pode ser gerada por algum problema de autenticação no servidor, mas...
 			log.warn("Possible security breach, heads up!");
 		}
-		
+
 		// Roles para mostrar na web
 		this.setAvailableRoles();
 	}
@@ -71,7 +69,7 @@ public class UserManagementImp implements UserManagementInterface {
 	@Override
 	public void logout(){
 		log.info("Loggin Out "+this.currentUser.getEmail());
-		
+
 		this.admin=this.manager=this.interviewer=this.candidate=false;
 		this.currentUser=new UserEntity();
 	}
@@ -155,7 +153,7 @@ public class UserManagementImp implements UserManagementInterface {
 				// Se vem da página do signup, vai ter de ser autenticado por email
 				newUser.setAuthenticated(false);
 			}
-			
+
 			// Grava o UserEntity
 			this.userBean.save(newUser);
 
@@ -207,12 +205,35 @@ public class UserManagementImp implements UserManagementInterface {
 			this.userBean.save(newUser);
 
 			return true;
-			
+
 		}else return false;
 	}
 
 	@Override
-	public void updateUserInfo(String firstName, String lastName, String address, 
+	public UserEntity getUserData() {
+		//clone current user and sent to web layer
+		UserEntity u = new UserEntity(currentUser.getEmail(), "no password",
+				currentUser.getFirstName(), currentUser.getLastName(), null);
+		if (currentUser.getUserInfo() != null) {
+			UserInfoEntity uinfo = new UserInfoEntity(
+					currentUser.getUserInfo().getBirthDate(),
+					currentUser.getUserInfo().getAddress(), 
+					currentUser.getUserInfo().getCity(),
+					currentUser.getUserInfo().getHomePhone(),
+					currentUser.getUserInfo().getMobilePhone(),
+					currentUser.getUserInfo().getCountry(),
+					currentUser.getUserInfo().getCourse(),
+					currentUser.getUserInfo().getSchool(),
+					currentUser.getUserInfo().getCv(),
+					currentUser.getUserInfo().getOwner());
+			u.setUserInfo(uinfo);
+		}
+		return u;
+	}
+
+	@Override
+	public void updateUserData(String firstName, String lastName, 
+			Date birthday, String address, 
 			String city, String homePhone, String mobilePhone, String country, 
 			String course, String school, String linkedin) {
 
@@ -222,45 +243,58 @@ public class UserManagementImp implements UserManagementInterface {
 		this.currentUser.setFirstName(firstName);
 		this.currentUser.setLastName(lastName);
 
-		if(this.currentUser.getUserInfo()==null){
-			this.currentUser.setUserInfo(new UserInfoEntity());
-			this.currentUser.getUserInfo().setOwner(this.currentUser);
-		}
+		if ( (birthday == null) &&
+				(address == null || address.isEmpty()) &&
+				(city == null || city.isEmpty()) &&
+				(homePhone == null || homePhone.isEmpty()) &&
+				(mobilePhone == null || mobilePhone.isEmpty()) &&
+				(country == null || country.isEmpty()) &&
+				(course == null || course.isEmpty()) &&
+				(school == null || school.isEmpty()) ) {
+			// no need for user info creation/update
+		} else {
 
-		this.currentUser.getUserInfo().setAddress(address);
-		this.currentUser.getUserInfo().setCity(city);
-		this.currentUser.getUserInfo().setHomePhone(homePhone);
-		this.currentUser.getUserInfo().setMobilePhone(mobilePhone);
-		this.currentUser.getUserInfo().setCountry(country);
-		this.currentUser.getUserInfo().setCourse(course);
-		this.currentUser.getUserInfo().setSchool(school);
-		this.currentUser.getUserInfo().setLinkedin(linkedin);
+			if(this.currentUser.getUserInfo()==null) {
+				this.currentUser.setUserInfo(new UserInfoEntity());
+				this.currentUser.getUserInfo().setOwner(this.currentUser);
+			}
+
+			this.currentUser.getUserInfo().setBirthDate(birthday);
+			this.currentUser.getUserInfo().setAddress(address);
+			this.currentUser.getUserInfo().setCity(city);
+			this.currentUser.getUserInfo().setHomePhone(homePhone);
+			this.currentUser.getUserInfo().setMobilePhone(mobilePhone);
+			this.currentUser.getUserInfo().setCountry(country);
+			this.currentUser.getUserInfo().setCourse(course);
+			this.currentUser.getUserInfo().setSchool(school);
+			this.currentUser.getUserInfo().setLinkedin(linkedin);
+		}
 
 		this.userBean.update(this.currentUser);
 	}
-	
+
 	@Override
 	public boolean recoverPassword (String email, String temporaryPassword){
 		log.info("Password recovery: "+email);
-		
+
 		UserEntity userToRecover=userBean.findUserByEmail(email);
-		
+
 		// Verifica se existe algum utilizador com o email na BD
 		if(userToRecover!=null){
-			
+
 			// Muda a password para uma password temporária
 			userToRecover.setPassword(temporaryPassword);
 			this.userBean.updatePassword(userToRecover);
-			
+
 			// Persiste com o atributo de password temporária marcado a true
 			userToRecover.setTemporaryPassword(true);
 			this.userBean.update(userToRecover);
-			
+
 			// Envia um email ao user com a password temporária
 			this.mail.passwordRecovery(userToRecover, temporaryPassword);
-			
+
 			return true;
-			
+
 		}else{
 			log.info(email+" not found in DB - no email was sent");
 			return false;
@@ -338,20 +372,20 @@ public class UserManagementImp implements UserManagementInterface {
 	public String getUserFullName(){
 		return this.currentUser.getFirstName()+" "+this.currentUser.getLastName();
 	}
-	
+
 	@Override 
 	public List<String> getStyle(){
 		// Caso seja definida alguma regra consoante o tipo de utilizador, vem para aqui
 		// Caso contrário, segue o estilo marcado a "default"
-		
+
 		List<String>style=new ArrayList<>();
-		
+
 		style.add("ITJobs");
 		style.add("ITJobs - Projecto Final | Programação Avançada em JAVA | Duarte Gonçalves | Renata Silva");
 		style.add("#3f51b5");
 		style.add("#ff4081");
 		style.add("1");
-		
+
 		return style;
 	}
 
@@ -366,7 +400,7 @@ public class UserManagementImp implements UserManagementInterface {
 	public long uploadCV() {
 		this.currentUser.setUploadedCV(true);
 		this.userBean.update(this.currentUser);
-		
+
 		log.info("CV uploaded, User uploaded, id returned: "+this.currentUser.getEmail());
 		return this.currentUser.getId();
 	}
@@ -380,5 +414,5 @@ public class UserManagementImp implements UserManagementInterface {
 	public long getId() {
 		return this.currentUser.getId();
 	}	
-	
+
 }
