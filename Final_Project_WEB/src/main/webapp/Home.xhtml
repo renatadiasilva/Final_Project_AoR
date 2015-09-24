@@ -116,6 +116,7 @@
 						<p:password id="signup-password" value="#{signupCDI.password}"
 							size="35" required="true" feedback="true" weakLabel="Fraca"
 							goodLabel="Boa" strongLabel="Forte"
+							validatorMessage="Passwords não combinam."
 							promptLabel="Insira uma senha" match="signup-repeatPassword"
 							requiredMessage="Insira uma password." />
 
@@ -137,7 +138,7 @@
 
 						<p:outputLabel value="Sobrenome: " for="signup-lastName" />
 						<p:inputText id="signup-lastName" value="#{signupCDI.lastName}"
-							size="35" required="true" requiredMessage="Insira o Sobrenome."
+							size="35" required="true" requiredMessage="Insira o sobrenome."
 							maxlength="#{max.length.userLastName()}" />
 
 						<p:outputLabel value="Data de Nascimento: " for="signup-birthday" />
@@ -164,7 +165,7 @@
 						<h:panelGroup>
 							<p:inputTextarea id="signup-adress" value="#{signupCDI.address}"
 								cols="35" rows="3" counter="maxAdress" counterTemplate=" - {0}"
-								required="true" requiredMessage="Insira a Morada."
+								required="true" requiredMessage="Insira a morada."
 								maxlength="#{max.length.userInfoAddress()}" />
 							<h:outputText id="maxAdress" />
 						</h:panelGroup>
@@ -176,7 +177,7 @@
 
 						<p:outputLabel value="País: " for="signup-country" />
 						<p:autoComplete id="signup-country" value="#{signupCDI.country}"
-							size="35" required="true" requiredMessage="Insira o País."
+							size="35" required="true" requiredMessage="Insira o país."
 							maxlength="#{max.length.userInfoCountry()}" maxResults="10"
 							completeMethod="#{countryListCDI.getCountries}" />
 
@@ -192,7 +193,7 @@
 
 						<p:outputLabel value="Escola: " for="signup-school" />
 						<p:inputText id="signup-school" value="#{signupCDI.school}"
-							size="35" required="true" requiredMessage="Insira a Escola."
+							size="35" required="true" requiredMessage="Insira a escola."
 							maxlength="#{max.length.userInfoSchool()}" />
 
 						<p:outputLabel value="LinkedIn: " for="signup-linkedin" />
@@ -203,7 +204,7 @@
 
 					<p:commandButton value="Signup"
 						actionListener="#{signupCDI.signUp()}" icon="ui-icon-person"
-						style="width: 100%" update="signupDialog messages" />
+						style="width: 100%" update="signupDialog" />
 
 					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
 						onclick="PF('signup').hide();" update="@all" />
