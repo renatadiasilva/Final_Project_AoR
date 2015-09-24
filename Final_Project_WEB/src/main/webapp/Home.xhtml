@@ -217,9 +217,7 @@
 
 	<ui:define name="contents">
 		<h:form>
-			
-		
-		
+
 			<p:commandButton value="Populate"
 				actionListener="#{initDB.populate()}"
 				action="#{positionSearchCDI.searchOpenPositions()}" 
@@ -228,6 +226,17 @@
 				actionListener="#{testEmailCDI.testMail()}" />
 			<p:commandButton value="Refrescar estilo"
 				actionListener="#{styleSessionManagement.init()}" ajax="false" />
+
+			<br />
+			<br />
+			<br />
+			#{styleSessionManagement.welcomeMessage}
+			<br />
+			<br />
+			#{styleSessionManagement.companyDescription}
+			<br />
+			<br />
+			<br />
 
 			<p:dataTable emptyMessage="Não foram encontradas posições." var="p"
 				value="#{positionSearchCDI.plist}" id = "tableHome"
@@ -243,7 +252,7 @@
 				<p:column headerText="Título">
 					<h:outputText value="#{p.title}" />
 				</p:column>
-				<p:column headerText="Data Abert">
+				<p:column headerText="Data Abertura">
 					<h:outputText value="#{p.openingDate}" />
 				</p:column>
 				<p:column headerText="Vagas">

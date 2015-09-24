@@ -122,13 +122,8 @@ public class PositionSearchCDI {
 		log.info("Searching for positions with all the given locations");
 		addLocations();
 		log.debug("Locations: ");
-		List<String> pattern = new ArrayList<String>(locations.size());
-		log.debug("Locations: ");
-		for(String l : locations) {
-			log.debug(l);
-			pattern.add(SearchPattern.preparePattern(l));
-		}
-		this.plist = positionEJB.findPositionsByLocationsAll(pattern);
+		for(String l : locations) log.debug(l);
+		this.plist = positionEJB.findPositionsByLocationsAll(locations);
 	}	
 
 	public void searchPositionsByStatus() {
