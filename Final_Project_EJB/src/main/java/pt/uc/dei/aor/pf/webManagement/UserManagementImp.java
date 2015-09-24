@@ -159,7 +159,10 @@ public class UserManagementImp implements UserManagementInterface {
 
 			log.info("Successfully created new user (candidate)");
 			if(createdByAdmin){
-				log.info("New user: "+ newUser.getEmail()+" with temporary password "+password);
+				this.mail.sendPassToNewUser(newUser, password);
+				log.info("An email was sent to a new user: "
+						+ newUser.getEmail()+" with "
+						+ "temporary password "+password);
 			}else{
 				// Envia o email para o processo de autenticação
 				this.mail.candidateToAuthenticate(newUser);
@@ -204,8 +207,14 @@ public class UserManagementImp implements UserManagementInterface {
 
 			this.userBean.save(newUser);
 
+			// an email is sent to the new user
+			this.mail.sendPassToNewUser(newUser, password);
+			log.info("An email was sent to a new user: "
+					+ newUser.getEmail()+" with "
+					+ "temporary password "+password);
+			
 			return true;
-
+			
 		}else return false;
 	}
 

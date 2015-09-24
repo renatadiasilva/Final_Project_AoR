@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
 @Stateless
 @LocalBean
@@ -67,7 +66,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	}
 
 	@Override
-	public void passwordRecovery (UserEntity user, String temporaryPassword){
+	public void passwordRecovery(UserEntity user, String temporaryPassword){
 		// Envia um email ao user a notificar da nova password temporária
 		String receiver=user.getEmail();
 		String subject="Recuperação de password";
@@ -118,4 +117,22 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+ companyName+" - Registo concluído", text);
 	}
 
+	@Override
+	public void sendPassToNewUser(UserEntity newUser, 
+			String temporaryPassword) {
+		// Send email to a new user with temporary password
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","
+				+"\n\nBem vindo à plataforma "+companyName+"."
+				+"\n\nA sua password (temporária) para aceder à plataforma "
+				+companyName+" é "
+				+temporaryPassword+"\n\nCumprimentos,\nA equipa "+companyName;
+
+		log.info("An email was sent to a new user: "
+				+ newUser.getEmail()+" with "
+				+ "temporary password "+temporaryPassword);
+
+		this.sendEmail(newUser.getEmail(), "Registo na plataforma "
+				+ companyName+" - Envio de password temporária", text);
+	}
 }

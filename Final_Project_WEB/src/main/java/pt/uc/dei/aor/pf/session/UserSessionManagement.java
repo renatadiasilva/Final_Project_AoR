@@ -255,8 +255,8 @@ public class UserSessionManagement implements Serializable {
 		// Manda para a camada de negócio, espera o boleano e reporta para a UI
 		if(this.userManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer)){
 
-			this.context.addMessage(null, new FacesMessage("Novo Utilizador cirado com sucesso: "+email));
-			this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+			this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
+//			this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 
 		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
 	}

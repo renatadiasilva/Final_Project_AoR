@@ -55,7 +55,7 @@ public class Constants {
 	public static final String SOURCE_LINKEDIN = "Linkedin";
 	public static final String SOURCE_FACEBOOK = "Facebook";
 	public static final String SOURCE_GLASSDOOR = "Glassdoor";
-	public static final String SOURCE_NETEMPREGO = "Net.Emprego";
+	public static final String SOURCE_NETEMPREGO = "Net-Emprego";
 	
 	public static final List<String> ALL_SOURCES = Arrays.asList(
 			Constants.SOURCE_EXPRESSO,
