@@ -12,6 +12,7 @@
 			<!-- Se houver um user logado redirecciona para a respectiva Landing.xhtml -->
 			<f:viewAction
 				actionListener="#{userSessionManagement.checkForUser()}" />
+			<!-- Always load open positions list -->
 			<f:viewAction actionListener =
 				 "#{positionSearchCDI.searchOpenPositions()}" />
 		</f:metadata>

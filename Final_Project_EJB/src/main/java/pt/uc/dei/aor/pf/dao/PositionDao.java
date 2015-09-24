@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +26,9 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	public List<PositionEntity> findPositionsByLocationsOne(
 			List<String> locations) {
 		
-		int sizel = locations.size(); 
+		int sizel = locations.size();
+		if (sizel == 0) return new ArrayList<PositionEntity>();
+		
 		String queryS = "SELECT DISTINCT positions.*"
 				+" FROM positions, locations WHERE "
 				+"(TRANSLATE(UPPER(REPLACE(locations.location"
@@ -42,12 +45,9 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		queryS += ") AND positions.id = locations.position_id"
 				+" ORDER BY code";
 	
-		System.out.println(queryS);
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
-		for (int i = 0; i < sizel; i++) {
+		for (int i = 0; i < sizel; i++)
 			query.setParameter("loc"+i, locations.get(i));
-			System.out.println(i+locations.get(i));
-		}
 		return (List<PositionEntity>) query.getResultList();
 
 	}
@@ -56,53 +56,21 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	public List<PositionEntity> findPositionsByLocationsAll(
 			List<String> locations) {
 		
-//		String queryS = "SELECT * FROM"
-//			+ " (SELECT positions.*, count(positions.*)"
-//			+ " FROM positions, locations"
-//			+ " WHERE positions.id = locations.position_id AND"
-//			+ " (locations.location LIKE :loc0";
-//		for (int i = 1; i < sizel; i++) 
-//			queryS += " OR locations.location LIKE :loc"+i;
-//		queryS += ") GROUP BY id) AS c WHERE c.count = :size"
-//			+" ORDER BY c.code";
-
-		// null??
-		String queryloc = "";
 		int sizel = locations.size(); 
-		switch (sizel) {
-		case 0: queryloc = ":loc0"; // testar
-		break;
-		case 1: queryloc = ":loc0";
-		break;
-		case 2: queryloc = ":loc0, :loc1";
-		break;
-		case 3: queryloc = ":loc0, :loc1, :loc2";
-		break;
-		}
+		if (sizel == 0) return new ArrayList<PositionEntity>();
 		String queryS = "SELECT * FROM"
-				+ " (SELECT positions.*, count(positions.*)"
-				+ " FROM positions, locations"
-				+ " WHERE positions.id = locations.position_id AND"
-				+ " UPPER(locations.location) IN ("+queryloc+")"
-				+ " GROUP BY id) AS c WHERE c.count = :size"
-				+ " ORDER BY c.code";
+			+ " (SELECT positions.*, count(positions.*)"
+			+ " FROM positions, locations"
+			+ " WHERE positions.id = locations.position_id AND"
+			+ " (locations.location LIKE :loc0";
+		for (int i = 1; i < sizel; i++) 
+			queryS += " OR locations.location LIKE :loc"+i;
+		queryS += ") GROUP BY id) AS c WHERE c.count = :size"
+			+" ORDER BY c.code";
 
-		System.out.println(queryS+" "+sizel);
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
-		switch (sizel) {
-		case 0:
-			query.setParameter("loc0", "------");  // testar
-			break;
-		case 3:
-			query.setParameter("loc2", locations.get(2));
-			System.out.println(locations.get(2));
-		case 2:
-			query.setParameter("loc1", locations.get(1));
-			System.out.println(locations.get(1));
-		case 1:
-			query.setParameter("loc0", locations.get(0));
-			System.out.println(locations.get(0));
-		}
+		for (int i = 0; i < sizel; i++)
+			query.setParameter("loc"+i, locations.get(i));
 		query.setParameter("size", sizel);
 		return (List<PositionEntity>) query.getResultList();
 	

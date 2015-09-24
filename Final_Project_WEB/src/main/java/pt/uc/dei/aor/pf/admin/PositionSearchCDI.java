@@ -16,6 +16,7 @@ import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
@@ -436,9 +437,9 @@ public class PositionSearchCDI {
 
 	private void addLocations() {
 		this.locations = new ArrayList<String>();
-		if (coimbra) this.locations.add("COIMBRA");
-		if (lisboa) this.locations.add("LISBOA");
-		if (porto) this.locations.add("PORTO");
+		if (coimbra) this.locations.add(Constants.LOCATION_COIMBRA);
+		if (lisboa) this.locations.add(Constants.LOCATION_LISBOA);
+		if (porto) this.locations.add(Constants.LOCATION_PORTO);
 		if (other) this.locations.add(SearchPattern.preparePattern(location));
 	}
 
