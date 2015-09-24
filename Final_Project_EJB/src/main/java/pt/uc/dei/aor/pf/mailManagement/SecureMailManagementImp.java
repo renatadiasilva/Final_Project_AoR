@@ -110,7 +110,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","+
 				"\n\nO seu email encontra-se autenticado e o seu registo "
-				+ "concluído. Boa sorte na procura do seu próximo emprego!"
+				+ "concluído."
 				+"\n\nCumprimentos,\nA equipa "+companyName;
 		
 		this.sendEmail(user.getEmail(), "Registo na plataforma "
@@ -135,4 +135,21 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		this.sendEmail(newUser.getEmail(), "Registo na plataforma "
 				+ companyName+" - Envio de password temporária", text);
 	}
+
+	@Override
+	public void newEmail(UserEntity user) {
+		String link=SecureMailManagementImp.SERVICE_CONTEXT
+				+Constants.SERVLET_AUTH_CANDIDATE
+				+"?"+Constants.SERVLET_EMAIL+"="+user.getEmail();
+
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","
+				+"\n\nPara validar o seu novo email por favor siga o link: "+link
+				+"\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(user.getEmail(), "Registo na plataforma "
+				+ companyName+" - Autenticação do novo email", text);
+	}
+
 }

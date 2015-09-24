@@ -18,4 +18,6 @@ public interface SecureMailManagementInterface {
 	public abstract void sendPassToNewUser(UserEntity newUser, 
 			String temporaryPassword);
 
+	public abstract void newEmail(UserEntity user);
+
 }
