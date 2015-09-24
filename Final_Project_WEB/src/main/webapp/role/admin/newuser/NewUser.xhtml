@@ -12,10 +12,9 @@
 
 		<h1>Novo Registo</h1>
 
-		<h:form id="adminNewUserFormNonCandidate"
-			rendered="#{!adminNewUserCDI.candidate}">
+		<h:form id="adminNewUserFormNonCandidate">
 
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="2" rendered="#{!adminNewUserCDI.candidate}">
 
 				<ui:include src="admin-new-user-common-elements.xhtml" />
 
@@ -28,10 +27,9 @@
 		</h:form>
 
 
-		<h:form id="adminNewUserFormCandidate"
-			rendered="#{adminNewUserCDI.candidate}">
+		<h:form id="adminNewUserFormCandidate">
 
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="2" rendered="#{adminNewUserCDI.candidate}">
 
 				<ui:include src="admin-new-user-common-elements.xhtml" />
 
@@ -75,7 +73,8 @@
 				<p:outputLabel value="Curso: " for="adminSignup-course" />
 				<p:inputText id="adminSignup-course"
 					value="#{adminNewUserCDI.course}" size="35" required="true"
-					requiredMessage="Insira o curso." maxlength="#{max.length.userInfoCourse()}" />
+					requiredMessage="Insira o curso."
+					maxlength="#{max.length.userInfoCourse()}" />
 
 				<p:outputLabel value="Escola: " for="adminSignup-school" />
 				<p:inputText id="adminSignup-school"
