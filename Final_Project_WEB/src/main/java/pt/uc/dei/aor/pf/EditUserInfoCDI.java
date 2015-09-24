@@ -39,7 +39,6 @@ public class EditUserInfoCDI {
 			this.firstName = currentUserClone.getFirstName();
 		if (currentUserClone.getLastName() != null) {
 			this.lastName = currentUserClone.getLastName();
-			System.out.println(lastName);
 		}
 
 		if (currentUserClone.getUserInfo() != null) {

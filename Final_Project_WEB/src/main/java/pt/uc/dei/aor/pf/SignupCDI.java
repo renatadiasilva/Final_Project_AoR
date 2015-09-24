@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import pt.uc.dei.aor.pf.emailpattern.EmailPattern;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 @Named
@@ -32,8 +35,17 @@ public class SignupCDI {
 	}
 	
 	public void signUp(){
-		this.userSessionManagement.newUser(email, password, firstName, lastName, birthday, address, 
-				city, homePhone,mobilePhone, country, course, school, linkedin, false, false, false, false);
+		
+		if (EmailPattern.checkEmailPattern(email)) {
+			
+			this.userSessionManagement.newUser(email, password, firstName, 
+					lastName, birthday, address, 
+					city, homePhone,mobilePhone, country, course, school, 
+					linkedin, false, false, false, false);
+
+		} else FacesContext.getCurrentInstance().addMessage(null, 
+				new FacesMessage("Email inválido."));
+
 	}
 
 	public String getEmail() {

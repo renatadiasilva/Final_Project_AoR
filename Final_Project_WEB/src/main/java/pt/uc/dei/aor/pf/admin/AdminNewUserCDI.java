@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import pt.uc.dei.aor.pf.emailpattern.EmailPattern;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 
@@ -33,16 +34,37 @@ public class AdminNewUserCDI {
 	public AdminNewUserCDI() {
 	}
 
-	public void newUser(){		
-		this.userSessionManagement.newUser(email, userSessionManagement.getRandomPass(), firstName, lastName, birthday, address, city, homePhone, mobilePhone, country, course, school, linkedin, true, admin, manager, interviewer);
+	public void newUser(){
+
+		if (EmailPattern.checkEmailPattern(email)) {
+
+			this.userSessionManagement.newUser(email, 
+					userSessionManagement.getRandomPass(), firstName, lastName,
+					birthday, address, city, homePhone, mobilePhone, country,
+					course, school, linkedin, true, admin, manager, 
+					interviewer);
+
+		} else FacesContext.getCurrentInstance().addMessage(null, 
+				new FacesMessage("Email inválido."));
+
 	}
 
 	public void newUserNC(){
-		if(this.admin||this.manager||this.interviewer){
-			
-			this.userSessionManagement.newUserNC(email, userSessionManagement.getRandomPass(), firstName, lastName, admin, manager, interviewer);
-			
-		} else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Defina o tipo de utilizador."));
+		
+		if (EmailPattern.checkEmailPattern(email)) {
+
+			if(this.admin||this.manager||this.interviewer){
+
+				this.userSessionManagement.newUserNC(email, 
+						userSessionManagement.getRandomPass(), 
+						firstName, lastName, admin, manager, interviewer);
+
+			} else FacesContext.getCurrentInstance().addMessage(null, 
+					new FacesMessage("Defina o tipo de utilizador."));
+
+		} else FacesContext.getCurrentInstance().addMessage(null, 
+				new FacesMessage("Email inválido."));
+
 	}
 
 	public String getEmail() {
