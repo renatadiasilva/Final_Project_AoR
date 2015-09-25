@@ -454,8 +454,7 @@ public class InitDB {
 		slist[14].setSources(sources);
 		slist[14].setStatus(Constants.STATUS_REJECTED);
 		slist[14].setDate(ftDate.parse("2015-08-17"));
-		slist[14].setRejectReason("O candidato não tem currículo "
-				+ "para a posição");
+		slist[14].setRejectReason("Faltam competências ao candidato");
 
 		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
 				Constants.SOURCE_EXPRESSO);
