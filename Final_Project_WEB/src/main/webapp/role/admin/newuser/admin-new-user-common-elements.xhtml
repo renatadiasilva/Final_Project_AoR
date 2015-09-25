@@ -30,7 +30,8 @@
 		<p:outputLabel value="Candidato " for="candidateCheck" />
 		<p:selectBooleanCheckbox id="candidateCheck"
 			value="#{adminNewUserCDI.candidate}">
-			<p:ajax update="@this adminNewUserFormCandidate adminNewUserFormNonCandidate" />
+			<p:ajax
+				update="@this adminNewUserFormCandidate adminNewUserFormNonCandidate" />
 		</p:selectBooleanCheckbox>
 
 		<p:outputLabel />
@@ -40,19 +41,25 @@
 
 		<p:outputLabel value="Email: " for="adminSignup-email" />
 		<p:inputText id="adminSignup-email" value="#{adminNewUserCDI.email}"
-			size="35" required="true" requiredMessage="Insira o email." />
+			size="35" required="true" requiredMessage="Insira o email.">
+			<p:ajax update="@this" />
+		</p:inputText>
 
 		<p:outputLabel value="Primeiro Nome: " for="adminSignup-firstName" />
 		<p:inputText id="adminSignup-firstName"
 			value="#{adminNewUserCDI.firstName}" size="35" required="true"
 			requiredMessage="Insira o primeiro nome."
-			maxlength="#{max.length.userFirstName()}" />
+			maxlength="#{max.length.userFirstName()}">
+			<p:ajax update="@this" />
+		</p:inputText>
 
 		<p:outputLabel value="Sobrenome: " for="adminSignup-lastName" />
 		<p:inputText id="adminSignup-lastName"
 			value="#{adminNewUserCDI.lastName}" size="35" required="true"
 			requiredMessage="Insira o sobrenome"
-			maxlength="#{max.length.userLastName()}" />
+			maxlength="#{max.length.userLastName()}">
+			<p:ajax update="@this" />
+		</p:inputText>
 
 	</ui:composition>
 

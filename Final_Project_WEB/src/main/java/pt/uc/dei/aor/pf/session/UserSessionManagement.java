@@ -235,7 +235,7 @@ public class UserSessionManagement implements Serializable {
 				this.context.addMessage(null, new FacesMessage("Consulte a sua caixa de correio e siga as instruções apresentadas."));
 			}else{
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
-				this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+//				this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 			}
 
 		}else {

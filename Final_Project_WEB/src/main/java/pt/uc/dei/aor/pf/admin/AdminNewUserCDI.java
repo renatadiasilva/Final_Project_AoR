@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -12,11 +13,17 @@ import javax.inject.Named;
 
 import pt.uc.dei.aor.pf.emailpattern.EmailPattern;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
+import java.io.Serializable;
 
 
 @Named
-@RequestScoped
-public class AdminNewUserCDI {
+@SessionScoped
+public class AdminNewUserCDI implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8739801850337571946L;
 
 	@Inject
 	UserSessionManagement userSessionManagement;
@@ -33,6 +40,13 @@ public class AdminNewUserCDI {
 
 	public AdminNewUserCDI() {
 	}
+	
+	private void clear(){
+		email=firstName=lastName=null;
+		address=city=homePhone=mobilePhone=country=course=school=linkedin;
+		admin=manager=interviewer=candidate=false;
+		birthday=null;
+	}
 
 	public void newUser(){
 
@@ -44,6 +58,9 @@ public class AdminNewUserCDI {
 					course, school, linkedin, true, admin, manager, 
 					interviewer);
 
+			this.clear();
+			this.candidate=true;
+			
 		} else FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Email inválido.", "Email inválido."));
@@ -59,6 +76,8 @@ public class AdminNewUserCDI {
 				this.userSessionManagement.newUserNC(email, 
 						userSessionManagement.getRandomPass(), 
 						firstName, lastName, admin, manager, interviewer);
+				
+				this.clear();
 
 			} else FacesContext.getCurrentInstance().addMessage(null, 
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
