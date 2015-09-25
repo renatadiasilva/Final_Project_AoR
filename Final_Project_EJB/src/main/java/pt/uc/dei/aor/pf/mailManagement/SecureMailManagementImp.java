@@ -33,7 +33,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	private static final String FROM="itjobs.aor@gmail.com";
 
 	//	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
-	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com";
+	 private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com";
 	private static final boolean OVERRIDE = true;
 
 	private static final String SERVICE_CONTEXT="https://localhost/Final_Project_WEB/services/";
@@ -78,11 +78,6 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		log.info("Envio de email para "+user.getEmail()+" para "
 				+ "notificar da password temporária "+temporaryPassword);
-		this.sendEmail(receiver, subject, text);
-	}
-
-	@Override
-	public void testEmail(String receiver, String subject, String text){
 		this.sendEmail(receiver, subject, text);
 	}
 

@@ -268,7 +268,7 @@ public class PositionSearchCDI {
 		} else log.error("No script with id "+idPSc);
 	}
 
-	public void searchPositionManagedByUser() {
+	public void searchPositionManagedByUser(Long idU) {
 		log.info("Searching for positions by manager");
 		UserEntity manager = userEJB.find(idU);
 		if (manager != null && manager.getRoles().contains("MANAGER")) {

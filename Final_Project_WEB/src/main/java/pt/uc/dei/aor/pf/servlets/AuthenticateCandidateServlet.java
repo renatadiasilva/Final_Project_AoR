@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.mailManagement.MailManagementInterface;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 
 @WebServlet(name="/"+Constants.SERVLET_AUTH_CANDIDATE, urlPatterns="/services/*")
