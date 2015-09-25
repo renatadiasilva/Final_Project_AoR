@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+
+		<h1>Candidaturas Espontâneas</h1>
+
+		<h:form id="spontaneousSearch">
+
+			<p:dataTable emptyMessage="Não existem candidaturas espontâneas."
+				var="s" value="#{submissionSearchCDI.slist}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Listagem</f:facet>
+				<p:column headerText="Data">
+					<h:outputText value="#{s.date}" />
+				</p:column>
+				<p:column headerText="Candidato">
+					<h:outputText
+						value="#{s.candidate.firstName}
+					 #{s.candidate.lastName}" />
+				</p:column>
+				<p:column headerText="Cidade">
+					<h:outputText value="#{s.candidate.userInfo.city}" />
+				</p:column>
+				<p:column headerText="Curso">
+					<h:outputText value="#{s.candidate.userInfo.course}" />
+				</p:column>
+				<p:column headerText="Escola/Universidade">
+					<h:outputText value="#{s.candidate.userInfo.school}" />
+				</p:column>
+				<p:column headerText="CV">
+					<h:outputText value="Visualisar cv" />
+				</p:column>
+				<p:column headerText="Linkedin">
+					<h:outputText value="#{s.candidate.userInfo.linkedin}" />
+					<!-- 					<a href="#{s.candidate.userInfo.linkedin}">Página Linkedin</a> -->
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:composition>
+
+</h:body>
+</html>

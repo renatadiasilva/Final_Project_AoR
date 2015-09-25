@@ -363,7 +363,6 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public UserEntity getCurrentUserClone() {
-		System.out.println(currentUserClone);
 		return currentUserClone;
 	}
 

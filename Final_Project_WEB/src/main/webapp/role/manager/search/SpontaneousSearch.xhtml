@@ -6,18 +6,10 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="titulo">
-	Admin - Candidaturas Espontâneas
+	Gestor - Candidaturas Espontâneas
 	 - #{styleSessionManagement.companyName}
 	</ui:define>
 
-	<ui:define name="contents">
-		<f:metadata>
-			<f:viewAction
-				actionListener="#{submissionSearchCDI.searchAllSponteanous()}" />
-		</f:metadata>
-
-		<ui:include src="../../../WEB-INF/template/spontaneous-common.xhtml" />
-
-	</ui:define>
+	<ui:include src="../../../WEB-INF/template/spontaneous-common.xhtml" />
 
 </ui:composition>
