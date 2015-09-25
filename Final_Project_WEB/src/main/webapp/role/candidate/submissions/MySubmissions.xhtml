@@ -18,11 +18,12 @@
 					currentUserClone.id)}" />
 		</f:metadata>
 
-		<h1>As minhas candidaturas</h1>
+		<h1>As minhas candidaturas (associadas a posições)</h1>
 
 		<h:form id="mySubmissions">
 
-			<p:dataTable emptyMessage="Não tem candidaturas a apresentar."
+			<p:dataTable
+				emptyMessage="Não tem candidaturas associadas a posições."
 				var="s" value="#{submissionSearchCDI.slist}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
@@ -33,10 +34,6 @@
 				</p:column>
 				<p:column headerText="Posição">
 					<h:outputText value="#{s.position.positionCode}" />
-				</p:column>
-				<p:column headerText="Espontânea?">
-					<h:outputText rendered="#{s.spontaneous}" value="Sim" />
-					<h:outputText rendered="#{!s.spontaneous}" value="Não" />
 				</p:column>
 				<p:column headerText="Estado">
 					<h:outputText value="#{s.status}" />

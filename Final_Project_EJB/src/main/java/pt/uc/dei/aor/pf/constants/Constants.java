@@ -47,7 +47,7 @@ public class Constants {
 	public static final String STATUS_PROPOSAL = "Proposta apresentada";
 	public static final String STATUS_NEGOTIATION = "Proposta em negociação";
 	public static final String STATUS_REJECTED = "Rejeitada";
-	public static final String STATUS_HIRED = "Contratado";
+	public static final String STATUS_HIRED = "Contratado(a)";
 
 	// outros??
 	public static final String SOURCE_EXPRESSO = "Expresso";
