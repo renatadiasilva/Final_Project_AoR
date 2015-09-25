@@ -14,23 +14,35 @@
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Relatórios por Posições</h1>
+		
+		<h:panelGroup rendered="#{reportsCDI.submissionPos}">
+		<h1>Candidaturas por posição</h1>	
+		</h:panelGroup>
+		<h:panelGroup rendered="#{reportsCDI.rejectedPos}">
+		<h1>Candidaturas rejeitadas por posição</h1>	
+		</h:panelGroup>
+		<h:panelGroup rendered="#{reportsCDI.proposalPos}">
+		<h1>Propostas Apresentadas por posição</h1>	
+		</h:panelGroup>
 
 		<h:form id="positionReports">
 
 			<h:panelGrid id="buttonsPositionReports" columns="3">
 
-				<p:commandButton value="Candidaturas por posição"
+				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.submissionsByPosition()}"
-					update="@form, messages" icon="ui-icon-script" />
+					update="@form, messages" icon="ui-icon-script" 
+					rendered="#{reportsCDI.submissionPos}" />
 
 				<p:commandButton value="Candidaturas rejeitadas por posição"
 					action="#{reportsCDI.rejectedCountByPosition()}"
-					update="@form, messages" icon="ui-icon-script" />
+					update="@form, messages" icon="ui-icon-script" 
+					rendered="#{reportsCDI.rejectedPos}" />
 
 				<p:commandButton value="Propostas apresentadas por posição"
 					action="#{reportsCDI.proposalCountByPosition()}"
-					update="@form, messages" icon="ui-icon-script" />
+					update="@form, messages" icon="ui-icon-script" 
+					rendered="#{reportsCDI.proposalPos}" />
 
 				<h:commandLink rendered="#{!reportsCDI.report.isEmpty()}">
 					<p:graphicImage library="images/logos" name="pdf.png" />

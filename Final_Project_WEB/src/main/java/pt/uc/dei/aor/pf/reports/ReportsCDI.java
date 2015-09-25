@@ -62,6 +62,11 @@ public class ReportsCDI implements Serializable {
 	private String emptyMessage;
 	private List<ReportItem> report;
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
+	
+	// rendered flags
+	private boolean submissionPos;
+	private boolean rejectedPos;
+	private boolean proposalPos;
 
 	// present table only after hiting button
 	public boolean checkIfNotNull() {
@@ -72,15 +77,10 @@ public class ReportsCDI implements Serializable {
 	public void clean() {
 		id = 0L;
 		period = "MONTHLY";
-		measureHeader = "";
-		tableHeader = "";
-		periodHeader = "";
-		measureFooter = "";
-		totalResult = "";
-		emptyMessage = "";
+		measureHeader = tableHeader = periodHeader = measureFooter = "";
+		totalResult = emptyMessage = "";
 		report = null;
-		d1 = new Date();
-		d2 = new Date();
+		d1 = d2 = new Date();
 	}
 	
 	// counting submissions by position between two dates
@@ -634,6 +634,26 @@ public class ReportsCDI implements Serializable {
 		} else log.info("No candidate with id "+id);
 
 	}
+	
+	// redirects
+	
+	public String goToReportSubByPos() {
+		submissionPos = true;
+		rejectedPos = proposalPos = false;
+		return "PositionReport?faces-redirect=true";
+	}
+
+	public String goToReportRejByPos() {
+		rejectedPos = true;
+		submissionPos = proposalPos = false;
+		return "PositionReport?faces-redirect=true";
+	}
+
+	public String goToReportProByPos() {
+		proposalPos = true;
+		submissionPos = rejectedPos = false;
+		return "PositionReport?faces-redirect=true";
+	}
 
 	// private methods
 	
@@ -758,6 +778,30 @@ public class ReportsCDI implements Serializable {
 
 	public void setD2(Date d2) {
 		this.d2 = d2;
+	}
+
+	public boolean isSubmissionPos() {
+		return submissionPos;
+	}
+
+	public void setSubmissionPos(boolean submissionPos) {
+		this.submissionPos = submissionPos;
+	}
+
+	public boolean isRejectedPos() {
+		return rejectedPos;
+	}
+
+	public void setRejectedPos(boolean rejectedPos) {
+		this.rejectedPos = rejectedPos;
+	}
+
+	public boolean isProposalPos() {
+		return proposalPos;
+	}
+
+	public void setProposalPos(boolean proposalPos) {
+		this.proposalPos = proposalPos;
 	}
 
 	public Long getId() {

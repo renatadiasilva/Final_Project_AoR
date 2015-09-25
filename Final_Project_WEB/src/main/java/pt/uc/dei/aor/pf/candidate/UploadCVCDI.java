@@ -32,9 +32,12 @@ public class UploadCVCDI {
 	public void uploadCV(FileUploadEvent event){
 		this.file=event.getFile();
 		
+		boolean newCV = !this.userManagement.isCv();
+		
 		// Actualiza o Utilizador e devolve o seu ID: this.userManagement.uploadCV()
 		this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_USER_CV, this.userManagement.uploadCV(), UploadFile.DOCUMENT_EXTENSION_PDF);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("CV actualizado."));
+		if(newCV) FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("CV carregado."));
+		else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("CV actualizado."));
 	}
 
 }
