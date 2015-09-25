@@ -32,8 +32,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 	private static final String FROM="itjobs.aor@gmail.com";
 
-	//	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
-	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com";
+	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
 	private static final boolean OVERRIDE = true;
 
 	private static final String SERVICE_CONTEXT="https://localhost/Final_Project_WEB/services/";
@@ -85,20 +84,20 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	public void candidateToAuthenticate(UserEntity newUser) {
 		// Envia um email a um novo candidato para autenticar o registo
 		// Link com a query para a autenticação do utilizador
-//		String link=SecureMailManagementImp.SERVICE_CONTEXT
-//				+Constants.SERVLET_AUTH_CANDIDATE
-//				+"?"+Constants.SERVLET_EMAIL+"="+newUser.getEmail()
-//				+"?"+Constants.SERVLET_EMAIL_KEY+"="+newUser.getAuthenticationKey();
-//
-//		String companyName = styleEJB.findDefaulStyle().getCompanyName();
-//		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","
-//				+"\n\nBem vindo à plataforma "+companyName+". Para terminar o "
-//				+ "seu registo, por favor siga o link: "+link
-//				+"\n\nCumprimentos,\nA equipa "
-//				+companyName;
-//
-//		this.sendEmail(newUser.getEmail(), "Registo na plataforma "
-//				+ companyName+" - Autenticação do email", text);
+		String link=SecureMailManagementImp.SERVICE_CONTEXT
+				+Constants.SERVLET_AUTH_CANDIDATE
+				+"?"+Constants.SERVLET_EMAIL+"="+newUser.getEmail()
+				+"&"+Constants.SERVLET_EMAIL_KEY+"="+newUser.getAuthenticationKey();
+
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","
+				+"\n\nBem vindo à plataforma "+companyName+". Para terminar o "
+				+ "seu registo, por favor siga o link: "+link
+				+"\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(newUser.getEmail(), "Registo na plataforma "
+				+ companyName+" - Autenticação do email", text);
 	}
 
 	@Override

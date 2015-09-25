@@ -33,36 +33,53 @@ public class AuthenticateCandidateServlet extends HttpServlet{
 	private SecureMailManagementInterface mailEJB;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response){
+		System.out.println(request.getParameter(Constants.SERVLET_EMAIL));
+		System.out.println(request.getParameter(Constants.SERVLET_EMAIL_KEY));
 		
-		if(request.getParameter(Constants.SERVLET_EMAIL)!=null){
+		// Verifica se existem os Parametros necessário
+		if(request.getParameter(Constants.SERVLET_EMAIL)!=null&&request.getParameter(Constants.SERVLET_EMAIL_KEY)!=null){
+			
 			// Autentica o utilizador
 			log.info("Authenticating "+request.getParameter(Constants.SERVLET_EMAIL));
 			UserEntity user=this.userEJB.findUserByEmail(request.getParameter(Constants.SERVLET_EMAIL));
 
 			// Verifica se o mail existe
 			if(user!=null){
+				
 				// Verifica a chave de autenticação
 				if(user.getAuthenticationKey().equals(request.getParameter(Constants.SERVLET_EMAIL_KEY))){
+					
+					//Autentica o user
 					user.setAuthenticated(true);
 					user.setAuthenticationKey("");
 					this.userEJB.update(user);
 					
-					try {
-						// Envia email e reencaminha para a página inicial
-						this.mailEJB.authenticatedEmail(user);
-						response.sendRedirect(request.getContextPath()+"/Home.xhtml");
-					} catch (IOException e) {
-						log.error("Error redirecting");
-					}
+					//Envia um email ao user
+					this.mailEJB.authenticatedEmail(user);
 					
-				} else log.info("Invalid authentication key: "+request.getParameter(Constants.SERVLET_EMAIL_KEY));
+				} else log.warn("Invalid authentication key: "+request.getParameter(Constants.SERVLET_EMAIL_KEY));
 				
-			} else log.info("Email not found: "+request.getParameter(Constants.SERVLET_EMAIL));
+			} else log.warn("Email not found: "+request.getParameter(Constants.SERVLET_EMAIL));
 			
+			try {
+				// Reencaminha para a página inicial
+				response.sendRedirect(request.getContextPath()+"/Home.xhtml");
+			} catch (IOException e) {
+				log.error("Error redirecting");
+			}	
 			
+		}else {
 			
+			try {
+				// Reencaminha para a página inicial
+				log.error("Invalid query");
+				response.sendRedirect(request.getContextPath()+"/Home.xhtml");
+			} catch (IOException e) {
+				log.error("Error redirecting");
+			}	
 			
 		}
+		
 
 	}
 
