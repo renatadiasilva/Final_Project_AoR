@@ -204,15 +204,15 @@ public class UserSessionManagement implements Serializable {
 		this.userManagement.defaultRole(Constants.ROLE_CANDIDATE);
 	}
 	
-	public boolean checkDefaultAdmin(String role) {
+	public boolean checkDefaultAdmin() {
 		return this.userManagement.checkDefault(Constants.ROLE_ADMIN);
 	}
 
-	public boolean checkDefaultManager(String role) {
+	public boolean checkDefaultManager() {
 		return this.userManagement.checkDefault(Constants.ROLE_MANAGER);
 	}
 
-	public boolean checkDefaultInterviewer(String role) {
+	public boolean checkDefaultInterviewer() {
 		return this.userManagement.checkDefault(Constants.ROLE_INTERVIEWER);
 	}
 
