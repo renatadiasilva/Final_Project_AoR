@@ -137,7 +137,12 @@ public class UserManagementImp implements UserManagementInterface {
 
 			// Atributos do UserEntity
 			UserEntity newUser=new UserEntity(email, password, firstName, lastName, roles);
+
+			// Role por default
 			newUser.setDefaultRole(Constants.ROLE_CANDIDATE);	
+			if(interviewer)newUser.setDefaultRole(Constants.ROLE_INTERVIEWER);
+			if(manager)newUser.setDefaultRole(Constants.ROLE_MANAGER);
+			if(admin)newUser.setDefaultRole(Constants.ROLE_ADMIN);
 
 			// Atributos do UserInfoEntity do respectivo UserEntity
 			UserInfoEntity newUserInfo= new UserInfoEntity(birthday, address, city, homePhone, mobilePhone, 

@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -20,9 +19,6 @@ import java.io.Serializable;
 @SessionScoped
 public class AdminNewUserCDI implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8739801850337571946L;
 
 	@Inject
@@ -41,7 +37,7 @@ public class AdminNewUserCDI implements Serializable {
 	public AdminNewUserCDI() {
 	}
 	
-	private void clear(){
+	public void clear(){
 		email=firstName=lastName=null;
 		address=city=homePhone=mobilePhone=country=course=school=linkedin;
 		admin=manager=interviewer=candidate=false;

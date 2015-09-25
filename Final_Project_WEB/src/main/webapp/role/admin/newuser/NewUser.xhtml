@@ -5,6 +5,10 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
+	<f:metadata>
+		<f:viewAction actionListener = "#{adminNewUserCDI.clear()}" />
+	</f:metadata>
+	
 	<ui:define name="titulo">Admin - Novo Utilizador
 	 - #{styleSessionManagement.companyName}</ui:define>
 
