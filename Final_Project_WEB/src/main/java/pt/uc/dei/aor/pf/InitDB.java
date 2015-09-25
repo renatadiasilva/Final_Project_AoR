@@ -324,6 +324,7 @@ public class InitDB {
 		plist[0].setLocations(locations);
 		plist[0].setAdvertisingChannels(channels);
 		plist[0].setOpeningDate(ftDate.parse("2015-08-02"));
+		plist[0].setSlaDate(ftDate.parse("2015-09-20"));
 
 		locations = Arrays.asList(Constants.LOCATION_PORTO);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,

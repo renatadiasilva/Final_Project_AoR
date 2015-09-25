@@ -175,6 +175,12 @@ public class PositionEJBImp implements PositionEJBInterface {
 		log.info("Finding all close to SLA positions");
 		return positionDAO.findCloseToSLAPositions(daysBefore);
 	}
+	
+	@Override
+	public List<PositionEntity> findAfterSLAPositions() {
+		log.info("Finding all positions which passed by the SLA date");
+		return positionDAO.findAfterSLAPositions();
+	}
 
 	@Override
 	public List<PositionEntity> findPositionsByKeyword(String keyword) {

@@ -226,6 +226,11 @@ public class PositionSearchCDI {
 		this.plist = positionEJB.findCloseToSLAPositions(days);
 	}
 
+	public void searchAfterSLAPositions() {
+		log.info("Searching for positions which passed by SLA");
+		this.plist = positionEJB.findAfterSLAPositions();
+	}
+
 	public void searchPositionsByKeyword() {
 		log.info("Searching for positions by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);

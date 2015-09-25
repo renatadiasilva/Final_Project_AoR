@@ -63,5 +63,6 @@ public interface PositionEJBInterface {
 	public abstract List<Object[]> averageTimeToClose(Date date1, Date date2,
 			char period);
 	public abstract Double overallAverageTimeToClose(Date date1, Date date2);
+	public abstract List<PositionEntity> findAfterSLAPositions();
 	
 }
