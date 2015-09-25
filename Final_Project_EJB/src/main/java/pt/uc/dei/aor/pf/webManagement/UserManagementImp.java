@@ -226,7 +226,7 @@ public class UserManagementImp implements UserManagementInterface {
 		//clone current user and sent to web layer
 		UserEntity u = new UserEntity(currentUser.getEmail(), "no password",
 				currentUser.getFirstName(), currentUser.getLastName(), null);
-		u.setId(u.getId());
+		u.setId(currentUser.getId());
 		if (currentUser.getUserInfo() != null) {
 			UserInfoEntity uinfo = new UserInfoEntity(
 					currentUser.getUserInfo().getBirthDate(),
