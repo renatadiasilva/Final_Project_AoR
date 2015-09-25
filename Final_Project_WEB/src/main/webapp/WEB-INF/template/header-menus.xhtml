@@ -19,6 +19,26 @@
 
 			<p:megaMenu orientation="horizontal">
 
+				<p:menuitem value="Início" icon="ui-icon-home"
+					rendered="#{userSessionManagement.checkDefault('ADMIN')}"
+					actionListener="../../../role/admin/landing/Landing.xhtml"
+					ajax="false" />
+
+				<p:menuitem value="Início" icon="ui-icon-home"
+					rendered="#{userSessionManagement.checkDefault('MANAGER')}"
+					actionListener="../../../role/manager/landing/Landing.xhtml"
+					ajax="false" />
+
+				<p:menuitem value="Início" icon="ui-icon-home"
+					rendered="#{userSessionManagement.checkDefault('INTERVIEWER')}"
+					actionListener="../../../role/interviewer/landing/Landing.xhtml"
+					ajax="false" />
+
+				<p:menuitem value="Início" icon="ui-icon-home"
+					rendered="#{userSessionManagement.checkDefault('CANDIDATE')}"
+					actionListener="../../../role/admin/landing/Landing.xhtml"
+					ajax="false" />
+
 				<p:submenu label="Administrador" icon="ui-icon-wrench"
 					rendered="#{userSessionManagement.admin}">
 					<p:column>
@@ -72,7 +92,8 @@
 								url="../../../role/admin/search/CandidateSearch.xhtml" />
 							<p:menuitem value="Procurar Candidaturas"
 								url="../../../role/admin/search/SubmissionSearch.xhtml" />
-							<p:menuitem value="Candidaturas Espontâneas" url="#" />
+							<p:menuitem value="Candidaturas Espontâneas" 
+								url="../../../role/admin/search/SpontaneousSearch.xhtml" />
 						</p:submenu>
 					</p:column>
 
@@ -102,11 +123,13 @@
 					rendered="#{userSessionManagement.manager}">
 					<p:column>
 						<p:submenu label="Posições">
-							<p:menuitem value="As Minhas Posições" url="#" />
+							<p:menuitem value="As Minhas Posições"
+								url="../../../role/manager/positions/MyPositions.xhtml" />
 						</p:submenu>
 						<p:submenu label="Candidaturas">
 							<p:menuitem value="Procurar Candidatos" url="#" />
-							<p:menuitem value="Candidaturas Espontâneas" url="#" />
+							<p:menuitem value="Candidaturas Espontâneas" 
+							url="../../../role/admin/search/SpontaneousSearch.xhtml" />
 						</p:submenu>
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="Agendar Entrevista" url="#" />

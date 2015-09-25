@@ -61,7 +61,7 @@ public class UserSessionManagement implements Serializable {
 	
 	// clone of current user
 	private UserEntity currentUserClone;
-
+	
 	public UserSessionManagement() {
 	}
 
@@ -299,9 +299,7 @@ public class UserSessionManagement implements Serializable {
 			e.printStackTrace();
 		}
 	}
-
-
-
+	
 	public long uploadCV(){
 		return this.userManagement.uploadCV();
 	}
@@ -365,6 +363,7 @@ public class UserSessionManagement implements Serializable {
 	}
 
 	public UserEntity getCurrentUserClone() {
+		System.out.println(currentUserClone);
 		return currentUserClone;
 	}
 

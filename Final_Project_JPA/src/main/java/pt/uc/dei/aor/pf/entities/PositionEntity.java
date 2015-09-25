@@ -28,6 +28,10 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Position.findCloseToSLAPositions",
 			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate"
 					+ " AND p.status = :status"),
+	@NamedQuery(name = "Position.findAfterSLAPositions",
+			query = "SELECT p FROM PositionEntity p"
+					+ " WHERE p.slaDate < CURRENT_DATE "
+					+ " AND p.status = :status"),
 	@NamedQuery(name = "Position.findPositionsByCandidate",
 			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s"
 					+ " WHERE u = :user"),

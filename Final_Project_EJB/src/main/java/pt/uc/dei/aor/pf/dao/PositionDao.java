@@ -176,6 +176,14 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				parameters);
 	}
 
+	public List<PositionEntity> findAfterSLAPositions() {
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("status", Constants.STATUS_OPEN);
+		return super.findSomeResults("Position.findAfterSLAPositions", 
+				parameters);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositionsByKeyword(String keyword,
 			UserEntity positionManager) {

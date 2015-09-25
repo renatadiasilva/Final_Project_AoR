@@ -25,6 +25,10 @@
 					action="#{positionSearchCDI.searchOpenPositions()}"
 					update="@form, messages" icon="ui-icon-search" />
 
+				<p:commandButton value="Posições que passaram o SLA"
+					action="#{positionSearchCDI.searchAfterSLAPositions()}"
+					update="@form, messages" icon="ui-icon-search" />
+
 				<p:commandButton value="Posições perto do SLA"
 					action="#{positionSearchCDI.searchCloseToSLAPositions()}"
 					update="@form, messages" icon="ui-icon-search" />

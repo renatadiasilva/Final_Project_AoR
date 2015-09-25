@@ -288,6 +288,8 @@ public class InitDB {
 
 		roles = Arrays.asList(Constants.ROLE_CANDIDATE);
 
+		uilist[3].setLinkedin(
+				"https://pt.linkedin.com/pub/renata-silva/98/324/609");
 		for(int i = 0; i < 6; i++) {
 			ulist[i+4].setDefaultRole(Constants.ROLE_CANDIDATE);
 			ulist[i+4].setRoles(roles);
@@ -295,7 +297,7 @@ public class InitDB {
 		}
 		
 		// manual submission... saved by admin
-		ulist[4].setCreatedBy(ulist[0]);		
+		ulist[4].setCreatedBy(ulist[0]);	
 		
 		roles = Arrays.asList(Constants.ROLE_MANAGER);
 		ulist[10].setDefaultRole(Constants.ROLE_MANAGER);
@@ -324,6 +326,7 @@ public class InitDB {
 		plist[0].setLocations(locations);
 		plist[0].setAdvertisingChannels(channels);
 		plist[0].setOpeningDate(ftDate.parse("2015-08-02"));
+		plist[0].setSlaDate(ftDate.parse("2015-09-20"));
 
 		locations = Arrays.asList(Constants.LOCATION_PORTO);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,

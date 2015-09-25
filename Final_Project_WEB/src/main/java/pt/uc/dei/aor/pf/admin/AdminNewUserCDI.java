@@ -61,7 +61,9 @@ public class AdminNewUserCDI {
 						firstName, lastName, admin, manager, interviewer);
 
 			} else FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage("Defina o tipo de utilizador."));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Defina o tipo de utilizador.",
+							"Defina o tipo de utilizador."));
 
 		} else FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_ERROR,

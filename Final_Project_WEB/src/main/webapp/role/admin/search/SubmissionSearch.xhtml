@@ -100,7 +100,7 @@
 
 			<p:dataTable emptyMessage="Não foram encontradas candidaturas." 
 				var="s" value="#{submissionSearchCDI.slist}">
-				<f:facet name="header">Listagem entervistas</f:facet>
+				<f:facet name="header">Listagem candidaturas</f:facet>
 				<p:column headerText="Data">
 					<h:outputText value="#{s.date}" />
 				</p:column>
@@ -108,7 +108,7 @@
 					<h:outputText value="#{s.candidate.firstName}" />
 				</p:column>
 				<p:column headerText="Posição">
-					<h:outputText value="#{s.position.positionCode}" />
+					<h:outputText value="#{s.}" />
 				</p:column>
 				<p:column headerText="Espontânea?">
 					<h:outputText value="#{s.spontaneous}" />

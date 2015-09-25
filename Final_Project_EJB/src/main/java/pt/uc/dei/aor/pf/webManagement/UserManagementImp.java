@@ -97,6 +97,9 @@ public class UserManagementImp implements UserManagementInterface {
 
 	@Override
 	public boolean checkDefault(String role){
+		System.out.println(role);
+		System.out.println(this.currentUser);
+		System.out.println(this.currentUser.getDefaultRole());
 		if(this.currentUser.getDefaultRole().equals(role)) return true;
 		return false;
 	}
@@ -223,6 +226,7 @@ public class UserManagementImp implements UserManagementInterface {
 		//clone current user and sent to web layer
 		UserEntity u = new UserEntity(currentUser.getEmail(), "no password",
 				currentUser.getFirstName(), currentUser.getLastName(), null);
+		u.setId(u.getId());
 		if (currentUser.getUserInfo() != null) {
 			UserInfoEntity uinfo = new UserInfoEntity(
 					currentUser.getUserInfo().getBirthDate(),
