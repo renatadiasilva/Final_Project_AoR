@@ -39,19 +39,28 @@ public class AuthenticateCandidateServlet extends HttpServlet{
 			log.info("Authenticating "+request.getParameter(Constants.SERVLET_EMAIL));
 			UserEntity user=this.userEJB.findUserByEmail(request.getParameter(Constants.SERVLET_EMAIL));
 
+			// Verifica se o mail existe
 			if(user!=null){
-				user.setAuthenticated(true);
-				this.userEJB.update(user);
+				// Verifica a chave de autenticação
+				if(user.getAuthenticationKey().equals(request.getParameter(Constants.SERVLET_EMAIL_KEY))){
+					user.setAuthenticated(true);
+					user.setAuthenticationKey("");
+					this.userEJB.update(user);
+					
+					try {
+						// Envia email e reencaminha para a página inicial
+						this.mailEJB.authenticatedEmail(user);
+						response.sendRedirect(request.getContextPath()+"/Home.xhtml");
+					} catch (IOException e) {
+						log.error("Error redirecting");
+					}
+					
+				} else log.info("Invalid authentication key: "+request.getParameter(Constants.SERVLET_EMAIL_KEY));
+				
 			} else log.info("Email not found: "+request.getParameter(Constants.SERVLET_EMAIL));
 			
 			
-			try {
-				// Reencaminha para a página inicial
-				this.mailEJB.authenticatedEmail(user);
-				response.sendRedirect(request.getContextPath()+"/Home.xhtml");
-			} catch (IOException e) {
-				log.error("Error redirecting");
-			}
+			
 			
 		}
 

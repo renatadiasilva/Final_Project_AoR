@@ -71,6 +71,9 @@ public class UserEntity implements Serializable {
 	@NotNull
 	@Column(name ="authenticated", nullable = false)
 	private boolean authenticated;
+	
+	@Column(name ="authentication_key")
+	private String authenticationKey;
 
 	@NotNull
 	@Column(name = "first_name", nullable = false, length = 20)
@@ -180,6 +183,14 @@ public class UserEntity implements Serializable {
 
 	public void setAuthenticated(boolean authenticated) {
 		this.authenticated = authenticated;
+	}
+
+	public String getAuthenticationKey() {
+		return authenticationKey;
+	}
+
+	public void setAuthenticationKey(String authenticationKey) {
+		this.authenticationKey = authenticationKey;
 	}
 
 	public void setTemporaryPassword(boolean temporaryPassword) {

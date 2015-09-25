@@ -26,14 +26,14 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 	@Resource(mappedName="java:jboss/mail/Gmail")
 	Session gmailSession;
-	
+
 	@EJB
 	private StyleEJBInterface styleEJB;
 
 	private static final String FROM="itjobs.aor@gmail.com";
 
 	//	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
-	 private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com";
+	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com";
 	private static final boolean OVERRIDE = true;
 
 	private static final String SERVICE_CONTEXT="https://localhost/Final_Project_WEB/services/";
@@ -87,7 +87,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		// Link com a query para a autenticação do utilizador
 		String link=SecureMailManagementImp.SERVICE_CONTEXT
 				+Constants.SERVLET_AUTH_CANDIDATE
-				+"?"+Constants.SERVLET_EMAIL+"="+newUser.getEmail();
+				+"?"+Constants.SERVLET_EMAIL+"="+newUser.getEmail()
+				+"?"+Constants.SERVLET_EMAIL_KEY+"="+newUser.getAuthenticationKey();
 
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","
@@ -107,7 +108,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				"\n\nO seu email encontra-se autenticado e o seu registo "
 				+ "concluído."
 				+"\n\nCumprimentos,\nA equipa "+companyName;
-		
+
 		this.sendEmail(user.getEmail(), "Registo na plataforma "
 				+ companyName+" - Registo concluído", text);
 	}

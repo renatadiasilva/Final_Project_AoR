@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,6 +153,8 @@ public class UserManagementImp implements UserManagementInterface {
 			}else{
 				// Se vem da página do signup, vai ter de ser autenticado por email
 				newUser.setAuthenticated(false);
+				// Gera a chave de autenticação
+				newUser.setAuthenticationKey(RandomStringUtils.randomAlphanumeric(8));
 			}
 
 			// Grava o UserEntity

@@ -108,4 +108,5 @@ public class Constants {
 	public static final String SERVLET_SUBJECT = "subject";
 	public static final String SERVLET_AUTH_CANDIDATE = "authCand";
 	public static final String SERVLET_EMAIL = "email";
+	public static final String SERVLET_EMAIL_KEY = "key";
 }
