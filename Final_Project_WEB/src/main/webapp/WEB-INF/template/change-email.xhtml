@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+
+		<h:form id="changeEmailForm">
+
+			<p:dialog header="Mudar o Email" widgetVar="changeEmail"
+				draggable="false" resizable="false" modal="true">
+
+				<h:panelGroup id="changeEmailDialog">
+
+					<p:messages style="width: 100%" />
+
+					<h:panelGrid columns="2">
+						<p:outputLabel
+							value="Atenção! Será enviada uma mensagem para o seu novo endereço de email para autenticar o novo endereço." />
+						<p:outputLabel />
+						<p:outputLabel
+							value="Ao efectuar a mudança do email, o seu acesso será bloqueado até o novo email ser autenticado." />
+
+						<p:outputLabel value="Insira a sua password: "
+							for="change-email-password" />
+						<p:password id="change-email-password"
+							value="#{changeEmailCDI.password}" style="width:100%"
+							required="true" requiredMessage="Insira a password." />
+
+						<p:outputLabel value="Nova Password: " for="newEmail" />
+						<p:inputText id="newEmail"
+							value="#{changeEmailCDI.password}" required="true"
+							match="newEmailRepeat" validatorMessage="Emails não combinam."
+							requiredMessage="Insira o novo email." style="width: 100%" />
+
+						<p:outputLabel value="Repita a nova Password: "
+							for="newEmailRepeat" />
+						<p:password id="newEmailRepeat" required="true"
+							requiredMessage="Repita o novo email." style="width: 100%" />
+
+					</h:panelGrid>
+
+					<p:commandButton value="Actualizar"
+						action="#{changeEmailCDI.changeEmail()}"
+						icon="ui-icon-disk" update="changeEmailForm"
+						style="width: 100%" />
+
+					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
+						onclick="PF('changeEmail').hide();" />
+
+				</h:panelGroup>
+
+			</p:dialog>
+
+		</h:form>
+
+	</ui:composition>
+
+</h:body>
+</html>

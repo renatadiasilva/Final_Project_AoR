@@ -13,6 +13,7 @@
 		<ui:include src="edit-user-info.xhtml" />
 		<ui:include src="edit-candidate-info.xhtml" />
 		<ui:include src="upload-cv.xhtml" />
+		<ui:include src="change-email.xhtml" />
 
 		<h:form id="headerMenu">
 
@@ -215,6 +216,9 @@
 
 							<p:menuitem value="Mudar Password"
 								onclick="PF('changePassword').show();" />
+
+							<p:menuitem value="Mudar Email"
+								onclick="PF('changeEmail').show();" />
 						</p:submenu>
 					</p:column>
 				</p:submenu>
