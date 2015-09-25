@@ -237,8 +237,8 @@
 			<br />
 			<br />
 
-			<p:dataTable emptyMessage="Não foram encontradas posições." var="p"
-				value="#{positionSearchCDI.plist}" id="tableHome"
+			<p:dataTable emptyMessage="Neste momento não há posições abertas."
+				var="p" value="#{positionSearchCDI.plist}" id="tableHome"
 				rendered="#{positionSearchCDI.checkIfNotEmpty()}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "

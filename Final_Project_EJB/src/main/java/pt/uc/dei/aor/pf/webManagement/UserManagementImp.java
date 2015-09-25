@@ -97,9 +97,6 @@ public class UserManagementImp implements UserManagementInterface {
 
 	@Override
 	public boolean checkDefault(String role){
-		System.out.println(role);
-		System.out.println(this.currentUser);
-		System.out.println(this.currentUser.getDefaultRole());
 		if(this.currentUser.getDefaultRole().equals(role)) return true;
 		return false;
 	}

@@ -12,17 +12,59 @@
 		<f:metadata>
 			<f:viewAction
 				actionListener="#{userSessionManagement.checkTemporaryPassword()}" />
+			<f:viewAction
+				actionListener="#{positionSearchCDI.searchOpenPositions()}" />
 		</f:metadata>
 		<br />
 		<br />
 		<br /> 
-		CANDIDATO #{userSessionManagement.userFullName},
+		<br /> 
+		<b>CANDIDATO #{userSessionManagement.userFullName}</b>,
 		<br /> 		
 		<br /> 
 		#{styleSessionManagement.welcomeMessage}
 		<br />
 		<br />
+		<h3>Acesso rápido</h3>
+		<br />
+		<a href="../newuser/NewUser.xhtml">As Minhas Candidaturas</a>
+		<br />
+		<br />
+		
+		<h:form>
 
+			<p:dataTable emptyMessage="Neste momento não há posições abertas."
+				var="p" value="#{positionSearchCDI.plist}" id="tableHomeLanding"
+				rendered="#{positionSearchCDI.checkIfNotEmpty()}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+
+				<f:facet name="header">Posições Abertas</f:facet>
+				<p:column headerText="Código">
+					<h:outputText value="#{p.positionCode}" />
+				</p:column>
+				<p:column headerText="Título">
+					<h:outputText value="#{p.title}" />
+				</p:column>
+				<p:column headerText="Data Abertura">
+					<h:outputText value="#{p.openingDate}" />
+				</p:column>
+				<p:column headerText="Vagas">
+					<h:outputText value="#{p.openings}" />
+				</p:column>
+				<p:column headerText="Empresa">
+					<h:outputText value="#{p.company}" />
+				</p:column>
+				<p:column headerText="Área Técnica">
+					<h:outputText value="#{p.technicalArea}" />
+				</p:column>
+				<p:column headerText="Descrição">
+					<h:outputText value="#{p.description}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
 
 
 	</ui:define>
