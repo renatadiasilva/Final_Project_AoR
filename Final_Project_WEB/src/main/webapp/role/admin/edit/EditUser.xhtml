@@ -54,13 +54,13 @@
 			<h:form style="width:100%">
 				<p:commandButton action="#{userSearchCDI.cleanAll()}"
 					value="Limpar pesquisa"
-					update="search-email-out
+					update="search-email-out search-keywordrole-out
 						  search-name-out search-keyword-out userSearch messages"
 					icon="ui-icon-cancel" />
 			</h:form>
 		</h:panelGrid>
 
-		<h:form>
+		<h:form id="search-keywordrole-out">
 			<h:panelGrid columns="4" style="width:100%">
 				<p:watermark value="Procurar por palavra chave e perfil: "
 					for="search-keywordrole" />
