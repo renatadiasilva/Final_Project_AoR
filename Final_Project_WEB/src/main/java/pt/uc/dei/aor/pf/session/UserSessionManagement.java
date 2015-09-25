@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
 import pt.uc.dei.aor.pf.upload.UploadFile;
@@ -187,14 +188,38 @@ public class UserSessionManagement implements Serializable {
 		}
 	}
 
-	public void defaultRole(String role){
-		this.userManagement.defaultRole(role);
+	public void defaultRoleAdmin() {
+		this.userManagement.defaultRole(Constants.ROLE_ADMIN);
 	}
 
-	public boolean checkDefault(String role){
-		return this.userManagement.checkDefault(role);
+	public void defaultRoleManager() {
+		this.userManagement.defaultRole(Constants.ROLE_MANAGER);
+	}
+	
+	public void defaultRoleInterviewer() {
+		this.userManagement.defaultRole(Constants.ROLE_INTERVIEWER);
+	}
+	
+	public void defaultRoleCandidate() {
+		this.userManagement.defaultRole(Constants.ROLE_CANDIDATE);
+	}
+	
+	public boolean checkDefaultAdmin(String role) {
+		return this.userManagement.checkDefault(Constants.ROLE_ADMIN);
 	}
 
+	public boolean checkDefaultManager(String role) {
+		return this.userManagement.checkDefault(Constants.ROLE_MANAGER);
+	}
+
+	public boolean checkDefaultInterviewer(String role) {
+		return this.userManagement.checkDefault(Constants.ROLE_INTERVIEWER);
+	}
+
+	public boolean checkDefaultCandidate() {
+		return this.userManagement.checkDefault(Constants.ROLE_CANDIDATE);
+	}
+	
 	public void changePassword (){
 		log.info("Changing password");
 		log.debug("User: "+ this.userManagement.getUserEmail());

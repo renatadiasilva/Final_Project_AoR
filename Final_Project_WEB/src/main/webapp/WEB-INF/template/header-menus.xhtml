@@ -20,22 +20,22 @@
 			<p:megaMenu orientation="horizontal">
 
 				<p:menuitem value="Início" icon="ui-icon-home"
-					rendered="#{userSessionManagement.checkDefault('ADMIN')}"
+					rendered="#{userSessionManagement.checkDefaultAdmin()}"
 					actionListener="../../../role/admin/landing/Landing.xhtml"
 					ajax="false" />
 
 				<p:menuitem value="Início" icon="ui-icon-home"
-					rendered="#{userSessionManagement.checkDefault('MANAGER')}"
+					rendered="#{userSessionManagement.checkDefaultManager()}"
 					actionListener="../../../role/manager/landing/Landing.xhtml"
 					ajax="false" />
 
 				<p:menuitem value="Início" icon="ui-icon-home"
-					rendered="#{userSessionManagement.checkDefault('INTERVIEWER')}"
+					rendered="#{userSessionManagement.checkDefaultInterviewer()}"
 					actionListener="../../../role/interviewer/landing/Landing.xhtml"
 					ajax="false" />
 
 				<p:menuitem value="Início" icon="ui-icon-home"
-					rendered="#{userSessionManagement.checkDefault('CANDIDATE')}"
+					rendered="#{userSessionManagement.checkDefaultCandidate()}"
 					actionListener="../../../role/admin/landing/Landing.xhtml"
 					ajax="false" />
 
@@ -111,9 +111,9 @@
 								url="../../../role/admin/reports/SubmissionReports.xhtml" />
 						</p:submenu>
 						<p:submenu label="Perfil Inicial"
-							rendered="#{!userSessionManagement.checkDefault('ADMIN')}">
+							rendered="#{!userSessionManagement.checkDefaultAdmin()}">
 							<p:menuitem value="Definir Por Defeito"
-								actionListener="#{userSessionManagement.defaultRole('ADMIN')}"
+								actionListener="#{userSessionManagement.defaultRoleAdmin()}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
@@ -138,9 +138,9 @@
 						</p:submenu>
 
 						<p:submenu label="Perfil Inicial"
-							rendered="#{!userSessionManagement.checkDefault('MANAGER')}">
+							rendered="#{!userSessionManagement.checkDefaultManager()}">
 							<p:menuitem value="Definir Por Defeito"
-								actionListener="#{userSessionManagement.defaultRole('MANAGER')}"
+								actionListener="#{userSessionManagement.defaultRoleManager()}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
@@ -154,9 +154,9 @@
 							<p:menuitem value="As minhas Entrevistas Passadas" url="#" />
 						</p:submenu>
 						<p:submenu label="Perfil Inicial"
-							rendered="#{!userSessionManagement.checkDefault('INTERVIEWER')}">
+							rendered="#{!userSessionManagement.checkDefaultInterviewer()}">
 							<p:menuitem value="Definir Por Defeito"
-								actionListener="#{userSessionManagement.defaultRole('INTERVIEWER')}"
+								actionListener="#{userSessionManagement.defaultRoleInterviewer()}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
@@ -186,9 +186,9 @@
 						</p:submenu>
 
 						<p:submenu label="Perfil Inicial"
-							rendered="#{!userSessionManagement.checkDefault('CANDIDATE')}">
+							rendered="#{!userSessionManagement.checkDefaultCandidate()}">
 							<p:menuitem value="Definir Por Defeito"
-								actionListener="#{userSessionManagement.defaultRole('CANDIDATE')}"
+								actionListener="#{userSessionManagement.defaultRoleCandidate()}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 					</p:column>
