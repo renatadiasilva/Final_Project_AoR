@@ -5,159 +5,196 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="titulo">Admin - Pesquisas de Utilizadores - #{styleSessionManagement.companyName}</ui:define>
+	<f:metadata>
+		<f:viewAction actionListener="#{userSearchCDI.clean()}" />
+	</f:metadata>
+
+	<ui:define name="titulo">Admin - Pesquisa de Utilizadores - #{styleSessionManagement.companyName}</ui:define>
 
 	<ui:define name="contents">
-		<h1>Editar de Utilizadores</h1>
+		<h1>Pesquisa de Utilizadores</h1>
 
 		<p:commandLink value="Eliminar utilizadores"
 			url="../../../role/admin/dangerzone/DangerZone.xhtml" />
 
-		<h:panelGrid columns="1" style="width:100%">
+		<!-- Pesquisas -->
+		<h:panelGrid columns="4" style="width:100%">
 
-			<!-- Pesquisas -->
-			<h:panelGrid columns="3" style="width:100%">
+			<h:form id="search-email-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por email: " for="search-email" />
+					<p:inputText id="search-email" value="#{userSearchCDI.email}"
+						style="width:100%" />
+					<p:commandButton action="#{userSearchCDI.searchByEmail()}"
+						update="userSearch messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
 
-				<h:form style="width:100%">
-					<h:panelGrid columns="3" style="width:100%">
-						<p:watermark value="Procurar por email: " for="search-email" />
-						<p:inputText id="search-email" value="#{userSearchCDI.email}"
-							style="width:100%" />
-						<p:commandButton action="#{userSearchCDI.searchByEmail()}"
-							update="userSearch messages" icon="ui-icon-search" />
-					</h:panelGrid>
-				</h:form>
+			<h:form id="search-name-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por nome: " for="search-name" />
+					<p:inputText id="search-name" value="#{userSearchCDI.fname}"
+						style="width:100%" />
+					<p:commandButton action="#{userSearchCDI.searchByName()}"
+						update="userSearch messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
 
-				<h:form style="width:100%">
-					<h:panelGrid columns="3" style="width:100%">
-						<p:watermark value="Procurar por nome: " for="search-name" />
-						<p:inputText id="search-name" value="#{userSearchCDI.fname}"
-							style="width:100%" />
-						<p:commandButton action="#{userSearchCDI.searchByName()}"
-							update="userSearch messages" icon="ui-icon-search" />
-					</h:panelGrid>
-				</h:form>
+			<h:form id="search-keyword-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por palavra chave: "
+						for="search-keyword" />
+					<p:inputText id="search-keyword" value="#{userSearchCDI.keyword}"
+						style="width:100%" />
+					<p:commandButton action="#{userSearchCDI.searchByKeyword()}"
+						update="userSearch messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
 
-				<h:form style="width:100%">
-					<h:panelGrid columns="3" style="width:100%">
-						<p:watermark value="Procurar por palavra chave: "
-							for="search-keyword" />
-						<p:inputText id="search-keyword" value="#{userSearchCDI.keyword}"
-							style="width:100%" />
-						<p:commandButton action="#{userSearchCDI.searchByKeyword()}"
-							update="userSearch messages" icon="ui-icon-search" />
-					</h:panelGrid>
-				</h:form>
+			<h:form style="width:100%">
+				<p:commandButton action="#{userSearchCDI.cleanAll()}"
+					value="Limpar pesquisa"
+					update="search-email-out
+						  search-name-out search-keyword-out userSearch messages"
+					icon="ui-icon-cancel" />
+			</h:form>
+		</h:panelGrid>
+
+		<h:form>
+			<h:panelGrid columns="4" style="width:100%">
+				<p:watermark value="Procurar por palavra chave e perfil: "
+					for="search-keywordrole" />
+				<p:inputText id="search-keywordrole"
+					value="#{userSearchCDI.keyword}" style="width:100%" />
+				<p:commandButton action="#{userSearchCDI.searchByKeywordAndRole()}"
+					update="userSearch messages" icon="ui-icon-search" />
+
+				<p:selectOneMenu id="search-keywordRoleAll"
+					value="#{userSearchCDI.role}" style="width:150px">
+					<f:selectItem itemLabel="Selecione um perfil" itemValue="" />
+					<f:selectItem itemLabel="Administrador" 
+						itemValue="#{userSearchCDI.admin()}" />
+					<f:selectItem itemLabel="Gestor"
+						itemValue="#{userSearchCDI.manager()}" />
+					<f:selectItem itemLabel="Entrevistador"
+						itemValue="#{userSearchCDI.interviewer()}" />
+					<f:selectItem itemLabel="Candidato"
+						itemValue="#{userSearchCDI.candidate()}" />
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+		</h:form>
+
+		<h:form>
+
+			<h:panelGrid columns="5" style="width:100%">
+
+				<p:commandButton value="Todos" action="#{userSearchCDI.searchAll()}"
+					update="userSearch messages" icon="ui-icon-search"
+					style="width:100%" />
+
+				<p:commandButton value="Só administradores"
+					action="#{userSearchCDI.searchAllAdmins()}"
+					update="userSearch messages" icon="ui-icon-search"
+					style="width:100%" />
+
+				<p:commandButton value="Só gestores"
+					action="#{userSearchCDI.searchAllManagers()}"
+					update="userSearch messages" icon="ui-icon-search"
+					style="width:100%" />
+
+				<p:commandButton value="Só entrevistadores"
+					action="#{userSearchCDI.searchAllInterviewers()}"
+					update="userSearch messages" icon="ui-icon-search"
+					style="width:100%" />
+
+				<p:commandButton value="Só candidatos"
+					action="#{userSearchCDI.searchAllCandidates()}"
+					update="userSearch messages" icon="ui-icon-search"
+					style="width:100%" />
 
 			</h:panelGrid>
 
-			<h:form>
+		</h:form>
 
-				<h:panelGrid columns="4" style="width:100%">
+		<h:form id="userSearch">
 
-					<p:commandButton value="Todos users"
-						action="#{userSearchCDI.searchAll()}" update="userSearch messages"
-						icon="ui-icon-search" style="width:100%" />
+			<p:dataTable emptyMessage="Não foram encontrados utilizadores."
+				var="u" value="#{userSearchCDI.ulist}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Listagem</f:facet>
+				<p:column headerText="Email">
+					<h:outputText value="#{u.email}" />
+				</p:column>
+				<p:column headerText="Nome">
+					<h:outputText value="#{u.firstName} #{u.lastName}" />
+				</p:column>
+				<p:column headerText="Email">
+					<h:outputText value="#{u.email}" />
+				</p:column>
+				<p:column headerText="Perfil por defeito">
+					<h:outputText value="#{u.defaultRole}" />
+				</p:column>
+				<p:column headerText="Editar perfis">
+					<p:commandButton value="Editar" action="#{editUserCDI.editUser(u)}"
+						update="changeRolesForm" icon="ui-icon-pencil"
+						oncomplete="PF('changeRoles').show();" />
+				</p:column>
+			</p:dataTable>
 
-					<p:commandButton value="Todos admin"
-						action="#{userSearchCDI.searchAllAdmins()}"
-						update="userSearch messages" icon="ui-icon-search"
-						style="width:100%" />
+		</h:form>
 
-					<p:commandButton value="Todos gestores"
-						action="#{userSearchCDI.searchAllManagers()}"
-						update="userSearch messages" icon="ui-icon-search"
-						style="width:100%" />
+		<!-- Change of roles Dialog -->
+		<h:form id="changeRolesForm">
 
-					<p:commandButton value="Todos entrevistadores"
-						action="#{userSearchCDI.searchAllInterviewers()}"
-						update="userSearch messages" icon="ui-icon-search"
-						style="width:100%" />
+			<p:dialog header="Editar Perfis" widgetVar="changeRoles"
+				draggable="false" resizable="false" modal="true">
 
-				</h:panelGrid>
+				<h:panelGroup id="changeRolesDialog">
 
-			</h:form>
+					<p:outputLabel value="User: #{editUserCDI.userEmail}" />
+					<br />
+					<p:outputLabel value="#{editUserCDI.managerMessage}" />
+					<br />
+					<p:outputLabel value="#{editUserCDI.interviewerMessage}" />
+					<br />
 
-			<h:form id="userSearch">
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Administrador: " for="adminCheck" />
+						<p:selectBooleanCheckbox id="adminCheck"
+							value="#{editUserCDI.admin}" />
 
-				<p:dataTable emptyMessage="Não foram encontrados utilizadores."
-					var="u" value="#{userSearchCDI.ulist}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-					paginator="true" rows="10">
-					<f:facet name="header">Listagem users</f:facet>
-					<p:column headerText="Primeiro nome">
-						<h:outputText value="#{u.firstName}" />
-					</p:column>
-					<p:column headerText="Sobrenome">
-						<h:outputText value="#{u.lastName}" />
-					</p:column>
-					<p:column headerText="Email">
-						<h:outputText value="#{u.email}" />
-					</p:column>
-					<p:column headerText="Role por defeito">
-						<h:outputText value="#{u.defaultRole}" />
-					</p:column>
-					<p:column headerText="Editar roles">
-						<p:commandButton value="Editar"
-							action="#{editUserCDI.editUser(u)}" update="changeRolesForm"
-							icon="ui-icon-pencil" oncomplete="PF('changeRoles').show();" />
-					</p:column>
-				</p:dataTable>
+						<p:outputLabel value="Gestor: " for="managerCheck"
+							rendered="#{editUserCDI.showManager}" />
+						<p:selectBooleanCheckbox id="managerCheck"
+							rendered="#{editUserCDI.showManager}"
+							value="#{editUserCDI.manager}" />
 
-			</h:form>
+						<p:outputLabel value="Entrevistador: " for="interviewerCheck"
+							rendered="#{editUserCDI.showInterviewer}" />
+						<p:selectBooleanCheckbox id="interviewerCheck"
+							rendered="#{editUserCDI.showInterviewer}"
+							value="#{editUserCDI.interviewer}" />
 
-			<!-- Change of roles Dialog -->
-			<h:form id="changeRolesForm">
+						<p:outputLabel value="Candidato " for="candidateCheck" />
+						<p:selectBooleanCheckbox id="candidateCheck"
+							value="#{editUserCDI.candidate}" />
+					</h:panelGrid>
 
-				<p:dialog header="Editar Roles" widgetVar="changeRoles"
-					draggable="false" resizable="false" modal="true">
+					<p:commandButton value="Gravar Perfis"
+						actionListener="#{editUserCDI.saveUser()}"
+						onclick="PF('changeRoles').hide();" update="messages"
+						icon="ui-icon-disk" style="width: 100%" />
 
-					<h:panelGroup id="changeRolesDialog">
+					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
+						onclick="PF('changeRoles').hide();" />
 
-						<p:outputLabel value="User: #{editUserCDI.userEmail}" />
-						<br />
-						<p:outputLabel value="#{editUserCDI.managerMessage}" />
-						<br />
-						<p:outputLabel value="#{editUserCDI.interviewerMessage}" />
-						<br />
+				</h:panelGroup>
 
-						<h:panelGrid columns="2">
-							<p:outputLabel value="Administrador: " for="adminCheck" />
-							<p:selectBooleanCheckbox id="adminCheck"
-								value="#{editUserCDI.admin}" />
+			</p:dialog>
 
-							<p:outputLabel value="Gestor: " for="managerCheck"
-								rendered="#{editUserCDI.showManager}" />
-							<p:selectBooleanCheckbox id="managerCheck"
-								rendered="#{editUserCDI.showManager}"
-								value="#{editUserCDI.manager}" />
-
-							<p:outputLabel value="Entrevistador: " for="interviewerCheck"
-								rendered="#{editUserCDI.showInterviewer}" />
-							<p:selectBooleanCheckbox id="interviewerCheck"
-								rendered="#{editUserCDI.showInterviewer}"
-								value="#{editUserCDI.interviewer}" />
-
-							<p:outputLabel value="Candidato " for="candidateCheck" />
-							<p:selectBooleanCheckbox id="candidateCheck"
-								value="#{editUserCDI.candidate}" />
-						</h:panelGrid>
-
-						<p:commandButton value="Gravar Roles"
-							actionListener="#{editUserCDI.saveUser()}"
-							onclick="PF('changeRoles').hide();" update="messages"
-							icon="ui-icon-disk" style="width: 100%" />
-
-						<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
-							onclick="PF('changeRoles').hide();" />
-
-					</h:panelGroup>
-
-				</p:dialog>
-
-			</h:form>
-
-		</h:panelGrid>
+		</h:form>
 
 	</ui:define>
 

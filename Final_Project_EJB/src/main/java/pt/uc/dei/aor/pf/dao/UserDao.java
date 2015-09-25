@@ -35,7 +35,6 @@ public class UserDao extends GenericDao<UserEntity> {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("email", email);
 		parameters.put("removed", "%"+Constants.REMOVED_DATA+"%");
-		parameters.put("role", Constants.ROLE_CANDIDATE);
 		return super.findSomeResults("User.findUsersByEmailPattern", 
 				parameters);
 	}
@@ -46,14 +45,13 @@ public class UserDao extends GenericDao<UserEntity> {
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
 				"(", attributes, " OR ", 
-				"users.id = roles.user_id AND roles.role <> :role"
+				"users.id = roles.user_id"
 				+ " AND email NOT LIKE :removed", "email");
 		
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("first_name", name);
 		query.setParameter("last_name", name);
 		query.setParameter("removed", "%"+Constants.REMOVED_DATA+"%");
-		query.setParameter("role", Constants.ROLE_CANDIDATE);
 		return (List<UserEntity>) query.getResultList();
 
 	}
@@ -83,7 +81,7 @@ public class UserDao extends GenericDao<UserEntity> {
 		String[] attributes = {"first_name", "last_name"};
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
 				"(UPPER(email) LIKE :email OR ", attributes,
-				" OR ", "users.id = roles.user_id AND roles.role <> :role"
+				" OR ", "users.id = roles.user_id"
 						+ " AND email NOT LIKE :removed", "email");
 
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
@@ -91,7 +89,6 @@ public class UserDao extends GenericDao<UserEntity> {
 		query.setParameter("first_name", keyword);
 		query.setParameter("last_name", keyword);
 		query.setParameter("removed", "%"+Constants.REMOVED_DATA+"%");
-		query.setParameter("role", Constants.ROLE_CANDIDATE);
 		return (List<UserEntity>) query.getResultList();
 	}
 

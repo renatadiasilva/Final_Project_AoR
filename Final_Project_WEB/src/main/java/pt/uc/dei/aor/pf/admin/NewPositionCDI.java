@@ -345,7 +345,6 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setManager(UserEntity manager) {
-		System.out.println("Set Manager "+manager.getEmail());
 		this.manager = manager;
 	}
 

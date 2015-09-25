@@ -640,19 +640,19 @@ public class ReportsCDI implements Serializable {
 	public String goToReportSubByPos() {
 		submissionPos = true;
 		rejectedPos = proposalPos = false;
-		return "PositionReport?faces-redirect=true";
+		return "PositionReports?faces-redirect=true";
 	}
 
 	public String goToReportRejByPos() {
 		rejectedPos = true;
 		submissionPos = proposalPos = false;
-		return "PositionReport?faces-redirect=true";
+		return "PositionReports?faces-redirect=true";
 	}
 
 	public String goToReportProByPos() {
 		proposalPos = true;
 		submissionPos = rejectedPos = false;
-		return "PositionReport?faces-redirect=true";
+		return "PositionReports?faces-redirect=true";
 	}
 
 	// private methods

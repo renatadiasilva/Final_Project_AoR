@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "User.findUsersByEmailPattern",
 			query = "SELECT DISTINCT u FROM UserEntity u JOIN u.roles r"
 					+ " WHERE UPPER(u.email) LIKE :email"
-					+ " AND (r <> :role) AND u.email NOT LIKE :removed"
+					+ " AND u.email NOT LIKE :removed"
 					+ " ORDER BY u.email"),
 	@NamedQuery(name = "User.findCandidatesByPhone",
 			query = "SELECT u.owner FROM UserInfoEntity u WHERE"

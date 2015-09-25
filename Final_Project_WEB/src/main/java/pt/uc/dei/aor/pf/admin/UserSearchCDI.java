@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -13,9 +14,11 @@ import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+
 import java.io.Serializable;
 
 
@@ -23,9 +26,6 @@ import java.io.Serializable;
 @SessionScoped
 public class UserSearchCDI implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1886694735685187920L;
 
 	private static final Logger log = LoggerFactory.getLogger(UserSearchCDI.class);
@@ -46,6 +46,18 @@ public class UserSearchCDI implements Serializable {
 	private List<UserEntity> ulist;
 
 	public UserSearchCDI() {
+	}
+	
+	public void clean() {
+		email = fname = lname = role = keyword = "";
+		id = 0L;
+		searchAll();
+	}
+
+	public void cleanAll() {
+		email = fname = lname = role = keyword = "";
+		id = 0L;
+		ulist = new ArrayList<UserEntity>();
 	}
 
 	public void remove() {
@@ -95,12 +107,10 @@ public class UserSearchCDI implements Serializable {
 	}
 
 	public void searchAll() {
-		log.info("Searching for all users");
-//		this.ulist = userEJB.findAll();
+		log.info("Searching for all users (except with no data)");
 		this.ulist = userEJB.findAllNotRemoved();
 	}
 
-	//mostrar só emails...
 	public void searchRemoved() {
 		log.info("Searching for all removed users");
 		this.ulist = userEJB.findRemovedEmails();
@@ -121,17 +131,20 @@ public class UserSearchCDI implements Serializable {
 		this.ulist = userEJB.findAllInterviewers();
 	}
 
-	// INTERNAL USERS
+	public void searchAllCandidates() {
+		log.info("Searching for all candidates");
+		this.ulist = userEJB.findAllCandidates();
+	}
 
 	public void searchByEmail() {
-		log.info("Searching for internal users by email");
+		log.info("Searching for users by email");
 		String pattern = SearchPattern.preparePattern(email);
 		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findUsersByEmail(pattern);
 	}
 
 	public void searchByName() {
-		log.info("Searching for internal users by name (first/second)");
+		log.info("Searching for users by name (first/second)");
 		String pattern = SearchPattern.preparePattern(fname);
 		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findUsersByName(pattern);
@@ -148,6 +161,8 @@ public class UserSearchCDI implements Serializable {
 		log.info("Searching for internal users by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);
+		if (role == null) role = " ";
+		log.debug("Search role: "+role);
 		this.ulist = userEJB.findUsersByKeywordAndRole(pattern, role);
 	}
 
@@ -213,5 +228,20 @@ public class UserSearchCDI implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	public String admin() {
+		return Constants.ROLE_ADMIN;
+	}
+	
+	public String manager() {
+		return Constants.ROLE_MANAGER;
+	}
+	
+	public String interviewer() {
+		return Constants.ROLE_INTERVIEWER;
+	}
 
+	public String candidate() {
+		return Constants.ROLE_CANDIDATE;
+	}
 }
