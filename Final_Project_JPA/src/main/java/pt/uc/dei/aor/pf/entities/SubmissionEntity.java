@@ -55,7 +55,7 @@ import javax.validation.constraints.NotNull;
 					+ "WHERE s.position = :position ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSubmissionsOfCandidate",
 			query = "SELECT s FROM SubmissionEntity s"
-					+ " WHERE s.candidate = :user ORDER BY s.date"),
+					+ " WHERE s.candidate = :user ORDER BY s.date DESC"),
 	@NamedQuery(name = "Submission.countTotalSubmissionsPos",
 			query = "SELECT COUNT(s) FROM SubmissionEntity s"
 					+ " WHERE s.position.openingDate"

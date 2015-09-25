@@ -12,8 +12,8 @@
 
 	<ui:define name="contents">
 		<f:metadata>
-			<f:viewAction actionListener=
-				"#{submissionSearchCDI.
+			<f:viewAction
+				actionListener="#{submissionSearchCDI.
 					searchSubmissionsOfCandidate(userSessionManagement.
 					currentUserClone.id)}" />
 		</f:metadata>
@@ -22,17 +22,21 @@
 
 		<h:form id="mySubmissions">
 
-			<p:dataTable emptyMessage="Não tem candidaturas a apresentar." 
-				var="s" value="#{submissionSearchCDI.slist}">
+			<p:dataTable emptyMessage="Não tem candidaturas a apresentar."
+				var="s" value="#{submissionSearchCDI.slist}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
 				<f:facet name="header">Listagem</f:facet>
 				<p:column headerText="Data">
 					<h:outputText value="#{s.date}" />
 				</p:column>
 				<p:column headerText="Posição">
-					<h:outputText value="#{s.position}" />
+					<h:outputText value="#{s.position.positionCode}" />
 				</p:column>
 				<p:column headerText="Espontânea?">
-					<h:outputText value="#{s.spontaneous}" />
+					<h:outputText rendered="#{s.spontaneous}" value="Sim" />
+					<h:outputText rendered="#{!s.spontaneous}" value="Não" />
 				</p:column>
 				<p:column headerText="Estado">
 					<h:outputText value="#{s.status}" />

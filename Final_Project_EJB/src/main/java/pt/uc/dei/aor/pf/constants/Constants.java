@@ -12,7 +12,7 @@ public class Constants {
 	public static final String SUPER_ADMIN = "admin@mail.com";	
 
 	// String used when removing data of users
-	public static final String REMOVED_DATA = "DADOS APAGADOS";	
+	public static final String REMOVED_DATA = "Dados Apagados";	
 
 	// Strings related to UserEntity
 	public static final String ROLE_ADMIN = "ADMIN";
@@ -25,9 +25,9 @@ public class Constants {
 	public static final String LOCATION_PORTO = "Porto";
 	public static final String LOCATION_COIMBRA = "Coimbra";
 
-	public static final String STATUS_OPEN = "Open";
-	public static final String STATUS_CLOSED = "Closed";
-	public static final String STATUS_ONHOLD = "On Hold";
+	public static final String STATUS_OPEN = "Aberta";
+	public static final String STATUS_CLOSED = "Fechada";
+	public static final String STATUS_ONHOLD = "On hold";
 
 	public static final String TECH_SSPA = "SSPA";
 	public static final String TECH_DOTNET = ".Net Development";
@@ -36,19 +36,18 @@ public class Constants {
 	public static final String TECH_MANAGEMENT = "Project Management";
 	public static final String TECH_INTEGRATION = "Integration";
 
-	public static final String SOCIAL_CRITICAL = "Critical Software website";
+	public static final String SOCIAL_CRITICAL = "Website Critical Software";
 	public static final String SOCIAL_LINKEDIN = "Linkedin";
 	public static final String SOCIAL_GLASSDOOR = "Glassdoor";
 	public static final String SOCIAL_FACEBOOK = "Facebook";
 
 	// Strings related to SubmissionEntity
-	public static final String STATUS_SUBMITED = "Submited";
-	public static final String STATUS_ACCEPTED = "Accepted To Interview";
-	public static final String STATUS_PROPOSAL = "Presented Proposal";
-	public static final String STATUS_NEGOTIATION =
-			"Offer Process (Negotiation)";
-	public static final String STATUS_REJECTED = "Rejected";
-	public static final String STATUS_HIRED = "Hired";
+	public static final String STATUS_SUBMITED = "Submetida";
+	public static final String STATUS_ACCEPTED = "Aceite para entrevista";
+	public static final String STATUS_PROPOSAL = "Proposta apresentada";
+	public static final String STATUS_NEGOTIATION = "Proposta em negociação";
+	public static final String STATUS_REJECTED = "Rejeitada";
+	public static final String STATUS_HIRED = "Contratado";
 
 	// outros??
 	public static final String SOURCE_EXPRESSO = "Expresso";
