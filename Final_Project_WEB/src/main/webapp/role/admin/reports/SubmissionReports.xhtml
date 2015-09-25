@@ -36,7 +36,11 @@
 			</h:panelGrid>
 
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
-				value="#{reportsCDI.report}">
+				value="#{reportsCDI.report}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10"
+				rendered="#{reportsCDI.checkIfNotNull()}">
 				<f:facet name="header">
 					<h:outputText value="#{reportsCDI.tableHeader}" />
 				</f:facet>

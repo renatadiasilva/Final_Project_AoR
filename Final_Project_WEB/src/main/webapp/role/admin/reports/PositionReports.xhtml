@@ -34,16 +34,16 @@
 
 				<h:commandLink rendered="#{!reportsCDI.report.isEmpty()}">
 					<p:graphicImage library="images/logos" name="pdf.png" />
-					<p:dataExporter type="pdf" target="report" fileName="report"
+					<p:dataExporter type="pdf" target="posreport" fileName="report"
 						preProcessor="#{preProcessPDFCDI.preProcessPDF}" />
 				</h:commandLink>
 
 			</h:panelGrid>
 
-			<h:panelGrid id="gridPositionReport" columns="2">
+			<h:panelGrid id="gridPositionReport">
 
 				<h:panelGroup>
-					<p:outputLabel value="De: " for="posreport-date1" />
+					<p:outputLabel value="De : " for="posreport-date1" />
 					<p:calendar id="posreport-date1" value="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 						yearRange="c-100:c+0" locale="pt" size="35" />
@@ -52,16 +52,18 @@
 				<h:panelGroup>
 					<p:outputLabel value="Até: " for="posreport-date2" />
 					<p:calendar id="posreport-date2" value="#{reportsCDI.d2}"
-						mindate="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 						yearRange="c-100:c+0" locale="pt" size="35" />
 				</h:panelGroup>
 
 			</h:panelGrid>
-			<p:dataTable id="report" emptyMessage="#{reportsCDI.emptyMessage}" var="item"
+
+			<p:dataTable id="posreport" emptyMessage="#{reportsCDI.emptyMessage}" var="item"
 				value="#{reportsCDI.report}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10">
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10"
+				rendered="#{reportsCDI.checkIfNotNull()}">
 				<f:facet name="header">
 					<h:outputText value="#{reportsCDI.tableHeader}" />
 				</f:facet>
@@ -85,6 +87,12 @@
 
 				<p:column>
 					<f:facet name="header">
+						<h:outputText value="Data de Abertura" />
+					</f:facet>
+					<h:outputText value="#{item.position.openingDate}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
 						<h:outputText value="Código" />
 					</f:facet>
 					<h:outputText value="#{item.position.positionCode}" />
@@ -94,12 +102,6 @@
 						<h:outputText value="Título" />
 					</f:facet>
 					<h:outputText value="#{item.position.title}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Data de Abertura" />
-					</f:facet>
-					<h:outputText value="#{item.position.openingDate}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">

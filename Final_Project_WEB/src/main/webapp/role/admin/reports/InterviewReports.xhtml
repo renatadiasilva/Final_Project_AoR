@@ -31,10 +31,10 @@
 
 			</h:panelGrid>
 
-			<h:panelGrid id="gridInterviewsReport" columns="2">
+			<h:panelGrid id="gridInterviewsReport">
 
 				<h:panelGroup>
-					<p:outputLabel value="De: " for="intreport-date1" />
+					<p:outputLabel value="De : " for="intreport-date1" />
 					<p:calendar id="intreport-date1" value="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 						yearRange="c-100:c+0" locale="pt" size="35" />
@@ -43,7 +43,6 @@
 				<h:panelGroup>
 					<p:outputLabel value="Até: " for="intreport-date2" />
 					<p:calendar id="intreport-date2" value="#{reportsCDI.d2}"
-						mindate="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 						yearRange="c-100:c+0" locale="pt" size="35" />
 

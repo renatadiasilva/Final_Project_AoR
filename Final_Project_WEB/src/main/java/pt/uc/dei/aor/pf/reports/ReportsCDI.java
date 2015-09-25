@@ -63,9 +63,12 @@ public class ReportsCDI implements Serializable {
 	private List<ReportItem> report;
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
+	// present table only after hiting button
 	public boolean checkIfNotNull() {
 		return report != null;
 	}
+
+	// clean all data when enter the page
 	public void clean() {
 		id = 0L;
 		period = "MONTHLY";
@@ -76,10 +79,16 @@ public class ReportsCDI implements Serializable {
 		totalResult = "";
 		emptyMessage = "";
 		report = null;
+		d1 = new Date();
+		d2 = new Date();
 	}
 	
 	// counting submissions by position between two dates
 	public void submissionsByPosition() {
+		
+		long ndays = daysBetween(d1, d2);
+		sortDates(ndays);
+
 		log.info("Creating report with number of submissions by position");
 		log.debug("From "+d1+" to "+d2);
 
@@ -107,7 +116,8 @@ public class ReportsCDI implements Serializable {
 		log.debug("From "+d1+" to "+d2+" with period "+period);
 
 		// only periods monthly and yearly
-		char p = periodShort();
+		long ndays = daysBetween(d1, d2);
+		char p = periodShort(ndays);
 		p = (p == Constants.DAILY)? p = Constants.MONTHLY : p;
 
 		// text for tables
@@ -145,7 +155,8 @@ public class ReportsCDI implements Serializable {
 		log.debug("From "+d1+" to "+d2+" with period "+period);
 
 		// all periods: daily, monthly, or yearly
-		char p = periodShort();
+		long ndays = daysBetween(d1, d2);
+		char p = periodShort(ndays);
 		
 		// text for tables
 		switch(p) {
@@ -188,7 +199,8 @@ public class ReportsCDI implements Serializable {
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
 
 		// all periods: daily, monthly, or yearly
-		char p = periodShort();
+		long ndays = daysBetween(d1, d2);
+		char p = periodShort(ndays);
 		
 		// text for tables
 		switch(p) {
@@ -232,7 +244,8 @@ public class ReportsCDI implements Serializable {
 		log.debug("From "+d1+" to "+d2+" with period "+period);
 
 		// all periods: daily, monthly, or yearly
-		char p = periodShort();
+		long ndays = daysBetween(d1, d2);
+		char p = periodShort(ndays);
 		
 		// text for tables
 		switch(p) {
@@ -278,7 +291,8 @@ public class ReportsCDI implements Serializable {
 		log.debug("From "+d1+" to "+d2+" with period "+period);		
 
 		// all periods: daily, monthly, or yearly
-		char p = periodShort();
+		long ndays = daysBetween(d1, d2);
+		char p = periodShort(ndays);
 		
 		// text for tables
 		switch(p) {
@@ -323,6 +337,9 @@ public class ReportsCDI implements Serializable {
 		log.info("Creating report with submissions source countings");
 		log.debug("From "+d1+" to "+d2);
 		
+		long ndays = daysBetween(d1, d2);
+		sortDates(ndays);
+
 		tableHeader = "Número de Candidaturas por Fonte "
 				+"(submetidas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
@@ -352,7 +369,8 @@ public class ReportsCDI implements Serializable {
 		log.debug("From "+d1+" to "+d2+" with period "+period);				
 
 		// all periods: daily, monthly, or yearly
-		char p = periodShort();
+		long ndays = daysBetween(d1, d2);
+		char p = periodShort(ndays);
 		
 		// text for tables
 		switch(p) {
@@ -395,6 +413,9 @@ public class ReportsCDI implements Serializable {
 				+ " by position");
 		log.debug("From "+d1+" to "+d2);
 
+		long ndays = daysBetween(d1, d2);
+		sortDates(ndays);
+
 		tableHeader = "Número de candidaturas rejeitadas por posição"
 				+ " (posições criadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
@@ -420,6 +441,9 @@ public class ReportsCDI implements Serializable {
 				+ " by position");
 		log.debug("From "+d1+" to "+d2);
 
+		long ndays = daysBetween(d1, d2);
+		sortDates(ndays);
+
 		tableHeader = "Número propostas apresentadas por posição (posições "
 				+ "criadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
@@ -444,7 +468,8 @@ public class ReportsCDI implements Serializable {
 		log.debug("From "+d1+" to "+d2+" with period "+period);
 
 		// only periods monthly and yearly
-		char p = periodShort();
+		long ndays = daysBetween(d1, d2);
+		char p = periodShort(ndays);
 		p = (p == Constants.DAILY)? p = Constants.MONTHLY : p;
 
 		// text for tables
@@ -514,6 +539,9 @@ public class ReportsCDI implements Serializable {
 		log.info("Creating report with interview countings");
 		log.debug("From "+d1+" to "+d2);
 
+		long ndays = daysBetween(d1, d2);
+		sortDates(ndays);
+
 		tableHeader = "Número de entrevistas "
 				+"realizadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2);
@@ -541,7 +569,8 @@ public class ReportsCDI implements Serializable {
 		log.debug("From "+d1+" to "+d2+" with period "+period);
 
 		// only periods monthly and yearly
-		char p = periodShort();
+		long ndays = daysBetween(d1, d2);
+		char p = periodShort(ndays);
 		p = (p == Constants.DAILY)? p = Constants.MONTHLY : p;
 
 		// text for tables
@@ -607,6 +636,8 @@ public class ReportsCDI implements Serializable {
 	}
 
 	// private methods
+	
+	
 	private int longToInt(Long value) {
 		return value.intValue();
 	}
@@ -642,17 +673,12 @@ public class ReportsCDI implements Serializable {
 
 	}
 
-	private char periodShort() {
+	private char periodShort(long ndays) {
 		char p = 'm';
 		if (period != null && !period.isEmpty()) {
-			long ndays = daysBetween(d1, d2);
 			// if dates are no sorted, exchange them
-			if (ndays < 0) {
-				Date aux = d1;
-				d1 = d2;
-				d2 = aux;
-			}
-
+			sortDates(ndays);
+			
 			// limit day for periods - aviso ao utilizador!!
 			if (ndays > Constants.LIMITMONTH) p = Constants.YEARLY;
 			else if (ndays > Constants.LIMITDAY && 
@@ -661,6 +687,15 @@ public class ReportsCDI implements Serializable {
 			else p = period.toLowerCase().charAt(0);
 		}
 		return p;
+	}
+	
+	private void sortDates(long ndays) {
+		// if dates are no sorted, exchange them
+		if (ndays < 0) {
+			Date aux = d1;
+			d1 = d2;
+			d2 = aux;
+		}		
 	}
 
 	private long daysBetween(Date d1, Date d2) {
