@@ -10,6 +10,14 @@
 	 - #{styleSessionManagement.companyName}
 	</ui:define>
 
-	<ui:include src="../../../WEB-INF/template/spontaneous-common.xhtml" />
+	<ui:define name="contents">
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{submissionSearchCDI.searchAllSponteanous()}" />
+		</f:metadata>
+
+		<ui:include src="../../../WEB-INF/template/spontaneous-common.xhtml" />
+
+	</ui:define>
 
 </ui:composition>
