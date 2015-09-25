@@ -20,9 +20,6 @@ import pt.uc.dei.aor.pf.session.UserSessionManagement;
 @RequestScoped
 public class ChangeEmailCDI {
 	
-	@Inject
-	private UserSessionManagement userManagement;
-	
 	@EJB
 	private UserEJBInterface userEJB;
 	
@@ -55,7 +52,7 @@ public class ChangeEmailCDI {
 			user.setAuthenticated(false);
 			this.userEJB.update(user);
 			
-			this.userManagement.logout();
+//			this.userManagement.logout();
 			
 			this.mailEJB.newEmail(user);
 		}

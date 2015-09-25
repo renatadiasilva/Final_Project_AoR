@@ -97,7 +97,7 @@ public class UserManagementImp implements UserManagementInterface {
 
 	@Override
 	public boolean checkDefault(String role){
-		if(this.currentUser.getDefaultRole().equals(role)) return true;
+		if(this.currentUser.getDefaultRole()!=null&&this.currentUser.getDefaultRole().equals(role)) return true;
 		return false;
 	}
 
@@ -212,9 +212,9 @@ public class UserManagementImp implements UserManagementInterface {
 			log.info("An email was sent to a new user: "
 					+ newUser.getEmail()+" with "
 					+ "temporary password "+password);
-			
+
 			return true;
-			
+
 		}else return false;
 	}
 
