@@ -117,7 +117,7 @@ public class SubmissionSearchCDI {
 		} else log.error("No position with id "+id);
 	}	
 
-	public void searchSubmissionsOfCandidate() {
+	public void searchSubmissionsOfCandidate(Long id) {
 		log.info("Searching for submissions by candidate");
 		UserEntity user = userEJB.find(id);
 		if (user != null && user.getRoles().contains("CANDIDATE")) {
