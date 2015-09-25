@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="titulo">Welcome! - #{styleSessionManagement.companyName}</ui:define>
+	<ui:define name="titulo">Bem-vind@! - #{styleSessionManagement.companyName}</ui:define>
 
 	<ui:define name="contents">
 		<f:metadata>
@@ -13,10 +13,7 @@
 				actionListener="#{userSessionManagement.checkTemporaryPassword()}" />
 		</f:metadata>
 		<br />
-		<br />
-		<br />
-		<br />
-		<b>ADMINISTRADOR #{userSessionManagement.userFullName}</b>,
+		<b>ADMINISTRADOR(A) #{userSessionManagement.userFullName}</b>,
 		<br />
 		<br /> 
 		#{styleSessionManagement.welcomeMessage}

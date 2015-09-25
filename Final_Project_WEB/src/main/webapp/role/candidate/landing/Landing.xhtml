@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="titulo">Welcome!
+	<ui:define name="titulo">Bem-vind@!
 	 - #{styleSessionManagement.companyName}</ui:define>
 
 	<ui:define name="contents">
@@ -15,19 +15,20 @@
 			<f:viewAction
 				actionListener="#{positionSearchCDI.searchOpenPositions()}" />
 		</f:metadata>
-		<br />
-		<br />
 		<br /> 
-		<br /> 
-		<b>CANDIDATO #{userSessionManagement.userFullName}</b>,
+		<b>CANDIDATO(A) #{userSessionManagement.userFullName}</b>,
 		<br /> 		
 		<br /> 
 		#{styleSessionManagement.welcomeMessage}
 		<br />
 		<br />
+		<br />
 		<h3>Acesso rápido</h3>
 		<br />
 		<a href="../submissions/MySubmissions.xhtml">As Minhas Candidaturas</a>
+		<br />
+		<br />
+		<br />
 		<br />
 		<br />
 		

@@ -6,8 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener =
-			 "#{reportsCDI.clean()}" />
+		<f:viewAction actionListener = "#{reportsCDI.clean()}" />
 	</f:metadata>
 	
 	<ui:define name="titulo">
@@ -33,16 +32,21 @@
 
 			<h:panelGrid id="gridResultReports" columns="8">
 
+				<h:panelGroup>
 				<p:outputLabel value="Primeira Data: " for="resultrep-date1" />
 				<p:calendar id="resultrep-date1" value="#{reportsCDI.d1}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+100" locale="pt" size="35" />
+					yearRange="c-100:c+0" locale="pt" size="35" />
+				</h:panelGroup>
 
+				<h:panelGroup>
 				<p:outputLabel value="Segunda Data: " for="resultrep-date2" />
 				<p:calendar id="resultrep-date2" value="#{reportsCDI.d2}"
+					mindate="#{reportsCDI.d1}"
 					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+100" locale="pt" size="35" />
-
+					yearRange="c-100:c+0" locale="pt" size="35" />
+				</h:panelGroup>
+				
 				<p:outputLabel value="Período (dia/mês/ano): " for="resultrep-period" />
 				<p:inputText id="resultrep-period" value="#{reportsCDI.period}"
 					size="35" />
