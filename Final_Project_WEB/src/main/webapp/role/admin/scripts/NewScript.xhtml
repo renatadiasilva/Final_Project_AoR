@@ -12,29 +12,6 @@
 	<ui:define name="contents">
 		<h1>Novo Guião</h1>
 
-		<!-- Scripts Disponíveis -->
-		<h:form id="avalableScriptsForm">
-			<p:dataTable id="avalableScriptsData" var="script"
-				value="#{newScriptCDI.availableScripts}" emptyMessage="Sem scripts"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10">
-				<p:column headerText="Título">
-					<p:outputLabel value="#{script.title}" />
-				</p:column>
-				<p:column headerText="Usar como ponto de partida">
-					<p:commandButton value="Usar Guião" style="width:100%;"
-						rendered="#{!newScriptCDI.checkScriptToStartFrom(script)}"
-						actionListener="#{newScriptCDI.useScript(script)}"
-						icon="ui-icon-script"
-						update="avalableScriptsForm pickListForm scriptAttributesForm" />
-					<p:commandButton value="Em uso. Cancelar?" style="width:100%;"
-						rendered="#{newScriptCDI.checkScriptToStartFrom(script)}"
-						actionListener="#{newScriptCDI.init()}" icon="ui-icon-cancel"
-						update="avalableScriptsForm pickListForm scriptAttributesForm" />
-				</p:column>
-			</p:dataTable>
-		</h:form>
-
 		<!-- Título, Comentários -->
 		<h:form id="scriptAttributesForm">
 			<br />
@@ -108,10 +85,9 @@
 
 		<h:form id="createScriptForm">
 			<p:commandButton value="Criar novo guião" icon="ui-icon-disk"
-				update="messages avalableScriptsForm scriptAttributesForm questionTypeForm pickListForm createScriptForm"
+				update="messages scriptAttributesForm questionTypeForm pickListForm createScriptForm"
 				style="width:550px;" action="#{newScriptCDI.createScript()}" />
 			<br />
-			<p:messages />
 		</h:form>
 
 	</ui:define>

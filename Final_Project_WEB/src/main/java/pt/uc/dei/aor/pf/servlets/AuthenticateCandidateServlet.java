@@ -33,8 +33,6 @@ public class AuthenticateCandidateServlet extends HttpServlet{
 	private SecureMailManagementInterface mailEJB;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response){
-		System.out.println(request.getParameter(Constants.SERVLET_EMAIL));
-		System.out.println(request.getParameter(Constants.SERVLET_EMAIL_KEY));
 		
 		// Verifica se existem os Parametros necessário
 		if(request.getParameter(Constants.SERVLET_EMAIL)!=null&&request.getParameter(Constants.SERVLET_EMAIL_KEY)!=null){

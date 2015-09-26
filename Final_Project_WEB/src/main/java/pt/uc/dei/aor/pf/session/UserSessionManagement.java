@@ -59,10 +59,10 @@ public class UserSessionManagement implements Serializable {
 	private HttpSession session;
 
 	private String password, newPassword;
-	
+
 	// clone of current user
 	private UserEntity currentUserClone;
-	
+
 	public UserSessionManagement() {
 	}
 
@@ -121,7 +121,7 @@ public class UserSessionManagement implements Serializable {
 
 				// Inicia na aplicação
 				this.userManagement.login(email, password);
-				
+
 				//keep info of current user in user clone
 				this.currentUserClone = this.userManagement.getUserData();
 
@@ -169,6 +169,10 @@ public class UserSessionManagement implements Serializable {
 			// Logout no servidor
 			this.request.logout();
 
+			// Fecha o dialog changeEmail - pode vir daqui
+			RequestContext rc = RequestContext.getCurrentInstance();
+			rc.execute("PF('changeEmail').hide();");
+
 			// Logout na aplicação
 			this.userManagement.logout();
 
@@ -195,15 +199,15 @@ public class UserSessionManagement implements Serializable {
 	public void defaultRoleManager() {
 		this.userManagement.defaultRole(Constants.ROLE_MANAGER);
 	}
-	
+
 	public void defaultRoleInterviewer() {
 		this.userManagement.defaultRole(Constants.ROLE_INTERVIEWER);
 	}
-	
+
 	public void defaultRoleCandidate() {
 		this.userManagement.defaultRole(Constants.ROLE_CANDIDATE);
 	}
-	
+
 	public boolean checkDefaultAdmin() {
 		return this.userManagement.checkDefault(Constants.ROLE_ADMIN);
 	}
@@ -219,7 +223,7 @@ public class UserSessionManagement implements Serializable {
 	public boolean checkDefaultCandidate() {
 		return this.userManagement.checkDefault(Constants.ROLE_CANDIDATE);
 	}
-	
+
 	public void changePassword (){
 		log.info("Changing password");
 		log.debug("User: "+ this.userManagement.getUserEmail());
@@ -254,13 +258,13 @@ public class UserSessionManagement implements Serializable {
 
 			// Se foi criado à mão, fecha o dialog (Home.xhtml)
 			if(!createdByAdmin){
-//				RequestContext requestContext = RequestContext.getCurrentInstance();
-//				requestContext.execute("PF('signup').hide();");
+				//				RequestContext requestContext = RequestContext.getCurrentInstance();
+				//				requestContext.execute("PF('signup').hide();");
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
 				this.context.addMessage(null, new FacesMessage("Consulte a sua caixa de correio e siga as instruções apresentadas."));
 			}else{
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
-//				this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+				//				this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 			}
 
 		}else {
@@ -281,11 +285,11 @@ public class UserSessionManagement implements Serializable {
 		if(this.userManagement.newUserNC(email, password, firstName, lastName, admin, manager, interviewer)){
 
 			this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
-//			this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
+			//			this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 
 		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
 	}
-	
+
 	public void updateUserData(String firstName, String lastName, 
 			Date birthday, String address, 
 			String city, String homePhone, String mobilePhone, String country, 
@@ -301,7 +305,7 @@ public class UserSessionManagement implements Serializable {
 
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage("Dados atualizados."));
-		
+
 		//update data in user clone
 		this.currentUserClone = this.userManagement.getUserData();
 
@@ -324,7 +328,7 @@ public class UserSessionManagement implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public long uploadCV(){
 		return this.userManagement.uploadCV();
 	}
@@ -382,7 +386,7 @@ public class UserSessionManagement implements Serializable {
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/userCV/"+this.userManagement.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
 	}
-	
+
 	public String getUserMail(){
 		return this.userManagement.getUserEmail();
 	}

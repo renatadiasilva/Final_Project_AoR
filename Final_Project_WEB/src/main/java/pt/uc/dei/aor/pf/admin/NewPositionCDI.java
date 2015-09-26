@@ -7,6 +7,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
@@ -18,6 +19,7 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 import java.io.Serializable;
 
 @Named
@@ -67,7 +69,7 @@ public class NewPositionCDI implements Serializable {
 	private String extraAdvertising;
 
 	private boolean critical, linkedin, glassdoor, facebook;
-	
+
 	private List<ScriptEntity>scripts;
 
 	private ScriptEntity script;
@@ -76,8 +78,41 @@ public class NewPositionCDI implements Serializable {
 
 	private boolean lisboa, porto, coimbra;
 
+	private boolean editPosition;
+
+	private List<PositionEntity>openPositions;
+
+	private PositionEntity positionToEdit;
+
+	public void createNewPosition(){
+		this.editPosition=true;
+		System.out.println(this.editPosition+" Nova posição");
+		this.cleanBean();
+	}
+
+	public void editPosition(){
+		this.editPosition=false;
+		System.out.println(this.editPosition+" Editar posição");
+		this.cleanBean();
+		this.redirect();
+	}
+
+	private void redirect(){
+		// Encaminha para...
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		try {
+			response.sendRedirect(request.getContextPath()+"/role/admin/positions/NewPosition.xhtml");
+		} catch (IOException e) {
+			System.out.println("O redireccionamento falhou");
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reencaminhamento falhou."));
+		}
+	}
+
 	@PostConstruct
 	public void cleanBean() {
+		if(editPosition) this.openPositions=this.positionEJB.findOpenPositions();
+
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
 		this.creatorEmail=request.getRemoteUser();
@@ -345,6 +380,7 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setManager(UserEntity manager) {
+		System.out.println("Set Manager "+manager.getEmail());
 		this.manager = manager;
 	}
 
@@ -419,7 +455,7 @@ public class NewPositionCDI implements Serializable {
 		this.locations.clear();
 		this.extraLocation = extraLocation;
 	}
-	
+
 	public boolean isLisboa() {
 		return lisboa;
 	}
@@ -454,6 +490,22 @@ public class NewPositionCDI implements Serializable {
 
 	public void setCheckScript(ScriptEntity checkScript) {
 		this.checkScript = checkScript;
+	}
+
+	public boolean isEditPosition() {
+		return editPosition;
+	}
+
+	public void setEditPosition(boolean editPosition) {
+		this.editPosition = editPosition;
+	}
+
+	public List<PositionEntity> getOpenPositions() {
+		return openPositions;
+	}
+
+	public void setOpenPositions(List<PositionEntity> openPositions) {
+		this.openPositions = openPositions;
 	}
 
 }

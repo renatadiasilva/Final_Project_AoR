@@ -135,7 +135,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	public void newEmail(UserEntity user) {
 		String link=SecureMailManagementImp.SERVICE_CONTEXT
 				+Constants.SERVLET_AUTH_CANDIDATE
-				+"?"+Constants.SERVLET_EMAIL+"="+user.getEmail();
+				+"?"+Constants.SERVLET_EMAIL+"="+user.getEmail()
+				+"&"+Constants.SERVLET_EMAIL_KEY+"="+user.getAuthenticationKey();
 
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","

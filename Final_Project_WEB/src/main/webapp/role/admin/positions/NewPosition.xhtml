@@ -5,12 +5,51 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
+	<f:metadata>
+		<f:viewAction actionListener="#{newPositionCDI.cleanBean()}" />
+	</f:metadata>
+
 	<ui:define name="titulo">
 	Admin -Nova Posição - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Nova Posição</h1>
+		<h:form rendered="#{!newPositionCDI.editPosition}">
+			<h1>Nova Posição</h1>
+		</h:form>
+
+		<h:form id="editPosition" rendered="#{newPositionCDI.editPosition}">
+			<h:panelGroup>
+				<h1>Editar Posição</h1>
+				<p:dataTable id="positionsTable"
+					emptyMessage="Não foram encontradas posições" var="position"
+					value="#{newPositionCDI.managers}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+					<f:facet name="header">Gestores</f:facet>
+					<p:column headerText="Primeiro nome">
+						<h:outputText value="#{manager.firstName}" />
+					</p:column>
+					<p:column headerText="Sobrenome">
+						<h:outputText value="#{manager.lastName}" />
+					</p:column>
+					<p:column headerText="Email">
+						<h:outputText value="#{manager.email}" />
+					</p:column>
+					<p:column headerText="Seleccionar">
+						<p:commandButton value="Seleccionar" style="width:100%"
+							rendered="#{!newPositionCDI.checkManager(manager)}"
+							actionListener="#{newPositionCDI.setManager(manager)}"
+							icon="ui-icon-person" update="newPositionPart4" />
+						<p:commandButton
+							rendered="#{newPositionCDI.checkManager(manager)}"
+							style="width:100%" value="Manager Seleccionado"
+							icon="ui-icon-check" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+			<br />
+		</h:form>
 
 		<h:form id="newPositionPart1">
 
@@ -22,8 +61,10 @@
 					<p:ajax update="newPositionPart1" />
 				</p:inputText>
 
-				<p:outputLabel value="Empresa" for="new-position-company" />
+				<p:outputLabel value="Empresa: " for="new-position-company"
+					rendered="#{!newPositionCDI.editPosition}" />
 				<p:inputText id="new-position-company"
+					rendered="#{!newPositionCDI.editPosition}"
 					value="#{newPositionCDI.company}" size="70" required="true"
 					requiredMessage="Insira o nome da Empresa."
 					maxlength="#{max.length.positionCompany()}">
@@ -31,6 +72,7 @@
 				</p:inputText>
 
 				<p:outputLabel value="Descrição" for="new-position-description" />
+
 				<h:panelGroup>
 					<p:inputTextarea id="new-position-description"
 						value="#{newPositionCDI.description}" cols="70" required="true"
@@ -134,7 +176,7 @@
 			</h:panelGrid>
 		</h:form>
 
-		<h:form id="newPositionPart3">
+		<h:form id="newPositionPart3" rendered="#{!newPositionCDI.editPosition}">
 
 			<br />
 			<h2>Área Técnica:</h2>
@@ -231,7 +273,7 @@
 			<br />
 			<h2>Guião Padrão:</h2>
 			<p:dataTable id="scriptsTable"
-				emptyMessage="Não foram encontrados utilizadores." var="script"
+				emptyMessage="Não foram encontrados guiões." var="script"
 				value="#{newPositionCDI.scripts}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
@@ -246,7 +288,7 @@
 					<p:commandButton value="Consultar" style="width:100%"
 						icon="ui-icon-zoomin"
 						actionListener="#{newPositionCDI.setCheckScript(script)}"
-						oncomplete="PF('checkScript').show();" update="checkScriptForm"/>
+						oncomplete="PF('checkScript').show();" update="checkScriptForm" />
 				</p:column>
 				<p:column headerText="Seleccionar">
 					<p:commandButton value="Seleccionar" style="width:100%"
@@ -264,19 +306,21 @@
 		<br />
 		<br />
 
-		<h:form id="createPosition">
-			<p:messages />
-			<p:commandButton value="Limpar Campos" style="width:100%"
-				action="#{newPositionCDI.cleanBean()}"
-				update="messages newPositionPart1 newPositionPart2
+		<h:form id="createPosition" rendered="#{!newPositionCDI.editPosition}">
+			<h:panelGroup>
+				<p:messages />
+				<p:commandButton value="Limpar Campos" style="width:100%"
+					action="#{newPositionCDI.cleanBean()}"
+					update="messages newPositionPart1 newPositionPart2
 				newPositionPart2b newPositionPart2c newPositionPart3
 				newPositionPart4 newPositionPart5 createPosition" />
-			<p:outputLabel />
-			<p:commandButton value="Criar Posição" style="width:100%"
-				action="#{newPositionCDI.createPosition()}"
-				update="messages newPositionPart1 newPositionPart2
+				<p:outputLabel />
+				<p:commandButton value="Criar Posição" style="width:100%"
+					action="#{newPositionCDI.createPosition()}"
+					update="messages newPositionPart1 newPositionPart2
 				newPositionPart2b newPositionPart2c newPositionPart3
 				newPositionPart4 newPositionPart5 createPosition" />
+			</h:panelGroup>
 		</h:form>
 
 		<h:form id="checkScriptForm">

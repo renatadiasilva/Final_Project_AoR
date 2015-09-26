@@ -102,8 +102,6 @@
 
 				<h:panelGroup id="signupDialog">
 
-					<p:messages />
-
 					<h:panelGrid columns="2">
 
 						<p:outputLabel value="Email: " for="signup-email" />
@@ -210,6 +208,8 @@
 
 					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
 						onclick="PF('signup').hide();" update="@all" />
+
+					<p:messages />
 
 				</h:panelGroup>
 

@@ -103,7 +103,7 @@ public class NewScriptCDI implements Serializable {
 			HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			String creatorEmail=request.getRemoteUser();
 			UserEntity creator=this.userEJB.findUserByEmail(creatorEmail);
-			
+
 			System.out.println(creatorEmail);
 			System.out.println(creator.getFirstName()+" "+creator.getLastName());
 
@@ -150,13 +150,37 @@ public class NewScriptCDI implements Serializable {
 		this.comments=this.scriptToStartFrom.getComments();
 
 		// Põe as questões do script no target
-		this.questions.setTarget(this.scriptToStartFrom.getQuestions());
+		this.questionsTarget=this.scriptToStartFrom.getQuestions();
 
 		// Retira as questões do target do source
-		this.questionsSource = this.questionsDB;
-		for(QuestionEntity q:this.scriptToStartFrom.getQuestions())
-			if(this.questionsSource.contains(q))
-				this.questionsTarget.remove(q);
+		this.questionsSource = this.questionsEJB.findAll();
+		
+//		long id1,id2;
+//		for(QuestionEntity q1:this.questionsTarget){
+//			id1=q1.getId();
+//			for(QuestionEntity q2:this.questionsSource){
+//				id2=q2.getId();
+//				if(id1==id2){
+//					System.out.println(q2.getQuestion()+" removed");
+//					this.questionsSource.remove(q2);
+//				}
+//			}
+//		}
+		
+//		this.questionsSource.removeAll(this.questionsTarget);
+		
+//		for(QuestionEntity q:this.questionsTarget)
+//			if(this.questionsSource.contains(q))
+//				this.questionsSource.remove(q);
+		
+//		for(QuestionEntity q1:this.questionsTarget){
+//			for(QuestionEntity q2:this.questionsSource){
+//				if(q1.equals(q2)){
+//					System.out.println(q1.getQuestion()+" removed");
+//					this.questionsSource.remove(q2);
+//				}
+//			}
+//		}
 
 		// Sets
 		this.questions.setSource(questionsSource);

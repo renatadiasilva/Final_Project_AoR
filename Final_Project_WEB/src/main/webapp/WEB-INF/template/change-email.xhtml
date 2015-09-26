@@ -16,38 +16,35 @@
 
 				<h:panelGroup id="changeEmailDialog">
 
-					<p:messages style="width: 100%" />
+					<p:outputLabel
+						value="Atenção! Será enviada uma mensagem para o seu novo endereço de email para autenticar o novo endereço." />
+					<br />
+					<p:outputLabel
+						value="Ao efectuar a mudança do email, o seu acesso será bloqueado até o novo email ser autenticado." />
 
-					<h:panelGrid columns="2">
-						<p:outputLabel
-							value="Atenção! Será enviada uma mensagem para o seu novo endereço de email para autenticar o novo endereço." />
-						<p:outputLabel />
-						<p:outputLabel
-							value="Ao efectuar a mudança do email, o seu acesso será bloqueado até o novo email ser autenticado." />
+					<h:panelGrid columns="1" style="width:100%">
 
-						<p:outputLabel value="Insira a sua password: "
+						<p:watermark value="Insira a sua password "
 							for="change-email-password" />
 						<p:password id="change-email-password"
 							value="#{changeEmailCDI.password}" style="width:100%"
 							required="true" requiredMessage="Insira a password." />
 
-						<p:outputLabel value="Nova Password: " for="newEmail" />
-						<p:inputText id="newEmail"
-							value="#{changeEmailCDI.password}" required="true"
-							match="newEmailRepeat" validatorMessage="Emails não combinam."
+						<p:watermark value="Novo Email " for="newEmail" />
+						<p:inputText id="newEmail" value="#{changeEmailCDI.newEmail}"
+							required="true" match="newEmailRepeat"
+							validatorMessage="Emails não combinam."
 							requiredMessage="Insira o novo email." style="width: 100%" />
 
-						<p:outputLabel value="Repita a nova Password: "
-							for="newEmailRepeat" />
-						<p:password id="newEmailRepeat" required="true"
+						<p:watermark value="Repita o novo email " for="newEmailRepeat" />
+						<p:inputText id="newEmailRepeat" required="true"
 							requiredMessage="Repita o novo email." style="width: 100%" />
 
 					</h:panelGrid>
 
 					<p:commandButton value="Actualizar"
-						action="#{changeEmailCDI.changeEmail()}"
-						icon="ui-icon-disk" update="changeEmailForm"
-						style="width: 100%" />
+						action="#{changeEmailCDI.changeEmail()}" icon="ui-icon-disk"
+						style="width: 100%" ajax="false" />
 
 					<p:button value="Fechar" icon="ui-icon-close" style="width: 100%"
 						onclick="PF('changeEmail').hide();" />
