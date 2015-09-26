@@ -70,11 +70,11 @@ public class ReportsCDI implements Serializable {
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
 	// rendered flags
-	private boolean submissionPos = true; // meter no bean à entrada!!!
-	private boolean rejectedPos = false;
-	private boolean proposalPos = false;
+	private boolean submissionPos;
+	private boolean rejectedPos;
+	private boolean proposalPos;
 	
-	private boolean interviewDetail = true; // meter no bean à entrada!!!
+	private boolean interviewDetail;
 	private boolean interviewChoose;
 
 	// present table only after hiting button
@@ -651,7 +651,7 @@ public class ReportsCDI implements Serializable {
 		}
 	}
 
-	// redirects (not working)
+	// redirects
 
 	public String goToReportSubByPos() {
 		submissionPos = true;
@@ -669,6 +669,16 @@ public class ReportsCDI implements Serializable {
 		proposalPos = true;
 		submissionPos = rejectedPos = false;
 		return "PositionReports?faces-redirect=true";
+	}
+
+	public String goToReportIntCount() {
+		interviewDetail = false;
+		return "InterviewReports?faces-redirect=true";
+	}
+
+	public String goToReportDetail() {
+		interviewDetail = true;
+		return "InterviewReports?faces-redirect=true";
 	}
 
 	// lists for choosing entities in reports

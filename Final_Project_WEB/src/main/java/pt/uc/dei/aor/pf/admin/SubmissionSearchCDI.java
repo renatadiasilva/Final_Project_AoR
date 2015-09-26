@@ -5,10 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.xml.registry.infomodel.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,14 @@ import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
+import java.io.Serializable;
+
 
 @Named
-@RequestScoped
-public class SubmissionSearchCDI {
+@SessionScoped
+public class SubmissionSearchCDI implements Serializable {
+
+	private static final long serialVersionUID = -1339683317271008191L;
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(SubmissionSearchCDI.class);
@@ -130,13 +135,17 @@ public class SubmissionSearchCDI {
 	}	
 
 	public void redirectExternalURl(String site) throws IOException {
-
-		ExternalContext externalContext = FacesContext.getCurrentInstance().
+		if (site != null) {
+			ExternalContext externalContext = FacesContext.getCurrentInstance().
 				getExternalContext();
-		System.out.println(site);
-		externalContext.redirect(site);
+			externalContext.redirect(site);
+		}
 	}
 
+	public boolean hasLikedin(UserEntity candidate) {
+		return candidate.getUserInfo().getLinkedin() != null;
+	}
+	
 	// getters e setters
 
 	public Date getDate1() {

@@ -29,18 +29,14 @@
 		<br />
 		<br />
 		<h3>Relatórios de entrevistas</h3>
-					<h1>Entrevistas realizadas e seus resultados</h1>
-		</h:panelGroup>
-		<h:panelGroup rendered="#{reportsCDI.interviewDetail}">
-			<h1>Entrevistas passadas de um candidato</h1>
-		</h:panelGroup>
-		
-		<h:commandLink action=""
-		value="" />
 		<br />
-		<h:commandLink action=""
-		value="" />
+		<h:commandLink action="#{reportsCDI.goToReportIntCount()}"
+		value="Entrevistas realizadas e seus resultados" />
 		<br />
+		<h:commandLink action="#{reportsCDI.goTo}"
+		value="Entrevistas passadas de um candidato" />
+		<br />
+
 		<h:commandLink action=""
 		value="" />
 		<br />

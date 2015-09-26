@@ -104,25 +104,25 @@ public class InitDB {
 			new UserInfoEntity(ftDate.parse("1985-01-15"), "Rua de Cima",
 					"Proença-a-Nova", null, "968 302 615", "Portugal",
 					"Arquitetura", "Universidade de Mundo",
-					null, ulist[5]),  // uilist[2]
+					null, ulist[5]),  // uilist[1]
 			new UserInfoEntity(ftDate.parse("1977-10-24"), "Ladeira Seminário",
 					"Coimbra","239 716 625", "918 927 181", "Portugal",
 					"Matemática", "Universidade de Coimbra, Portugal",
-					null, ulist[6]), // uilist[3]
+					null, ulist[6]), // uilist[2]
 			new UserInfoEntity(ftDate.parse("1953-02-27"), "Ladeira Seminário",
 					"Coimbra", "239 716 625", "917 801 254", "Portugal",
 					"Medicina", "Universidade de Coimbra, Portugal",
-					null, ulist[7]), // uilist[4]
+					null, ulist[7]), // uilist[3]
 			new UserInfoEntity(ftDate.parse("1989-05-17"), "Ladeira Seminário",
 					"Coimbra", "239 716 625", "912 847 967", "Portugal",
 					"Engenharia Informática",
 					"Instituto Superior de Engenharias de Coimbra, Portugal",
-					null, ulist[8]), // uilist[5]
+					null, ulist[8]), // uilist[4]
 			new UserInfoEntity(ftDate.parse("1985-09-02"), 
 					"Avenida Sá da Bandeira", "Coimbra",
 					null, "912 993 207", "Brasil", "Direito",
 					"Centro Universitário Ritter dos Reis, Canoas, Rio Grande"
-					+ " do Sul, Brasil", null, ulist[9]), // uilist[6]
+					+ " do Sul, Brasil", null, ulist[9]), // uilist[5]
 		};
 
 		ScriptEntity [] sclist = {
@@ -288,8 +288,9 @@ public class InitDB {
 
 		roles = Arrays.asList(Constants.ROLE_CANDIDATE);
 
-		uilist[3].setLinkedin(
+		uilist[2].setLinkedin(
 				"https://pt.linkedin.com/pub/renata-silva/98/324/609");
+		
 		for(int i = 0; i < 6; i++) {
 			ulist[i+4].setDefaultRole(Constants.ROLE_CANDIDATE);
 			ulist[i+4].setRoles(roles);
