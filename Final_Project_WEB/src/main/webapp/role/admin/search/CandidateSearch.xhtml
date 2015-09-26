@@ -111,7 +111,7 @@
 				<p:inputText id="search-course" value="#{candidateSearchCDI.course}"
 					size="35" />
 
-				<p:outputLabel value="Escola: " for="search-school" />
+				<p:outputLabel value="Escola/Universidade: " for="search-school" />
 				<p:inputText id="search-school" value="#{candidateSearchCDI.school}"
 					size="35" />
 
@@ -158,7 +158,7 @@
 				<p:column headerText="Curso">
 					<h:outputText value="#{u.userInfo.course}" />
 				</p:column>
-				<p:column headerText="Escola">
+				<p:column headerText="Escola/Universidade">
 					<h:outputText value="#{u.userInfo.school}" />
 				</p:column>
 			</p:dataTable>

@@ -9,6 +9,8 @@ import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -41,18 +43,20 @@ public class ReportsCDI implements Serializable {
 
 	@EJB
 	private PositionEJBInterface positionEJB;
-	
+
 	@EJB
 	private InterviewEJBInterface interviewEJB;
-	
+
 	@EJB
 	private UserEJBInterface userEJB;
 
 	// data input fields
 	private Date d1, d2;
+	//tirar
 	private Long id;
 	private String period;
-
+	private UserEntity candidate;
+	
 	// results
 	private String measureHeader;
 	private String tableHeader;
@@ -62,11 +66,15 @@ public class ReportsCDI implements Serializable {
 	private String emptyMessage;
 	private List<ReportItem> report;
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
-	
+
 	// rendered flags
 	private boolean submissionPos;
 	private boolean rejectedPos;
 	private boolean proposalPos;
+	
+	// variable
+	private boolean interviewDetail = true;
+	private boolean interviewChoose;
 
 	// present table only after hiting button
 	public boolean checkIfNotNull() {
@@ -81,11 +89,12 @@ public class ReportsCDI implements Serializable {
 		totalResult = emptyMessage = "";
 		report = null;
 		d1 = d2 = new Date();
+		interviewChoose = true;
 	}
-	
+
 	// counting submissions by position between two dates
 	public void submissionsByPosition() {
-		
+
 		long ndays = daysBetween(d1, d2);
 		sortDates(ndays);
 
@@ -140,7 +149,7 @@ public class ReportsCDI implements Serializable {
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					doubleToInt((Double) o[0]), ""));
 		}
-		
+
 		// compute overall average between date1 and date2
 		int avg = (int) Math.round(
 				submissionEJB.overallAverageTimeToHired(d1, d2));
@@ -150,14 +159,14 @@ public class ReportsCDI implements Serializable {
 
 	// submission countings by period between two dates
 	public void submissionCountResults() {
-		
+
 		log.info("Creating report with submission countings");
 		log.debug("From "+d1+" to "+d2+" with period "+period);
 
 		// all periods: daily, monthly, or yearly
 		long ndays = daysBetween(d1, d2);
 		char p = periodShort(ndays);
-		
+
 		// text for tables
 		switch(p) {
 		case Constants.DAILY:
@@ -187,7 +196,7 @@ public class ReportsCDI implements Serializable {
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
-		
+
 		// compute overall average
 		totalResult = submissionEJB.countTotalSubmissions(d1, d2)+"";
 
@@ -201,7 +210,7 @@ public class ReportsCDI implements Serializable {
 		// all periods: daily, monthly, or yearly
 		long ndays = daysBetween(d1, d2);
 		char p = periodShort(ndays);
-		
+
 		// text for tables
 		switch(p) {
 		case Constants.DAILY:
@@ -232,12 +241,12 @@ public class ReportsCDI implements Serializable {
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
-		
+
 		// compute overall average
 		totalResult = ((Long) submissionEJB.countTotalSpontaneous(d1, d2))
 				+"";
 	}
-	
+
 	// reject submission countings/rejected reasons by period between two dates
 	public void rejectedCountResults() {
 		log.info("Creating report with reject candidates countings");
@@ -246,7 +255,7 @@ public class ReportsCDI implements Serializable {
 		// all periods: daily, monthly, or yearly
 		long ndays = daysBetween(d1, d2);
 		char p = periodShort(ndays);
-		
+
 		// text for tables
 		switch(p) {
 		case Constants.DAILY:
@@ -279,7 +288,7 @@ public class ReportsCDI implements Serializable {
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), (String) o[size-1]));
-		
+
 		// compute overall average
 		totalResult = submissionEJB.countTotalRejected(d1, d2)+"";
 
@@ -293,7 +302,7 @@ public class ReportsCDI implements Serializable {
 		// all periods: daily, monthly, or yearly
 		long ndays = daysBetween(d1, d2);
 		char p = periodShort(ndays);
-		
+
 		// text for tables
 		switch(p) {
 		case Constants.DAILY:
@@ -326,17 +335,17 @@ public class ReportsCDI implements Serializable {
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), (String) o[size-1]));
-		
+
 		// compute overall average
 		totalResult = submissionEJB.countTotalProposals(d1, d2)+"";
 	}
 
 	// submission source countings by period between two dates (file?)
 	public void sourceCount() {		
-		
+
 		log.info("Creating report with submissions source countings");
 		log.debug("From "+d1+" to "+d2);
-		
+
 		long ndays = daysBetween(d1, d2);
 		sortDates(ndays);
 
@@ -357,10 +366,10 @@ public class ReportsCDI implements Serializable {
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, (String) o[0],
 					bigIntToInt((BigInteger) o[1]), ""));
-		
+
 		// compute overall average
 		totalResult = submissionEJB.countTotalSubmissions(d1, d2)+"";
-		
+
 	}
 
 	// hired people countings by period between two dates
@@ -371,7 +380,7 @@ public class ReportsCDI implements Serializable {
 		// all periods: daily, monthly, or yearly
 		long ndays = daysBetween(d1, d2);
 		char p = periodShort(ndays);
-		
+
 		// text for tables
 		switch(p) {
 		case Constants.DAILY:
@@ -402,7 +411,7 @@ public class ReportsCDI implements Serializable {
 		for (Object[] o: list)
 			report.add(new ReportItem(null, null, null, makeDateHeader(p, o),
 					bigIntToInt((BigInteger) o[0]), ""));
-		
+
 		// compute overall average
 		totalResult = submissionEJB.countTotalHired(d1, d2)+"";
 	}
@@ -521,12 +530,12 @@ public class ReportsCDI implements Serializable {
 
 			List<SubmissionEntity> list = 
 					submissionEJB.findDetailOfPosition(position);
-			
+
 			report = new ArrayList<ReportItem>();
 			for (SubmissionEntity s: list) {
 				report.add(new ReportItem(null, null, s, " ", 0, ""));
 			}
-			
+
 			// compute overall submissions of position
 			totalResult = list.size()+"";
 
@@ -552,12 +561,12 @@ public class ReportsCDI implements Serializable {
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<InterviewEntity> list = 
 				interviewEJB.findCarriedOutInterviews(d1, d2);
-				
+
 		// extract date header and average times
 		report = new ArrayList<ReportItem>();
 		for (InterviewEntity i: list)
 			report.add(new ReportItem(null, i, null, "", 0, ""));
-		
+
 		// compute overall average
 		totalResult = list.size()+"";
 
@@ -607,36 +616,41 @@ public class ReportsCDI implements Serializable {
 		log.info("Creating report with detaild interview info of candidate");
 
 		// choose from the list of candidates
-		UserEntity candidate = userEJB.find(id);
-		if (candidate != null && 
-				candidate.getRoles().contains(Constants.ROLE_CANDIDATE)) {
-			log.debug("Candidate "+candidate.getFirstName()+" "
-					+candidate.getLastName());				
+		if (this.candidate!=null) {
+			if (candidate.getRoles().contains(Constants.ROLE_CANDIDATE)) {
+				log.debug("Candidate "+candidate.getFirstName()+" "
+						+candidate.getLastName());				
 
-			tableHeader = "Detalhes de entrevistas do candidato "
-					+candidate.getFirstName()+" "
-					+candidate.getLastName()+" ("+candidate.getEmail()+")";
-			measureHeader = "Resultado";
-			measureFooter = "Total Entrevistas: ";
-			emptyMessage = "Sem entrevistas.";
+				tableHeader = "Detalhes de entrevistas feitas ao candidato "
+						+candidate.getFirstName()+" "
+						+candidate.getLastName()+" ("+candidate.getEmail()+")";
+				measureHeader = "Resultado";
+				measureFooter = "Total Entrevistas: ";
+				emptyMessage = "Sem entrevistas.";
 
-			List<InterviewEntity> list = 
-				interviewEJB.findCarriedOutInterviewsByCandidate(candidate);
-			
-			report = new ArrayList<ReportItem>();
-			for (InterviewEntity i: list) {
-				report.add(new ReportItem(null, i, null, " ", 0, ""));
-			}
-			
-			// compute overall interviews of candidate
-			totalResult = list.size()+"";
+				List<InterviewEntity> list = 
+						interviewEJB.findCarriedOutInterviewsByCandidate(candidate);
 
-		} else log.info("No candidate with id "+id);
+				report = new ArrayList<ReportItem>();
+				for (InterviewEntity i: list) {
+					report.add(new ReportItem(null, i, null, " ", 0, ""));
+				}
 
+				// compute overall interviews of candidate
+				totalResult = list.size()+"";
+				
+				//hide candidate table
+				interviewChoose = false;
+			} else 
+				log.info("Error: the chosen candidate is not a candidate?!?!");
+		} else {
+			errorMessage("Escolha um candidato");
+			log.info("No chosen candidate");
+		}
 	}
-	
-	// redirects
-	
+
+	// redirects (not working)
+
 	public String goToReportSubByPos() {
 		submissionPos = true;
 		rejectedPos = proposalPos = false;
@@ -656,8 +670,8 @@ public class ReportsCDI implements Serializable {
 	}
 
 	// private methods
-	
-	
+
+
 	private int longToInt(Long value) {
 		return value.intValue();
 	}
@@ -698,7 +712,7 @@ public class ReportsCDI implements Serializable {
 		if (period != null && !period.isEmpty()) {
 			// if dates are no sorted, exchange them
 			sortDates(ndays);
-			
+
 			// limit day for periods - aviso ao utilizador!!
 			if (ndays > Constants.LIMITMONTH) p = Constants.YEARLY;
 			else if (ndays > Constants.LIMITDAY && 
@@ -708,7 +722,7 @@ public class ReportsCDI implements Serializable {
 		}
 		return p;
 	}
-	
+
 	private void sortDates(long ndays) {
 		// if dates are no sorted, exchange them
 		if (ndays < 0) {
@@ -742,11 +756,11 @@ public class ReportsCDI implements Serializable {
 	private int doubleToInt(Double d) {
 		return (int) Math.round(d);
 	}
-	
+
 	private int bigIntToInt(BigInteger value) {
 		return value.intValue();
 	}
-	
+
 	private String makeDateHeader(char p, Object[] o) {
 		String dateH = "";
 		if (p == Constants.MONTHLY) { 
@@ -759,7 +773,7 @@ public class ReportsCDI implements Serializable {
 		else dateH += doubleToInt((Double) o[1]);
 		return dateH;
 	}
-	
+
 	// getters and setters
 
 	public Date getD1() {
@@ -874,6 +888,59 @@ public class ReportsCDI implements Serializable {
 
 	public void setEmptyMessage(String emptyMessage) {
 		this.emptyMessage = emptyMessage;
+	}
+
+	// lists for choosing entities in reports
+	// juntas nas posições (primeiro e senhor nome)
+	// ordenar por email?? não, por nome... ver queries e tabelas
+	// pesquisa por keyword nas tabelas...
+
+	public List<UserEntity> getAllCandidates() {
+		return this.userEJB.findAllCandidates();
+	}
+
+	public boolean checkCandidate(UserEntity candidate){
+		if(this.candidate==null)return false;
+		if(this.candidate.getId()==candidate.getId())return true;
+		return false;
+	}
+
+	public UserEntity getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(UserEntity candidate) {
+		this.candidate = candidate;
+	}
+
+	private void errorMessage(String message){
+		FacesContext.getCurrentInstance().addMessage(null, 
+			new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+	}
+
+	public boolean isInterviewDetail() {
+		return interviewDetail;
+	}
+
+	public void setInterviewDetail(boolean interviewDetail) {
+		this.interviewDetail = interviewDetail;
+	}	
+
+	public boolean interviewDetailDone() {
+		return interviewDetail && interviewChoose;
+	}
+
+	public boolean isInterviewChoose() {
+		return interviewChoose;
+	}
+
+	public void setInterviewChoose(boolean interviewChoose) {
+		this.interviewChoose = interviewChoose;
+	}
+	
+	public void returnInterviewDetail() {
+		interviewChoose = true;
+		report = null;
 	}
 
 }

@@ -6,41 +6,56 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener = "#{reportsCDI.clean()}" />
+		<f:viewAction actionListener="#{reportsCDI.clean()}" />
 	</f:metadata>
-	
+
 	<ui:define name="titulo">
 	Admin - Relatórios de Entrevistas - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Relatórios de Entrevistas</h1>
+
+		<h:panelGroup rendered="#{!reportsCDI.interviewDetail}">
+			<h1>Entrevistas realizadas e seus resultados</h1>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{reportsCDI.interviewDetail}">
+			<h1>Entrevistas passadas de um candidato</h1>
+		</h:panelGroup>
 
 		<h:form id="interviewReports">
 
 			<h:panelGrid id="buttonsInterviewReports" columns="3">
 
-				<p:commandButton value="Resultados de Entrevistas"
+				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.interviewCountResults()}"
-					update="@form, messages" icon="ui-icon-script" />
+					update="resultInterviewsReportTable, messages"
+					icon="ui-icon-script" rendered="#{!reportsCDI.interviewDetail}" />
 
-				<p:commandButton 
-					value="Detalhe Entrevistas passadas (candidato)"
+				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.interviewDetailOfCandidate()}"
-					update="@form, messages" icon="ui-icon-script" />
+					update="resultInterviewsReportTable
+						interviewsReportChooseCand messages"
+					icon="ui-icon-script" rendered="#{reportsCDI.interviewDetail}" />
+
+				<p:commandButton value="Voltar à lista de candidatos"
+					action="#{reportsCDI.returnInterviewDetail()}"
+					update="resultInterviewsReportTable
+						interviewsReportChooseCand messages"
+					icon=" ui-icon-arrowreturn-1-w" 
+					rendered="#{reportsCDI.interviewDetail}" />
 
 			</h:panelGrid>
 
 			<h:panelGrid id="gridInterviewsReport">
 
-				<h:panelGroup>
+				<h:panelGroup rendered="#{!reportsCDI.interviewDetail}">
 					<p:outputLabel value="De : " for="intreport-date1" />
 					<p:calendar id="intreport-date1" value="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
 						yearRange="c-100:c+0" locale="pt" size="35" />
 				</h:panelGroup>
 
-				<h:panelGroup>
+				<h:panelGroup rendered="#{!reportsCDI.interviewDetail}">
 					<p:outputLabel value="Até: " for="intreport-date2" />
 					<p:calendar id="intreport-date2" value="#{reportsCDI.d2}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
@@ -48,31 +63,59 @@
 
 				</h:panelGroup>
 
-				<p:outputLabel value="Id (candidato): " for="intrepor-id" />
-				<p:inputText id="intrepor-id" value="#{reportsCDI.id}"
-					size="35" />
-
 			</h:panelGrid>
+		</h:form>
+
+		<h:form id="interviewsReportChooseCand">
+			<h:panelGroup rendered="#{reportsCDI.interviewDetailDone()}">
+				<br />
+				<h2>Escolha o candidato:</h2>
+				<p:dataTable id="allInterviewReportTable"
+					emptyMessage="Não foram encontradas candidatos." var="cand"
+					value="#{reportsCDI.allCandidates}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+					<f:facet name="header">Candidatos</f:facet>
+					<p:column headerText="Nome">
+						<h:outputText value="#{cand.firstName}
+						#{cand.lastName}" />
+					</p:column>
+					<p:column headerText="Email">
+						<h:outputText value="#{cand.email}" />
+					</p:column>
+					<p:column headerText="Seleccionar">
+						<p:commandButton value="Seleccionar" style="width:100%"
+							rendered="#{!reportsCDI.checkCandidate(cand)}"
+							actionListener="#{reportsCDI.setCandidate(cand)}"
+							icon="ui-icon-person" update="interviewsReportChooseCand" />
+						<p:commandButton rendered="#{reportsCDI.checkCandidate(cand)}"
+							style="width:100%" value="Candidato Seleccionado"
+							icon="ui-icon-check" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<br />
+		<br />
+		<h:form id="resultInterviewsReportTable">
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
 				value="#{reportsCDI.report}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10"
-				rendered="#{reportsCDI.checkIfNotNull()}">
+				paginator="true" rows="10" rendered="#{reportsCDI.checkIfNotNull()}">
 				<f:facet name="header">
-					<h:outputText value="#{reportsCDI.tableHeader}"/>
-    		    </f:facet>
+					<h:outputText value="#{reportsCDI.tableHeader}" />
+				</f:facet>
 
 				<p:columnGroup type="header">
 					<p:row>
-						<p:column colspan="6" headerText="Entrevista" />
-						<p:column rowspan="2" 
-							headerText="#{reportsCDI.measureHeader}" />
+						<p:column colspan="5" headerText="Entrevista" />
+						<p:column rowspan="2" headerText="#{reportsCDI.measureHeader}" />
 					</p:row>
 					<p:row>
 						<p:column headerText="Data" />
 						<p:column headerText="Hora" />
-						<p:column headerText="Candidato" />
 						<p:column headerText="Posição" />
 						<p:column headerText="Área Técnica" />
 						<p:column headerText="Entrevistadores" />
@@ -86,16 +129,12 @@
 					<h:outputText value="#{item.hourInterview}" />
 				</p:column>
 				<p:column>
-					<h:outputText value="
-					#{item.interview.submission.candidate.firstName} 
-					#{item.interview.submission.candidate.lastName}" />
+					<h:outputText
+						value="#{item.interview.submission.position.positionCode}" />
 				</p:column>
 				<p:column>
-					<h:outputText value=
-						"#{item.interview.submission.position.positionCode}" />
-				</p:column>
-				<p:column>
-					<h:outputText value="#{
+					<h:outputText
+						value="#{
 						item.interview.submission.position.technicalArea}" />
 				</p:column>
 				<p:column>
@@ -106,8 +145,7 @@
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
-						<p:column colspan="6" 
-							footerText="#{reportsCDI.measureFooter}"
+						<p:column colspan="5" footerText="#{reportsCDI.measureFooter}"
 							style="text-align:right" />
 						<p:column footerText="#{reportsCDI.totalResult}" />
 					</p:row>
