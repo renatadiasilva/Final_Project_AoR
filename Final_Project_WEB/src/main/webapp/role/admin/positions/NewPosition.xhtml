@@ -6,50 +6,15 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener="#{newPositionCDI.cleanBean()}" />
+		<f:viewAction actionListener="#{newPositionCDI.createNewPosition()}" />
 	</f:metadata>
 
 	<ui:define name="titulo">
-	Admin -Nova Posição - #{styleSessionManagement.companyName}
+	Admin - Nova Posição - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h:form rendered="#{!newPositionCDI.editPosition}">
-			<h1>Nova Posição</h1>
-		</h:form>
-
-		<h:form id="editPosition" rendered="#{newPositionCDI.editPosition}">
-			<h:panelGroup>
-				<h1>Editar Posição</h1>
-				<p:dataTable id="positionsTable"
-					emptyMessage="Não foram encontradas posições" var="position"
-					value="#{newPositionCDI.managers}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-					paginator="true" rows="10">
-					<f:facet name="header">Gestores</f:facet>
-					<p:column headerText="Primeiro nome">
-						<h:outputText value="#{manager.firstName}" />
-					</p:column>
-					<p:column headerText="Sobrenome">
-						<h:outputText value="#{manager.lastName}" />
-					</p:column>
-					<p:column headerText="Email">
-						<h:outputText value="#{manager.email}" />
-					</p:column>
-					<p:column headerText="Seleccionar">
-						<p:commandButton value="Seleccionar" style="width:100%"
-							rendered="#{!newPositionCDI.checkManager(manager)}"
-							actionListener="#{newPositionCDI.setManager(manager)}"
-							icon="ui-icon-person" update="newPositionPart4" />
-						<p:commandButton
-							rendered="#{newPositionCDI.checkManager(manager)}"
-							style="width:100%" value="Manager Seleccionado"
-							icon="ui-icon-check" />
-					</p:column>
-				</p:dataTable>
-			</h:panelGroup>
-			<br />
-		</h:form>
+		<h1>Nova Posição</h1>
 
 		<h:form id="newPositionPart1">
 
@@ -61,10 +26,8 @@
 					<p:ajax update="newPositionPart1" />
 				</p:inputText>
 
-				<p:outputLabel value="Empresa: " for="new-position-company"
-					rendered="#{!newPositionCDI.editPosition}" />
+				<p:outputLabel value="Empresa: " for="new-position-company" />
 				<p:inputText id="new-position-company"
-					rendered="#{!newPositionCDI.editPosition}"
 					value="#{newPositionCDI.company}" size="70" required="true"
 					requiredMessage="Insira o nome da Empresa."
 					maxlength="#{max.length.positionCompany()}">
@@ -176,7 +139,7 @@
 			</h:panelGrid>
 		</h:form>
 
-		<h:form id="newPositionPart3" rendered="#{!newPositionCDI.editPosition}">
+		<h:form id="newPositionPart3">
 
 			<br />
 			<h2>Área Técnica:</h2>
@@ -306,7 +269,7 @@
 		<br />
 		<br />
 
-		<h:form id="createPosition" rendered="#{!newPositionCDI.editPosition}">
+		<h:form id="createPosition">
 			<h:panelGroup>
 				<p:messages />
 				<p:commandButton value="Limpar Campos" style="width:100%"

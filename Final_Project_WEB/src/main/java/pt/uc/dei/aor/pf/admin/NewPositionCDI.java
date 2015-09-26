@@ -5,9 +5,9 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
@@ -16,10 +16,10 @@ import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
 import java.io.Serializable;
 
 @Named
@@ -31,6 +31,9 @@ public class NewPositionCDI implements Serializable {
 	 */
 	private static final long serialVersionUID = -5067846817471456766L;
 
+	@Inject
+	private UserSessionManagement userManagement;
+	
 	@EJB
 	private UserEJBInterface userEJB;
 
@@ -82,36 +85,21 @@ public class NewPositionCDI implements Serializable {
 
 	private List<PositionEntity>openPositions;
 
-	private PositionEntity positionToEdit;
+	private PositionEntity position;
 
 	public void createNewPosition(){
-		this.editPosition=true;
-		System.out.println(this.editPosition+" Nova posição");
-		this.cleanBean();
-	}
-
-	public void editPosition(){
 		this.editPosition=false;
-		System.out.println(this.editPosition+" Editar posição");
 		this.cleanBean();
-		this.redirect();
 	}
 
-	private void redirect(){
-		// Encaminha para...
-		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-		try {
-			response.sendRedirect(request.getContextPath()+"/role/admin/positions/NewPosition.xhtml");
-		} catch (IOException e) {
-			System.out.println("O redireccionamento falhou");
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reencaminhamento falhou."));
-		}
+	public void editExistingPosition(){
+		this.editPosition=true;
+		this.cleanBean();
 	}
 
 	@PostConstruct
 	public void cleanBean() {
-		if(editPosition) this.openPositions=this.positionEJB.findOpenPositions();
+		if(editPosition) this.openPositions=this.positionEJB.findAll();
 
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
@@ -235,12 +223,21 @@ public class NewPositionCDI implements Serializable {
 			this.cleanBean();
 
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova posição criada."));
+		}else{
+			this.locations.clear();
+			this.advertisingChannels.clear();
 		}
 
 	}
 
 	private void error(String message){
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+	}
+	
+	public boolean checkPosition(PositionEntity position){
+		if(this.position==null)return false;
+		if(this.position.getId()==position.getId())return true;
+		return false;
 	}
 
 	public boolean checkManager(UserEntity manager){
@@ -276,6 +273,16 @@ public class NewPositionCDI implements Serializable {
 		this.extraAdvertising = extraAdvertising;
 	}
 
+	public boolean isCurrentUserTheManager(){
+		if(this.position==null)
+			return false;
+		
+		if(this.userManagement.getUserMail().equals(this.position.getPositionManager().getEmail()))
+			return true;
+		
+		return false;
+	}
+	
 	public List<UserEntity> getManagers(){
 		return this.userEJB.findAllManagers();
 	}
@@ -289,7 +296,6 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setScript(ScriptEntity script){
-		System.out.println("Set Script" +script.getTitle());
 		this.script=script;
 	}
 
@@ -506,6 +512,47 @@ public class NewPositionCDI implements Serializable {
 
 	public void setOpenPositions(List<PositionEntity> openPositions) {
 		this.openPositions = openPositions;
+	}
+
+	public PositionEntity getPosition() {
+		return position;
+	}
+
+	public void setPosition(PositionEntity position) {
+		this.position = position;
+		this.loadPosition();
+	}
+
+	private void loadPosition() {
+		this.cleanBean();
+		
+		this.title=this.position.getTitle();
+		
+		this.description=this.position.getDescription();
+		
+		for(String location:this.position.getLocations()){
+			if(location.equals(Constants.LOCATION_COIMBRA))this.coimbra=true;
+			else if(location.equals(Constants.LOCATION_LISBOA))this.lisboa=true;
+			else if(location.equals(Constants.LOCATION_PORTO))this.porto=true;
+			else this.extraLocation=location;
+		}
+		
+		for(String ad:this.position.getAdvertisingChannels()){
+			if(ad.equals(Constants.SOCIAL_CRITICAL))this.critical=true;
+			else if(ad.equals(Constants.SOCIAL_LINKEDIN))this.linkedin=true;
+			else if(ad.equals(Constants.SOCIAL_GLASSDOOR))this.glassdoor=true;
+			else if(ad.equals(Constants.SOCIAL_LINKEDIN))this.linkedin=true;
+			else this.altAdvertisingChannels.add(new NewPositionCDIextraAd(ad));
+		}
+		
+		this.manager=this.position.getPositionManager();
+		
+		this.script=this.position.getDefaultScript();
+	}
+	
+	public void unloadPosition(){
+		this.position=null;
+		this.cleanBean();
 	}
 
 }
