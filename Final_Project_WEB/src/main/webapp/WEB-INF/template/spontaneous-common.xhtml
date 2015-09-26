@@ -37,14 +37,16 @@
 					<h:outputText value="#{s.candidate.userInfo.school}" />
 				</p:column>
 				<p:column headerText="CV">
-					<h:outputText value="Visualisar cv" />
+					<h:commandLink value="Consultar CV"
+						rendered="#{s.candidate.uploadedCV}"
+						action="#{submissionSearchCDI.getCvPath(s.candidate)}"
+						target="_blank" />
 				</p:column>
 				<p:column headerText="Linkedin">
-					<h:commandLink value="Ir para a página Linkedin"
-						target="_blank"
-					 	action="#{submissionSearchCDI.redirectExternalURl(
-					 		s.candidate.userInfo.linkedin)}" 
-					 	rendered="#{submissionSearchCDI.hasLikedin(
+					<h:commandLink value="Ir para a página Linkedin" target="_blank"
+						action="#{submissionSearchCDI.redirectExternalURl(
+					 		s.candidate.userInfo.linkedin)}"
+						rendered="#{submissionSearchCDI.hasLikedin(
 					 		s.candidate)}" />
 				</p:column>
 			</p:dataTable>

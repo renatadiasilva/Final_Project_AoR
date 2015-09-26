@@ -76,6 +76,14 @@ public class ReportsCDI implements Serializable {
 	
 	private boolean interviewDetail;
 	private boolean interviewChoose;
+	
+	private boolean timeToHired;
+	private boolean submissionCount;
+	private boolean spontaneousCount;
+	private boolean hiredCount;
+	private boolean timeToClose;
+	private boolean timeTo1stInt;
+	private boolean submissionsBySource;
 
 	// present table only after hiting button
 	public boolean checkIfNotNull() {
@@ -676,16 +684,62 @@ public class ReportsCDI implements Serializable {
 		return "InterviewReports?faces-redirect=true";
 	}
 
-	public String goToReportDetail() {
+	public String goToReportIntDetail() {
 		interviewDetail = true;
 		return "InterviewReports?faces-redirect=true";
 	}
+	
+	public String goToTimeToHired() {
+		timeToHired = true;
+		submissionCount = spontaneousCount = hiredCount = false;
+		timeToClose = timeTo1stInt = submissionsBySource = false;
+		return "NumberReports?faces-redirect=true";
+	}
+	
+	public String goToSubCnt() {
+		submissionCount = true;
+		timeToHired = spontaneousCount = hiredCount = false;
+		timeToClose = timeTo1stInt = submissionsBySource = false;
+		return "NumberReports?faces-redirect=true";
+	}
 
-	// lists for choosing entities in reports
-	// juntas nas posições (primeiro e senhor nome)
-	// ordenar por email?? não, por nome... ver queries e tabelas
-	// pesquisa por keyword nas tabelas...
+	public String goToSponCnt() {
+		spontaneousCount = true;
+		timeToHired = submissionCount = hiredCount = false;
+		timeToClose = timeTo1stInt = submissionsBySource = false;
+		return "NumberReports?faces-redirect=true";
+	}
 
+	public String goToHiredCnt() {
+		hiredCount = true;
+		timeToHired = spontaneousCount = submissionCount = false;
+		timeToClose = timeTo1stInt = submissionsBySource = false;
+		return "NumberReports?faces-redirect=true";
+	}
+	
+	public String goToTimeToClose() {
+		timeToClose = true;
+		timeToHired = spontaneousCount = hiredCount = false;
+		submissionCount = timeTo1stInt = submissionsBySource = false;
+		return "NumberReports?faces-redirect=true";
+	}
+	
+	public String goToTimeTo1stInt() {
+		timeTo1stInt = true;
+		timeToHired = spontaneousCount = hiredCount = false;
+		timeToClose = submissionCount = submissionsBySource = false;
+		return "NumberReports?faces-redirect=true";
+	}
+	
+	public String goToSubBySource() {
+		submissionsBySource = true;
+		timeToHired = spontaneousCount = hiredCount = false;
+		timeToClose = timeTo1stInt = submissionCount = false;
+		return "NumberReports?faces-redirect=true";
+	}
+	
+	// methods for interview reports
+	
 	public List<UserEntity> getAllCandidates() {
 		log.info("Listing all candidates");
 		return this.userEJB.findAllCandidates();
@@ -722,6 +776,10 @@ public class ReportsCDI implements Serializable {
 		keyword = "";
 	}
 
+//	public void returnReportHome() {
+//		
+//	}
+	
 	// private methods
 
 	private int longToInt(Long value) {
@@ -829,6 +887,11 @@ public class ReportsCDI implements Serializable {
 	private void errorMessage(String message){
 		FacesContext.getCurrentInstance().addMessage(null, 
 			new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+	}
+
+	private void warningMessage(String message){
+		FacesContext.getCurrentInstance().addMessage(null, 
+			new FacesMessage(message));
 	}
 
 	// getters and setters
@@ -985,6 +1048,74 @@ public class ReportsCDI implements Serializable {
 
 	public void setClist(List<UserEntity> clist) {
 		this.clist = clist;
+	}
+
+	public boolean isTimeToHired() {
+		return timeToHired;
+	}
+
+	public void setTimeToHired(boolean timeToHired) {
+		this.timeToHired = timeToHired;
+	}
+
+	public boolean isSubmissionCount() {
+		return submissionCount;
+	}
+
+	public void setSubmissionCount(boolean submissionCount) {
+		this.submissionCount = submissionCount;
+	}
+
+	public boolean isSpontaneousCount() {
+		return spontaneousCount;
+	}
+
+	public void setSpontaneousCount(boolean spontaneousCount) {
+		this.spontaneousCount = spontaneousCount;
+	}
+
+	public boolean isHiredCount() {
+		return hiredCount;
+	}
+
+	public void setHiredCount(boolean hiredCount) {
+		this.hiredCount = hiredCount;
+	}
+
+	public boolean isTimeToClose() {
+		return timeToClose;
+	}
+
+	public void setTimeToClose(boolean timeToClose) {
+		this.timeToClose = timeToClose;
+	}
+
+	public boolean isTimeTo1stInt() {
+		return timeTo1stInt;
+	}
+
+	public void setTimeTo1stInt(boolean timeTo1stInt) {
+		this.timeTo1stInt = timeTo1stInt;
+	}
+
+	public boolean isSubmissionsBySource() {
+		return submissionsBySource;
+	}
+
+	public void setSubmissionsBySource(boolean submissionsBySource) {
+		this.submissionsBySource = submissionsBySource;
+	}
+
+	public String daily() {
+		return Constants.PERIOD_DAILY;
+	}
+
+	public String monthly() {
+		return Constants.PERIOD_MONTHLY;
+	}
+
+	public String yearly() {
+		return Constants.PERIOD_YEARLY;
 	}
 
 }

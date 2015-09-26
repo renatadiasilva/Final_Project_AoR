@@ -10,83 +10,63 @@
 
 	<ui:define name="contents">
 		<h1>Criar relatórios</h1>
-<!-- 		voltar para esta página -->
+		<!-- 		voltar para esta página -->
 		<br />
 		<br />
 		<br />
 		<br />
 		<h:form>
-		<h3>Relatórios por posições</h3>
+			<h3>Relatórios por posições</h3>
+			<br />
+			<h:commandLink action="#{reportsCDI.goToReportSubByPos()}"
+				value="Candidaturas por posição" />
+			<br />
+			<h:commandLink action="#{reportsCDI.goToReportRejByPos()}"
+				value="Candidaturas rejeitadas por posição" />
+			<br />
+			<h:commandLink action="#{reportsCDI.goToReportProByPos()}"
+				value="Propostas apresentadas por posição" />
+			<br />
+			<br />
+			<h3>Relatórios de entrevistas</h3>
+			<br />
+			<h:commandLink action="#{reportsCDI.goToReportIntCount()}"
+				value="Entrevistas realizadas e seus resultados" />
+			<br />
+			<h:commandLink action="#{reportsCDI.goToReportIntDetail()}"
+				value="Entrevistas passadas de um candidato" />
+			<br />
+			<br />
+			<h3>Relatórios gerais</h3>
+			<br />
+			<h:commandLink action="#{reportsCDI.goToTimeToHired()}"
+				value="Tempo médio para contratação" />
+			<br />
+			<h:commandLink value="Candidaturas por período"
+				action="#{reportsCDI.goToSubCnt()}" />
+			<br />
+			<h:commandLink value="Candidaturas espontâneas por período"
+				action="#{reportsCDI.goToSponCnt()}" />
+			<br />
+			<h:commandLink value="Contratações por período"
+			 	action="#{reportsCDI.goToHiredCnt()}" />
+			<br />
+			<h:commandLink value="Tempo médio para fecho de posição" 
+				action="#{reportsCDI.goToTimeToClose()}" />
+			<br />
+			<h:commandLink value="Tempo médio para primeira entrevista"
+			 	action="#{reportsCDI.goToTimeTo1stInt()}" />
+			<br />
+			<h:commandLink value="Candidaturas por fonte"
+				action="#{reportsCDI.goToSubBySource()}" />
+			<br />
+			<h:commandLink value="" value="" />
+			<br />
+			<h:commandLink value="" value="" />
+			<br />
+			<h:commandLink value="" value="" />
+		</h:form>
 		<br />
-		<h:commandLink action="#{reportsCDI.goToReportSubByPos()}"
-		value="Candidaturas por posição" />
-		<br />
-		<h:commandLink action="#{reportsCDI.goToReportRejByPos()}"
-		value="Candidaturas rejeitadas por posição" />
-		<br />
-		<h:commandLink action="#{reportsCDI.goToReportProByPos()}"
-		value="Propostas apresentadas por posição" />
-		<br />
-		<br />
-		<h3>Relatórios de entrevistas</h3>
-		<br />
-		<h:commandLink action="#{reportsCDI.goToReportIntCount()}"
-		value="Entrevistas realizadas e seus resultados" />
-		<br />
-		<h:commandLink action="#{reportsCDI.goTo}"
-		value="Entrevistas passadas de um candidato" />
-		<br />
-
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<h:commandLink action=""
-		value="" />
-		<br />
-		<br />		
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
-		<br />
-		<a href="#">As minhas entrevistas agendadas</a>
 		<br />
 		<br />
 	</ui:define>

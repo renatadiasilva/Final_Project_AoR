@@ -9,7 +9,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.xml.registry.infomodel.User;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,7 @@ import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.upload.UploadFile;
 
 import java.io.Serializable;
 
@@ -145,6 +146,17 @@ public class SubmissionSearchCDI implements Serializable {
 	public boolean hasLikedin(UserEntity candidate) {
 		return candidate.getUserInfo().getLinkedin() != null;
 	}
+	
+	public String getCvPath(UserEntity candidate) {
+		// (.pdf)
+		HttpServletRequest request = (HttpServletRequest) FacesContext.
+				getCurrentInstance().getExternalContext().getRequest();
+		return request.getScheme()+"://"+request.getServerName()+":"
+				+request.getServerPort()+"/userCV/"
+				+candidate.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
+	}
+
+
 	
 	// getters e setters
 
