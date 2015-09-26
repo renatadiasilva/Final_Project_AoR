@@ -40,8 +40,9 @@
 					<h:outputText value="Visualisar cv" />
 				</p:column>
 				<p:column headerText="Linkedin">
-					<h:outputText value="#{s.candidate.userInfo.linkedin}" />
-					<!-- 					<a href="#{s.candidate.userInfo.linkedin}">Página Linkedin</a> -->
+					<h:commandLink value="Página Linkedin"
+					 	action="#{submissionSearchCDI.redirectExternalURl(
+					 		s.candidate.userInfo.linkedin)}" />
 				</p:column>
 			</p:dataTable>
 

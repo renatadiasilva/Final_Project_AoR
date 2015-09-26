@@ -656,7 +656,7 @@ public class ReportsCDI implements Serializable {
 	public String goToReportSubByPos() {
 		submissionPos = true;
 		rejectedPos = proposalPos = false;
-		return "PositionReports?faces-redirect=true";
+		return "PositionReports.xhtml?faces-redirect=true";
 	}
 
 	public String goToReportRejByPos() {

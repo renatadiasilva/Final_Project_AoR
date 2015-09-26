@@ -10,19 +10,67 @@
 
 	<ui:define name="contents">
 		<h1>Criar relatórios</h1>
-		
+<!-- 		voltar para esta página -->
 		<br />
 		<br />
 		<br />
 		<br />
-		<h:commandButton action="#{reportsCDI.goToReportSubByPos()}"
+		<h:form>
+		<h3>Relatórios por posições</h3>
+		<br />
+		<h:commandLink action="#{reportsCDI.goToReportSubByPos()}"
 		value="Candidaturas por posição" />
 		<br />
-		<h:commandButton action="#{reportsCDI.goToReportRejByPos()}"
+		<h:commandLink action="#{reportsCDI.goToReportRejByPos()}"
 		value="Candidaturas rejeitadas por posição" />
 		<br />
-		<h:commandButton action="#{reportsCDI.goToReportProByPos()}"
+		<h:commandLink action="#{reportsCDI.goToReportProByPos()}"
 		value="Propostas apresentadas por posição" />
+		<br />
+		<br />
+		<h3>Relatórios de entrevistas</h3>
+					<h1>Entrevistas realizadas e seus resultados</h1>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{reportsCDI.interviewDetail}">
+			<h1>Entrevistas passadas de um candidato</h1>
+		</h:panelGroup>
+		
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
+		<h:commandLink action=""
+		value="" />
+		<br />
 		<br />		
 		<a href="#">As minhas entrevistas agendadas</a>
 		<br />

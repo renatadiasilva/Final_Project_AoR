@@ -1,10 +1,13 @@
 package pt.uc.dei.aor.pf.admin;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -29,13 +32,13 @@ public class SubmissionSearchCDI {
 
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
-	
+
 	@EJB
 	private PositionEJBInterface positionEJB;
-	
+
 	@EJB
 	private UserEJBInterface userEJB;
-	
+
 	@EJB
 	private InterviewEJBInterface interviewEJB;
 
@@ -69,12 +72,12 @@ public class SubmissionSearchCDI {
 		log.info("Searching for all submissions");
 		this.slist = submissionEJB.findAll();
 	}
-	
+
 	public void searchAllSponteanous() {
 		log.info("Searching for all spontaneouse submissions");
 		this.slist = submissionEJB.findSpontaneousSubmissions();
 	}
-	
+
 	public void searchByDate() {
 		log.info("Searching for submissions between two dates");
 		log.debug("Dates between "+date1+" and "+date2);
@@ -125,6 +128,14 @@ public class SubmissionSearchCDI {
 			this.slist = submissionEJB.findSubmissionsOfCandidate(user);
 		} else log.error("No candidate with id "+id);
 	}	
+
+	public void redirectExternalURl(String site) throws IOException {
+
+		ExternalContext externalContext = FacesContext.getCurrentInstance().
+				getExternalContext();
+		System.out.println(site);
+		externalContext.redirect(site);
+	}
 
 	// getters e setters
 

@@ -15,7 +15,7 @@
 		</f:metadata>
 		<br />
 		<b>GESTOR(A) #{userSessionManagement.userFullName}</b>,
-		<br /> 
+		<br />
 		<br /> 
 		#{styleSessionManagement.welcomeMessage}
 		<br />
@@ -23,16 +23,17 @@
 		<br />
 		<h3>Acesso rápido</h3>
 		<br />
-		<a href="../positions/MyPositions.xhtml">As minhas posições</a>
-		<br />
-		<br />
-		<a href="#">Agendar entrevista</a>
-		<br />
-		<br />
-		<a href="../../manager/search/SpontaneousSearch.xhtml">
-		Visualizar candidaturas espontâneas
-		</a>
-		
+		<h:form>
+			<p:link value="As minhas posições"
+				href="../positions/MyPositions.xhtml" />
+			<br />
+			<br />
+			<p:link value="Agendar entrevista" href="#" />
+			<br />
+			<br />
+			<p:link value="Visualizar candidaturas espontâneas"
+				href="../../manager/search/SpontaneousSearch.xhtml" />
+		</h:form>
 	</ui:define>
 
 </ui:composition>

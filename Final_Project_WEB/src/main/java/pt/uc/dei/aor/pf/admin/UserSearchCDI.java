@@ -165,7 +165,7 @@ public class UserSearchCDI implements Serializable {
 		log.debug("Search role: "+role);
 		this.ulist = userEJB.findUsersByKeywordAndRole(pattern, role);
 	}
-
+	
 	// getters e setters
 
 	public String getEmail() {

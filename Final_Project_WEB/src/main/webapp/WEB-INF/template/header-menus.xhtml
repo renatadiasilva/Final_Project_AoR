@@ -21,23 +21,19 @@
 
 				<p:menuitem value="Início" icon="ui-icon-home"
 					rendered="#{userSessionManagement.checkDefaultAdmin()}"
-					actionListener="../../../role/admin/landing/Landing.xhtml"
-					ajax="false" />
+					url="../../../role/admin/landing/Landing.xhtml" />
 
 				<p:menuitem value="Início" icon="ui-icon-home"
 					rendered="#{userSessionManagement.checkDefaultManager()}"
-					actionListener="../../../role/manager/landing/Landing.xhtml"
-					ajax="false" />
+					url="../../../role/manager/landing/Landing.xhtml" />
 
 				<p:menuitem value="Início" icon="ui-icon-home"
 					rendered="#{userSessionManagement.checkDefaultInterviewer()}"
-					actionListener="../../../role/interviewer/landing/Landing.xhtml"
-					ajax="false" />
+					url="../../../role/interviewer/landing/Landing.xhtml" />
 
 				<p:menuitem value="Início" icon="ui-icon-home"
 					rendered="#{userSessionManagement.checkDefaultCandidate()}"
-					actionListener="../../../role/admin/landing/Landing.xhtml"
-					ajax="false" />
+					url="../../../role/admin/landing/Landing.xhtml" />
 
 				<p:submenu label="Administrador" icon="ui-icon-wrench"
 					rendered="#{userSessionManagement.admin}">
