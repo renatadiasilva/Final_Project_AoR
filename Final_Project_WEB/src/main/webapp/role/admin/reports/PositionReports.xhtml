@@ -44,12 +44,6 @@
 					update="@form, messages" icon="ui-icon-script" 
 					rendered="#{reportsCDI.proposalPos}" />
 
-				<h:commandLink rendered="#{!reportsCDI.report.isEmpty()}">
-					<p:graphicImage library="images/logos" name="pdf.png" />
-					<p:dataExporter type="pdf" target="posreport" fileName="report"
-						preProcessor="#{preProcessPDFCDI.preProcessPDF}" />
-				</h:commandLink>
-
 			</h:panelGrid>
 
 			<h:panelGrid id="gridPositionReport">

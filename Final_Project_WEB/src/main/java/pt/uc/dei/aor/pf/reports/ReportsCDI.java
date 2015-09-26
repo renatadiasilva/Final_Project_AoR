@@ -70,9 +70,9 @@ public class ReportsCDI implements Serializable {
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
 	// rendered flags
-	private boolean submissionPos;
-	private boolean rejectedPos;
-	private boolean proposalPos;
+	private boolean submissionPos = true; // meter no bean à entrada!!!
+	private boolean rejectedPos = false;
+	private boolean proposalPos = false;
 	
 	private boolean interviewDetail = true; // meter no bean à entrada!!!
 	private boolean interviewChoose;
