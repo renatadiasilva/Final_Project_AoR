@@ -16,6 +16,7 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
@@ -54,8 +55,9 @@ public class ReportsCDI implements Serializable {
 	private Date d1, d2;
 	//tirar
 	private Long id;
-	private String period;
+	private String period, keyword;
 	private UserEntity candidate;
+	private List<UserEntity> clist;
 	
 	// results
 	private String measureHeader;
@@ -72,8 +74,7 @@ public class ReportsCDI implements Serializable {
 	private boolean rejectedPos;
 	private boolean proposalPos;
 	
-	// variable
-	private boolean interviewDetail = true;
+	private boolean interviewDetail = true; // meter no bean à entrada!!!
 	private boolean interviewChoose;
 
 	// present table only after hiting button
@@ -90,6 +91,7 @@ public class ReportsCDI implements Serializable {
 		report = null;
 		d1 = d2 = new Date();
 		interviewChoose = true;
+		if (interviewChoose) clist = getAllCandidates();
 	}
 
 	// counting submissions by position between two dates
@@ -669,8 +671,44 @@ public class ReportsCDI implements Serializable {
 		return "PositionReports?faces-redirect=true";
 	}
 
-	// private methods
+	// lists for choosing entities in reports
+	// juntas nas posições (primeiro e senhor nome)
+	// ordenar por email?? não, por nome... ver queries e tabelas
+	// pesquisa por keyword nas tabelas...
 
+	public List<UserEntity> getAllCandidates() {
+		log.info("Listing all candidates");
+		return this.userEJB.findAllCandidates();
+	}
+
+	public void getCandidatesByKeyword() {
+		log.info("Listing candidates by keyword");
+		String pattern = SearchPattern.preparePattern(keyword);
+		log.debug("Internal search string: "+pattern);
+		log.debug("Search role: "+Constants.ROLE_CANDIDATE);
+		this.clist = userEJB.findUsersByKeywordAndRole(pattern,
+				Constants.ROLE_CANDIDATE);
+	}
+	
+	public boolean checkCandidate(UserEntity candidate){
+		if(this.candidate==null)return false;
+		if(this.candidate.getId()==candidate.getId())return true;
+		return false;
+	}
+
+	public boolean interviewDetailDone() {
+		return interviewDetail && interviewChoose;
+	}
+
+	public void returnInterviewDetail() {
+		interviewChoose = true;
+		clist = getAllCandidates();
+		report = null;
+		candidate = null;
+		keyword = "";
+	}
+
+	// private methods
 
 	private int longToInt(Long value) {
 		return value.intValue();
@@ -772,6 +810,11 @@ public class ReportsCDI implements Serializable {
 		if (p == Constants.DAILY) dateH = ((Date) o[1])+"";
 		else dateH += doubleToInt((Double) o[1]);
 		return dateH;
+	}
+
+	private void errorMessage(String message){
+		FacesContext.getCurrentInstance().addMessage(null, 
+			new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
 
 	// getters and setters
@@ -890,32 +933,12 @@ public class ReportsCDI implements Serializable {
 		this.emptyMessage = emptyMessage;
 	}
 
-	// lists for choosing entities in reports
-	// juntas nas posições (primeiro e senhor nome)
-	// ordenar por email?? não, por nome... ver queries e tabelas
-	// pesquisa por keyword nas tabelas...
-
-	public List<UserEntity> getAllCandidates() {
-		return this.userEJB.findAllCandidates();
-	}
-
-	public boolean checkCandidate(UserEntity candidate){
-		if(this.candidate==null)return false;
-		if(this.candidate.getId()==candidate.getId())return true;
-		return false;
-	}
-
 	public UserEntity getCandidate() {
 		return candidate;
 	}
 
 	public void setCandidate(UserEntity candidate) {
 		this.candidate = candidate;
-	}
-
-	private void errorMessage(String message){
-		FacesContext.getCurrentInstance().addMessage(null, 
-			new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
 
 	public boolean isInterviewDetail() {
@@ -926,10 +949,6 @@ public class ReportsCDI implements Serializable {
 		this.interviewDetail = interviewDetail;
 	}	
 
-	public boolean interviewDetailDone() {
-		return interviewDetail && interviewChoose;
-	}
-
 	public boolean isInterviewChoose() {
 		return interviewChoose;
 	}
@@ -938,9 +957,20 @@ public class ReportsCDI implements Serializable {
 		this.interviewChoose = interviewChoose;
 	}
 	
-	public void returnInterviewDetail() {
-		interviewChoose = true;
-		report = null;
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public List<UserEntity> getClist() {
+		return clist;
+	}
+
+	public void setClist(List<UserEntity> clist) {
+		this.clist = clist;
 	}
 
 }

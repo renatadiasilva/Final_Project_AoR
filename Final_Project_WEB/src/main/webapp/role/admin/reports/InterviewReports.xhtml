@@ -15,6 +15,7 @@
 
 	<ui:define name="contents">
 
+		<!-- headers -->
 		<h:panelGroup rendered="#{!reportsCDI.interviewDetail}">
 			<h1>Entrevistas realizadas e seus resultados</h1>
 		</h:panelGroup>
@@ -22,13 +23,15 @@
 			<h1>Entrevistas passadas de um candidato</h1>
 		</h:panelGroup>
 
+		<!-- search buttons -->
 		<h:form id="interviewReports">
 
 			<h:panelGrid id="buttonsInterviewReports" columns="3">
 
 				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.interviewCountResults()}"
-					update="resultInterviewsReportTable, messages"
+					update="resultInterviewsReportTable
+						gridInterviewsReport messages"
 					icon="ui-icon-script" rendered="#{!reportsCDI.interviewDetail}" />
 
 				<p:commandButton value="Criar relatório"
@@ -41,11 +44,12 @@
 					action="#{reportsCDI.returnInterviewDetail()}"
 					update="resultInterviewsReportTable
 						interviewsReportChooseCand messages"
-					icon=" ui-icon-arrowreturn-1-w" 
+					icon=" ui-icon-arrowreturn-1-w"
 					rendered="#{reportsCDI.interviewDetail}" />
 
 			</h:panelGrid>
 
+			<!-- date to choose -->
 			<h:panelGrid id="gridInterviewsReport">
 
 				<h:panelGroup rendered="#{!reportsCDI.interviewDetail}">
@@ -66,13 +70,27 @@
 			</h:panelGrid>
 		</h:form>
 
+		<!-- candidate to choose -->
 		<h:form id="interviewsReportChooseCand">
 			<h:panelGroup rendered="#{reportsCDI.interviewDetailDone()}">
 				<br />
 				<h2>Escolha o candidato:</h2>
+
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark
+						value="Procurar candidatos por palavra chave: "
+						for="interview-report-keyword" />
+					<p:inputText id="interview-report-keyword"
+						value="#{reportsCDI.keyword}" style="width:100%" />
+					<p:commandButton 
+						action="#{reportsCDI.getCandidatesByKeyword()}"
+						update="allInterviewReportTable messages"
+						icon="ui-icon-search" />
+				</h:panelGrid>
+
 				<p:dataTable id="allInterviewReportTable"
 					emptyMessage="Não foram encontradas candidatos." var="cand"
-					value="#{reportsCDI.allCandidates}"
+					value="#{reportsCDI.clist}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 					paginator="true" rows="10">
@@ -98,6 +116,7 @@
 		</h:form>
 		<br />
 		<br />
+		<!-- result table -->
 		<h:form id="resultInterviewsReportTable">
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
 				value="#{reportsCDI.report}"
@@ -110,12 +129,13 @@
 
 				<p:columnGroup type="header">
 					<p:row>
-						<p:column colspan="5" headerText="Entrevista" />
+						<p:column colspan="6" headerText="Entrevista" />
 						<p:column rowspan="2" headerText="#{reportsCDI.measureHeader}" />
 					</p:row>
 					<p:row>
 						<p:column headerText="Data" />
 						<p:column headerText="Hora" />
+						<p:column headerText="Candidato" />
 						<p:column headerText="Posição" />
 						<p:column headerText="Área Técnica" />
 						<p:column headerText="Entrevistadores" />
@@ -127,6 +147,11 @@
 				</p:column>
 				<p:column>
 					<h:outputText value="#{item.hourInterview}" />
+				</p:column>
+				<p:column>
+					<h:outputText
+						value="#{item.interview.submission.candidate.firstName}
+					#{item.interview.submission.candidate.lastName}" />
 				</p:column>
 				<p:column>
 					<h:outputText
@@ -145,7 +170,7 @@
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
-						<p:column colspan="5" footerText="#{reportsCDI.measureFooter}"
+						<p:column colspan="6" footerText="#{reportsCDI.measureFooter}"
 							style="text-align:right" />
 						<p:column footerText="#{reportsCDI.totalResult}" />
 					</p:row>
