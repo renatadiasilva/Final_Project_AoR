@@ -11,60 +11,83 @@
 	<ui:define name="contents">
 		<h1>Criar relatórios</h1>
 		<!-- 		voltar para esta página -->
-		<br />
-		<br />
-		<br />
-		<br />
 		<h:form>
-			<h3>Relatórios por posições</h3>
-			<br />
-			<h:commandLink action="#{reportsCDI.goToReportSubByPos()}"
-				value="Candidaturas por posição" />
-			<br />
-			<h:commandLink action="#{reportsCDI.goToReportRejByPos()}"
-				value="Candidaturas rejeitadas por posição" />
-			<br />
-			<h:commandLink action="#{reportsCDI.goToReportProByPos()}"
-				value="Propostas apresentadas por posição" />
-			<br />
-			<br />
-			<h3>Relatórios de entrevistas</h3>
-			<br />
-			<h:commandLink action="#{reportsCDI.goToReportIntCount()}"
-				value="Entrevistas realizadas e seus resultados" />
-			<br />
-			<h:commandLink action="#{reportsCDI.goToReportIntDetail()}"
-				value="Entrevistas passadas de um candidato" />
-			<br />
-			<br />
-			<h3>Relatórios gerais</h3>
-			<br />
-			<h:commandLink action="#{reportsCDI.goToTimeToHired()}"
-				value="Tempo médio para contratação" />
-			<br />
-			<h:commandLink value="Candidaturas por período"
-				action="#{reportsCDI.goToSubCnt()}" />
-			<br />
-			<h:commandLink value="Candidaturas espontâneas por período"
-				action="#{reportsCDI.goToSponCnt()}" />
-			<br />
-			<h:commandLink value="Contratações por período"
-			 	action="#{reportsCDI.goToHiredCnt()}" />
-			<br />
-			<h:commandLink value="Tempo médio para fecho de posição" 
-				action="#{reportsCDI.goToTimeToClose()}" />
-			<br />
-			<h:commandLink value="Tempo médio para primeira entrevista"
-			 	action="#{reportsCDI.goToTimeTo1stInt()}" />
-			<br />
-			<h:commandLink value="Candidaturas por fonte"
-				action="#{reportsCDI.goToSubBySource()}" />
-			<br />
-			<h:commandLink value="" value="" />
-			<br />
-			<h:commandLink value="" value="" />
-			<br />
-			<h:commandLink value="" value="" />
+			<h:panelGrid columns="2">
+				<div>
+					<h3>Relatórios relativos a candidaturas</h3>
+					<br />
+					<br />
+					<h:commandLink value="Candidaturas por período"
+						action="#{reportsCDI.goToSubCnt()}" />
+					<br />
+					<br />
+					<h:commandLink value="Candidaturas espontâneas por período"
+						action="#{reportsCDI.goToSponCnt()}" />
+					<br />
+					<br />
+					<h:commandLink action="#"
+						value="Candidaturas rejeitadas por período" />
+					<br />
+					<br />
+					<h:commandLink action="#"
+						value="Propostas apresentadas por período" />
+					<br />
+					<br />
+					<h:commandLink value="Contratações por período"
+						action="#{reportsCDI.goToHiredCnt()}" />
+					<br />
+					<br />
+					<h:commandLink value="Candidaturas por fonte"
+						action="#{reportsCDI.goToSubBySource()}" />
+					<br />
+					<br />
+					<h:commandLink action="#{reportsCDI.goToTimeToHired()}"
+						value="Tempo médio para contratação" />
+					<br />
+					<br />
+					<h:commandLink value="Tempo médio para primeira entrevista"
+						action="#{reportsCDI.goToTimeTo1stInt()}" />
+					<br />
+					<br />
+				</div>
+				<div>
+					<h3>Relatórios relativos a posições</h3>
+					<br />
+					<br />
+					<h:commandLink action="#{reportsCDI.goToReportSubByPos()}"
+						value="Candidaturas por posição" />
+					<br />
+					<br />
+					<h:commandLink action="#{reportsCDI.goToReportRejByPos()}"
+						value="Candidaturas rejeitadas por posição" />
+					<br />
+					<br />
+					<h:commandLink action="#{reportsCDI.goToReportProByPos()}"
+						value="Propostas apresentadas por posição" />
+					<br />
+					<br />
+					<h:commandLink value="Tempo médio para fecho de posição"
+						action="#{reportsCDI.goToTimeToClose()}" />
+					<br />
+					<br />
+					<h:commandLink action="#"
+						value="Relatório detalhado de uma posição" />
+					<br />					
+					<br />
+					<br />
+					<h3>Relatórios relativos a entrevistas</h3>
+					<br />
+					<br />
+					<h:commandLink action="#{reportsCDI.goToReportIntCount()}"
+						value="Entrevistas realizadas e seus resultados" />
+					<br />
+					<br />
+					<h:commandLink action="#{reportsCDI.goToReportIntDetail()}"
+						value="Entrevistas passadas de um candidato" />
+					<br />
+					<br />
+				</div>
+			</h:panelGrid>
 		</h:form>
 		<br />
 		<br />

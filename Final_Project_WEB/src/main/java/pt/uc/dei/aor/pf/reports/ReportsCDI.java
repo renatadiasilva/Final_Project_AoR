@@ -84,6 +84,8 @@ public class ReportsCDI implements Serializable {
 	private boolean timeToClose;
 	private boolean timeTo1stInt;
 	private boolean submissionsBySource;
+	
+//	private boolean 
 
 	// present table only after hiting button
 	public boolean checkIfNotNull() {
@@ -661,6 +663,10 @@ public class ReportsCDI implements Serializable {
 
 	// redirects
 
+	public String returnToReportsHome() {
+		return "CreateReports.xhtml?faces-redirect=true";
+	}
+
 	public String goToReportSubByPos() {
 		submissionPos = true;
 		rejectedPos = proposalPos = false;
@@ -775,11 +781,13 @@ public class ReportsCDI implements Serializable {
 		candidate = null;
 		keyword = "";
 	}
-
-//	public void returnReportHome() {
-//		
-//	}
 	
+	// methods for numbers report
+	
+	public boolean averageTime() {
+		return timeTo1stInt || timeToClose || timeToHired;
+	}
+
 	// private methods
 
 	private int longToInt(Long value) {
@@ -823,12 +831,7 @@ public class ReportsCDI implements Serializable {
 			// if dates are no sorted, exchange them
 			sortDates(ndays);
 
-			// limit day for periods - aviso ao utilizador!!
-			if (ndays > Constants.LIMITMONTH) p = Constants.YEARLY;
-			else if (ndays > Constants.LIMITDAY && 
-					period.equals(Constants.PERIOD_DAILY))
-				p = Constants.MONTHLY;
-			else p = period.toLowerCase().charAt(0);
+			p = period.toLowerCase().charAt(0);
 		}
 		return p;
 	}
@@ -889,10 +892,10 @@ public class ReportsCDI implements Serializable {
 			new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
 
-	private void warningMessage(String message){
-		FacesContext.getCurrentInstance().addMessage(null, 
-			new FacesMessage(message));
-	}
+//	private void warningMessage(String message){
+//		FacesContext.getCurrentInstance().addMessage(null, 
+//			new FacesMessage(message));
+//	}
 
 	// getters and setters
 

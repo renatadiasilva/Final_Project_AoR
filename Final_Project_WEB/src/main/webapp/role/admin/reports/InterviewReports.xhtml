@@ -51,6 +51,10 @@
 					icon=" ui-icon-arrowreturn-1-w"
 					rendered="#{reportsCDI.interviewDetailEnd()}" />
 
+				<p:commandButton value="Voltar à lista de relatórios"
+					action="#{reportsCDI.returnToReportsHome()}"
+					icon=" ui-icon-arrowreturn-1-w" />
+
 			</h:panelGrid>
 
 			<!-- date to choose -->
@@ -60,14 +64,14 @@
 					<p:outputLabel value="De : " for="intreport-date1" />
 					<p:calendar id="intreport-date1" value="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-						yearRange="c-100:c+0" locale="pt" size="35" />
+						yearRange="c-100:c+100" locale="pt" size="35" />
 				</h:panelGroup>
 
 				<h:panelGroup rendered="#{!reportsCDI.interviewDetail}">
 					<p:outputLabel value="Até: " for="intreport-date2" />
 					<p:calendar id="intreport-date2" value="#{reportsCDI.d2}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-						yearRange="c-100:c+0" locale="pt" size="35" />
+						yearRange="c-100:c+100" locale="pt" size="35" />
 
 				</h:panelGroup>
 

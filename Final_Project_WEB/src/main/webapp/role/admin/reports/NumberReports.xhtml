@@ -41,36 +41,36 @@
 
 			<h:panelGrid id="buttonsTimeReports" columns="5">
 
-				<p:commandButton value="Tempo médio para contratação"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.averageTimeToBeHired()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.timeToHired}" />
 
-				<p:commandButton value="Número de candidaturas"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.submissionCountResults()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.submissionCount}" />
 
-				<p:commandButton value="Candidaturas espontâneas"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.spontaneousCountResults()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.spontaneousCount}" />
 
-				<p:commandButton value="Contratações"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.hiredCountResuls()}" update="@form, messages"
 					icon="ui-icon-script" rendered="#{reportsCDI.hiredCount}" />
 
-				<p:commandButton value="Tempo médio para fecho de posição"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.averageTimeToClose()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.timeToClose}" />
 
-				<p:commandButton value="Tempo médio para primeira entrevista"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.averageTimeToInterview()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.timeTo1stInt}" />
 
-				<p:commandButton value="Candidaturas por fonte"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.sourceCount()}" update="@form, messages"
 					icon="ui-icon-script" rendered="#{reportsCDI.submissionsBySource}" />
 
@@ -82,20 +82,31 @@
 					<p:outputLabel value="De : " for="time-date1" />
 					<p:calendar id="time-date1" value="#{reportsCDI.d1}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-						yearRange="c-100:c+0" locale="pt" size="35" />
+						yearRange="c-100:c+100" locale="pt" size="35" />
 				</h:panelGroup>
 
 				<h:panelGroup>
 					<p:outputLabel value="Até: " for="time-date2" />
 					<p:calendar id="time-date2" value="#{reportsCDI.d2}"
 						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-						yearRange="c-100:c+0" locale="pt" size="35" />
+						yearRange="c-100:c+100" locale="pt" size="35" />
 				</h:panelGroup>
 
 				<h:panelGroup rendered="#{!reportsCDI.submissionsBySource}">
-					<p:selectOneMenu id="numbreport-period"
+					<p:selectOneMenu rendered="#{reportsCDI.averageTime()}"
+					 	id="numbreport-period1"
 						value="#{reportsCDI.period}" style="width:150px">
-						<f:selectItem itemLabel="Selecione um período"
+						<f:selectItem itemLabel="Seleccione um período"
+							itemValue="" />
+						<f:selectItem itemLabel="Mensal"
+							itemValue="#{reportsCDI.monthly()}" />
+						<f:selectItem itemLabel="Anual"
+							itemValue="#{reportsCDI.yearly()}" />
+					</p:selectOneMenu>
+					<p:selectOneMenu rendered="#{!reportsCDI.averageTime()}"
+					 	id="numbreport-period2"
+						value="#{reportsCDI.period}" style="width:150px">
+						<f:selectItem itemLabel="Seleccione um período"
 							itemValue="" />
 						<f:selectItem itemLabel="Diário"
 							itemValue="#{reportsCDI.daily()}" />
