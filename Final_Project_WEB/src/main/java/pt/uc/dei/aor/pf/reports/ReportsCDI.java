@@ -85,7 +85,8 @@ public class ReportsCDI implements Serializable {
 	private boolean timeTo1stInt;
 	private boolean submissionsBySource;
 	
-//	private boolean 
+	private boolean rejectSubm;
+	private boolean proposSubm;
 
 	// present table only after hiting button
 	public boolean checkIfNotNull() {
@@ -742,6 +743,16 @@ public class ReportsCDI implements Serializable {
 		timeToHired = spontaneousCount = hiredCount = false;
 		timeToClose = timeTo1stInt = submissionCount = false;
 		return "NumberReports?faces-redirect=true";
+	}
+	
+	public String goToReportRejectSub() {
+		rejectSubm = true;
+		return "ResultReports?faces-redirect=true";
+	}
+
+	public String goToReportPropoSub() {
+		rejectSubm = false;
+		return "ResultReports?faces-redirect=true";
 	}
 	
 	// methods for interview reports
