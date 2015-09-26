@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -146,6 +147,11 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		this.sendEmail(user.getEmail(), "Registo na plataforma "
 				+ companyName+" - Autenticação do novo email", text);
+	}
+
+	@Override
+	public void slaWarning(PositionEntity position) {
+		// Envia um mail a todos os admins a alertar a aproximação do fim do SLA		
 	}
 
 }

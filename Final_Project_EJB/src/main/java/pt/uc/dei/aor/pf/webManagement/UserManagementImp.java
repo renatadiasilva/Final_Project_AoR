@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.webManagement;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,9 +12,11 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserInfoEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementInterface;
@@ -25,10 +28,13 @@ public class UserManagementImp implements UserManagementInterface {
 	private static final Logger log = LoggerFactory.getLogger(UserManagementImp.class);
 
 	@EJB
-	UserEJBInterface userBean;
+	PositionEJBInterface positionEJB;
+	
+	@EJB
+	UserEJBInterface userEJB;
 
 	@EJB
-	UserInfoEJBInterface userInfoBean;
+	UserInfoEJBInterface userInfoEJB;
 
 	@EJB
 	SecureMailManagementInterface mail;
@@ -38,6 +44,8 @@ public class UserManagementImp implements UserManagementInterface {
 	private boolean admin, manager, interviewer, candidate;
 
 	private boolean newPasswordCheck;
+	
+	private Calendar yesterday;
 
 	public UserManagementImp() {		
 		this.currentUser=new UserEntity();
@@ -52,12 +60,12 @@ public class UserManagementImp implements UserManagementInterface {
 
 		// Se o servidor consegue logar o utilizador não cria a excepção 
 		// (vem do UserSessionManagement) e chega aqui: logo a password está correcta
-		this.currentUser = this.userBean.findUserByEmail(email);
+		this.currentUser = this.userEJB.findUserByEmail(email);
 
 		// Se houver um pirata que consiga chegar aqui com a 
 		// password errada o user vai para null e eventualmente
 		// a aplicação vai rebentar de propósito
-		if(!this.userBean.checkPassword(this.currentUser, password)){
+		if(!this.userEJB.checkPassword(this.currentUser, password)){
 			this.currentUser=null;
 			// Pode ser gerada por algum problema de autenticação no servidor, mas...
 			log.warn("Possible security breach, heads up!");
@@ -65,6 +73,51 @@ public class UserManagementImp implements UserManagementInterface {
 
 		// Roles para mostrar na web
 		this.setAvailableRoles();
+		
+		// Quando se loga um Admin
+		// Fecha as posições que já passaram o SLA
+		// Também notifica quando o SLA se aproxima do fim
+		if(this.admin)
+			this.checkSLAs();
+	}
+
+	private void checkSLAs() {
+		
+		List<PositionEntity>overdueSLAs=this.positionEJB.findCloseToSLAPositions(0);
+		
+		// Fecha as posições que já passaram o SLA
+		for(PositionEntity position:overdueSLAs){
+			position.setStatus(Constants.STATUS_CLOSED);
+			position.setClosingDate(new Date());
+			this.positionEJB.update(position);
+		}
+		
+		// Procura as posições que têm uma margem de 3 dias para acabar
+		List<PositionEntity>threeDaysToCloseSLAs=this.positionEJB.findCloseToSLAPositions(3);
+
+		this.yesterday=Calendar.getInstance();
+		this.yesterday.add(Calendar.DAY_OF_YEAR, -1);
+		
+		// Envia email a alertar a aproximação do fim do SLA
+		for(PositionEntity position:threeDaysToCloseSLAs)			
+			if(this.sendMail(position)){
+				this.mail.slaWarning(position);
+				position.setLastSlaMailDate(new Date());
+				this.positionEJB.update(position);
+			}
+		
+	}
+	
+	private boolean sendMail(PositionEntity position){
+		// Se ainda não foi enviado nenhum email, envia agora
+		if(position.getLastSlaMailDate()==null)
+			return true;
+		
+		// Se o último mail foi há mais de um dia envia de novo
+		if(position.getLastSlaMailDate().after(this.yesterday.getTime()))
+			return true;
+		
+		return false;
 	}
 
 	@Override
@@ -93,7 +146,7 @@ public class UserManagementImp implements UserManagementInterface {
 		if(role.equals(Constants.ROLE_INTERVIEWER)) this.currentUser.setDefaultRole(role);
 		if(role.equals(Constants.ROLE_CANDIDATE)) this.currentUser.setDefaultRole(role);
 
-		this.userBean.update(this.currentUser);	
+		this.userEJB.update(this.currentUser);	
 	}
 
 	@Override
@@ -108,9 +161,9 @@ public class UserManagementImp implements UserManagementInterface {
 		log.debug("User: "+ currentUser.getEmail());
 
 		// Verifica e altera se estiver tudo certo
-		if(this.userBean.checkPassword(this.currentUser, password)){
+		if(this.userEJB.checkPassword(this.currentUser, password)){
 			this.currentUser.setPassword(newPassword);
-			this.userBean.updatePassword(currentUser);
+			this.userEJB.updatePassword(currentUser);
 			return true;
 		}else return false;
 	}
@@ -127,7 +180,7 @@ public class UserManagementImp implements UserManagementInterface {
 		log.info("Creating new user (candidate)");
 
 		// Verifica primeiro se o email já está a uso
-		if(this.userBean.findUserByEmail(email)==null){
+		if(this.userEJB.findUserByEmail(email)==null){
 			List<String> roles = new ArrayList<String>();
 			roles.add(Constants.ROLE_CANDIDATE);
 
@@ -163,7 +216,7 @@ public class UserManagementImp implements UserManagementInterface {
 			}
 
 			// Grava o UserEntity
-			this.userBean.save(newUser);
+			this.userEJB.save(newUser);
 
 			log.info("Successfully created new user (candidate)");
 			if(createdByAdmin){
@@ -191,7 +244,7 @@ public class UserManagementImp implements UserManagementInterface {
 		log.info("Creating new user (internal)");
 
 		// Verifica primeiro se o email já está a uso
-		if(this.userBean.findUserByEmail(email)==null){
+		if(this.userEJB.findUserByEmail(email)==null){
 
 			UserEntity newUser=new UserEntity();
 			List<String> roles = new ArrayList<String>();
@@ -213,7 +266,7 @@ public class UserManagementImp implements UserManagementInterface {
 			newUser.setTemporaryPassword(true);
 			newUser.setAuthenticated(true);
 
-			this.userBean.save(newUser);
+			this.userEJB.save(newUser);
 
 			// an email is sent to the new user
 			this.mail.sendPassToNewUser(newUser, password);
@@ -288,25 +341,25 @@ public class UserManagementImp implements UserManagementInterface {
 			this.currentUser.getUserInfo().setLinkedin(linkedin);
 		}
 
-		this.userBean.update(this.currentUser);
+		this.userEJB.update(this.currentUser);
 	}
 
 	@Override
 	public boolean recoverPassword (String email, String temporaryPassword){
 		log.info("Password recovery: "+email);
 
-		UserEntity userToRecover=userBean.findUserByEmail(email);
+		UserEntity userToRecover=userEJB.findUserByEmail(email);
 
 		// Verifica se existe algum utilizador com o email na BD
 		if(userToRecover!=null){
 
 			// Muda a password para uma password temporária
 			userToRecover.setPassword(temporaryPassword);
-			this.userBean.updatePassword(userToRecover);
+			this.userEJB.updatePassword(userToRecover);
 
 			// Persiste com o atributo de password temporária marcado a true
 			userToRecover.setTemporaryPassword(true);
-			this.userBean.update(userToRecover);
+			this.userEJB.update(userToRecover);
 
 			// Envia um email ao user com a password temporária
 			this.mail.passwordRecovery(userToRecover, temporaryPassword);
@@ -410,14 +463,14 @@ public class UserManagementImp implements UserManagementInterface {
 	@Override
 	public boolean checkAuthentication(String email) {
 		// Se chegou a este ponto (já está autenticado por esta altura no servidor) o email existe
-		if(this.userBean.findUserByEmail(email).isAuthenticated())return true;
+		if(this.userEJB.findUserByEmail(email).isAuthenticated())return true;
 		return false;
 	}
 
 	@Override
 	public long uploadCV() {
 		this.currentUser.setUploadedCV(true);
-		this.userBean.update(this.currentUser);
+		this.userEJB.update(this.currentUser);
 
 		log.info("CV uploaded, User uploaded, id returned: "+this.currentUser.getEmail());
 		return this.currentUser.getId();

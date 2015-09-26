@@ -127,7 +127,7 @@ public class NewPositionCDI implements Serializable {
 			if(this.managedPositions){
 				this.manager=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
 				this.openPositions=this.positionEJB.findOpenPositionsManagedByUser(this.manager);				
-			}else this.openPositions=this.positionEJB.findAll();
+			}else this.openPositions=this.positionEJB.findAllAlphabetic();
 		}
 
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -247,6 +247,8 @@ public class NewPositionCDI implements Serializable {
 				this.position.setDescription(this.description);
 
 				this.position.setLocations(this.locations);
+				
+				this.position.setOpenings(this.openings);
 
 				this.position.setAdvertisingChannels(this.advertisingChannels);
 
@@ -583,6 +585,8 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	private void loadPosition() {
+		this.status=this.position.getStatus();
+
 		this.cleanBean();
 
 		this.title=this.position.getTitle();
@@ -610,25 +614,28 @@ public class NewPositionCDI implements Serializable {
 
 		this.openings=this.position.getOpenings();
 
-		this.status=this.position.getStatus();
-
 	}
 
 	public void updateStatus(){
+		// Se o status actual é CLOSED desmarca a closingDate
+		if(this.position.getStatus().equals(Constants.STATUS_CLOSED))
+			this.position.setClosingDate(null);
 
+		// Se o novo status é CLOSED, a closingDate é agora
 		if(this.status.equals(Constants.STATUS_CLOSED)){
 			this.position.setStatus(Constants.STATUS_CLOSED);
 			this.position.setClosingDate(new Date());
 		}
+
 		else if(this.status.equals(Constants.STATUS_OPEN))
 			this.position.setStatus(Constants.STATUS_OPEN);
 		else if(this.status.equals(Constants.STATUS_ONHOLD))
 			this.position.setStatus(Constants.STATUS_ONHOLD);
 
 		this.positionEJB.update(this.position);
-		
+
 		this.position=null;
-		
+
 		this.cleanBean();
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Estado actualizado."));

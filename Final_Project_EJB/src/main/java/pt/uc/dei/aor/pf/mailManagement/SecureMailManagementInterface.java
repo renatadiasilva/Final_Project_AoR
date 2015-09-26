@@ -2,6 +2,7 @@ package pt.uc.dei.aor.pf.mailManagement;
 
 import javax.ejb.Local;
 
+import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Local
@@ -17,5 +18,7 @@ public interface SecureMailManagementInterface {
 			String temporaryPassword);
 
 	public abstract void newEmail(UserEntity user);
+
+	public abstract void slaWarning(PositionEntity position);
 
 }

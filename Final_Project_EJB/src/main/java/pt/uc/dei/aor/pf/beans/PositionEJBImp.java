@@ -277,4 +277,9 @@ public class PositionEJBImp implements PositionEJBInterface {
 					+ "Check the notnull attributes.");
 	}
 
+	@Override
+	public List<PositionEntity> findAllAlphabetic() {
+		return this.positionDAO.findAllAlphabetic();
+	}
+
 }

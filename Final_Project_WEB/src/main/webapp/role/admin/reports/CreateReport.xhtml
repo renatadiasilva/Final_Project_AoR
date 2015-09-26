@@ -12,8 +12,8 @@
 		<h1>Criar relatórios</h1>
 		<!-- 		voltar para esta página -->
 		<h:form>
-			<h:panelGrid columns="2">
-				<div>
+			<div style="float: left; margin-right:25px">
+				<h:panelGrid columns="1">
 					<h3>Relatórios relativos a candidaturas</h3>
 					<br />
 					<br />
@@ -49,8 +49,10 @@
 						action="#{reportsCDI.goToTimeTo1stInt()}" />
 					<br />
 					<br />
-				</div>
-				<div>
+				</h:panelGrid>
+			</div>
+			<div style="float: right; margin-right:25px">
+				<h:panelGrid columns="1">
 					<h3>Relatórios relativos a posições</h3>
 					<br />
 					<br />
@@ -72,9 +74,13 @@
 					<br />
 					<h:commandLink action="SubmissionReports?faces-redirect=true"
 						value="Relatório detalhado de uma posição" />
-					<br />					
 					<br />
 					<br />
+					<br />
+				</h:panelGrid>
+			</div>
+			<div style="float: right; margin-right:25px">
+				<h:panelGrid columns="1">
 					<h3>Relatórios relativos a entrevistas</h3>
 					<br />
 					<br />
@@ -86,8 +92,8 @@
 						value="Entrevistas passadas de um candidato" />
 					<br />
 					<br />
-				</div>
-			</h:panelGrid>
+				</h:panelGrid>
+			</div>
 		</h:form>
 		<br />
 		<br />

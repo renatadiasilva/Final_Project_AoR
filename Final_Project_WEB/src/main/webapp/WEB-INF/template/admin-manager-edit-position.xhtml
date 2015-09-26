@@ -53,7 +53,7 @@
 			<h:panelGrid columns="3" style="width:1000px"
 				rendered="#{newPositionCDI.loadedPosition()}">
 
-				<p:outputLabel for="edit-position-status" value="Estado:" />
+				<p:outputLabel for="edit-position-status" value="Estado: " />
 
 				<h:panelGroup>
 					<h:panelGrid columns="4" style="width:100%">
@@ -86,16 +86,16 @@
 				</h:panelGroup>
 
 				<h:panelGroup>
-					<h:panelGrid columns="2">
-						<!-- Vagas, título, descrição -->
-						<p:outputLabel value="Número de vagas: "
-							for="new-position-openings" />
-						<p:spinner id="new-position-openings" size="35"
-							value="#{newPositionCDI.openings}" required="true"
-							requiredMessage="Defina o número de vagas." max="100" min="1">
-							<p:ajax update="@this" />
-						</p:spinner>
-					</h:panelGrid>
+
+					<!-- Vagas, título, descrição -->
+					<p:outputLabel value="Número de vagas: "
+						for="new-position-openings" />
+					<p:spinner id="new-position-openings" size="35"
+						value="#{newPositionCDI.openings}" required="true"
+						requiredMessage="Defina o número de vagas." max="100" min="1">
+						<p:ajax update="@this" />
+					</p:spinner>
+
 				</h:panelGroup>
 
 			</h:panelGrid>

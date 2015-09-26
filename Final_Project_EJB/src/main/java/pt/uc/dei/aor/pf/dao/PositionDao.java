@@ -314,4 +314,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		return (Double) result.get(0);
 	}
 
+	public List<PositionEntity> findAllAlphabetic() {
+		return super.findSomeResults("Position.findAllAlphabetic", null);
+	}
+
 }

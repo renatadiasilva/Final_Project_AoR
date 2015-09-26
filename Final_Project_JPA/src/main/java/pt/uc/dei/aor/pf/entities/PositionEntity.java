@@ -26,6 +26,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "positions")
 @NamedQueries({
+	@NamedQuery(name = "Position.findAllAlphabetic",
+			query = "SELECT p FROM PositionEntity p ORDER BY p.company, p.title"),
 	@NamedQuery(name = "Position.findCloseToSLAPositions",
 			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate"
 					+ " AND p.status = :status"),
@@ -123,6 +125,10 @@ public class PositionEntity implements Serializable {
 	@Column(name = "sla_date")
 	@Temporal(TemporalType.DATE)
 	private Date slaDate;
+	
+	@Column(name = "last_sla_mail_date")
+	@Temporal(TemporalType.DATE)
+	private Date lastSlaMailDate;
 
 	@NotNull
 	@ManyToOne
@@ -265,6 +271,14 @@ public class PositionEntity implements Serializable {
 
 	public void setSlaDate(Date slaDate) {
 		this.slaDate = slaDate;
+	}
+
+	public Date getLastSlaMailDate() {
+		return lastSlaMailDate;
+	}
+
+	public void setLastSlaMailDate(Date lastSlaMailDate) {
+		this.lastSlaMailDate = lastSlaMailDate;
 	}
 
 	public UserEntity getPositionManager() {
