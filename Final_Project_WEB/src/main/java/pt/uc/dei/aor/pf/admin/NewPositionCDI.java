@@ -19,7 +19,10 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.io.Serializable;
 
 @Named
@@ -33,7 +36,7 @@ public class NewPositionCDI implements Serializable {
 
 	@Inject
 	private UserSessionManagement userManagement;
-	
+
 	@EJB
 	private UserEJBInterface userEJB;
 
@@ -87,19 +90,45 @@ public class NewPositionCDI implements Serializable {
 
 	private PositionEntity position;
 
+	private boolean managedPositions;
+
+	private String status;  
+
+	private Map<String,String> availableStatus=new HashMap<String, String>();
+
 	public void createNewPosition(){
+		this.managedPositions=false;
 		this.editPosition=false;
 		this.cleanBean();
 	}
 
 	public void editExistingPosition(){
+		this.managedPositions=false;
+		this.editPosition=true;
+		this.cleanBean();
+	}
+
+	public void editManagedPositions(){
+		this.managedPositions=true;
 		this.editPosition=true;
 		this.cleanBean();
 	}
 
 	@PostConstruct
 	public void cleanBean() {
-		if(editPosition) this.openPositions=this.positionEJB.findAll();
+		// Se é para edição vai buscar as posições
+		if(this.editPosition){
+			// Vai buscar os Status
+			this.availableStatus.put(Constants.STATUS_OPEN, Constants.STATUS_OPEN);
+			this.availableStatus.put(Constants.STATUS_ONHOLD, Constants.STATUS_ONHOLD);
+			this.availableStatus.put(Constants.STATUS_CLOSED, Constants.STATUS_CLOSED);
+
+			// Se é para um manager editar, só vai buscar as dele
+			if(this.managedPositions){
+				this.manager=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
+				this.openPositions=this.positionEJB.findOpenPositionsManagedByUser(this.manager);				
+			}else this.openPositions=this.positionEJB.findAll();
+		}
 
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
@@ -108,8 +137,6 @@ public class NewPositionCDI implements Serializable {
 		this.title="";
 		this.company="";
 		this.description="";
-
-		System.out.println(this.creatorEmail);
 
 		this.manager=null;
 
@@ -123,19 +150,19 @@ public class NewPositionCDI implements Serializable {
 		this.advertisingChannels=new ArrayList<String>();
 		this.altAdvertisingChannels=new ArrayList<NewPositionCDIextraAd>();
 		this.extraAdvertising="";
+		this.advertisingChannels.clear();
 
 		this.cleanTechnicalAreas();
 		this.technicalArea="";
 
 		this.lisboa=this.porto=this.coimbra=false;
 		this.extraLocation="";
+		this.locations.clear();
 
 		this.script=null;
 	}
 
 	public void createPosition() {
-		System.out.println("A criar posição");
-
 		boolean valid=true;
 
 		// locations
@@ -212,20 +239,47 @@ public class NewPositionCDI implements Serializable {
 		}
 
 		if(valid){
-			UserEntity creator=this.userEJB.findUserByEmail(this.creatorEmail);
 
-			PositionEntity newPositionEntity=new PositionEntity(title, locations,
-					openings, Constants.STATUS_OPEN, null, slaDays, manager, creator,
-					company, technicalArea, description, advertisingChannels, script);
+			if(this.editPosition){
 
-			this.positionEJB.save(newPositionEntity);
+				this.position.setTitle(this.title);
 
-			this.cleanBean();
+				this.position.setDescription(this.description);
 
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova posição criada."));
+				this.position.setLocations(this.locations);
+
+				this.position.setAdvertisingChannels(this.advertisingChannels);
+
+				this.position.setPositionManager(this.manager);
+
+				this.position.setDefaultScript(this.script);
+
+				this.positionEJB.update(this.position);
+
+				this.unloadPosition();
+
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Posição Editada."));
+
+			}else{
+
+				UserEntity creator=this.userEJB.findUserByEmail(this.creatorEmail);
+
+				PositionEntity newPositionEntity=new PositionEntity(title, locations,
+						openings, Constants.STATUS_OPEN, null, slaDays, manager, creator,
+						company, technicalArea, description, advertisingChannels, script);
+
+				this.positionEJB.save(newPositionEntity);
+
+				this.cleanBean();
+
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova posição criada."));
+
+			}
+
 		}else{
 			this.locations.clear();
 			this.advertisingChannels.clear();
+			this.altAdvertisingChannels.clear();
 		}
 
 	}
@@ -233,7 +287,7 @@ public class NewPositionCDI implements Serializable {
 	private void error(String message){
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
-	
+
 	public boolean checkPosition(PositionEntity position){
 		if(this.position==null)return false;
 		if(this.position.getId()==position.getId())return true;
@@ -273,16 +327,16 @@ public class NewPositionCDI implements Serializable {
 		this.extraAdvertising = extraAdvertising;
 	}
 
-	public boolean isCurrentUserTheManager(){
+	public boolean currentUserTheManager(){
 		if(this.position==null)
 			return false;
-		
+
 		if(this.userManagement.getUserMail().equals(this.position.getPositionManager().getEmail()))
 			return true;
-		
+
 		return false;
 	}
-	
+
 	public List<UserEntity> getManagers(){
 		return this.userEJB.findAllManagers();
 	}
@@ -523,36 +577,86 @@ public class NewPositionCDI implements Serializable {
 		this.loadPosition();
 	}
 
+	public boolean loadedPosition(){
+		if(this.position!=null)return true;
+		return false;
+	}
+
 	private void loadPosition() {
 		this.cleanBean();
-		
+
 		this.title=this.position.getTitle();
-		
+
 		this.description=this.position.getDescription();
-		
+
 		for(String location:this.position.getLocations()){
 			if(location.equals(Constants.LOCATION_COIMBRA))this.coimbra=true;
 			else if(location.equals(Constants.LOCATION_LISBOA))this.lisboa=true;
 			else if(location.equals(Constants.LOCATION_PORTO))this.porto=true;
 			else this.extraLocation=location;
 		}
-		
+
 		for(String ad:this.position.getAdvertisingChannels()){
 			if(ad.equals(Constants.SOCIAL_CRITICAL))this.critical=true;
-			else if(ad.equals(Constants.SOCIAL_LINKEDIN))this.linkedin=true;
+			else if(ad.equals(Constants.SOCIAL_FACEBOOK))this.facebook=true;
 			else if(ad.equals(Constants.SOCIAL_GLASSDOOR))this.glassdoor=true;
 			else if(ad.equals(Constants.SOCIAL_LINKEDIN))this.linkedin=true;
 			else this.altAdvertisingChannels.add(new NewPositionCDIextraAd(ad));
 		}
-		
+
 		this.manager=this.position.getPositionManager();
-		
+
 		this.script=this.position.getDefaultScript();
+
+		this.openings=this.position.getOpenings();
+
+		this.status=this.position.getStatus();
+
 	}
-	
+
+	public void updateStatus(){
+
+		if(this.status.equals(Constants.STATUS_CLOSED)){
+			this.position.setStatus(Constants.STATUS_CLOSED);
+			this.position.setClosingDate(new Date());
+		}
+		else if(this.status.equals(Constants.STATUS_OPEN))
+			this.position.setStatus(Constants.STATUS_OPEN);
+		else if(this.status.equals(Constants.STATUS_ONHOLD))
+			this.position.setStatus(Constants.STATUS_ONHOLD);
+
+		this.positionEJB.update(this.position);
+		
+		this.position=null;
+		
+		this.cleanBean();
+
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Estado actualizado."));
+	}
+
 	public void unloadPosition(){
 		this.position=null;
 		this.cleanBean();
+	}
+
+	public ScriptEntity getScript() {
+		return script;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Map<String, String> getAvailableStatus() {
+		return availableStatus;
+	}
+
+	public void setAvailableStatus(Map<String, String> availableStatus) {
+		this.availableStatus = availableStatus;
 	}
 
 }

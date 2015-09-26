@@ -9,6 +9,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -97,7 +98,7 @@ public class PositionEntity implements Serializable {
 	@Column(name = "title", nullable = false, length = 40)
 	private String title;
 
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name = "locations",
 		joinColumns=@JoinColumn(name="position_id"))
 	@Column(name = "location")
@@ -144,7 +145,7 @@ public class PositionEntity implements Serializable {
 	@Column(name = "description", length = 3000)
 	private String description;
 
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name = "advertising_channels",
 	        joinColumns = @JoinColumn(name = "position_id"))
 	@Column(name = "channel")

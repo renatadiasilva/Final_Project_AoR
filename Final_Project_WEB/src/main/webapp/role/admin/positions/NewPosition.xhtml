@@ -185,13 +185,13 @@
 				<p:outputLabel value="Número de vagas: " for="new-position-openings" />
 				<p:spinner id="new-position-openings"
 					value="#{newPositionCDI.openings}" required="true"
-					requiredMessage="Defina o número de vagas." max="100">
+					requiredMessage="Defina o número de vagas." max="100" min="1">
 					<p:ajax update="newPositionPart3" />
 				</p:spinner>
 
 				<p:outputLabel value="SLA (dias): " for="new-position-sla" />
 				<p:spinner id="new-position-sla" value="#{newPositionCDI.slaDays}"
-					required="true" requiredMessage="Defina o SLA." max="1000">
+					required="true" requiredMessage="Defina o SLA." max="1000" min="1">
 					<p:ajax update="newPositionPart3" />
 				</p:spinner>
 
@@ -201,33 +201,36 @@
 
 		<h:form id="newPositionPart4">
 
-			<br />
-			<h2>Gestor Responsável:</h2>
-			<p:dataTable id="managersTable"
-				emptyMessage="Não foram encontrados utilizadores." var="manager"
-				value="#{newPositionCDI.managers}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10">
-				<f:facet name="header">Gestores</f:facet>
-				<p:column headerText="Primeiro nome">
-					<h:outputText value="#{manager.firstName}" />
-				</p:column>
-				<p:column headerText="Sobrenome">
-					<h:outputText value="#{manager.lastName}" />
-				</p:column>
-				<p:column headerText="Email">
-					<h:outputText value="#{manager.email}" />
-				</p:column>
-				<p:column headerText="Seleccionar">
-					<p:commandButton value="Seleccionar" style="width:100%"
-						rendered="#{!newPositionCDI.checkManager(manager)}"
-						actionListener="#{newPositionCDI.setManager(manager)}"
-						icon="ui-icon-person" update="newPositionPart4" />
-					<p:commandButton rendered="#{newPositionCDI.checkManager(manager)}"
-						style="width:100%" value="Gestor Seleccionado"
-						icon="ui-icon-check" />
-				</p:column>
-			</p:dataTable>
+			<h:panelGroup rendered="#{userSessionManagement.admin}">
+				<br />
+				<h2>Gestor Responsável:</h2>
+				<p:dataTable id="managersTable"
+					emptyMessage="Não foram encontrados utilizadores." var="manager"
+					value="#{newPositionCDI.managers}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+					<f:facet name="header">Gestores</f:facet>
+					<p:column headerText="Primeiro nome">
+						<h:outputText value="#{manager.firstName}" />
+					</p:column>
+					<p:column headerText="Sobrenome">
+						<h:outputText value="#{manager.lastName}" />
+					</p:column>
+					<p:column headerText="Email">
+						<h:outputText value="#{manager.email}" />
+					</p:column>
+					<p:column headerText="Seleccionar">
+						<p:commandButton value="Seleccionar" style="width:100%"
+							rendered="#{!newPositionCDI.checkManager(manager)}"
+							actionListener="#{newPositionCDI.setManager(manager)}"
+							icon="ui-icon-person" update="newPositionPart4" />
+						<p:commandButton
+							rendered="#{newPositionCDI.checkManager(manager)}"
+							style="width:100%" value="Manager Seleccionado"
+							icon="ui-icon-check" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
 
 		</h:form>
 
@@ -277,7 +280,7 @@
 					update="messages newPositionPart1 newPositionPart2
 				newPositionPart2b newPositionPart2c newPositionPart3
 				newPositionPart4 newPositionPart5 createPosition" />
-				<p:outputLabel />
+				<br />
 				<p:commandButton value="Criar Posição" style="width:100%"
 					action="#{newPositionCDI.createPosition()}"
 					update="messages newPositionPart1 newPositionPart2
@@ -295,8 +298,15 @@
 					<p:outputLabel
 						value="Comentários: #{newPositionCDI.checkScript.comments}" />
 					<br />
-					<p:outputLabel value="Meter aqui a lista de perguntas" />
-					<br />
+					<p:dataTable id="questionsTable" emptyMessage="Sem questões."
+						var="question" value="#{newPositionCDI.script.questions}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+						paginator="true" rows="10">
+						<f:facet name="header">Questões</f:facet>
+						<p:column headerText="Título">
+							<h:outputText value="#{question.question}" />
+						</p:column>
+					</p:dataTable>
 				</h:panelGrid>
 				<p:commandButton value="Fechar" onclick="PF('checkScript').hide();" />
 			</p:dialog>
