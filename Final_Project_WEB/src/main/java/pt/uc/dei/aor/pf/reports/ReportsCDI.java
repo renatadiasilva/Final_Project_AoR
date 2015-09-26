@@ -665,7 +665,7 @@ public class ReportsCDI implements Serializable {
 	// redirects
 
 	public String returnToReportsHome() {
-		return "CreateReports.xhtml?faces-redirect=true";
+		return "CreateReport.xhtml?faces-redirect=true";
 	}
 
 	public String goToReportSubByPos() {
