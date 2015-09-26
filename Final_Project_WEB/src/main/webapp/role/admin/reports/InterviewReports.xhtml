@@ -31,21 +31,25 @@
 				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.interviewCountResults()}"
 					update="resultInterviewsReportTable
-						gridInterviewsReport messages"
+						gridInterviewsReport
+						 messages"
 					icon="ui-icon-script" rendered="#{!reportsCDI.interviewDetail}" />
 
 				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.interviewDetailOfCandidate()}"
 					update="resultInterviewsReportTable
+						interviewReports
 						interviewsReportChooseCand messages"
-					icon="ui-icon-script" rendered="#{reportsCDI.interviewDetail}" />
+					icon="ui-icon-script"
+					rendered="#{reportsCDI.interviewDetailStart()}" />
 
 				<p:commandButton value="Voltar à lista de candidatos"
 					action="#{reportsCDI.returnInterviewDetail()}"
 					update="resultInterviewsReportTable
+						interviewReports
 						interviewsReportChooseCand messages"
 					icon=" ui-icon-arrowreturn-1-w"
-					rendered="#{reportsCDI.interviewDetail}" />
+					rendered="#{reportsCDI.interviewDetailEnd()}" />
 
 			</h:panelGrid>
 
@@ -72,7 +76,7 @@
 
 		<!-- candidate to choose -->
 		<h:form id="interviewsReportChooseCand">
-			<h:panelGroup rendered="#{reportsCDI.interviewDetailDone()}">
+			<h:panelGroup rendered="#{reportsCDI.interviewDetailStart()}">
 				<br />
 				<h2>Escolha o candidato:</h2>
 

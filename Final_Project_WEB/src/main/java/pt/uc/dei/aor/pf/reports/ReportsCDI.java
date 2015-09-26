@@ -696,8 +696,12 @@ public class ReportsCDI implements Serializable {
 		return false;
 	}
 
-	public boolean interviewDetailDone() {
+	public boolean interviewDetailStart() {
 		return interviewDetail && interviewChoose;
+	}
+	
+	public boolean interviewDetailEnd() {
+		return interviewDetail && !interviewChoose;
 	}
 
 	public void returnInterviewDetail() {
