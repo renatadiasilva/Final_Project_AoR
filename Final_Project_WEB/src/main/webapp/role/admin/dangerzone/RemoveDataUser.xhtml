@@ -14,23 +14,25 @@
 	 </ui:define>
 
 	<ui:define name="contents">
-		<h1>Remoção dos dados de um utilizador</h1>
 
+		<h:form id="headerRemoveuser">
+			<h:panelGroup rendered="#{!dangerZoneCDI.removeTried}">
+				<h1>Remoção dos dados de um utilizador</h1>
+			</h:panelGroup>
+		</h:form>
+		
 		<h:form id="buttonsDangerZoneUser">
 			<h:panelGrid columns="5">
 
-				<h:panelGrid rendered="#{!dangerZoneCDI.removeDone}">
+				<h:panelGrid rendered="#{!dangerZoneCDI.removeTried}">
 					<p:commandButton value="Remover dados do utilizador"
 						action="#{dangerZoneCDI.removeUser()}"
 						update="gridDangerZoneUserOut
 							tableInfoDangerZoneUser buttonsDangerZoneUser
-							messages"
+							headerRemoveuser messages"
 						icon="ui-icon-trash">
 						<p:confirm header="Cuidado! Não poderá reverter esta operação!"
-							message="Tem a certeza que quer remover os dados de
-								#{dangerZoneCDI.userToRemove.firstName} 
-								#{dangerZoneCDI.userToRemove.lastName} 
-								(#{dangerZoneCDI.userToRemove.email})?"
+							message="Tem a certeza que quer remover os dados do utilizador?"
 							icon="ui-icon-alert" />
 					</p:commandButton>
 					<p:confirmDialog global="true">
@@ -57,7 +59,7 @@
 
 				<!-- user to choose -->
 				<h:panelGroup id="dangerZoneChooseUser"
-					rendered="#{!dangerZoneCDI.removeDone}">
+					rendered="#{!dangerZoneCDI.removeTried}">
 					<br />
 					<h2>Escolha o utilizador:</h2>
 
@@ -77,11 +79,11 @@
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 						paginator="true" rows="10">
 						<f:facet name="header">Utilizadores</f:facet>
-						<p:column headerText="Nome">
-							<h:outputText value="#{u.firstName} #{u.lastName}" />
-						</p:column>
 						<p:column headerText="Email">
 							<h:outputText value="#{u.email}" />
+						</p:column>
+						<p:column headerText="Nome">
+							<h:outputText value="#{u.firstName} #{u.lastName}" />
 						</p:column>
 						<p:column headerText="Seleccionar">
 							<p:commandButton value="Seleccionar" style="width:100%"
@@ -103,7 +105,7 @@
 				<f:facet name="header">
 					<h:outputText value="#{dangerZoneCDI.tableHeader}" />
 				</f:facet>
-				<p:column headerText="Info">
+				<p:column>
 					<h:outputText value="#{info}" />
 				</p:column>
 			</p:dataTable>

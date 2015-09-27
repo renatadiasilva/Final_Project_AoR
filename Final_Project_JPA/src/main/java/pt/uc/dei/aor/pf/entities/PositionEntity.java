@@ -43,12 +43,9 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Position.findByPositionAndCandidate",
 			query = "SELECT s.position FROM UserEntity u JOIN u.submissions s"
 					+ " WHERE u = :user AND s.position = :position "),
-	@NamedQuery(name = "Position.findOpenPositionsByScript",
-			query = "SELECT p FROM PositionEntity p WHERE p.status = :status"
-					+ " AND p.defaultScript = :script"),
-	@NamedQuery(name = "Position.findNotOpenPositionByScript",
-			query = "SELECT p FROM PositionEntity p WHERE p.status <> :status"
-					+ " AND p.defaultScript = :script"),
+	@NamedQuery(name = "Position.findPositionsByScript",
+			query = "SELECT p FROM PositionEntity p"
+					+ " WHERE p.defaultScript = :script"),
 	@NamedQuery(name = "Position.findPositionsManagedByUser",
 			query = "SELECT p FROM PositionEntity p WHERE"
 					+ " p.positionManager = :user ORDER BY p.positionCode"),

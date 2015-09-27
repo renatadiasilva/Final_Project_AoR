@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.admin;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+
 import java.io.Serializable;
 
 @Named
@@ -64,9 +66,11 @@ public class DangerZoneCDI implements Serializable {
 	private List<InterviewEntity> ilist;
 
 	private boolean showInfo;
-	private boolean removeDone;
+	private boolean removeTried;
 	private String keyword;
 	private String tableHeader;
+	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
+	private SimpleDateFormat ftHour = new SimpleDateFormat ("HH:mm"); 
 
 	// tirar
 	private Long id;
@@ -82,9 +86,10 @@ public class DangerZoneCDI implements Serializable {
 		scriptToRemove = null;
 		interviewToRemove = null;
 		showInfo = false;
-		removeDone = false;
+		removeTried = false;
 		keyword = "";
 		tableHeader = "";
+		info = new ArrayList<String>();
 	}
 
 	public void removeUsersDataStart() {
@@ -108,6 +113,7 @@ public class DangerZoneCDI implements Serializable {
 	// removal methods
 
 	public void listRemovedEmails() {
+		info.clear();
 		List<UserEntity> list = userEJB.findRemovedEmails();
 		for (UserEntity u : list) {
 			String emailR = u.getEmail();
@@ -117,9 +123,11 @@ public class DangerZoneCDI implements Serializable {
 	}
 
 	public void removeUser() {
+		removeTried = true;
 		log.info("Removing user");
 		if (userToRemove != null) {
-			log.debug("Email "+userToRemove.getEmail());
+			String userToRemoveEmail = userToRemove.getEmail();
+			log.debug("Email "+userToRemoveEmail);
 
 			// protection: don't delete data of superAdmin!
 			if (userToRemove.getEmail().equals(Constants.SUPER_ADMIN)) {
@@ -128,70 +136,86 @@ public class DangerZoneCDI implements Serializable {
 				log.info("Failure in removing user: superAdmin");
 				return;
 			}
-			
-			// check if there are open positions managed by the given user
+
+			// check if there are positions managed by the given user
 			List<PositionEntity> plist =
-				positionEJB.findOpenPositionsManagedByUser(userToRemove);
+					positionEJB.findPositionsManagedByUser(userToRemove);
 			if (plist != null && !plist.isEmpty()) {
 				errorMessage("Não é possível apagar os dados do"
-						+ " utilizador");
+						+ " utilizador.");
 				errorMessage("O utilizador é gestor das seguintes"
-						+ " posições abertas.");
-				tableHeader = "Posições abertas geridas pelo utilizador";
+						+ " posições:");
+				tableHeader = "Posições geridas pelo utilizador "
+						+userToRemoveEmail;
 				showInfo = true;
 				for (PositionEntity p : plist)
-					info.add(p.getPositionCode());
+					info.add("Posição \'"+p.getTitle()+"\' ("+p.getPositionCode()
+							+") aberta em "+ p.getOpeningDate());
 				log.info("Failure in removing user");
-				log.debug("Email "+userToRemove.getEmail());
+				log.debug("Email "+userToRemoveEmail);
 				return;
 			}
-						
-			// check if there are scheduled interviews which have
-			// only the given user as interviewer
+
+			// check if there are interviews where user is interviewer
 			List<InterviewEntity> ilist = 
-					interviewEJB.findScheduledInterviewsByUser(userToRemove);
-			List<InterviewEntity> list1int = 
-					new ArrayList<InterviewEntity>();
+					interviewEJB.findInterviewsOfUser(userToRemove);
 			if (ilist != null && !ilist.isEmpty()) {
-				for (InterviewEntity i : ilist) {
-					List<UserEntity> ulist = i.getInterviewers();
-					if (ulist != null && ulist.size() == 1)
-						 list1int.add(i);
-				}
-				
-				if (!list1int.isEmpty()) {
-					errorMessage("Não é possível apagar os dados do"
-							+ " utilizador");
-					errorMessage("O utilizador é o unico entrevistador das"
-							+ "seguintes entrevistas");
-					tableHeader = "Entrevistas cujo utilizador é o único"
-							+ "entrevistador";
-					showInfo = true;
-					for (InterviewEntity i : list1int)
-						info.add("Entrevista do candidato "
-								+i.getSubmission().getCandidate().getFirstName()
-								+" "+i.getSubmission().getCandidate().getLastName()
-								+" para a posição "
-								+i.getSubmission().getPosition().getPositionCode()
-								+" (data: "+i.getDate()+")");
-					log.info("Failure in removing user");
-					log.debug("Email "+userToRemove.getEmail());
-					return;
-				}
+				errorMessage("Não é possível apagar os dados do"
+						+ " utilizador.");
+				errorMessage("O utilizador é entrevistador das"
+						+ " seguintes entrevistas:");
+				tableHeader = "Entrevistas em que o utilizador "
+						+userToRemoveEmail+" é "
+						+ "entrevistador";
+				showInfo = true;
+				for (InterviewEntity i : ilist)
+					info.add("Entrevista do candidato "
+							+i.getSubmission().getCandidate().getFirstName()
+							+" "+i.getSubmission().getCandidate().getLastName()
+							+" para a posição \'"
+							+i.getSubmission().getPosition().getPositionCode()
+							+"\' (data e hora: "+ftDate.format(i.getDate())
+							+", "+ftHour.format(i.getDate())+")");
+				log.info("Failure in removing user");
+				log.debug("Email "+userToRemoveEmail);
+				return;
+			}
+
+			// check if there are submissions of user
+			List<SubmissionEntity> slist = 
+					submissionEJB.findSubmissionsOfCandidate(userToRemove);
+			if (slist != null && !slist.isEmpty()) {
+				errorMessage("Não é possível apagar os dados do"
+						+ " utilizador.");
+				errorMessage("O utilizador tem as"
+						+ " seguintes candidaturas submetidas:");
+				tableHeader = "Candidaturas do utilizador "
+						+userToRemoveEmail;
+				showInfo = true;
+				for (SubmissionEntity s : slist)
+					info.add("Candidatura à posição \'"
+							+s.getPosition().getPositionCode()
+							+"\' (estado: "+s.getStatus()+")");
+				log.info("Failure in removing user");
+				log.debug("Email "+userToRemoveEmail);
+				return;
 			}
 
 			userEJB.deleteData(userToRemove);
 
 			log.info("User data removed");
-			log.debug("Email "+userToRemove.getEmail());
+			log.debug("Email "+userToRemoveEmail);
 
-			removeDone = true;
-			notErrorMessage("Os dados do utilizador foram removidos");
+			removeTried = true;
+			notErrorMessage("Os dados do utilizador "
+					+ userToRemoveEmail+" foram removidos");
 
 		} else {
+			removeTried = false;
 			log.error("No chosen user");
 			errorMessage("Escolha um utilizador");
 		}
+
 	}
 
 	public void removeScript() {
@@ -240,7 +264,8 @@ public class DangerZoneCDI implements Serializable {
 							+" "+i.getSubmission().getCandidate().getLastName()
 							+" para a posição "
 							+i.getSubmission().getPosition().getPositionCode()
-							+" (data: "+i.getDate()+")");
+							+" (data e hora: "+ftDate.format(i.getDate())
+							+", "+ftHour.format(i.getDate())+")");
 				//adicionar código
 				log.info("Failure in removing script");
 				log.debug("Id "+id);
@@ -355,7 +380,8 @@ public class DangerZoneCDI implements Serializable {
 							+" "+i.getSubmission().getCandidate().getLastName()
 							+" para a posição "
 							+i.getSubmission().getPosition().getPositionCode()
-							+" (data: "+i.getDate()+")");
+							+" (data e hora: "+ftDate.format(i.getDate())
+							+", "+ftHour.format(i.getDate())+")");
 			}
 
 			if (delSub) {
@@ -513,12 +539,12 @@ public class DangerZoneCDI implements Serializable {
 		this.tableHeader = tableHeader;
 	}
 
-	public boolean isRemoveDone() {
-		return removeDone;
+	public boolean isRemoveTried() {
+		return removeTried;
 	}
 
-	public void setRemoveDone(boolean removeDone) {
-		this.removeDone = removeDone;
+	public void setRemoveTried(boolean removeTried) {
+		this.removeTried = removeTried;
 	}
 
 }
