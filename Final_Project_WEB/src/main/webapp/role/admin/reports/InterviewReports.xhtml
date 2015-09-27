@@ -53,7 +53,6 @@
 
 				<p:commandButton value="Voltar à lista de relatórios"
 					action="#{reportsCDI.returnToReportsHome()}"
-					update = "@all"
 					icon=" ui-icon-arrowreturn-1-w" />
 
 			</h:panelGrid>
@@ -98,7 +97,7 @@
 				</h:panelGrid>
 
 				<p:dataTable id="allInterviewReportTable"
-					emptyMessage="Não foram encontradas candidatos." var="cand"
+					emptyMessage="Não foram encontrados candidatos." var="cand"
 					value="#{reportsCDI.clist}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "

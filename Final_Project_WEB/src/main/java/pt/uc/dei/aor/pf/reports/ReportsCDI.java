@@ -53,11 +53,11 @@ public class ReportsCDI implements Serializable {
 
 	// data input fields
 	private Date d1, d2;
-	//tirar
-	private Long id;
 	private String period, keyword;
 	private UserEntity candidate;
 	private List<UserEntity> clist;
+	private PositionEntity position;
+	private List<PositionEntity> plist;
 	
 	// results
 	private String measureHeader;
@@ -86,7 +86,9 @@ public class ReportsCDI implements Serializable {
 	private boolean submissionsBySource;
 	
 	private boolean rejectSubm;
-	private boolean proposSubm;
+	
+	private boolean positionDetail;
+	private boolean positionChoose;
 
 	// present table only after hiting button
 	public boolean checkIfNotNull() {
@@ -95,14 +97,21 @@ public class ReportsCDI implements Serializable {
 
 	// clean all data when enter the page
 	public void clean() {
-		id = 0L;
-		period = "MONTHLY";
+		period = Constants.PERIOD_MONTHLY;
 		measureHeader = tableHeader = periodHeader = measureFooter = "";
 		totalResult = emptyMessage = "";
 		report = null;
 		d1 = d2 = new Date();
-		interviewChoose = true;
-		if (interviewChoose) clist = getAllCandidates();
+		keyword = "";
+		if (interviewDetail) {
+			interviewChoose = true;
+			clist = getAllCandidates();
+		}
+		positionDetail = true; // meter no redirect
+		if (positionDetail) {
+			positionChoose = true;
+			plist = getAllClosedPositions();
+		}
 	}
 
 	// counting submissions by position between two dates
@@ -529,7 +538,7 @@ public class ReportsCDI implements Serializable {
 				+ "of a given closed position");
 
 		// choose from the list of positions
-		PositionEntity position = positionEJB.find(id);
+//		PositionEntity position = positionEJB.find(id);
 		if (position != null && 
 				position.getStatus().equals(Constants.STATUS_CLOSED)) {
 			log.debug("Position "+position.getPositionCode());				
@@ -552,7 +561,8 @@ public class ReportsCDI implements Serializable {
 			// compute overall submissions of position
 			totalResult = list.size()+"";
 
-		} else log.info("No closed position with id "+id);
+		} else log.info("Error: the chosen closed position"
+				+ " is not closed?!?!");
 
 	}
 
@@ -755,6 +765,13 @@ public class ReportsCDI implements Serializable {
 		return "ResultReports?faces-redirect=true";
 	}
 	
+	// pôr no createReport
+	public String goToReportPosDetail() {
+		positionDetail = true;
+		return "SubmissionReports?faces-redirect=true";
+		
+	}
+	
 	// methods for interview reports
 	
 	public List<UserEntity> getAllCandidates() {
@@ -798,6 +815,44 @@ public class ReportsCDI implements Serializable {
 	public boolean averageTime() {
 		return timeTo1stInt || timeToClose || timeToHired;
 	}
+
+	// methods for position detail
+	
+	public List<PositionEntity> getAllClosedPositions() {
+		log.info("Listing all closed positions");
+		return this.positionEJB.findClosedPositions();
+	}
+
+
+	public void getPositionsByKeyword() {
+		log.info("Listing position by keyword");
+		String pattern = SearchPattern.preparePattern(keyword);
+		log.debug("Internal search string: "+pattern);
+		this.plist = positionEJB.findPositionsByKeyword(pattern);
+	}
+	
+	public boolean checkPosition(PositionEntity position){
+		if(this.position==null)return false;
+		if(this.position.getId()==position.getId())return true;
+		return false;
+	}
+
+	public boolean positionDetailStart() {
+		return positionDetail && positionChoose;
+	}
+	
+	public boolean positionDetailEnd() {
+		return positionDetail && !positionChoose;
+	}
+
+	public void returnPositionDetail() {
+		positionChoose = true;
+		plist = getAllClosedPositions();
+		report = null;
+		position = null;
+		keyword = "";
+	}
+	
 
 	// private methods
 
@@ -950,14 +1005,6 @@ public class ReportsCDI implements Serializable {
 
 	public void setProposalPos(boolean proposalPos) {
 		this.proposalPos = proposalPos;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getPeriod() {
@@ -1130,6 +1177,38 @@ public class ReportsCDI implements Serializable {
 
 	public String yearly() {
 		return Constants.PERIOD_YEARLY;
+	}
+
+	public boolean isRejectSubm() {
+		return rejectSubm;
+	}
+
+	public void setRejectSubm(boolean rejectSubm) {
+		this.rejectSubm = rejectSubm;
+	}
+
+	public PositionEntity getPosition() {
+		return position;
+	}
+
+	public void setPosition(PositionEntity position) {
+		this.position = position;
+	}
+
+	public List<PositionEntity> getPlist() {
+		return plist;
+	}
+
+	public void setPlist(List<PositionEntity> plist) {
+		this.plist = plist;
+	}
+
+	public boolean isPositionChoose() {
+		return positionChoose;
+	}
+
+	public void setPositionChoose(boolean positionChoose) {
+		this.positionChoose = positionChoose;
 	}
 
 }

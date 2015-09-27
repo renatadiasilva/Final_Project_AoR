@@ -6,61 +6,80 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener = "#{reportsCDI.clean()}" />
+		<f:viewAction actionListener="#{reportsCDI.clean()}" />
 	</f:metadata>
-	
+
 	<ui:define name="titulo">
-	Admin - Relatórios Gerais - #{styleSessionManagement.companyName}
+	Admin - Relatórios Gerais com detalhe
+	 - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Relatórios gerais</h1>
+		<!-- headers -->
+		<h:panelGroup rendered="#{reportsCDI.rejectSubm}">
+			<h1>Candidaturas rejeitadas</h1>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{!reportsCDI.rejectSubm}">
+			<h1>Propostas apresentadas</h1>
+		</h:panelGroup>
 
 		<h:form id="resultReports">
 
 			<h:panelGrid id="buttonsResultReports" columns="5">
 
-				<p:commandButton value="Candidaturas rejeitadas"
+				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.rejectedCountResults()}"
-					update="@form, messages" icon="ui-icon-script" />
+					update="@form, messages" icon="ui-icon-script"
+					rendered="#{reportsCDI.rejectSubm}" />
 
 				<p:commandButton value="Propostas apresentadas"
 					action="#{reportsCDI.proposalCountResults()}"
-					update="@form, messages" icon="ui-icon-script" />
+					update="@form, messages" icon="ui-icon-script"
+					rendered="#{!reportsCDI.rejectSubm}" />
+
+				<p:commandButton value="Voltar à lista de relatórios"
+					action="#{reportsCDI.returnToReportsHome()}"
+					icon=" ui-icon-arrowreturn-1-w" />
 
 			</h:panelGrid>
 
 			<h:panelGrid id="gridResultReports">
 
 				<h:panelGroup>
-				<p:outputLabel value="De : " for="resultrep-date1" />
-				<p:calendar id="resultrep-date1" value="#{reportsCDI.d1}"
-					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+100" locale="pt" size="35" />
+					<p:outputLabel value="De : " for="resultrep-date1" />
+					<p:calendar id="resultrep-date1" value="#{reportsCDI.d1}"
+						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" />
 				</h:panelGroup>
 
 				<h:panelGroup>
-				<p:outputLabel value="Até: " for="resultrep-date2" />
-				<p:calendar id="resultrep-date2" value="#{reportsCDI.d2}"
-					pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-					yearRange="c-100:c+100" locale="pt" size="35" />
+					<p:outputLabel value="Até: " for="resultrep-date2" />
+					<p:calendar id="resultrep-date2" value="#{reportsCDI.d2}"
+						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" />
 				</h:panelGroup>
-				
-				<p:outputLabel value="Período (dia/mês/ano): " for="resultrep-period" />
-				<p:inputText id="resultrep-period" value="#{reportsCDI.period}"
-					size="35" />
+
+				<h:panelGroup>
+					<p:selectOneMenu id="resultrep-period"
+						value="#{reportsCDI.period}"
+						style="width:100px">
+						<f:selectItem itemLabel="Diário" itemValue="#{reportsCDI.daily()}" />
+						<f:selectItem itemLabel="Mensal"
+							itemValue="#{reportsCDI.monthly()}" />
+						<f:selectItem itemLabel="Anual" itemValue="#{reportsCDI.yearly()}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
 
 			</h:panelGrid>
-			
+
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
 				value="#{reportsCDI.report}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10"
-				rendered="#{reportsCDI.checkIfNotNull()}">
+				paginator="true" rows="10" rendered="#{reportsCDI.checkIfNotNull()}">
 				<f:facet name="header">
-					<h:outputText value="#{reportsCDI.tableHeader}"/>
-    		    </f:facet>
+					<h:outputText value="#{reportsCDI.tableHeader}" />
+				</f:facet>
 
 				<p:column headerText="#{reportsCDI.periodHeader}">
 					<h:outputText value="#{item.dateHeader}" />
@@ -73,11 +92,9 @@
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
-						<p:column colspan="2"
-							footerText="#{reportsCDI.measureFooter} "
+						<p:column colspan="2" footerText="#{reportsCDI.measureFooter} "
 							style="text-align:right" />
-						<p:column footerText=
-							"#{reportsCDI.totalResult}" />
+						<p:column footerText="#{reportsCDI.totalResult}" />
 					</p:row>
 				</p:columnGroup>
 			</p:dataTable>

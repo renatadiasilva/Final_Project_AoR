@@ -6,16 +6,16 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener = "#{reportsCDI.clean()}" />
+		<f:viewAction actionListener="#{reportsCDI.clean()}" />
 	</f:metadata>
-	
+
 	<ui:define name="titulo">
 	Admin - Relatório detalhado de uma posição
 	- #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Relatório detalhado de uma posição</h1>
+		<h1>Relatório detalhado de uma posição fechada</h1>
 
 		<h:form id="detailPositionReports">
 
@@ -23,24 +23,78 @@
 
 				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.submissionDetailsOfPosition()}"
-					update="@form, messages" icon="ui-icon-script" />
+					update="subReportTable messages" icon="ui-icon-script" />
+
+				<p:commandButton value="Voltar à lista de relatórios"
+					action="#{reportsCDI.returnToReportsHome()}"
+					icon=" ui-icon-arrowreturn-1-w" />
 
 			</h:panelGrid>
+		</h:form>
 
-			<h:panelGrid id="gridDetailPositionReport" columns="8">
+		<!-- candidate to choose -->
+		<h:form id="submReportChoosePos">
+			<h:panelGroup rendered="#{reportsCDI.positionChoose}">
+				<br />
+				<h2>Escolha a posição:</h2>
 
-				<p:outputLabel value="Id (posição): " for="detailpos-id" />
-				<p:inputText id="detailpos-id" value="#{reportsCDI.id}"
-					size="35" />
+<!-- erro query -->
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar posição por palavra chave: "
+						for="subm-report-keyword" />
+					<p:inputText id="subm-report-keyword" value="#{reportsCDI.keyword}"
+						style="width:100%" />
+					<p:commandButton action="#{reportsCDI.getPositionsByKeyword()}"
+						update="allClosedPositionsReportTable messages"
+						icon="ui-icon-search" />
+				</h:panelGrid>
 
-			</h:panelGrid>
-
+				<p:dataTable id="allClosedPositionsReportTable"
+					emptyMessage="Não foram encontradas posições." var="pos"
+					value="#{reportsCDI.plist}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+					<f:facet name="header">Posições fechadas</f:facet>
+					<p:column headerText="Código">
+						<h:outputText value="#{pos.positionCode}" />
+					</p:column>
+					<p:column headerText="Título">
+						<h:outputText value="#{pos.title}" />
+					</p:column>
+					<p:column headerText="Data Abertura">
+						<h:outputText value="#{pos.openingDate}" />
+					</p:column>
+					<p:column headerText="Data Fecho">
+						<h:outputText value="#{pos.closingDate}" />
+					</p:column>
+					<p:column headerText="Empresa">
+						<h:outputText value="#{pos.company}" />
+					</p:column>
+					<p:column headerText="Área Técnica">
+						<h:outputText value="#{pos.technicalArea}" />
+					</p:column>
+					<p:column headerText="Seleccionar">
+						<p:commandButton value="Seleccionar" style="width:100%"
+							rendered="#{!reportsCDI.checkPosition(pos)}"
+							actionListener="#{reportsCDI.setPosition(pos)}"
+							icon="ui-icon-person" update="submReportChoosePos" />
+						<p:commandButton rendered="#{reportsCDI.checkPosition(pos)}"
+							style="width:100%" value="Posição Seleccionada"
+							icon="ui-icon-check" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<br />
+		<br />
+		<!-- result table -->
+		<h:form id="subReportTable">
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
 				value="#{reportsCDI.report}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10"
-				rendered="#{reportsCDI.checkIfNotNull()}">
+				paginator="true" rows="10" rendered="#{reportsCDI.checkIfNotNull()}">
 				<f:facet name="header">
 					<h:outputText value="#{reportsCDI.tableHeader}" />
 				</f:facet>
@@ -57,8 +111,8 @@
 				</p:columnGroup>
 
 				<p:column>
-					<h:outputText value=
-						"#{item.submission.candidate.firstName}
+					<h:outputText
+						value="#{item.submission.candidate.firstName}
 						#{item.submission.candidate.lastName}" />
 				</p:column>
 				<p:column>
@@ -69,8 +123,7 @@
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
-						<p:column colspan="2" 
-							footerText="#{reportsCDI.measureFooter}"
+						<p:column colspan="2" footerText="#{reportsCDI.measureFooter}"
 							style="text-align:right" />
 						<p:column footerText="#{reportsCDI.totalResult}" />
 					</p:row>

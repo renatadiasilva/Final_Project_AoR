@@ -34,15 +34,19 @@
 					update="@form, messages" icon="ui-icon-script" 
 					rendered="#{reportsCDI.submissionPos}" />
 
-				<p:commandButton value="Candidaturas rejeitadas por posição"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.rejectedCountByPosition()}"
 					update="@form, messages" icon="ui-icon-script" 
 					rendered="#{reportsCDI.rejectedPos}" />
 
-				<p:commandButton value="Propostas apresentadas por posição"
+				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.proposalCountByPosition()}"
 					update="@form, messages" icon="ui-icon-script" 
 					rendered="#{reportsCDI.proposalPos}" />
+
+				<p:commandButton value="Voltar à lista de relatórios"
+					action="#{reportsCDI.returnToReportsHome()}"
+					icon=" ui-icon-arrowreturn-1-w" />
 
 			</h:panelGrid>
 

@@ -74,6 +74,10 @@
 					action="#{reportsCDI.sourceCount()}" update="@form, messages"
 					icon="ui-icon-script" rendered="#{reportsCDI.submissionsBySource}" />
 
+				<p:commandButton value="Voltar à lista de relatórios"
+					action="#{reportsCDI.returnToReportsHome()}"
+					icon=" ui-icon-arrowreturn-1-w" />
+
 			</h:panelGrid>
 
 			<h:panelGrid id="gridTimeSearch">
@@ -95,9 +99,7 @@
 				<h:panelGroup rendered="#{!reportsCDI.submissionsBySource}">
 					<p:selectOneMenu rendered="#{reportsCDI.averageTime()}"
 					 	id="numbreport-period1"
-						value="#{reportsCDI.period}" style="width:150px">
-						<f:selectItem itemLabel="Seleccione um período"
-							itemValue="" />
+						value="#{reportsCDI.period}" style="width:100px">
 						<f:selectItem itemLabel="Mensal"
 							itemValue="#{reportsCDI.monthly()}" />
 						<f:selectItem itemLabel="Anual"
@@ -105,9 +107,7 @@
 					</p:selectOneMenu>
 					<p:selectOneMenu rendered="#{!reportsCDI.averageTime()}"
 					 	id="numbreport-period2"
-						value="#{reportsCDI.period}" style="width:150px">
-						<f:selectItem itemLabel="Seleccione um período"
-							itemValue="" />
+						value="#{reportsCDI.period}" style="width:100px">
 						<f:selectItem itemLabel="Diário"
 							itemValue="#{reportsCDI.daily()}" />
 						<f:selectItem itemLabel="Mensal"
@@ -116,7 +116,7 @@
 							itemValue="#{reportsCDI.yearly()}" />
 					</p:selectOneMenu>
 				</h:panelGroup>
-
+<!-- testar sem periodo -->
 			</h:panelGrid>
 
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
