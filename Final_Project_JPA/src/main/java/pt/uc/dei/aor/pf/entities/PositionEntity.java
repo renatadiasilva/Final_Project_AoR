@@ -1,9 +1,12 @@
 package pt.uc.dei.aor.pf.entities;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -174,12 +177,11 @@ public class PositionEntity implements Serializable {
 		this.title = title;
 		this.openingDate = new Date(); // today
 
-		// generate code position (improve this!!!!)
 		Calendar cal = Calendar.getInstance();
-		this.positionCode = title.substring(0, (int) Math.min(3,title.length()))
-				+technicalArea.substring(0,(int) Math.min(3,title.length()))
-				+cal.get(Calendar.DAY_OF_MONTH)
-				+(cal.get(Calendar.MONTH)+1)+cal.get(Calendar.YEAR);
+//		this.positionCode = title.substring(0, (int) Math.min(3,title.length()))
+//				+technicalArea.substring(0,(int) Math.min(3,title.length()))
+//				+cal.get(Calendar.DAY_OF_MONTH)
+//				+(cal.get(Calendar.MONTH)+1)+cal.get(Calendar.YEAR);
 		
 		this.locations = locations;
 		this.status = status;
@@ -198,6 +200,25 @@ public class PositionEntity implements Serializable {
 		this.advertisingChannels = advertisingChannels;
 		this.defaultScript = defaultScript;
 		this.hired_people = 0;  // change each time a submission turns HIRED
+		
+		this.generatePositionCode();
+	}
+	
+	private void generatePositionCode(){
+		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		
+		String tech;
+		
+		if(this.technicalArea.length()<=4)
+			tech=technicalArea;
+		else 
+			tech=this.technicalArea.substring(0, 4);
+		
+		this.positionCode = tech+"-"+this.positionCreator.getId()+"-"+df.format(this.openingDate);
+		
+		// A retirar daqui para a frente
+		Random random=new Random();
+		this.positionCode+="-"+random.nextInt(1000);
 	}
 
 	public Long getId() {
