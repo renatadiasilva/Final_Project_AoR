@@ -54,22 +54,6 @@ public class InterviewSearchCDI {
 	public InterviewSearchCDI() {
 	}
 	
-	public void remove() {
-		log.info("Removing interview by id");
-		log.debug("Id "+id);
-		InterviewEntity interview = interviewEJB.find(id);
-		if (interview != null) {
-			if (!interviewEJB.delete(interview))
-				System.out.println("Não pode apagar entrevista com resultados."
-						+ " Fale com o gestor da base de dados.");
-		} else log.error("No interview with id "+id);
-	}
-
-	public void searchAllInterviews() {
-		log.info("Searching for all interviews");
-		this.ilist = interviewEJB.findAll();
-	}
-
 	public void searchCarriedOutInterviews() {
 		log.info("Searching carried out interviews between two dates");
 		log.debug("Dates between "+date1+" and "+date2);

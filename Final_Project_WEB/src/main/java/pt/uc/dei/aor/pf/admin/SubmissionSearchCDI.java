@@ -18,7 +18,6 @@ import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
-import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -56,22 +55,6 @@ public class SubmissionSearchCDI implements Serializable {
 	private List<SubmissionEntity> slist;
 
 	public SubmissionSearchCDI() {
-	}
-
-	public void remove() {
-		log.info("Removing submission by id");
-		log.debug("Id "+id);
-		SubmissionEntity submission = submissionEJB.find(id);
-		if (submission != null) {
-			List<InterviewEntity> ilist = 
-					interviewEJB.findInterviewsOfSubmission(submission);
-			if (ilist != null && !ilist.isEmpty()) {
-				System.out.println("A candidatura tem entrevistas."
-						+ " Quer mesmo assim removê-la?");
-				boolean delSub = true; // pedir resposta
-				if (delSub) submissionEJB.delete(submission);
-			}
-		} else log.error("No submission with id "+id);
 	}
 
 	public void searchAll() {

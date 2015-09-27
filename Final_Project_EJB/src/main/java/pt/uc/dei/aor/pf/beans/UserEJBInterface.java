@@ -10,7 +10,7 @@ public interface UserEJBInterface {
 	public abstract void save(UserEntity user);
 	public abstract void update(UserEntity user);
 	public abstract void updatePassword(UserEntity user);
-	public abstract int delete(UserEntity user);
+	public abstract void deleteData(UserEntity user);
 	public abstract UserEntity find(Long id);
 	public abstract List<UserEntity> findAll();
 	public abstract List<UserEntity> findAllNotRemoved();

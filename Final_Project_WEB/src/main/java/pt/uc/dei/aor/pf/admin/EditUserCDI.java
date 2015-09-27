@@ -101,12 +101,6 @@ public class EditUserCDI implements Serializable {
 		
 	}
 
-	public void deleteUser(UserEntity user){
-		// Listar as posiçoes dependentes do user antes de apagar!!!
-
-		this.userEJB.delete(user);
-	}
-
 	public String getUserEmail(){
 		if(this.userToEdit==null)return "";
 		return this.userToEdit.getEmail();

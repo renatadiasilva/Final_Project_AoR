@@ -19,7 +19,6 @@ import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
@@ -61,24 +60,6 @@ public class PositionSearchCDI {
 
 	public boolean checkIfNotEmpty() {
 		return plist != null && !plist.isEmpty();
-	}
-
-	public void remove() {
-		log.info("Removing position by id");
-		log.debug("Id "+idPSc);
-		PositionEntity position = positionEJB.find(idPSc);
-		if (position != null) {
-			if (!positionEJB.delete(position)) {
-				System.out.println("Não pode apagar posição com candidaturas");
-				System.out.println("Se quiser mesmo terá que as apagar"
-						+ " manualmente...");
-				System.out.println("Não quer em alternativa colocar a "
-						+ "posição em hold ou fechá-la?");
-				List<SubmissionEntity> slist = 
-					submissionEJB.findSubmissionsOfPosition(position);
-				System.out.println(slist); // adicionar código
-			}
-		} else log.error("No position with id "+idPSc);
 	}
 
 	public void searchAll() {

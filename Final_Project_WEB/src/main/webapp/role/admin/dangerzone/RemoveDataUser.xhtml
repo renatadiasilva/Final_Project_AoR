@@ -22,9 +22,9 @@
 				<h:panelGrid rendered="#{!dangerZoneCDI.removeDone}">
 					<p:commandButton value="Remover dados do utilizador"
 						action="#{dangerZoneCDI.removeUser()}"
-						update="gridDangerZoneUser tableInfoDangerZoneUser
-							dangerZoneChooseUser buttonsDangerZoneUser
-							 messages"
+						update="gridDangerZoneUserOut
+							tableInfoDangerZoneUser buttonsDangerZoneUser
+							messages"
 						icon="ui-icon-trash">
 						<p:confirm header="Cuidado! Não poderá reverter esta operação!"
 							message="Tem a certeza que quer remover os dados de
@@ -52,11 +52,12 @@
 			</h:panelGrid>
 		</h:form>
 
-		<h:form>
+		<h:form id="gridDangerZoneUserOut">
 			<h:panelGrid id="gridDangerZoneUser" columns="4">
 
 				<!-- user to choose -->
-				<h:panelGroup id="dangerZoneChooseUser">
+				<h:panelGroup id="dangerZoneChooseUser"
+					rendered="#{!dangerZoneCDI.removeDone}">
 					<br />
 					<h2>Escolha o utilizador:</h2>
 
@@ -94,9 +95,10 @@
 					</p:dataTable>
 				</h:panelGroup>
 			</h:panelGrid>
+		</h:form>
 
-			<p:dataTable id="tableInfoDangerZoneUser"
-				emptyMessage="Nada a mostrar." var="info"
+		<h:form id="tableInfoDangerZoneUser">
+			<p:dataTable emptyMessage="Nada a mostrar." var="info"
 				value="#{dangerZoneCDI.info}" rendered="#{dangerZoneCDI.showInfo}">
 				<f:facet name="header">
 					<h:outputText value="#{dangerZoneCDI.tableHeader}" />

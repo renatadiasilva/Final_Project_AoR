@@ -19,7 +19,6 @@ import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.dao.UserDao;
 import pt.uc.dei.aor.pf.dao.UserInfoDao;
-import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.entities.UserInfoEntity;
@@ -97,16 +96,10 @@ public class UserEJBImp implements UserEJBInterface {
 	}
 
 	@Override
-	public int delete(UserEntity user) {
+	public void deleteData(UserEntity user) {
 		log.info("Deleting data of user from DB");
 		
-		int code = 0;
-		
-		// protection: don't delete data of superAdmin!
-		if (user.getEmail().equals(Constants.SUPER_ADMIN)) return -1;
-		
 		// remove the data not the user
-		//		user.setEmail(Constants.REMOVED_DATA); ??
 		user.setEmail(user.getEmail()+Constants.REMOVED_DATA);
 		user.setPassword(Constants.REMOVED_DATA);
 		user.setFirstName(Constants.REMOVED_DATA);
@@ -118,37 +111,7 @@ public class UserEJBImp implements UserEJBInterface {
 		UserInfoEntity userInfo = user.getUserInfo();
 		if (userInfo != null) user.setUserInfo(null);
 
-		// tirar fora???
-		//there are open positions managed by the given user
-		List<PositionEntity> plist = 
-				positionDAO.findOpenPositionsManagedByUser(user);
-		if (plist != null && !plist.isEmpty()) code++;
-
-		// there are scheduled interviews which have
-		// only the given user as interviewer
-		List<InterviewEntity> ilist = 
-				interviewDAO.findScheduledInterviewsByUser(user);
-		if (ilist != null && !ilist.isEmpty()) {
-			for (InterviewEntity i : ilist) {
-				List<UserEntity> ulist = i.getInterviewers();
-				if (ulist != null && ulist.size() == 1) {
-					code += 2;
-					break;
-				}
-			}
-		}
-
 		userDAO.update(user);
-		return code;
-		// code =-1, error
-		// code = 0, no changes needed
-		// code = 1, there are positions but no interviews
-		// code = 2, there are interviews but no positions
-		// code = 3, there are positions and interviews
-		
-		// limpar também dados candidaturas/entrevistas
-		// realizadas?? 
-		// tipo motivation letter/feedback/answers?
 	}
 
 	@Override
