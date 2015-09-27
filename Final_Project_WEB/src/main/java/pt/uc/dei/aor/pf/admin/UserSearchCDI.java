@@ -15,8 +15,6 @@ import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
-import pt.uc.dei.aor.pf.entities.InterviewEntity;
-import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import java.io.Serializable;
@@ -60,47 +58,6 @@ public class UserSearchCDI implements Serializable {
 		ulist = new ArrayList<UserEntity>();
 	}
 
-	public void remove() {
-		log.info("Removing user by id");
-		log.debug("Id "+id);
-		UserEntity user = userEJB.find(id);
-		if (user != null) {
-			int deleteCode = userEJB.delete(user);
-			switch (deleteCode) {
-			case -1:
-				System.out.println("Não é possível apagar os dados"
-					+ " do superAdmin! Fale com o gestor da base de dados");
-				break;
-			case -2: 
-				// avisar que existem posições que precisam de novo gestor
-				System.out.println("Há posições abertas geridas pelo user"
-						+ " a apagar");
-				System.out.println("Quer mudar os gestores agora ou depois"
-						+ " manualmente?");
-				// query repetida...
-				List<PositionEntity> plist = 
-						positionEJB.findOpenPositionsManagedByUser(user);
-				System.out.println(plist); // adicionar código
-				break;
-			case -3:
-				// avisar que existem entrevistas agendadas que
-				// preciam novo entrevistador
-				System.out.println("Há entrevistas agendadas que só têm"
-						+ " como entrevistador o user a apagar");
-				System.out.println("Quer adicionar entrevistador agora"
-						+ " ou depois manualmente?"); 
-				// query repetida...
-				List<InterviewEntity> ilist = 
-						interviewEJB.findScheduledInterviewsByUser(user);
-				// falta verificar quais só têm um entrevistador...
-				System.out.println(ilist); // adicionar código
-				break;
-			}
-		} else log.error("No user with id "+id);
-	}
-
-	// ALL
-	
 	public List<UserEntity> getAllUlist() {
 		this.searchAll();
 		return ulist;

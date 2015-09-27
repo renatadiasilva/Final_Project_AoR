@@ -238,16 +238,17 @@ public class PositionSearchCDI {
 		this.plist = positionEJB.findPositionsByKeyword(pattern);
 	}
 
-	public void searchPositionsByKeywordAndManager() {
+	public void searchPositionsByKeywordAndManager(Long idM) {
 		log.info("Searching for positions of manager by keyword");
-		UserEntity manager = userEJB.find(idU);
+		log.debug("Id "+idM);
+		UserEntity manager = userEJB.find(idM);
 		if ( (manager != null) && (manager.getRoles().contains("MANAGER")) ) {
 			log.debug("Manager "+manager.getFirstName());
 			String pattern = SearchPattern.preparePattern(keyword);
 			log.debug("Internal search string: "+pattern);
 			this.plist = positionEJB.findPositionsByKeywordAndManager(pattern,
 					manager);
-		} else log.error("No manager with id "+idU);
+		} else log.error("No manager with id "+idM);
 	}
 	
 	public void searchPositionByScript() {
@@ -268,20 +269,22 @@ public class PositionSearchCDI {
 		} else log.error("No script with id "+idPSc);
 	}
 
-	public void searchPositionManagedByUser(Long idU) {
+	// cuidado página search
+	public void searchPositionsManagedByUser(Long idM) {
 		log.info("Searching for positions by manager");
-		UserEntity manager = userEJB.find(idU);
+		log.debug("Id "+idM);
+		UserEntity manager = userEJB.find(idM);
 		if (manager != null && manager.getRoles().contains("MANAGER")) {
-			log.debug("Script "+manager.getFirstName());
+			log.debug("Manager "+manager.getFirstName());
 			this.plist = positionEJB.findPositionsManagedByUser(manager);
-		} else log.error("No manager with id "+idU);
+		} else log.error("No manager with id "+idM);
 	}
 
 	public void searchOpenPositionManagedByUser() {
 		log.info("Searching for open positions by manager");
 		UserEntity manager = userEJB.find(idU);
 		if (manager != null && manager.getRoles().contains("MANAGER")) {
-			log.debug("Script "+manager.getFirstName());
+			log.debug("Manager "+manager.getFirstName());
 			this.plist = positionEJB.findOpenPositionsManagedByUser(manager);
 		} else log.error("No manager with id "+idU);
 	}

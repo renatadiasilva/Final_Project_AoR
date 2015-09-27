@@ -963,11 +963,6 @@ public class ReportsCDI implements Serializable {
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
 
-	//	private void warningMessage(String message){
-	//		FacesContext.getCurrentInstance().addMessage(null, 
-	//			new FacesMessage(message));
-	//	}
-
 	// getters and setters
 
 	public Date getD1() {

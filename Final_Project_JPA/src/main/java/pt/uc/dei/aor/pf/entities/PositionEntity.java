@@ -51,7 +51,7 @@ import javax.validation.constraints.NotNull;
 					+ " AND p.defaultScript = :script"),
 	@NamedQuery(name = "Position.findPositionsManagedByUser",
 			query = "SELECT p FROM PositionEntity p WHERE"
-					+ " p.positionManager = :user"),
+					+ " p.positionManager = :user ORDER BY p.positionCode"),
 	@NamedQuery(name = "Position.findOpenPositionsManagedByUser",
 			query = "SELECT p FROM PositionEntity p WHERE"
 					+ " p.positionManager = :user AND p.status = :status"),

@@ -16,30 +16,41 @@
 
 			<h:panelGrid id="buttonsDangerZone" columns="5">
 
-				<p:commandButton value="Remover user"
-					action="#{dangerZoneCDI.removeUser()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+				<h:panelGrid>
+					<p:commandButton value="Remover user"
+						action="#{dangerZoneCDI.removeUser()}" update="@form, messages"
+						icon="ui-icon-trash">
+						<!-- 					nome e email utilizador -->
+						<p:confirm header="Cuidado!! Não poderá reverter esta operação!"
+							message="Tem a certeza que quer remover os dados do utilizador?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true">
+						<h:panelGrid columns="2" style="width:100%">
+							<p:commandButton value="Sim" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</h:panelGrid>
+					</p:confirmDialog>
+				</h:panelGrid>
+
 
 				<p:commandButton value="Remover candidatura"
 					action="#{dangerZoneCDI.removeSubmission()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+					update="@form, messages" icon="ui-icon-trash" />
 
 				<p:commandButton value="Remover posição"
-					action="#{dangerZoneCDI.removePosition()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+					action="#{dangerZoneCDI.removePosition()}" update="@form, messages"
+					icon="ui-icon-trash" />
 
 				<p:commandButton value="Remover guião"
-					action="#{dangerZoneCDI.removeScript()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+					action="#{dangerZoneCDI.removeScript()}" update="@form, messages"
+					icon="ui-icon-trash" />
 
 				<p:commandButton value="Remover entrevista"
 					action="#{dangerZoneCDI.removeInterview()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+					update="@form, messages" icon="ui-icon-trash" />
 
 			</h:panelGrid>
 
@@ -50,9 +61,9 @@
 					size="35" />
 
 			</h:panelGrid>
-			
-			<p:dataTable emptyMessage="Nada a mostrar." 
-				var="info" value="#{dangerZoneCDI.info}">
+
+			<p:dataTable emptyMessage="Nada a mostrar." var="info"
+				value="#{dangerZoneCDI.info}">
 				<f:facet name="header">Listagem</f:facet>
 				<p:column headerText="Info">
 					<h:outputText value="#{info}" />

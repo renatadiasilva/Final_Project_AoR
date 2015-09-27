@@ -16,7 +16,7 @@
 		<f:metadata>
 			<f:viewAction actionListener=
 				"#{positionSearchCDI.
-					searchPositionManagedByUser(userSessionManagement.
+					searchPositionsManagedByUser(userSessionManagement.
 					currentUserClone.id)}" />
 		</f:metadata>
 
@@ -24,7 +24,20 @@
 
 		<h:form id="myPositions">
 
-			<p:dataTable
+			<h:panelGrid columns="3" style="width:100%">
+				<p:watermark value="Procurar posição por palavra chave: "
+					for="mypos-keyword" />
+				<p:inputText id="mypos-keyword"
+					value="#{positionSearchCDI.keyword}"
+					style="width:100%" />
+				<p:commandButton
+					action="#{positionSearchCDI.searchPositionsByKeywordAndManager(
+						userSessionManagement.currentUserClone.id)}"
+					update="myPositionsTable messages"
+					icon="ui-icon-search" />
+			</h:panelGrid>
+			
+			<p:dataTable id="myPositionsTable"
 				emptyMessage="Não é gestor de nenhuma posição neste momento." 
 				var="p" value="#{positionSearchCDI.plist}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
@@ -40,6 +53,12 @@
 				<p:column headerText="Data Abertura">
 					<h:outputText value="#{p.openingDate}" />
 				</p:column>
+				<p:column headerText="Data Fecho">
+					<h:outputText value="#{p.closingDate}" />
+				</p:column>
+				<p:column headerText="Data SLA">
+					<h:outputText value="#{p.slaDate}" />
+				</p:column>
 				<p:column headerText="Estado">
 					<h:outputText value="#{p.status}" />
 				</p:column>
@@ -52,11 +71,8 @@
 				<p:column headerText="Área Técnica">
 					<h:outputText value="#{p.technicalArea}" />
 				</p:column>
-				<p:column headerText="Data Fecho">
-					<h:outputText value="#{p.closingDate}" />
-				</p:column>
-				<p:column headerText="Data SLA">
-					<h:outputText value="#{p.slaDate}" />
+				<p:column headerText="Descrição">
+					<h:outputText value="#{p.description}" />
 				</p:column>
 				<p:column headerText="Guião">
 					<h:outputText value="#{p.defaultScript.title}" />

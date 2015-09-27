@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -12,6 +12,7 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
@@ -23,10 +24,13 @@ import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import java.io.Serializable;
 
 @Named
-@RequestScoped
-public class DangerZoneCDI {
+@SessionScoped
+public class DangerZoneCDI implements Serializable {
+
+	private static final long serialVersionUID = 5842976243972113872L;
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(UserSearchCDI.class);
@@ -46,10 +50,62 @@ public class DangerZoneCDI {
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
 
-	// fields
+	// to choose
+	private UserEntity userToRemove;
+	private SubmissionEntity submissionToRemove;
+	private PositionEntity positionToRemove;
+	private ScriptEntity scriptToRemove;
+	private InterviewEntity interviewToRemove;
+
+	private List<UserEntity> ulist;
+	private List<PositionEntity> plist;
+	private List<SubmissionEntity> slist;
+	private List<ScriptEntity> sclist;
+	private List<InterviewEntity> ilist;
+
+	private boolean showInfo;
+	private boolean removeDone;
+	private String keyword;
+	private String tableHeader;
+
+	// tirar
 	private Long id;
 
 	private List<String> info = new ArrayList<String>();	
+
+	// page manipulation methods
+	
+	public void clean () {
+		userToRemove = null;
+		submissionToRemove = null;
+		positionToRemove = null;
+		scriptToRemove = null;
+		interviewToRemove = null;
+		showInfo = false;
+		removeDone = false;
+		keyword = "";
+		tableHeader = "";
+	}
+
+	public void removeUsersDataStart() {
+		clean();
+		ulist = userEJB.findAllNotRemoved();
+	}
+	
+	public boolean checkUser(UserEntity u){
+		if(this.userToRemove==null)return false;
+		if(this.userToRemove.getId()==u.getId())return true;
+		return false;
+	}
+
+	public void getUsersByKeyword() {
+		log.info("Listing users by keyword");
+		String pattern = SearchPattern.preparePattern(keyword);
+		log.debug("Internal search string: "+pattern);
+		this.ulist = userEJB.findUsersByKeyword(pattern);
+	}
+
+	// removal methods
 
 	public void listRemovedEmails() {
 		List<UserEntity> list = userEJB.findRemovedEmails();
@@ -61,32 +117,28 @@ public class DangerZoneCDI {
 	}
 	
 	public void removeUser() {
-		log.info("Removing user by id");
-		log.debug("Id "+id);
-		UserEntity user = userEJB.find(id);
-		if (user != null) {
-			int deleteCode = userEJB.delete(user);
+		log.info("Removing user");
+		if (userToRemove != null) {
+			log.debug("Email "+userToRemove.getEmail());
+			int deleteCode = userEJB.delete(userToRemove);
 			if (deleteCode == -1) {
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Não é possível apagar"
-						+ " os dados do superAdmin!"
-						+ " Fale com o gestor da base de dados"));
-				log.info("Failure in removing user");
+				errorMessage("Não é possível apagar"
+						+ " os dados do superAdmin!");
+				log.info("Failure in removing user: superAdmin");
 				log.debug("Id "+id);
 			} else {
+				showInfo = true;
 				// avisar que existem posições que precisam de novo gestor
 				if (deleteCode == 1 || deleteCode == 3) {
-					FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Há posições abertas"
-							+ " geridas pelo user"));
-					FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Quer mudar os gestores"
-							+ " agora ou depois manualmente?"));
+					notErrorMessage("Cuidado pois as seguintes posições abertas"
+							+ " são geridas pelo utilzador.");
 					// query repetida... tirar fora????
 					List<PositionEntity> plist =
-							positionEJB.findOpenPositionsManagedByUser(user);
+							positionEJB.findOpenPositionsManagedByUser(
+									userToRemove);
+					tableHeader = "Posições geridas pelo utilizador";
 					for (PositionEntity p : plist)
-						info.add("Posição "+p.getPositionCode());
+						info.add(p.getPositionCode());
 					// adicionar código
 				}
 
@@ -103,7 +155,8 @@ public class DangerZoneCDI {
 							+ " ou depois manualmente?"));
 					// query e for repetidos...
 					List<InterviewEntity> ilist = 
-							interviewEJB.findScheduledInterviewsByUser(user);
+							interviewEJB.findScheduledInterviewsByUser(
+									userToRemove);
 					List<InterviewEntity> list1int = 
 							new ArrayList<InterviewEntity>();
 					for (InterviewEntity i : ilist) {
@@ -111,6 +164,8 @@ public class DangerZoneCDI {
 						// só tem um entrevistador...
 						if (ulist != null && ulist.size() == 1) list1int.add(i);
 					}
+					tableHeader = "Entrevistas cujo utilizador é o único"
+							+ "entrevistador";
 					for (InterviewEntity i : list1int)
 						info.add("Entrevista do candidato "
 								+i.getSubmission().getCandidate().getFirstName()
@@ -123,15 +178,15 @@ public class DangerZoneCDI {
 					// adicionar código
 				}
 				log.info("User data removed");
-				log.debug("Id "+id);}
-				FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Dados do "
-							+ "utilizador removidos"));
+				log.debug("Email "+userToRemove.getEmail());
+
+				removeDone = true;
+				notErrorMessage("Os dados do utilizador foram removidos");
+			}
+			
 		} else {
-			log.error("No user with id "+id);
-			FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Não existe user com id "
-						+id));
+			log.error("No chosen user");
+			errorMessage("Escolha um utilizador");
 		}
 	}
 
@@ -143,6 +198,7 @@ public class DangerZoneCDI {
 			int deleteCode = scriptEJB.delete(script);
 			switch (deleteCode) {
 			case -1:
+				showInfo = true;
 				FacesContext.getCurrentInstance().
 				addMessage(null, new FacesMessage("Não pode apagar"
 						+ " um guião usado por"
@@ -153,13 +209,15 @@ public class DangerZoneCDI {
 						+ " o guião por defeito de cada uma delas"));
 				List<PositionEntity> plist = 
 						positionEJB.findOpenPositionsByScript(script);
+				tableHeader = "Posições que têm o guião por defeito";
 				for (PositionEntity p : plist)
-					info.add("Posição "+p.getPositionCode());
+					info.add(p.getPositionCode());
 				//adicionar código
 				log.info("Failure in removing script");
 				log.debug("Id "+id);
 				break;
 			case -2:
+				showInfo = true;
 				// verificar como faremos com os scripts...
 				FacesContext.getCurrentInstance().
 				addMessage(null, new FacesMessage("Não pode apagar"
@@ -169,6 +227,7 @@ public class DangerZoneCDI {
 				addMessage(null, new FacesMessage("Se quiser terá de ir"
 						+ " alterar manualmente"
 						+ " o guião de cada uma delas"));
+				tableHeader = "Entrevistas que usam o guião";
 				List<InterviewEntity> ilist = 
 						interviewEJB.findScheduledInterviewsWithScript(script);
 				for (InterviewEntity i : ilist)
@@ -184,7 +243,7 @@ public class DangerZoneCDI {
 				break;
 			default: 				
 				FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Guião removido"));
+				addMessage(null, new FacesMessage("Guião removido"));
 				log.info("Script removed");
 				log.debug("Id "+id);
 			}	
@@ -210,7 +269,7 @@ public class DangerZoneCDI {
 				log.debug("Id "+id);
 			} else {
 				FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Entrevista removida"));
+				addMessage(null, new FacesMessage("Entrevista removida"));
 				log.info("Interview removed");
 				log.debug("Id "+id);
 			}
@@ -228,6 +287,7 @@ public class DangerZoneCDI {
 		PositionEntity position = positionEJB.find(id);
 		if (position != null) {
 			if (!positionEJB.delete(position)) {
+				showInfo = true;
 				FacesContext.getCurrentInstance().
 				addMessage(null, new FacesMessage("Não pode apagar"
 						+ " posição com candidaturas"));
@@ -236,12 +296,12 @@ public class DangerZoneCDI {
 						+ " que as apagar manualmente..."));
 				if (position.getStatus().equals(Constants.STATUS_OPEN))
 					FacesContext.getCurrentInstance().
-						addMessage(null, new FacesMessage("Não quer em "
-						+ "alternativa colocar a "
-						+ "posição em hold ou fechá-la?"));
+					addMessage(null, new FacesMessage("Não quer em "
+							+ "alternativa colocar a "
+							+ "posição em hold ou fechá-la?"));
 				List<SubmissionEntity> slist = 
 						submissionEJB.findSubmissionsOfPosition(position);
-				System.out.println(slist);
+				tableHeader = "Candidaturas da posição";
 				for (SubmissionEntity s : slist)
 					info.add("Candidatura do candidado "
 							+s.getCandidate().getFirstName()+" "
@@ -252,7 +312,7 @@ public class DangerZoneCDI {
 				log.debug("Id "+id);
 			} else {
 				FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Posição removida"));
+				addMessage(null, new FacesMessage("Posição removida"));
 				log.info("Position removed");
 				log.debug("Id "+id);
 			}
@@ -269,20 +329,22 @@ public class DangerZoneCDI {
 		SubmissionEntity submission = submissionEJB.find(id);
 		if (submission != null) {
 			boolean delSub = true;
+			showInfo = true;
 			List<InterviewEntity> ilist = 
 					interviewEJB.findInterviewsOfSubmission(submission);
 			if (ilist != null && !ilist.isEmpty()) {
 				FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("A candidatura"
+				addMessage(null, new FacesMessage("A candidatura"
 						+ " tem entrevistas."
 						+ " Quer mesmo assim removê-la?"));
 				// pedir resposta
 				FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Está a apagar"
+				addMessage(null, new FacesMessage("Está a apagar"
 						+ " automaticamente..."));
 				// pedir resposta
 				delSub = true; // mudar...
 
+				tableHeader = "Entrevistas da candidatura";
 				for (InterviewEntity i : ilist)
 					info.add("Entrevista do candidato "
 							+i.getSubmission().getCandidate().getFirstName()
@@ -295,7 +357,7 @@ public class DangerZoneCDI {
 			if (delSub) {
 				submissionEJB.delete(submission);
 				FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Candidatura removida"));
+				addMessage(null, new FacesMessage("Candidatura removida"));
 				log.info("Submission removed");
 				log.debug("Id "+id);
 			} else {
@@ -307,10 +369,25 @@ public class DangerZoneCDI {
 		} else {
 			log.error("No submission with id "+id);
 			FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Não existe candidatura"
+			addMessage(null, new FacesMessage("Não existe candidatura"
 					+ " com "+id));
 		}
 	}
+
+	// private methods
+
+	private void notErrorMessage(String message){
+		FacesContext.getCurrentInstance().addMessage(null, 
+				new FacesMessage(message));
+	}
+
+	private void errorMessage(String message){
+		FacesContext.getCurrentInstance().addMessage(null, 
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+	}
+
+
+	// getters e setters
 
 	public Long getId() {
 		return id;
@@ -326,6 +403,118 @@ public class DangerZoneCDI {
 
 	public void setInfo(List<String> info) {
 		this.info = info;
+	}
+
+	public boolean isShowInfo() {
+		return showInfo;
+	}
+
+	public void setShowInfo(boolean showInfo) {
+		this.showInfo = showInfo;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public UserEntity getUserToRemove() {
+		return userToRemove;
+	}
+
+	public void setUserToRemove(UserEntity userToRemove) {
+		this.userToRemove = userToRemove;
+	}
+
+	public SubmissionEntity getSubmissionToRemove() {
+		return submissionToRemove;
+	}
+
+	public void setSubmissionToRemove(SubmissionEntity submissionToRemove) {
+		this.submissionToRemove = submissionToRemove;
+	}
+
+	public PositionEntity getPositionToRemove() {
+		return positionToRemove;
+	}
+
+	public void setPositionToRemove(PositionEntity positionToRemove) {
+		this.positionToRemove = positionToRemove;
+	}
+
+	public ScriptEntity getScriptToRemove() {
+		return scriptToRemove;
+	}
+
+	public void setScriptToRemove(ScriptEntity scriptToRemove) {
+		this.scriptToRemove = scriptToRemove;
+	}
+
+	public InterviewEntity getInterviewToRemove() {
+		return interviewToRemove;
+	}
+
+	public List<UserEntity> getUlist() {
+		return ulist;
+	}
+
+	public void setUlist(List<UserEntity> ulist) {
+		this.ulist = ulist;
+	}
+
+	public List<PositionEntity> getPlist() {
+		return plist;
+	}
+
+	public void setPlist(List<PositionEntity> plist) {
+		this.plist = plist;
+	}
+
+	public List<SubmissionEntity> getSlist() {
+		return slist;
+	}
+
+	public void setSlist(List<SubmissionEntity> slist) {
+		this.slist = slist;
+	}
+
+	public List<ScriptEntity> getSclist() {
+		return sclist;
+	}
+
+	public void setSclist(List<ScriptEntity> sclist) {
+		this.sclist = sclist;
+	}
+
+	public List<InterviewEntity> getIlist() {
+		return ilist;
+	}
+
+	public void setIlist(List<InterviewEntity> ilist) {
+		this.ilist = ilist;
+	}
+
+	public void setInterviewToRemove(InterviewEntity interviewToRemove) {
+		this.interviewToRemove = interviewToRemove;
+	}
+
+	public String getTableHeader() {
+		return tableHeader;
+	}
+
+	public void setTableHeader(String tableHeader) {
+		this.tableHeader = tableHeader;
+	}
+
+	public boolean isRemoveDone() {
+		return removeDone;
+	}
+
+	public void setRemoveDone(boolean removeDone) {
+		this.removeDone = removeDone;
 	}
 
 }

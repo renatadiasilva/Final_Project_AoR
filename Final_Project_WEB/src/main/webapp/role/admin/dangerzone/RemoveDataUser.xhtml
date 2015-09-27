@@ -1,0 +1,111 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:viewAction actionListener="#{dangerZoneCDI.removeUsersDataStart()}" />
+	</f:metadata>
+
+	<ui:define name="titulo">Admin - Zona Perigosa
+	 - #{styleSessionManagement.companyName}
+	 </ui:define>
+
+	<ui:define name="contents">
+		<h1>Remoção dos dados de um utilizador</h1>
+
+		<h:form id="buttonsDangerZoneUser">
+			<h:panelGrid columns="5">
+
+				<h:panelGrid rendered="#{!dangerZoneCDI.removeDone}">
+					<p:commandButton value="Remover dados do utilizador"
+						action="#{dangerZoneCDI.removeUser()}"
+						update="gridDangerZoneUser tableInfoDangerZoneUser
+							dangerZoneChooseUser buttonsDangerZoneUser
+							 messages"
+						icon="ui-icon-trash">
+						<p:confirm header="Cuidado! Não poderá reverter esta operação!"
+							message="Tem a certeza que quer remover os dados de
+								#{dangerZoneCDI.userToRemove.firstName} 
+								#{dangerZoneCDI.userToRemove.lastName} 
+								(#{dangerZoneCDI.userToRemove.email})?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true">
+						<h:panelGrid columns="2" style="width:100%">
+							<p:commandButton value="Sim" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</h:panelGrid>
+					</p:confirmDialog>
+				</h:panelGrid>
+
+				<h:panelGrid>
+					<p:link value="Voltar à lista de utilizadores"
+						href="../../../role/admin/edit/EditUser.xhtml" />
+				</h:panelGrid>
+
+
+			</h:panelGrid>
+		</h:form>
+
+		<h:form>
+			<h:panelGrid id="gridDangerZoneUser" columns="4">
+
+				<!-- user to choose -->
+				<h:panelGroup id="dangerZoneChooseUser">
+					<br />
+					<h2>Escolha o utilizador:</h2>
+
+					<h:panelGrid columns="4" style="width:100%">
+						<p:watermark value="Procurar utilizadores por palavra chave: "
+							for="remove-user-keyword" />
+						<p:inputText id="remove-user-keyword"
+							value="#{dangerZoneCDI.keyword}" style="width:100%" />
+						<p:commandButton action="#{dangerZoneCDI.getUsersByKeyword()}"
+							update="allRemoveUsersTable messages" icon="ui-icon-search" />
+					</h:panelGrid>
+
+					<p:dataTable id="allRemoveUsersTable"
+						emptyMessage="Não foram encontrados utilizadores." var="u"
+						value="#{dangerZoneCDI.ulist}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+						paginator="true" rows="10">
+						<f:facet name="header">Utilizadores</f:facet>
+						<p:column headerText="Nome">
+							<h:outputText value="#{u.firstName} #{u.lastName}" />
+						</p:column>
+						<p:column headerText="Email">
+							<h:outputText value="#{u.email}" />
+						</p:column>
+						<p:column headerText="Seleccionar">
+							<p:commandButton value="Seleccionar" style="width:100%"
+								rendered="#{!dangerZoneCDI.checkUser(u)}"
+								actionListener="#{dangerZoneCDI.setUserToRemove(u)}"
+								icon="ui-icon-person" update="allRemoveUsersTable" />
+							<p:commandButton rendered="#{dangerZoneCDI.checkUser(u)}"
+								style="width:100%" value="Utilizador Seleccionado"
+								icon="ui-icon-check" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+			</h:panelGrid>
+
+			<p:dataTable id="tableInfoDangerZoneUser"
+				emptyMessage="Nada a mostrar." var="info"
+				value="#{dangerZoneCDI.info}" rendered="#{dangerZoneCDI.showInfo}">
+				<f:facet name="header">
+					<h:outputText value="#{dangerZoneCDI.tableHeader}" />
+				</f:facet>
+				<p:column headerText="Info">
+					<h:outputText value="#{info}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
