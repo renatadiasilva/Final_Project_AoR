@@ -84,6 +84,13 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				parameters);
 	}
 
+	public List<PositionEntity> findClosedPositions() {		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("closed", Constants.STATUS_CLOSED);
+		return super.findSomeResults("Position.findClosedPositions", 
+				parameters);
+	}
+	
 	public List<PositionEntity> findByPositionAndCandidate(
 			UserEntity candidate, PositionEntity position) {
 		Map<String, Object> parameters = new HashMap<String, Object>();

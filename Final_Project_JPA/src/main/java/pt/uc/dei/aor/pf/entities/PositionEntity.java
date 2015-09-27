@@ -26,6 +26,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "positions")
 @NamedQueries({
+	@NamedQuery(name = "Position.findClosedPositions",
+			query = "SELECT p FROM PositionEntity p WHERE p.status = :closed"),
 	@NamedQuery(name = "Position.findAllAlphabetic",
 			query = "SELECT p FROM PositionEntity p ORDER BY p.company, p.title"),
 	@NamedQuery(name = "Position.findCloseToSLAPositions",

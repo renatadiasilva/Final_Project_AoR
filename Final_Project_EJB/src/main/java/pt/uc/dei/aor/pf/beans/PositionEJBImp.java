@@ -171,6 +171,12 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
+	public List<PositionEntity> findClosedPositions() {
+		log.info("Finding all closed positions");
+		return positionDAO.findClosedPositions();
+	}
+
+	@Override
 	public List<PositionEntity> findCloseToSLAPositions(int daysBefore) {
 		log.info("Finding all close to SLA positions");
 		return positionDAO.findCloseToSLAPositions(daysBefore);

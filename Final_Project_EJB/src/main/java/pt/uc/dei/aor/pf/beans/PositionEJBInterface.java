@@ -65,5 +65,5 @@ public interface PositionEJBInterface {
 			char period);
 	public abstract Double overallAverageTimeToClose(Date date1, Date date2);
 	public abstract List<PositionEntity> findAfterSLAPositions();
-	
+	public abstract List<PositionEntity> findClosedPositions();		
 }
