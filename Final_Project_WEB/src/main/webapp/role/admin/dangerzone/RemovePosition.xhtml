@@ -1,0 +1,124 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:viewAction actionListener="#{dangerZoneCDI.removePositionsStart()}" />
+	</f:metadata>
+
+	<ui:define name="titulo">Admin - Zona Perigosa
+	 - #{styleSessionManagement.companyName}
+	 </ui:define>
+
+	<ui:define name="contents">
+
+		<h:form id="headerRemovePosition">
+			<h:panelGroup rendered="#{!dangerZoneCDI.removeTried}">
+				<h1>Remoção de posições</h1>
+			</h:panelGroup>
+		</h:form>
+
+		<h:form id="buttonsDangerZonePosition">
+			<h:panelGrid columns="5">
+
+				<h:panelGrid rendered="#{!dangerZoneCDI.removeTried}">
+					<p:commandButton value="Remover posição"
+						action="#{dangerZoneCDI.removePosition()}"
+						update="gridDangerZonePositionOut
+							tableInfoDangerZonePosition buttonsDangerZonePosition
+							headerRemovePosition messages"
+						icon="ui-icon-trash">
+						<p:confirm header="Cuidado! Não poderá reverter esta operação!"
+							message="Tem a certeza que quer remover a posição?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true">
+						<h:panelGrid columns="2" style="width:100%">
+							<p:commandButton value="Sim" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</h:panelGrid>
+					</p:confirmDialog>
+				</h:panelGrid>
+
+				<!-- mudar -->
+				<h:panelGrid>
+					<p:link value="Voltar à lista de posições"
+						href="../../../role/admin/search/PositionSearch.xhtml" />
+				</h:panelGrid>
+
+
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="gridDangerZonePositionOut">
+			<h:panelGrid columns="4">
+
+				<!-- Position to choose -->
+				<h:panelGroup rendered="#{!dangerZoneCDI.removeTried}">
+					<br />
+					<h2>Escolha a posição:</h2>
+
+					<h:panelGrid columns="4" style="width:100%">
+						<p:watermark value="Procurar posições por palavra chave: "
+							for="remove-Position-keyword" />
+						<p:inputText id="remove-Position-keyword"
+							value="#{dangerZoneCDI.keyword}" style="width:100%" />
+						<p:commandButton action="#{dangerZoneCDI.getPositionsByKeyword()}"
+							update="allRemovePositionTable messages" icon="ui-icon-search" />
+					</h:panelGrid>
+
+					<p:dataTable id="allRemovePositionTable"
+						emptyMessage="Não foram encontradas posições." var="p"
+						value="#{dangerZoneCDI.plist}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+						paginator="true" rows="10">
+						<f:facet name="header">Posições</f:facet>
+						<p:column headerText="Código">
+							<h:outputText value="#{p.positionCode}" />
+						</p:column>
+						<p:column headerText="Título">
+							<h:outputText value="#{p.title}" />
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{p.status}" />
+						</p:column>
+						<p:column headerText="Empresa">
+							<h:outputText value="#{p.company}" />
+						</p:column>
+						<p:column headerText="Área Técnica">
+							<h:outputText value="#{p.technicalArea}" />
+						</p:column>
+						<p:column headerText="Seleccionar">
+							<p:commandButton value="Seleccionar" style="width:100%"
+								rendered="#{!dangerZoneCDI.checkPosition(p)}"
+								actionListener="#{dangerZoneCDI.setPositionToRemove(p)}"
+								icon="ui-icon-suitcase" update="allRemovePositionTable" />
+							<p:commandButton rendered="#{dangerZoneCDI.checkPosition(p)}"
+								style="width:100%" value="Posição Seleccionado"
+								icon="ui-icon-check" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="tableInfoDangerZonePosition">
+			<p:dataTable emptyMessage="Nada a mostrar." var="info"
+				value="#{dangerZoneCDI.info}" rendered="#{dangerZoneCDI.showInfo}">
+				<f:facet name="header">
+					<h:outputText value="#{dangerZoneCDI.tableHeader}" />
+				</f:facet>
+				<p:column>
+					<h:outputText value="#{info}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

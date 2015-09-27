@@ -11,7 +11,7 @@ public interface PositionEJBInterface {
 	
 	public abstract void save(PositionEntity position);
 	public abstract void update(PositionEntity position);
-	public abstract boolean delete(PositionEntity position);
+	public abstract void delete(PositionEntity position);
 	public abstract PositionEntity find(Long id);
 	public abstract List<PositionEntity> findAll();
 	public abstract List<PositionEntity> findAllAlphabetic();

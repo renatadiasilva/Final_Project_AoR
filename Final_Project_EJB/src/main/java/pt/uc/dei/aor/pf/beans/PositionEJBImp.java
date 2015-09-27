@@ -8,7 +8,6 @@ import pt.uc.dei.aor.pf.dao.PositionDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 import javax.ejb.EJB;
@@ -44,14 +43,9 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public boolean delete(PositionEntity position) {
+	public void delete(PositionEntity position) {
 		log.info("Deleting position from DB");
-		
-		List<SubmissionEntity> sub = 
-				submissionDAO.findSubmissionsOfPosition(position);
-		if (sub != null && !sub.isEmpty()) return false;
 		positionDAO.delete(position.getId(), PositionEntity.class);
-		return true;
 	}
 
 	@Override

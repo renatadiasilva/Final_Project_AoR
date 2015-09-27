@@ -54,16 +54,12 @@ public class DangerZoneCDI implements Serializable {
 
 	// to choose
 	private UserEntity userToRemove;
-	private SubmissionEntity submissionToRemove;
 	private PositionEntity positionToRemove;
 	private ScriptEntity scriptToRemove;
-	private InterviewEntity interviewToRemove;
 
 	private List<UserEntity> ulist;
 	private List<PositionEntity> plist;
-	private List<SubmissionEntity> slist;
 	private List<ScriptEntity> sclist;
-	private List<InterviewEntity> ilist;
 
 	private boolean showInfo;
 	private boolean removeTried;
@@ -72,19 +68,14 @@ public class DangerZoneCDI implements Serializable {
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 	private SimpleDateFormat ftHour = new SimpleDateFormat ("HH:mm"); 
 
-	// tirar
-	private Long id;
-
 	private List<String> info = new ArrayList<String>();	
 
 	// page manipulation methods
 
 	public void clean () {
 		userToRemove = null;
-		submissionToRemove = null;
 		positionToRemove = null;
 		scriptToRemove = null;
-		interviewToRemove = null;
 		showInfo = false;
 		removeTried = false;
 		keyword = "";
@@ -97,9 +88,14 @@ public class DangerZoneCDI implements Serializable {
 		ulist = userEJB.findAllNotRemoved();
 	}
 
-	public void removeScriptsDataStart() {
+	public void removeScriptsStart() {
 		clean();
-		sclist = scriptEJB.findReusableScripts();
+		sclist = scriptEJB.findAll();
+	}
+
+	public void removePositionsStart() {
+		clean();
+		plist = positionEJB.findAll();
 	}
 
 	public boolean checkUser(UserEntity u){
@@ -126,6 +122,19 @@ public class DangerZoneCDI implements Serializable {
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);
 		this.sclist = scriptEJB.findScriptsByTitle(pattern);
+	}
+
+	public boolean checkPosition(PositionEntity position){
+		if(this.positionToRemove==null)return false;
+		if(this.positionToRemove.getId()==position.getId())return true;
+		return false;
+	}
+
+	public void getPositionsByKeyword() {
+		log.info("Listing positions by keyword");
+		String pattern = SearchPattern.preparePattern(keyword);
+		log.debug("Internal search string: "+pattern);
+		this.plist = positionEJB.findPositionsByKeywordShort(pattern, "%");
 	}
 
 	// removal methods
@@ -319,45 +328,43 @@ public class DangerZoneCDI implements Serializable {
 	}
 
 	public void removePosition() {
-		log.info("Removing position by id");
-		log.debug("Id "+id);
-		PositionEntity position = positionEJB.find(id);
-		if (position != null) {
-			if (!positionEJB.delete(position)) {
+		removeTried = true;
+		log.info("Removing position");
+		if (positionToRemove != null) {
+			String positionToRemoveCode = positionToRemove.getPositionCode();
+			log.debug("Code "+positionToRemoveCode);
+			
+			// check if there are submissions of position
+			List<SubmissionEntity> slist = 
+					submissionEJB.findSubmissionsOfPosition(positionToRemove);
+			if (slist != null && !slist.isEmpty()) {
+				errorMessage("Não é possível apagar a posição.");
+				errorMessage("A posição tem as seguintes candidaturas:");
+				tableHeader = "Candidaturas da posição "+positionToRemoveCode;
 				showInfo = true;
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Não pode apagar"
-						+ " posição com candidaturas"));
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Se quiser mesmo terá"
-						+ " que as apagar manualmente..."));
-				if (position.getStatus().equals(Constants.STATUS_OPEN))
-					FacesContext.getCurrentInstance().
-					addMessage(null, new FacesMessage("Não quer em "
-							+ "alternativa colocar a "
-							+ "posição em hold ou fechá-la?"));
-				List<SubmissionEntity> slist = 
-						submissionEJB.findSubmissionsOfPosition(position);
-				tableHeader = "Candidaturas da posição";
 				for (SubmissionEntity s : slist)
-					info.add("Candidatura do candidado "
-							+s.getCandidate().getFirstName()+" "
-							+s.getCandidate().getLastName()+" à posição "
-							+s.getPosition().getPositionCode());
-				// adicionar código
+					info.add("Candidatura de "+s.getCandidate().getFirstName()
+							+" "+s.getCandidate().getLastName()
+							+" (estado: "+s.getStatus()+")");
 				log.info("Failure in removing position");
-				log.debug("Id "+id);
-			} else {
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Posição removida"));
-				log.info("Position removed");
-				log.debug("Id "+id);
+				log.debug("Code "+positionToRemoveCode);
+				return;
 			}
+
+			positionEJB.delete(positionToRemove);
+
+			log.info("Position removed");
+			log.debug("Código "+positionToRemoveCode);
+
+			removeTried = true;
+			notErrorMessage("Posição "+ positionToRemoveCode+" removida");
+
 		} else {
-			log.error("No position with id "+id);
-			FacesContext.getCurrentInstance().
-			addMessage(null, new FacesMessage("Não existe posição com id "+id));
+			removeTried = false;
+			log.error("No chosen position");
+			errorMessage("Escolha uma posição");
 		}
+				
 	}
 
 	// private methods
@@ -374,14 +381,6 @@ public class DangerZoneCDI implements Serializable {
 
 
 	// getters e setters
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public List<String> getInfo() {
 		return info;
@@ -415,14 +414,6 @@ public class DangerZoneCDI implements Serializable {
 		this.userToRemove = userToRemove;
 	}
 
-	public SubmissionEntity getSubmissionToRemove() {
-		return submissionToRemove;
-	}
-
-	public void setSubmissionToRemove(SubmissionEntity submissionToRemove) {
-		this.submissionToRemove = submissionToRemove;
-	}
-
 	public PositionEntity getPositionToRemove() {
 		return positionToRemove;
 	}
@@ -437,10 +428,6 @@ public class DangerZoneCDI implements Serializable {
 
 	public void setScriptToRemove(ScriptEntity scriptToRemove) {
 		this.scriptToRemove = scriptToRemove;
-	}
-
-	public InterviewEntity getInterviewToRemove() {
-		return interviewToRemove;
 	}
 
 	public List<UserEntity> getUlist() {
@@ -459,32 +446,12 @@ public class DangerZoneCDI implements Serializable {
 		this.plist = plist;
 	}
 
-	public List<SubmissionEntity> getSlist() {
-		return slist;
-	}
-
-	public void setSlist(List<SubmissionEntity> slist) {
-		this.slist = slist;
-	}
-
 	public List<ScriptEntity> getSclist() {
 		return sclist;
 	}
 
 	public void setSclist(List<ScriptEntity> sclist) {
 		this.sclist = sclist;
-	}
-
-	public List<InterviewEntity> getIlist() {
-		return ilist;
-	}
-
-	public void setIlist(List<InterviewEntity> ilist) {
-		this.ilist = ilist;
-	}
-
-	public void setInterviewToRemove(InterviewEntity interviewToRemove) {
-		this.interviewToRemove = interviewToRemove;
 	}
 
 	public String getTableHeader() {

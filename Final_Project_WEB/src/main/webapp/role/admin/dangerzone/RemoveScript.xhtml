@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener="#{dangerZoneCDI.removeScriptsDataStart()}" />
+		<f:viewAction actionListener="#{dangerZoneCDI.removeScriptsStart()}" />
 	</f:metadata>
 
 	<ui:define name="titulo">Admin - Zona Perigosa
@@ -68,7 +68,6 @@
 							for="remove-script-keyword" />
 						<p:inputText id="remove-script-keyword"
 							value="#{dangerZoneCDI.keyword}" style="width:100%" />
-<!-- 							mudar -->
 						<p:commandButton action="#{dangerZoneCDI.getScriptsByTitle()}"
 							update="allRemoveScriptTable messages" icon="ui-icon-search" />
 					</h:panelGrid>
