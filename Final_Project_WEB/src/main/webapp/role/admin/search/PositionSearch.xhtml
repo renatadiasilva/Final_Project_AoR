@@ -86,19 +86,6 @@
 					action="#{positionSearchCDI.searchPositionsByCandidate()}"
 					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Posições abertas (script)"
-					action="#{positionSearchCDI.searchPositionByScript()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Posições não abertas (script)"
-					action="#{positionSearchCDI.
-						searchNotOpenPositionByScript()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Posições (gestor)"
-					action="#{positionSearchCDI.searchPositionManagedByUser()}"
-					update="@form, messages" icon="ui-icon-search" />
-
 				<p:commandButton value="Posições abertas (gestor)"
 					action="#{positionSearchCDI.
 						searchOpenPositionManagedByUser()}"
@@ -107,11 +94,6 @@
 				<p:commandButton value="Candidato associado a posição?"
 					action="#{positionSearchCDI.alreadyCandidateOfPosition()}"
 					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Remover posição"
-					action="#{positionSearchCDI.remove()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
 
 			</h:panelGrid>
 

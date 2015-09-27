@@ -248,21 +248,11 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		
 	}
 
-	public List<PositionEntity> findOpenPositionsByScript(
+	public List<PositionEntity> findPositionsByScript(
 			ScriptEntity script) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("status", Constants.STATUS_OPEN);
 		parameters.put("script", script);
-		return super.findSomeResults("Position.findOpenPositionsByScript",
-				parameters);
-	}
-
-	public List<PositionEntity> findNotOpenPositionsByScript(
-			ScriptEntity script) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("status", Constants.STATUS_OPEN);
-		parameters.put("script", script);
-		return super.findSomeResults("Position.findNotOpenPositionByScript",
+		return super.findSomeResults("Position.findPositionsByScript",
 				parameters);
 	}
 

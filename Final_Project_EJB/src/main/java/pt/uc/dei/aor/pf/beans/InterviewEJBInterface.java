@@ -13,7 +13,7 @@ public interface InterviewEJBInterface {
 	
 	public abstract void save(InterviewEntity interview);
 	public abstract void update(InterviewEntity interview);
-	public abstract boolean delete(InterviewEntity interview);
+	public abstract void delete(InterviewEntity interview);
 	public abstract InterviewEntity find(Long id);
 	public abstract List<InterviewEntity> findAll();
 	public abstract List<InterviewEntity> findCarriedOutInterviewsByUser(
@@ -38,9 +38,7 @@ public interface InterviewEJBInterface {
 			UserEntity interviewer);
 	public abstract List<InterviewEntity> findInterviewsOfSubmission(
 			SubmissionEntity submission);
-	public abstract List<InterviewEntity> findCarriedOutInterviewsWithScript(
-			ScriptEntity script);
-	public abstract List<InterviewEntity> findScheduledInterviewsWithScript(
+	public abstract List<InterviewEntity> findInterviewsWithScript(
 			ScriptEntity script);
 	public abstract List<Object[]> averageTimeToFirstInterview(Date date1,
 			Date date2, char period);

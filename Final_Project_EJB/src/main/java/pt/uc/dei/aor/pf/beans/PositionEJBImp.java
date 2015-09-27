@@ -209,17 +209,10 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public List<PositionEntity> findOpenPositionsByScript(
+	public List<PositionEntity> findPositionsByScript(
 			ScriptEntity script) {
 		log.info("Finding open positions using a script as default");
-		return positionDAO.findOpenPositionsByScript(script);
-	}
-
-	@Override
-	public List<PositionEntity> findNotOpenPositionsByScript(
-			ScriptEntity script) {
-		log.info("Finding not open positions using a script as default");
-		return positionDAO.findNotOpenPositionsByScript(script);
+		return positionDAO.findPositionsByScript(script);
 	}
 
 	@Override

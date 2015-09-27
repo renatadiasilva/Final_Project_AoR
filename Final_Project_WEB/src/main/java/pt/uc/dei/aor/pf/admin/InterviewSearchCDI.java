@@ -17,7 +17,6 @@ import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
@@ -60,6 +59,11 @@ public class InterviewSearchCDI {
 		this.ilist = interviewEJB.findCarriedOutInterviews(date1, date2);
 	}
 
+	public void searchAllInterviews() {
+		log.info("Searching for all interviews");
+		this.ilist = interviewEJB.findAll();
+	}
+	
 	public void searchCarriedOutInterviewsByUser() {
 		log.info("Searching carried out interviews of a interviewer");
 		log.debug("Id "+id);
@@ -162,26 +166,6 @@ public class InterviewSearchCDI {
 		if (submission != null) {
 			this.ilist = interviewEJB.findInterviewsOfSubmission(submission);
 		} else log.error("No submission with id "+id);
-	}
-
-	public void searchCarriedOutInterviewsWithScript() {
-		log.info("Searching interviews of script");
-		log.debug("Id "+id);
-		ScriptEntity script = scriptEJB.find(id);
-		if (script != null) {
-			this.ilist = 
-				interviewEJB.findCarriedOutInterviewsWithScript(script);
-		} else log.error("No script with id "+id);
-	}
-
-	public void searchScheduledInterviewsWithScript() {
-		log.info("Searching interviews of script");
-		log.debug("Id "+id);
-		ScriptEntity script = scriptEJB.find(id);
-		if (script != null) {
-			this.ilist = 
-				interviewEJB.findScheduledInterviewsWithScript(script);
-		} else log.error("No script with id "+id);
 	}
 
 	// getters e setters

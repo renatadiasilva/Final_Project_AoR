@@ -97,6 +97,11 @@ public class DangerZoneCDI implements Serializable {
 		ulist = userEJB.findAllNotRemoved();
 	}
 
+	public void removeScriptsDataStart() {
+		clean();
+		sclist = scriptEJB.findReusableScripts();
+	}
+
 	public boolean checkUser(UserEntity u){
 		if(this.userToRemove==null)return false;
 		if(this.userToRemove.getId()==u.getId())return true;
@@ -108,6 +113,19 @@ public class DangerZoneCDI implements Serializable {
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findUsersByKeyword(pattern);
+	}
+
+	public boolean checkScript(ScriptEntity script){
+		if(this.scriptToRemove==null)return false;
+		if(this.scriptToRemove.getId()==script.getId())return true;
+		return false;
+	}
+
+	public void getScriptsByTitle() {
+		log.info("Listing scripts by title");
+		String pattern = SearchPattern.preparePattern(keyword);
+		log.debug("Internal search string: "+pattern);
+		this.sclist = scriptEJB.findScriptsByTitle(pattern);
 	}
 
 	// removal methods
@@ -182,13 +200,14 @@ public class DangerZoneCDI implements Serializable {
 			}
 
 			// check if there are submissions of user
+			// find all also spontaneous!!
 			List<SubmissionEntity> slist = 
 					submissionEJB.findSubmissionsOfCandidate(userToRemove);
 			if (slist != null && !slist.isEmpty()) {
 				errorMessage("Não é possível apagar os dados do"
 						+ " utilizador.");
-				errorMessage("O utilizador tem as"
-						+ " seguintes candidaturas submetidas:");
+				errorMessage("O utilizador submeteu as"
+						+ " seguintes candidaturas:");
 				tableHeader = "Candidaturas do utilizador "
 						+userToRemoveEmail;
 				showInfo = true;
@@ -219,94 +238,83 @@ public class DangerZoneCDI implements Serializable {
 	}
 
 	public void removeScript() {
-		log.info("Removing script by id");
-		log.debug("Id "+id);
-		ScriptEntity script = scriptEJB.find(id);
-		if (script != null) {
-			int deleteCode = scriptEJB.delete(script);
-			switch (deleteCode) {
-			case -1:
+		removeTried = true;
+		log.info("Removing script");
+		if (scriptToRemove != null) {
+			String scriptToRemoveTitle = scriptToRemove.getTitle();
+			log.debug("Title "+scriptToRemoveTitle);
+
+			// check if there are positions using the script
+			List<PositionEntity> plist = 
+					positionEJB.findPositionsByScript(scriptToRemove);
+			if (plist != null && !plist.isEmpty()) {
+				errorMessage("Não é possível apagar o guião.");
+				errorMessage("O guião é guião por defeito nas seguintes"
+						+ " posições:");
+				tableHeader = "Posições com o guião "
+						+scriptToRemoveTitle+" por defeito";
 				showInfo = true;
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Não pode apagar"
-						+ " um guião usado por"
-						+ " defeito em posições abertas"));
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Se quiser terá de ir"
-						+ " alterar manualmente"
-						+ " o guião por defeito de cada uma delas"));
-				List<PositionEntity> plist = 
-						positionEJB.findOpenPositionsByScript(script);
-				tableHeader = "Posições que têm o guião por defeito";
 				for (PositionEntity p : plist)
-					info.add(p.getPositionCode());
-				//adicionar código
+					info.add("Posição \'"+p.getTitle()+"\' ("
+							+p.getPositionCode()
+							+") aberta em "+ p.getOpeningDate());
 				log.info("Failure in removing script");
-				log.debug("Id "+id);
-				break;
-			case -2:
+				log.debug("Title "+scriptToRemoveTitle);
+				return;
+			}
+
+			// check if there are interviews using script
+			List<InterviewEntity> ilist = 
+					interviewEJB.findInterviewsWithScript(scriptToRemove);
+			if (ilist != null && !ilist.isEmpty()) {
+				errorMessage("Não é possível apagar o guião.");
+				errorMessage("O guião é/foi usado nas seguintes"
+						+ " entrevistas:");
+				tableHeader = "Entrevistas que usam o guião"
+						+scriptToRemoveTitle;
 				showInfo = true;
-				// verificar como faremos com os scripts...
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Não pode apagar"
-						+ " um guião associado a"
-						+ " entrevistas agendadas"));
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Se quiser terá de ir"
-						+ " alterar manualmente"
-						+ " o guião de cada uma delas"));
-				tableHeader = "Entrevistas que usam o guião";
-				List<InterviewEntity> ilist = 
-						interviewEJB.findScheduledInterviewsWithScript(script);
 				for (InterviewEntity i : ilist)
 					info.add("Entrevista do candidato "
 							+i.getSubmission().getCandidate().getFirstName()
 							+" "+i.getSubmission().getCandidate().getLastName()
-							+" para a posição "
+							+" para a posição \'"
 							+i.getSubmission().getPosition().getPositionCode()
-							+" (data e hora: "+ftDate.format(i.getDate())
+							+"\' (data e hora: "+ftDate.format(i.getDate())
 							+", "+ftHour.format(i.getDate())+")");
-				//adicionar código
 				log.info("Failure in removing script");
-				log.debug("Id "+id);
-				break;
-			default: 				
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Guião removido"));
-				log.info("Script removed");
-				log.debug("Id "+id);
-			}	
-
-		} else {
-			log.error("No script with id "+id);
-			FacesContext.getCurrentInstance().
-			addMessage(null, new FacesMessage("Não existe guião com id "+id));
-		}
-	}
-
-	public void removeInterview() {
-		log.info("Removing interview by id");
-		log.debug("Id "+id);
-		InterviewEntity interview = interviewEJB.find(id);
-		if (interview != null) {
-			if (!interviewEJB.delete(interview)) {
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Não pode apagar"
-						+ " entrevista com resultados."
-						+ " Fale com o gestor da base de dados."));
-				log.info("Failure in removing interview");
-				log.debug("Id "+id);
-			} else {
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Entrevista removida"));
-				log.info("Interview removed");
-				log.debug("Id "+id);
+				log.debug("Título "+scriptToRemoveTitle);
+				return;
 			}
+
+			// check if there are script childs
+			List<ScriptEntity> sclist = 
+					scriptEJB.findChildScripts(scriptToRemove);
+			if (sclist != null && !sclist.isEmpty()) {
+				errorMessage("Não é possível apagar o guião.");
+				errorMessage("Os seguintes scripts são derivados deste guião:");
+				tableHeader = "Guiões derivados do guião"
+						+scriptToRemoveTitle;
+				showInfo = true;
+				for (ScriptEntity sc : sclist)
+					info.add("Guião "+sc.getTitle()
+							+" (criado a"+sc.getCreationDate()+")");
+				log.info("Failure in removing script");
+				log.debug("Título "+scriptToRemoveTitle);
+				return;
+			}
+			
+			scriptEJB.delete(scriptToRemove);
+
+			log.info("Script removed");
+			log.debug("Título "+scriptToRemoveTitle);
+
+			removeTried = true;
+			notErrorMessage("Guião "+ scriptToRemoveTitle+" removido");
+
 		} else {
-			log.error("No interview with id "+id);
-			FacesContext.getCurrentInstance().
-			addMessage(null, new FacesMessage("Não existe entrevista com id "
-					+id));
+			removeTried = false;
+			log.error("No chosen script");
+			errorMessage("Escolha um guião");
 		}
 	}
 
@@ -349,58 +357,6 @@ public class DangerZoneCDI implements Serializable {
 			log.error("No position with id "+id);
 			FacesContext.getCurrentInstance().
 			addMessage(null, new FacesMessage("Não existe posição com id "+id));
-		}
-	}
-
-	public void removeSubmission() {
-		log.info("Removing submission by id");
-		log.debug("Id "+id);
-		SubmissionEntity submission = submissionEJB.find(id);
-		if (submission != null) {
-			boolean delSub = true;
-			showInfo = true;
-			List<InterviewEntity> ilist = 
-					interviewEJB.findInterviewsOfSubmission(submission);
-			if (ilist != null && !ilist.isEmpty()) {
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("A candidatura"
-						+ " tem entrevistas."
-						+ " Quer mesmo assim removê-la?"));
-				// pedir resposta
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Está a apagar"
-						+ " automaticamente..."));
-				// pedir resposta
-				delSub = true; // mudar...
-
-				tableHeader = "Entrevistas da candidatura";
-				for (InterviewEntity i : ilist)
-					info.add("Entrevista do candidato "
-							+i.getSubmission().getCandidate().getFirstName()
-							+" "+i.getSubmission().getCandidate().getLastName()
-							+" para a posição "
-							+i.getSubmission().getPosition().getPositionCode()
-							+" (data e hora: "+ftDate.format(i.getDate())
-							+", "+ftHour.format(i.getDate())+")");
-			}
-
-			if (delSub) {
-				submissionEJB.delete(submission);
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Candidatura removida"));
-				log.info("Submission removed");
-				log.debug("Id "+id);
-			} else {
-				FacesContext.getCurrentInstance().
-				addMessage(null, new FacesMessage("Candidatura NÃO removida"));
-				log.info("Submission not removed");
-				log.debug("Id "+id);
-			}
-		} else {
-			log.error("No submission with id "+id);
-			FacesContext.getCurrentInstance().
-			addMessage(null, new FacesMessage("Não existe candidatura"
-					+ " com "+id));
 		}
 	}
 

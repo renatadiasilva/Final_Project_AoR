@@ -18,7 +18,6 @@ import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 
@@ -232,25 +231,6 @@ public class PositionSearchCDI {
 		} else log.error("No manager with id "+idM);
 	}
 	
-	public void searchPositionByScript() {
-		log.info("Searching for open positions by script");
-		ScriptEntity script = scriptEJB.find(idPSc);
-		if (script != null) {
-			log.debug("Script "+script.getTitle());
-			this.plist = positionEJB.findOpenPositionsByScript(script);
-		} else log.error("No script with id "+idPSc);
-	}
-
-	public void searchNotOpenPositionByScript() {
-		log.info("Searching for not open positions by script");
-		ScriptEntity script = scriptEJB.find(idPSc);
-		if (script != null) {
-			log.debug("Script "+script.getTitle());
-			this.plist = positionEJB.findNotOpenPositionsByScript(script);
-		} else log.error("No script with id "+idPSc);
-	}
-
-	// cuidado página search
 	public void searchPositionsManagedByUser(Long idM) {
 		log.info("Searching for positions by manager");
 		log.debug("Id "+idM);

@@ -48,11 +48,9 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
-	public boolean delete(InterviewEntity interview) {
+	public void delete(InterviewEntity interview) {
 		log.info("Deleting interview from DB");
-		if (interview.isCarriedOut()) return false;
 		interviewDAO.delete(interview.getId(), InterviewEntity.class);
-		return true;
 	}
 
 	@Override
@@ -151,17 +149,10 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
-	public List<InterviewEntity> findCarriedOutInterviewsWithScript(
+	public List<InterviewEntity> findInterviewsWithScript(
 			ScriptEntity script) {
 		log.info("Finding all interviews using a script");
-		return interviewDAO.findCarriedOutInterviewsWithScript(script);
-	}
-
-	@Override
-	public List<InterviewEntity> findScheduledInterviewsWithScript(
-			ScriptEntity script) {
-		log.info("Finding all interviews using a script");
-		return interviewDAO.findScheduledInterviewsWithScript(script);
+		return interviewDAO.findInterviewsWithScript(script);
 	}
 
 	@Override

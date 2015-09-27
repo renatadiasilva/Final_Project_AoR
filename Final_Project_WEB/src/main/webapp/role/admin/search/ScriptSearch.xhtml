@@ -12,42 +12,37 @@
 	<ui:define name="contents">
 		<h1>Pesquisas de Guiões</h1>
 
+		<h:form>
+			<p:link value="Eliminar guiões"
+				href="../../../role/admin/dangerzone/RemoveScript.xhtml" />
+		</h:form>
+
 		<h:form id="scriptSearch">
 
 			<h:panelGrid id="buttonsScriptSearch" columns="7">
 
 				<p:commandButton value="Todos guiões"
 					action="#{scriptSearchCDI.searchAllScripts()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+					update="@form, messages" icon="ui-icon-search" />
 
 				<p:commandButton value="Guiões reutilizáveis"
 					action="#{scriptSearchCDI.searchReusableScripts()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+					update="@form, messages" icon="ui-icon-search" />
 
 				<p:commandButton value="Guiões (título)"
 					action="#{scriptSearchCDI.searchByTitle()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+					update="@form, messages" icon="ui-icon-search" />
 
 				<p:commandButton value="Guiões derivados"
 					action="#{scriptSearchCDI.searchChildScripts()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Remover guião"
-					action="#{scriptSearchCDI.remove()}"
-					update="@form, messages"
-					icon="ui-icon-search" />
+					update="@form, messages" icon="ui-icon-search" />
 
 			</h:panelGrid>
 
 			<h:panelGrid id="gridScriptSearch" columns="8">
 
 				<p:outputLabel value="Título: " for="search-titlesc" />
-				<p:inputText id="search-titlesc"
-					value="#{scriptSearchCDI.title}"
+				<p:inputText id="search-titlesc" value="#{scriptSearchCDI.title}"
 					size="35" />
 
 				<p:outputLabel value="Id: " for="search-idsc" />
@@ -56,8 +51,8 @@
 
 			</h:panelGrid>
 
-			<p:dataTable emptyMessage="Não foram encontrados guiões." 
-				var="sc" value="#{scriptSearchCDI.sclist}">
+			<p:dataTable emptyMessage="Não foram encontrados guiões." var="sc"
+				value="#{scriptSearchCDI.sclist}">
 				<f:facet name="header">Listagem guiões</f:facet>
 				<p:column headerText="Título">
 					<h:outputText value="#{sc.title}" />
