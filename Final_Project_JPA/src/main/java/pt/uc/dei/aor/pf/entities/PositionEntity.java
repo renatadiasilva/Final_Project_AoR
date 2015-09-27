@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT p FROM PositionEntity p ORDER BY p.company, p.title"),
 	@NamedQuery(name = "Position.findCloseToSLAPositions",
 			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate"
-					+ " AND p.status = :status"),
+					+ " AND p.status = :open"),
 	@NamedQuery(name = "Position.findAfterSLAPositions",
 			query = "SELECT p FROM PositionEntity p"
 					+ " WHERE p.slaDate < CURRENT_DATE "

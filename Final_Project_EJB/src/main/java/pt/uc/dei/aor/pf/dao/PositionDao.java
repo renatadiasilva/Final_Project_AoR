@@ -178,7 +178,7 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date", cal.getTime());
-		parameters.put("status", Constants.STATUS_OPEN);
+		parameters.put("open", Constants.STATUS_OPEN);
 		return super.findSomeResults("Position.findCloseToSLAPositions", 
 				parameters);
 	}
