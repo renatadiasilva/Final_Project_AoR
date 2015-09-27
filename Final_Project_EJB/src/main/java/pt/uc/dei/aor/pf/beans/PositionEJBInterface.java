@@ -14,7 +14,7 @@ public interface PositionEJBInterface {
 	public abstract void delete(PositionEntity position);
 	public abstract PositionEntity find(Long id);
 	public abstract List<PositionEntity> findAll();
-	public abstract List<PositionEntity> findAllAlphabetic();
+	public abstract List<PositionEntity> findAllOrderByCode();
 	public abstract List<PositionEntity> findOpenPositions();
 	public abstract List<PositionEntity> findCloseToSLAPositions(
 			int daysBefore);

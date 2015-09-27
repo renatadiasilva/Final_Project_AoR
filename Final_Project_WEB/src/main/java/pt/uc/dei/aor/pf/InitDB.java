@@ -371,6 +371,9 @@ public class InitDB {
 		plist[5].setLocations(locations);
 		plist[5].setAdvertisingChannels(channels);
 		
+		for (PositionEntity p : plist)
+			p.setPositionCode(p.getPositionCode().replaceAll("null", "1"));
+
 		// SUBMISSION ATTRIBUTES
 		
 		List<String> sources = Arrays.asList(Constants.SOURCE_EXPRESSO,

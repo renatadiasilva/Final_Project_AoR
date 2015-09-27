@@ -127,7 +127,7 @@ public class NewPositionCDI implements Serializable {
 			if(this.managedPositions){
 				this.manager=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
 				this.openPositions=this.positionEJB.findOpenPositionsManagedByUser(this.manager);				
-			}else this.openPositions=this.positionEJB.findAllAlphabetic();
+			}else this.openPositions=this.positionEJB.findAllOrderByCode();
 		}
 
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -151,6 +151,7 @@ public class NewPositionCDI implements Serializable {
 		this.altAdvertisingChannels=new ArrayList<NewPositionCDIextraAd>();
 		this.extraAdvertising="";
 		this.advertisingChannels.clear();
+		this.critical=this.linkedin=this.glassdoor=this.facebook=false;
 
 		this.cleanTechnicalAreas();
 		this.technicalArea="";

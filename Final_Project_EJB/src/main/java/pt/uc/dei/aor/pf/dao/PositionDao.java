@@ -338,8 +338,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		return (Double) result.get(0);
 	}
 
-	public List<PositionEntity> findAllAlphabetic() {
-		return super.findSomeResults("Position.findAllAlphabetic", null);
+	public List<PositionEntity> findAllOrderByCode() {
+		return super.findSomeResults("Position.findAllOrderByCode", null);
 	}
 
 }

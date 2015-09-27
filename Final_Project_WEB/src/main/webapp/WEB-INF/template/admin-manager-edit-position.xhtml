@@ -18,6 +18,9 @@
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 					paginator="true" rows="10">
 					<f:facet name="header">Posições</f:facet>
+					<p:column headerText="Código">
+						<h:outputText value="#{position.positionCode}" />
+					</p:column>
 					<p:column headerText="Título">
 						<h:outputText value="#{position.title}" />
 					</p:column>

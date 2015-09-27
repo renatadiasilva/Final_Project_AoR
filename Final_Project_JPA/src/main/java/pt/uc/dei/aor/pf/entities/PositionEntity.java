@@ -31,8 +31,8 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
 	@NamedQuery(name = "Position.findClosedPositions",
 			query = "SELECT p FROM PositionEntity p WHERE p.status = :closed"),
-	@NamedQuery(name = "Position.findAllAlphabetic",
-			query = "SELECT p FROM PositionEntity p ORDER BY p.company, p.title"),
+	@NamedQuery(name = "Position.findAllOrderByCode",
+			query = "SELECT p FROM PositionEntity p ORDER BY p.positionCode"),
 	@NamedQuery(name = "Position.findCloseToSLAPositions",
 			query = "SELECT p FROM PositionEntity p WHERE :date >= p.slaDate"
 					+ " AND p.status = :open"),

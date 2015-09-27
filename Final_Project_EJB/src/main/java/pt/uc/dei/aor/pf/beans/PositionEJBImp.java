@@ -278,8 +278,8 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public List<PositionEntity> findAllAlphabetic() {
-		return this.positionDAO.findAllAlphabetic();
+	public List<PositionEntity> findAllOrderByCode() {
+		return this.positionDAO.findAllOrderByCode();
 	}
 
 }
