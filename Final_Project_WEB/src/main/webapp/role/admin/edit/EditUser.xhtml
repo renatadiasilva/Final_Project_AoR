@@ -64,7 +64,7 @@
 		</h:panelGrid>
 
 		<h:form id="search-keywordrole-out">
-			<h:panelGrid columns="4" style="width:100%">
+			<h:panelGrid columns="5" style="width:100%">
 				<p:watermark value="Procurar por palavra chave e perfil: "
 					for="search-keywordrole" />
 				<p:inputText id="search-keywordrole"
@@ -72,9 +72,9 @@
 				<p:commandButton action="#{userSearchCDI.searchByKeywordAndRole()}"
 					update="userSearch messages" icon="ui-icon-search" />
 
+				<p:outputLabel value="Perfil: " for="search-keywordRoleAll" />
 				<p:selectOneMenu id="search-keywordRoleAll"
 					value="#{userSearchCDI.role}" style="width:150px">
-					<f:selectItem itemLabel="Selecione um perfil" itemValue="" />
 					<f:selectItem itemLabel="Administrador" 
 						itemValue="#{userSearchCDI.admin()}" />
 					<f:selectItem itemLabel="Gestor"

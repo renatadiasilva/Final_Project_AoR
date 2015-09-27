@@ -97,6 +97,8 @@
 				</h:panelGroup>
 
 				<h:panelGroup rendered="#{!reportsCDI.submissionsBySource}">
+					<p:outputLabel rendered="#{reportsCDI.averageTime()}"
+						value="Período: " for="numbreport-period1" />
 					<p:selectOneMenu rendered="#{reportsCDI.averageTime()}"
 					 	id="numbreport-period1"
 						value="#{reportsCDI.period}" style="width:100px">
@@ -105,6 +107,8 @@
 						<f:selectItem itemLabel="Anual"
 							itemValue="#{reportsCDI.yearly()}" />
 					</p:selectOneMenu>
+					<p:outputLabel rendered="#{!reportsCDI.averageTime()}"
+						value="Período: " for="numbreport-period2" />
 					<p:selectOneMenu rendered="#{!reportsCDI.averageTime()}"
 					 	id="numbreport-period2"
 						value="#{reportsCDI.period}" style="width:100px">

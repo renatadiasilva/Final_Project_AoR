@@ -41,6 +41,8 @@ public interface PositionEJBInterface {
 			String title, String location, String currentStatus, String company, 
 			String technicalArea, UserEntity positionManager);
 	public abstract List<PositionEntity> findPositionsByKeyword(String keyword);
+	public abstract List<PositionEntity> findPositionsByKeywordShort(
+			String keyword, String status);
 	public abstract List<PositionEntity> findPositionsByKeywordAndManager(
 			String keyword, UserEntity positionManager);
 	public abstract List<PositionEntity> findPositionsByCandidate(
@@ -65,5 +67,5 @@ public interface PositionEJBInterface {
 			char period);
 	public abstract Double overallAverageTimeToClose(Date date1, Date date2);
 	public abstract List<PositionEntity> findAfterSLAPositions();
-	public abstract List<PositionEntity> findClosedPositions();		
+	public abstract List<PositionEntity> findClosedPositions();
 }

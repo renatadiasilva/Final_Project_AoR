@@ -213,8 +213,35 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		query.setParameter("code", keyword);
 		query.setParameter("title", keyword);
 		query.setParameter("company", keyword);
+		query.setParameter("loc", keyword);
 		query.setParameter("technical_area", keyword);
 		query.setParameter("description", keyword);
+		if (positionManager != null) 
+			query.setParameter("id", positionManager.getId());
+		return (List<PositionEntity>) query.getResultList();
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<PositionEntity> findPositionsByKeywordShort(String keyword,
+			UserEntity positionManager, String status) {
+
+		String[] attributes = {"code", "title",
+			"company", "technical_area"};
+
+		String extra = "";
+		if (positionManager != null) extra = " AND positions.manager = :id";
+		
+		String queryS = makeQuery("*",
+				"positions", 
+				"(", attributes, " OR ",
+				"positions.status LIKE :status"+extra, "code");
+		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+		query.setParameter("code", keyword);
+		query.setParameter("title", keyword);
+		query.setParameter("company", keyword);
+		query.setParameter("technical_area", keyword);
+		query.setParameter("status", "%"+status+"%");
 		if (positionManager != null) 
 			query.setParameter("id", positionManager.getId());
 		return (List<PositionEntity>) query.getResultList();

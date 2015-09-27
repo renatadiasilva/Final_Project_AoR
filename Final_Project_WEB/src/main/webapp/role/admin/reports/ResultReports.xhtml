@@ -32,7 +32,7 @@
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.rejectSubm}" />
 
-				<p:commandButton value="Propostas apresentadas"
+				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.proposalCountResults()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{!reportsCDI.rejectSubm}" />
@@ -60,6 +60,7 @@
 				</h:panelGroup>
 
 				<h:panelGroup>
+					<p:outputLabel value="Período: " for="resultrep-period" />				
 					<p:selectOneMenu id="resultrep-period"
 						value="#{reportsCDI.period}"
 						style="width:100px">

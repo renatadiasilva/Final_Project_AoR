@@ -58,7 +58,7 @@ public class ReportsCDI implements Serializable {
 	private List<UserEntity> clist;
 	private PositionEntity position;
 	private List<PositionEntity> plist;
-	
+
 	// results
 	private String measureHeader;
 	private String tableHeader;
@@ -73,10 +73,10 @@ public class ReportsCDI implements Serializable {
 	private boolean submissionPos;
 	private boolean rejectedPos;
 	private boolean proposalPos;
-	
+
 	private boolean interviewDetail;
 	private boolean interviewChoose;
-	
+
 	private boolean timeToHired;
 	private boolean submissionCount;
 	private boolean spontaneousCount;
@@ -84,9 +84,9 @@ public class ReportsCDI implements Serializable {
 	private boolean timeToClose;
 	private boolean timeTo1stInt;
 	private boolean submissionsBySource;
-	
+
 	private boolean rejectSubm;
-	
+
 	private boolean positionDetail;
 	private boolean positionChoose;
 
@@ -102,12 +102,13 @@ public class ReportsCDI implements Serializable {
 		totalResult = emptyMessage = "";
 		report = null;
 		d1 = d2 = new Date();
+		candidate = null;
+		position = null;
 		keyword = "";
 		if (interviewDetail) {
 			interviewChoose = true;
 			clist = getAllCandidates();
 		}
-		positionDetail = true; // meter no redirect
 		if (positionDetail) {
 			positionChoose = true;
 			plist = getAllClosedPositions();
@@ -538,31 +539,37 @@ public class ReportsCDI implements Serializable {
 				+ "of a given closed position");
 
 		// choose from the list of positions
-//		PositionEntity position = positionEJB.find(id);
-		if (position != null && 
-				position.getStatus().equals(Constants.STATUS_CLOSED)) {
-			log.debug("Position "+position.getPositionCode());				
+		if (position != null) {
+			if (position.getStatus().equals(Constants.STATUS_CLOSED)) {
+				log.debug("Position "+position.getPositionCode());				
 
-			tableHeader = "Detalhes de candidaturas da posição "
-					+position.getPositionCode()+" (aberta de "
-					+ftDate.format(position.getOpeningDate())
-					+" até "+ftDate.format(position.getClosingDate())+")";
-			measureFooter = "Total Candidaturas: ";
-			emptyMessage = "Sem candidaturas.";
+				tableHeader = "Detalhes de candidaturas da posição "
+						+position.getPositionCode()+" (aberta de "
+						+ftDate.format(position.getOpeningDate())
+						+" até "+ftDate.format(position.getClosingDate())+")";
+				measureFooter = "Total Candidaturas: ";
+				emptyMessage = "Sem candidaturas.";
 
-			List<SubmissionEntity> list = 
-					submissionEJB.findDetailOfPosition(position);
+				List<SubmissionEntity> list = 
+						submissionEJB.findDetailOfPosition(position);
 
-			report = new ArrayList<ReportItem>();
-			for (SubmissionEntity s: list) {
-				report.add(new ReportItem(null, null, s, " ", 0, ""));
-			}
+				report = new ArrayList<ReportItem>();
+				for (SubmissionEntity s: list) {
+					report.add(new ReportItem(null, null, s, " ", 0, ""));
+				}
 
-			// compute overall submissions of position
-			totalResult = list.size()+"";
+				// compute overall submissions of position
+				totalResult = list.size()+"";
 
-		} else log.info("Error: the chosen closed position"
-				+ " is not closed?!?!");
+				//hide position table
+				positionChoose = false;
+
+			} else log.info("Error: the chosen closed position"
+					+ " is not closed?!?!");
+		} else {
+			errorMessage("Escolha uma posição fechada");
+			log.info("No chosen closed position");
+		}
 
 	}
 
@@ -661,7 +668,7 @@ public class ReportsCDI implements Serializable {
 
 				// compute overall interviews of candidate
 				totalResult = list.size()+"";
-				
+
 				//hide candidate table
 				interviewChoose = false;
 			} else 
@@ -705,14 +712,14 @@ public class ReportsCDI implements Serializable {
 		interviewDetail = true;
 		return "InterviewReports?faces-redirect=true";
 	}
-	
+
 	public String goToTimeToHired() {
 		timeToHired = true;
 		submissionCount = spontaneousCount = hiredCount = false;
 		timeToClose = timeTo1stInt = submissionsBySource = false;
 		return "NumberReports?faces-redirect=true";
 	}
-	
+
 	public String goToSubCnt() {
 		submissionCount = true;
 		timeToHired = spontaneousCount = hiredCount = false;
@@ -733,28 +740,28 @@ public class ReportsCDI implements Serializable {
 		timeToClose = timeTo1stInt = submissionsBySource = false;
 		return "NumberReports?faces-redirect=true";
 	}
-	
+
 	public String goToTimeToClose() {
 		timeToClose = true;
 		timeToHired = spontaneousCount = hiredCount = false;
 		submissionCount = timeTo1stInt = submissionsBySource = false;
 		return "NumberReports?faces-redirect=true";
 	}
-	
+
 	public String goToTimeTo1stInt() {
 		timeTo1stInt = true;
 		timeToHired = spontaneousCount = hiredCount = false;
 		timeToClose = submissionCount = submissionsBySource = false;
 		return "NumberReports?faces-redirect=true";
 	}
-	
+
 	public String goToSubBySource() {
 		submissionsBySource = true;
 		timeToHired = spontaneousCount = hiredCount = false;
 		timeToClose = timeTo1stInt = submissionCount = false;
 		return "NumberReports?faces-redirect=true";
 	}
-	
+
 	public String goToReportRejectSub() {
 		rejectSubm = true;
 		return "ResultReports?faces-redirect=true";
@@ -764,16 +771,15 @@ public class ReportsCDI implements Serializable {
 		rejectSubm = false;
 		return "ResultReports?faces-redirect=true";
 	}
-	
-	// pôr no createReport
+
 	public String goToReportPosDetail() {
 		positionDetail = true;
 		return "SubmissionReports?faces-redirect=true";
-		
+
 	}
-	
+
 	// methods for interview reports
-	
+
 	public List<UserEntity> getAllCandidates() {
 		log.info("Listing all candidates");
 		return this.userEJB.findAllCandidates();
@@ -783,11 +789,9 @@ public class ReportsCDI implements Serializable {
 		log.info("Listing candidates by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);
-		log.debug("Search role: "+Constants.ROLE_CANDIDATE);
-		this.clist = userEJB.findUsersByKeywordAndRole(pattern,
-				Constants.ROLE_CANDIDATE);
+		this.clist = userEJB.findCandidatesByKeywordShort(pattern);
 	}
-	
+
 	public boolean checkCandidate(UserEntity candidate){
 		if(this.candidate==null)return false;
 		if(this.candidate.getId()==candidate.getId())return true;
@@ -797,7 +801,7 @@ public class ReportsCDI implements Serializable {
 	public boolean interviewDetailStart() {
 		return interviewDetail && interviewChoose;
 	}
-	
+
 	public boolean interviewDetailEnd() {
 		return interviewDetail && !interviewChoose;
 	}
@@ -809,28 +813,29 @@ public class ReportsCDI implements Serializable {
 		candidate = null;
 		keyword = "";
 	}
-	
+
 	// methods for numbers report
-	
+
 	public boolean averageTime() {
 		return timeTo1stInt || timeToClose || timeToHired;
 	}
 
 	// methods for position detail
-	
+
 	public List<PositionEntity> getAllClosedPositions() {
 		log.info("Listing all closed positions");
 		return this.positionEJB.findClosedPositions();
 	}
 
 
-	public void getPositionsByKeyword() {
+	public void getClosedPositionsByKeyword() {
 		log.info("Listing position by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);
-		this.plist = positionEJB.findPositionsByKeyword(pattern);
+		this.plist = positionEJB.findPositionsByKeywordShort(pattern, 
+				Constants.STATUS_CLOSED);
 	}
-	
+
 	public boolean checkPosition(PositionEntity position){
 		if(this.position==null)return false;
 		if(this.position.getId()==position.getId())return true;
@@ -840,7 +845,7 @@ public class ReportsCDI implements Serializable {
 	public boolean positionDetailStart() {
 		return positionDetail && positionChoose;
 	}
-	
+
 	public boolean positionDetailEnd() {
 		return positionDetail && !positionChoose;
 	}
@@ -852,7 +857,7 @@ public class ReportsCDI implements Serializable {
 		position = null;
 		keyword = "";
 	}
-	
+
 
 	// private methods
 
@@ -955,13 +960,13 @@ public class ReportsCDI implements Serializable {
 
 	private void errorMessage(String message){
 		FacesContext.getCurrentInstance().addMessage(null, 
-			new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
 
-//	private void warningMessage(String message){
-//		FacesContext.getCurrentInstance().addMessage(null, 
-//			new FacesMessage(message));
-//	}
+	//	private void warningMessage(String message){
+	//		FacesContext.getCurrentInstance().addMessage(null, 
+	//			new FacesMessage(message));
+	//	}
 
 	// getters and setters
 
@@ -1094,7 +1099,7 @@ public class ReportsCDI implements Serializable {
 	public void setInterviewChoose(boolean interviewChoose) {
 		this.interviewChoose = interviewChoose;
 	}
-	
+
 	public String getKeyword() {
 		return keyword;
 	}

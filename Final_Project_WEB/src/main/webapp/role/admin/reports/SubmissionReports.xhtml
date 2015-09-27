@@ -23,7 +23,18 @@
 
 				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.submissionDetailsOfPosition()}"
-					update="subReportTable messages" icon="ui-icon-script" />
+					update="subReportTable
+						detailPositionReports
+						submReportChoosePos messages" icon="ui-icon-script" 
+					rendered="#{reportsCDI.positionDetailStart()}"/>
+
+				<p:commandButton value="Voltar à lista de posições"
+					action="#{reportsCDI.returnPositionDetail()}"
+					update="subReportTable
+						detailPositionReports
+						submReportChoosePos messages"
+					icon=" ui-icon-arrowreturn-1-w"
+					rendered="#{reportsCDI.positionDetailEnd()}" />
 
 				<p:commandButton value="Voltar à lista de relatórios"
 					action="#{reportsCDI.returnToReportsHome()}"
@@ -32,19 +43,20 @@
 			</h:panelGrid>
 		</h:form>
 
-		<!-- candidate to choose -->
+		<!-- position to choose -->
 		<h:form id="submReportChoosePos">
-			<h:panelGroup rendered="#{reportsCDI.positionChoose}">
+			<h:panelGroup rendered="#{reportsCDI.positionDetailStart()}">
 				<br />
 				<h2>Escolha a posição:</h2>
 
-<!-- erro query -->
 				<h:panelGrid columns="3" style="width:100%">
 					<p:watermark value="Procurar posição por palavra chave: "
 						for="subm-report-keyword" />
-					<p:inputText id="subm-report-keyword" value="#{reportsCDI.keyword}"
+					<p:inputText id="subm-report-keyword"
+						value="#{reportsCDI.keyword}"
 						style="width:100%" />
-					<p:commandButton action="#{reportsCDI.getPositionsByKeyword()}"
+					<p:commandButton
+						action="#{reportsCDI.getClosedPositionsByKeyword()}"
 						update="allClosedPositionsReportTable messages"
 						icon="ui-icon-search" />
 				</h:panelGrid>
@@ -78,10 +90,10 @@
 						<p:commandButton value="Seleccionar" style="width:100%"
 							rendered="#{!reportsCDI.checkPosition(pos)}"
 							actionListener="#{reportsCDI.setPosition(pos)}"
-							icon="ui-icon-person" update="submReportChoosePos" />
+							icon="ui-icon-suitcase" update="submReportChoosePos" />
 						<p:commandButton rendered="#{reportsCDI.checkPosition(pos)}"
 							style="width:100%" value="Posição Seleccionada"
-							icon="ui-icon-check" />
+							icon="ui-icon-suitcase" />
 					</p:column>
 				</p:dataTable>
 			</h:panelGroup>
