@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.dao.QuestionDao;
 import pt.uc.dei.aor.pf.entities.QuestionEntity;
 
@@ -60,6 +61,17 @@ public class QuestionEJBImp implements QuestionEJBInterface {
 		return questionDAO.findAll();
 	}
 
+	@Override
+	public String getTypeText(QuestionEntity question) {
+		if (question.getType().equals(QuestionEntity.VALUE)) 
+			return Constants.QUESTION_VALUE;
+		if (question.getType().equals(QuestionEntity.ISTRUE)) 
+			return Constants.QUESTION_ISTRUE;
+		if (question.getType().equals(QuestionEntity.ANSWER)) 
+			return Constants.QUESTION_ASWER;
+		return "";
+	}
+
 	private void isQuestionComplete(QuestionEntity question) {
 		boolean hasError = false;
 		
@@ -71,6 +83,5 @@ public class QuestionEJBImp implements QuestionEJBInterface {
 			throw new IllegalArgumentException("The question is missing data. "
 					+ "Check the notnull attributes.");
 	}
-
 
 }

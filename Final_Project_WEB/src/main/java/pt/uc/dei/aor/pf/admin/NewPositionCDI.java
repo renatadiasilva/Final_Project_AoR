@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import pt.uc.dei.aor.pf.ExtraAd;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
+import pt.uc.dei.aor.pf.beans.QuestionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
@@ -47,6 +49,9 @@ public class NewPositionCDI implements Serializable {
 
 	@EJB
 	private PositionEJBInterface positionEJB;
+	
+	@EJB
+	private QuestionEJBInterface questionEJB;
 
 	private String creatorEmail;
 
@@ -659,6 +664,10 @@ public class NewPositionCDI implements Serializable {
 		this.cleanBean();
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Estado actualizado."));
+	}
+	
+	public String getTypeTextOfQuestion(QuestionEntity question) {
+		return questionEJB.getTypeText(question);
 	}
 
 	public void unloadPosition(){

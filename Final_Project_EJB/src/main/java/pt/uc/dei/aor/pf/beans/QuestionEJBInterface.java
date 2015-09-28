@@ -12,5 +12,6 @@ public interface QuestionEJBInterface {
 	public abstract QuestionEntity find(Long id);
 	public abstract List<QuestionEntity> findAll();
 	public abstract QuestionEntity saveAndReturn(QuestionEntity question); 
+	public abstract String getTypeText(QuestionEntity question);
 	
 }

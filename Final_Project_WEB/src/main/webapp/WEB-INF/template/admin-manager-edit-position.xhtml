@@ -347,12 +347,15 @@
 						value="Comentários: #{newPositionCDI.checkScript.comments}" />
 					<br />
 					<p:dataTable id="questionsTable" emptyMessage="Sem questões."
-						var="question" value="#{newPositionCDI.script.questions}"
+						var="q" value="#{newPositionCDI.checkScript.questions}"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 						paginator="true" rows="10">
 						<f:facet name="header">Questões</f:facet>
-						<p:column>
-							<h:outputText value="#{question.question}" />
+						<p:column headerText="Título">
+							<h:outputText value="#{q.question}" />
+						</p:column>
+						<p:column headerText="Tipo">
+							<h:outputText value="#{newPositionCDI.getTypeTextOfQuestion(q)}" />
 						</p:column>
 					</p:dataTable>
 				</h:panelGrid>

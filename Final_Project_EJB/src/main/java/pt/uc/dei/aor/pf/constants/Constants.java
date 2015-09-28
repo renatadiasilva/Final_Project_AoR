@@ -111,4 +111,9 @@ public class Constants {
 	// days to SLA
 	public static final int DAYS_TO_SLA = 3;
 	
+	// types of questions
+	public static final String QUESTION_VALUE = "Numérica";
+	public static final String QUESTION_ISTRUE = "V/F";
+	public static final String QUESTION_ASWER = "Texto livre";
+	
 }

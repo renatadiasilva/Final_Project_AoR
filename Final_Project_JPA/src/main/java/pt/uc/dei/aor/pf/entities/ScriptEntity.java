@@ -30,7 +30,6 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Script.findReusableScripts",
 			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
 					+ " ORDER BY s.creationDate DESC"),
-	//tirar
 	@NamedQuery(name = "Script.findChildScripts",
 			query = "SELECT s FROM ScriptEntity s"
 					+ " WHERE s.derivedFrom = :script"),
