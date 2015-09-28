@@ -76,10 +76,41 @@
 						oncomplete="PF('checkPosition').show();" />
 				</p:column>
 				<p:column headerText="Guião">
-					<h:outputText value="#{p.defaultScript.title}" />
+					<p:commandButton value="Consultar" style="width:100%"
+						icon="ui-icon-zoomin"
+						actionListener="#{positionSearchCDI.setCheckScript(p.defaultScript)}"
+						oncomplete="PF('checkScriptMyPos').show();" 
+						update="checkScriptFormMyPos" />
 				</p:column>
 			</p:dataTable>
 
+		</h:form>
+
+		<h:form id="checkScriptFormMyPos">
+			<p:dialog widgetVar="checkScriptMyPos" draggable="false" resizable="false"
+				modal="true" style="max-width:300px" header="Guião">
+				<h:panelGrid>
+					<p:outputLabel value="Título: #{positionSearchCDI.checkScript.title}" />
+					<br />
+					<p:outputLabel
+						value="Comentários: #{positionSearchCDI.checkScript.comments}" />
+					<br />
+					<p:dataTable id="questionsTable" emptyMessage="Sem questões."
+						var="q" value="#{positionSearchCDI.checkScript.questions}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+						{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+						paginator="true" rows="10">
+						<f:facet name="header">Questões</f:facet>
+						<p:column headerText="Título">
+							<h:outputText value="#{q.question}" />
+						</p:column>
+						<p:column headerText="Tipo">
+							<h:outputText value="#{positionSearchCDI.getTypeTextOfQuestion(q)}" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+				<p:commandButton value="Fechar" onclick="PF('checkScriptMyPos').hide();" />
+			</p:dialog>
 		</h:form>
 
 	</ui:define>

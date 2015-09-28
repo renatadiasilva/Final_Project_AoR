@@ -13,12 +13,16 @@ import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
+import pt.uc.dei.aor.pf.beans.QuestionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.QuestionEntity;
+import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+
 import java.io.Serializable;
 
 
@@ -42,7 +46,10 @@ public class PositionSearchCDI implements Serializable {
 	
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
-
+	
+	@EJB
+	private QuestionEJBInterface questionEJB;
+	
 	// search fields
 	private Date date1, date2;
 	private String code, title, status;
@@ -54,6 +61,8 @@ public class PositionSearchCDI implements Serializable {
 	private Long idPSc;
 	private int days;
 	private boolean result;
+	private ScriptEntity checkScript;
+	private ScriptEntity script;
 
 	private List<PositionEntity> plist;
 
@@ -419,6 +428,32 @@ public class PositionSearchCDI implements Serializable {
 		if (lisboa) this.locations.add(Constants.LOCATION_LISBOA);
 		if (porto) this.locations.add(Constants.LOCATION_PORTO);
 		if (other) this.locations.add(SearchPattern.preparePattern(location));
+	}
+
+	public ScriptEntity getCheckScript() {
+		return checkScript;
+	}
+
+	public void setCheckScript(ScriptEntity checkScript) {
+		this.checkScript = checkScript;
+	}
+	
+	public boolean checkScript(ScriptEntity script){
+		if(this.script==null)return false;
+		if(this.script.getId()==script.getId())return true;
+		return false;
+	}
+
+	public ScriptEntity getScript() {
+		return script;
+	}
+
+	public void setScript(ScriptEntity script) {
+		this.script = script;
+	}
+
+	public String getTypeTextOfQuestion(QuestionEntity question) {
+		return questionEJB.getTypeText(question);
 	}
 
 }
