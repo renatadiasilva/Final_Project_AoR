@@ -141,12 +141,13 @@ public class InitDB {
 					"Só para testar", true, ulist[1]), // sclist[5]
 			};
 		
-		QuestionEntity [] qList = {
-				new QuestionEntity(QuestionEntity.ANSWER, "Qual é a sua idade?"),
-				new QuestionEntity(QuestionEntity.ANSWER, "Qual é o seu clube?"),
-				new QuestionEntity(QuestionEntity.ANSWER, "Você é ninja?"),
-				new QuestionEntity(QuestionEntity.ANSWER, "Qual é o significado da vida?"),
-				new QuestionEntity(QuestionEntity.ANSWER, "O Benfica é o maior?"),
+		QuestionEntity [] qlist = {
+				new QuestionEntity(QuestionEntity.ISTRUE, "Masculino ou Feminino?"), // qlist[0]
+				new QuestionEntity(QuestionEntity.VALUE, "Qual é a sua idade?"), // qlist[1]
+				new QuestionEntity(QuestionEntity.ANSWER, "Qual é o seu clube?"), // qlist[2]
+				new QuestionEntity(QuestionEntity.ISTRUE, "Você é ninja?"), // qlist[3]
+				new QuestionEntity(QuestionEntity.ANSWER, "Qual é o significado da vida?"), // qlist[4]
+				new QuestionEntity(QuestionEntity.ISTRUE, "O Benfica não vale nada?"), // qlist[5]
 		};
 
 		PositionEntity [] plist = {
@@ -312,9 +313,9 @@ public class InitDB {
 		
 		for(UserEntity u: ulist) u.setAuthenticated(true);
 
+
 		// SCRIPT ATTRIBUTES
 		
-		//tirar ou manter?
 		sclist[1].setDerivedFrom(sclist[0]);
 				
 
@@ -567,7 +568,7 @@ public class InitDB {
 			this.scriptEJB.save(sc);
 		}
 		
-		for (QuestionEntity q : qList){
+		for (QuestionEntity q : qlist){
 			this.questionEJB.save(q);
 		}
 
@@ -585,6 +586,17 @@ public class InitDB {
 		
 //		System.out.println("New style ID: "+this.styleEJB.saveAndReturn(new StyleEntity("Critical", "Critical Software", "Critical Software Recruitment", "#A50F13", "#660", true)).getId());
 		
+		sclist[0].setQuestions(Arrays.asList(qlist[0],qlist[1],qlist[2]));
+		sclist[1].setQuestions(Arrays.asList(qlist[0],qlist[3],qlist[5]));
+		sclist[2].setQuestions(Arrays.asList(qlist[0],qlist[1],qlist[2],qlist[4],qlist[5]));
+		sclist[3].setQuestions(Arrays.asList(qlist[1],qlist[3],qlist[4]));
+		sclist[4].setQuestions(Arrays.asList(qlist[0],qlist[1],qlist[2],qlist[3],qlist[5]));
+		sclist[5].setQuestions(Arrays.asList(qlist[0],qlist[3],qlist[5]));
+	
+		for (ScriptEntity sc : sclist)
+			scriptEJB.update(sc);
+
+
 	}
 
 }

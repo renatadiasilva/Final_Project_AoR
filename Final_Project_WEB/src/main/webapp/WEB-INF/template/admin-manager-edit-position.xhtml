@@ -13,7 +13,7 @@
 
 		<h:form id="editPosition">
 			<h:panelGroup id="editPosition">
-				<p:dataTable emptyMessage="Não foram encontradas posições"
+				<p:dataTable emptyMessage="#{newPositionCDI.emptyTable}"
 					var="position" value="#{newPositionCDI.openPositions}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 					paginator="true" rows="10">
@@ -88,7 +88,7 @@
 					</h:panelGrid>
 				</h:panelGroup>
 
-				<h:panelGroup>
+				<h:panelGroup rendered="#{!newPositionCDI.managedPositions}" >
 
 					<!-- Vagas, título, descrição -->
 					<p:outputLabel value="Número de vagas: "
@@ -111,7 +111,7 @@
 		<h:form id="editPositionPart1">
 
 			<h:panelGrid columns="2"
-				rendered="#{newPositionCDI.loadedPosition()}">
+				rendered="#{newPositionCDI.loadedPositionAdmin()}">
 
 				<p:outputLabel value="Título: " for="new-position-title" />
 				<p:inputText id="new-position-title" value="#{newPositionCDI.title}"
@@ -137,12 +137,12 @@
 
 			<br />
 
-			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
+			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<h2>Localização:</h2>
 			</h:panelGroup>
 
 			<!-- Locations -->
-			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
+			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<h:panelGrid columns="8">
 
 					<p:outputLabel value="Lisboa: " />
@@ -174,12 +174,12 @@
 
 			<br />
 
-			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
+			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<h2>Canais de Publicidade:</h2>
 			</h:panelGroup>
 
 			<!-- Advertisement Channels -->
-			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
+			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<h:panelGrid id="newPositionAd" columns="4">
 
 					<p:outputLabel value="Critical Software site: " />
@@ -212,7 +212,7 @@
 			<p:dataTable id="altAdvertisementChannels" var="advertisingChannel"
 				value="#{newPositionCDI.altAdvertisingChannels}" style="width:300px"
 				emptyMessage="Sem canais de publicidade alternativos"
-				rendered="#{newPositionCDI.loadedPosition()}">
+				rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<p:column headerText="Outros canais">
 					<p:outputLabel value="#{advertisingChannel.ad}" />
 				</p:column>
@@ -226,7 +226,7 @@
 
 		<h:form id="editPositionPart2c">
 			<h:panelGrid columns="3" style="widht:300px"
-				rendered="#{newPositionCDI.loadedPosition()}">
+				rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<p:inputText id="new-position-extra-ad"
 					value="#{newPositionCDI.extraAdvertising}" />
 				<p:watermark for="new-position-extra-ad"
@@ -245,7 +245,7 @@
 		<h:form id="editPositionPart4"
 			rendered="#{userSessionManagement.admin}">
 
-			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
+			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<br />
 				<h2>Gestor Responsável:</h2>
 				<p:dataTable id="managersTable"
@@ -280,7 +280,7 @@
 
 		<h:form id="editPositionPart5">
 
-			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
+			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<br />
 				<h2>Guião Padrão:</h2>
 				<p:dataTable id="scriptsTable"
@@ -318,7 +318,7 @@
 		<br />
 		<br />
 
-		<h:form id="editExistingPosition">
+		<h:form id="editExistingPosition" rendered="#{!newPositionCDI.managedPositions}">
 			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
 				<p:messages />
 				<p:commandButton value="Limpar campos" style="width:100%"
@@ -330,7 +330,7 @@
 				<br />
 				<p:commandButton value="Guardar alterações (não actualiza o estado)"
 					style="width:100%"
-					action="#{newPositionCDI.editExistingPosition()}"
+					action="#{newPositionCDI.createPosition()}"
 					icon="ui-icon-disk"
 					update="editPosition messages editPositionPart1 editPositionPart2
 					editPositionPart2b editPositionPart2c editPositionPart3

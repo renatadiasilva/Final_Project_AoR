@@ -13,10 +13,4 @@ public interface QuestionEJBInterface {
 	public abstract List<QuestionEntity> findAll();
 	public abstract QuestionEntity saveAndReturn(QuestionEntity question); 
 	
-//	public abstract List<QuestionEntity> findQuestionsByScript(
-//				ScriptEntity script); // needed??
-	
-	//só questions tipo!!! mais atributos (idade/nome/etc)
-	//muito complicado??
-
 }

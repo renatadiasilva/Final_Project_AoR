@@ -93,6 +93,8 @@ public class NewPositionCDI implements Serializable {
 	private boolean managedPositions;
 
 	private String status;  
+	
+	private String emptyTable;
 
 	private Map<String,String> availableStatus=new HashMap<String, String>();
 
@@ -105,12 +107,15 @@ public class NewPositionCDI implements Serializable {
 	public void editExistingPosition(){
 		this.managedPositions=false;
 		this.editPosition=true;
+		this.emptyTable="Não foram encontradas posições";
 		this.cleanBean();
 	}
 
 	public void editManagedPositions(){
 		this.managedPositions=true;
 		this.editPosition=true;
+		this.emptyTable="Não foram encontradas posições abertas geridas por"
+				+ " este gestor";
 		this.cleanBean();
 	}
 
@@ -123,7 +128,7 @@ public class NewPositionCDI implements Serializable {
 			this.availableStatus.put(Constants.STATUS_ONHOLD, Constants.STATUS_ONHOLD);
 			this.availableStatus.put(Constants.STATUS_CLOSED, Constants.STATUS_CLOSED);
 
-			// Se é para um manager editar, só vai buscar as dele
+			// Se é para um manager editar, só vai buscar as dele (open)
 			if(this.managedPositions){
 				this.manager=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
 				this.openPositions=this.positionEJB.findOpenPositionsManagedByUser(this.manager);				
@@ -194,7 +199,7 @@ public class NewPositionCDI implements Serializable {
 			this.error("Defina um título.");
 		}
 
-		if(this.company.isEmpty()){
+		if(this.company.isEmpty() && !this.editPosition){
 			valid=false;
 			this.error("Defina o nome da Empresa.");
 		}
@@ -214,7 +219,7 @@ public class NewPositionCDI implements Serializable {
 			this.error("Escolha os canais de publicidade.");
 		}
 
-		if(this.technicalArea.isEmpty()){
+		if(this.technicalArea.isEmpty() && !this.editPosition){
 			valid=false;
 			this.error("Escolha uma área técnica.");
 		}
@@ -234,7 +239,7 @@ public class NewPositionCDI implements Serializable {
 			this.error("Defina o número de vagas.");
 		}
 
-		if(this.slaDays==0){
+		if(this.slaDays==0 && !this.editPosition){
 			valid=false;
 			this.error("Defina o SLA.");
 		}
@@ -261,7 +266,7 @@ public class NewPositionCDI implements Serializable {
 
 				this.unloadPosition();
 
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Posição Editada."));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Posição editada."));
 
 			}else{
 
@@ -285,6 +290,14 @@ public class NewPositionCDI implements Serializable {
 			this.altAdvertisingChannels.clear();
 		}
 
+	}
+
+	public boolean isManagedPositions() {
+		return managedPositions;
+	}
+
+	public void setManagedPositions(boolean managedPositions) {
+		this.managedPositions = managedPositions;
 	}
 
 	private void error(String message){
@@ -443,7 +456,6 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void setManager(UserEntity manager) {
-		System.out.println("Set Manager "+manager.getEmail());
 		this.manager = manager;
 	}
 
@@ -581,8 +593,11 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public boolean loadedPosition(){
-		if(this.position!=null)return true;
-		return false;
+		return this.position!=null;
+	}
+
+	public boolean loadedPositionAdmin(){
+		return this.position!=null&&!this.managedPositions;
 	}
 
 	private void loadPosition() {
@@ -665,6 +680,14 @@ public class NewPositionCDI implements Serializable {
 
 	public void setAvailableStatus(Map<String, String> availableStatus) {
 		this.availableStatus = availableStatus;
+	}
+
+	public String getEmptyTable() {
+		return emptyTable;
+	}
+
+	public void setEmptyTable(String emptyTable) {
+		this.emptyTable = emptyTable;
 	}
 
 }
