@@ -86,7 +86,7 @@
 						rendered="#{checkPositionCDI.candidate(p)}" style="width: 100%" />
 					<!-- 3ª Não mudar a ordem -->
 					<p:commandButton value="Candidatar-se" icon="ui-icon-suitcase"
-						rendered="#{checkPositionCDI.submitable(p)}"
+						rendered="#{checkPositionCDI.submitable()}"
 						update="newSubmissionForm1 newSubmissionForm2 newSubmissionForm3 newSubmissionForm4"
 						actionListener="#{newSubmissionCDI.associatePosition(p)}"
 						style="width: 100%" />

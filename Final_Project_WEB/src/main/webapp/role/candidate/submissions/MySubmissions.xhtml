@@ -52,7 +52,8 @@
 				</p:column>
 				<p:column headerText="Mudar Carta de Motivação">
 					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
-						<p:commandButton value="Mudar CV" icon="ui-icon-refresh"
+						<p:commandButton value="Mudar Carta de Motivação"
+							icon="ui-icon-refresh"
 							rendered="#{submissionSearchCDI.changeCV(s)}"
 							actionListener="#{submissionSearchCDI.editSubmission(s)}"
 							oncomplete="PF('changeSubmissionMotivationLetter').show();" />
@@ -69,9 +70,9 @@
 			</p:dataTable>
 			<br />
 		</h:form>
-		
+
 		<h1>As minhas candidaturas espontâneas</h1>
-		
+
 		<h:form id="mySubmissionsNon">
 
 			<p:dataTable emptyMessage="Não tem candidaturas." var="s"
@@ -100,7 +101,8 @@
 				</p:column>
 				<p:column headerText="Mudar Carta de Motivação">
 					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
-						<p:commandButton value="Mudar Carta de Motivação" icon="ui-icon-refresh"
+						<p:commandButton value="Mudar Carta de Motivação"
+							icon="ui-icon-refresh"
 							rendered="#{submissionSearchCDI.changeCV(s)}"
 							actionListener="#{submissionSearchCDI.editSubmission(s)}"
 							oncomplete="PF('changeSubmissionMotivationLetter').show();" />
