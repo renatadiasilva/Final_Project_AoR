@@ -185,16 +185,19 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		String companyName=styleEJB.findDefaulStyle().getCompanyName();
 		
-		String positionMail=position.getPositionCode()+" ("+position.getTitle()+" - "+position.getCompany()+")";
+		String positionMail=position.getPositionCode()
+				+", \'"+position.getTitle()+"\' - "+position.getCompany();
 
 		String text="Caro administrador,"
-				+"\n\nEstá a aproximar-se a data de fecho da posição com o"
-				+" código "+positionMail+" (de acordo com o SLA definido)."
+				+"\n\nEstá a aproximar-se ou já foi ultrapassada"
+				+" a data de fecho ("
+				+position.getSlaDate()+") da posição com o"
+				+" código "+positionMail+", de acordo com o SLA definido."
 				+"\n\nCumprimentos,\nA equipa "
 				+companyName;
 		
 		this.sendEmail(null, bcc, position.getPositionCode()
-				+": aproximação de data de fecho", text);
+				+": data de fecho a "+Constants.DAYS_TO_SLA+" dias", text);
 
 	}
 
