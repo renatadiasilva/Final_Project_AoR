@@ -6,10 +6,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
-import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
-import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
@@ -20,9 +18,6 @@ import java.util.List;
 @SessionScoped
 public class CheckPositionCDI implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5955528757542061330L;
 
 	@Inject
@@ -32,9 +27,6 @@ public class CheckPositionCDI implements Serializable {
 	private PositionEJBInterface positionEJB;
 	
 	@EJB
-	private SubmissionEJBInterface submissionEJB;
-
-	@EJB
 	private UserEJBInterface userEJB;
 
 	private String title;
@@ -43,37 +35,13 @@ public class CheckPositionCDI implements Serializable {
 
 	private List<PositionEntity> positions;
 
-	private boolean forbidden, candidate;
+	//check if candidate isn't position manager & isn't associated to position
+	public boolean submitable(PositionEntity position){
+		String candidateEmail = userManagement.getUserMail();
 
-	// 1ª Verificação
-	public boolean forbidden(PositionEntity position){
-		this.forbidden=this.candidate=false;
-
-		if(position.getPositionManager().getEmail().equals(userManagement.getUserMail()))
-			this.forbidden=true;
-
-		return this.forbidden;
-	}
-
-	// 2ª Verificação
-	public boolean candidate(PositionEntity position){
-		if(!this.forbidden){
-			UserEntity candidate=this.userEJB.findUserByEmail(userManagement.getUserMail());
-			
-			List<SubmissionEntity> submissions=this.submissionEJB.findSubmissionsOfCandidate(candidate);
-
-			if(candidate.getSubmissions()!=null)
-//				for(SubmissionEntity submission:candidate.getSubmissions())
-				for(SubmissionEntity submission:submissions)
-					if(submission.getPosition().equals(position))
-						return this.candidate=true;
-		}
-		return false;
-	}
-
-	// 3ª Verificação
-	public boolean submitable(){
-		return !this.forbidden&&!this.candidate;
+		UserEntity candidate=this.userEJB.findUserByEmail(candidateEmail);
+		return !position.getPositionManager().getEmail().equals(candidateEmail)
+			 &&!positionEJB.alreadyCandidateOfPosition(candidate, position);
 	}
 
 	public void checkPosition(PositionEntity position){
