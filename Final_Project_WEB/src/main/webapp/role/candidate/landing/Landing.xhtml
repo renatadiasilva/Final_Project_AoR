@@ -14,6 +14,8 @@
 				actionListener="#{userSessionManagement.checkTemporaryPassword()}" />
 			<f:viewAction
 				actionListener="#{positionSearchCDI.searchOpenPositions()}" />
+			<f:viewAction
+				actionListener="#{newSubmissionCDI.dissociatePosition()}" />
 		</f:metadata>
 		<br />
 		<b>CANDIDATO(A) #{userSessionManagement.userFullName}</b>,
@@ -31,6 +33,13 @@
 		<h:form>
 			<p:link value="As Minhas Candidaturas"
 				href="../submissions/MySubmissions.xhtml" />
+			<br />
+			<p:commandLink value="Submeter Candidatura Espontânea"
+				rendered="#{userSessionManagement.cv}"
+				oncomplete="PF('spontaneousSubmission').show();" />
+			<p:commandLink value="Faça Upload do CV para se poder candidatar"
+				onclick="PF('uploadCVLocal').show();"
+				rendered="#{!userSessionManagement.cv}" style="width: 100%" />
 		</h:form>
 		<br />
 		<br />
@@ -120,12 +129,12 @@
 		<h:form id="newSubmissionForm1">
 			<h:panelGroup rendered="#{newSubmissionCDI.hasPosition()}">
 
-				<h3>Canais de Publicidade:</h3>
+				<h3>Como soube desta posição?</h3>
 				<!-- Advertisement Channels -->
 				<h:panelGrid id="newPositionAd" columns="4">
 
-					<p:outputLabel value="Critical Software site: " />
-					<p:selectBooleanCheckbox value="#{newSubmissionCDI.critical}">
+					<p:outputLabel value="Expresso: " />
+					<p:selectBooleanCheckbox value="#{newSubmissionCDI.expresso}">
 						<p:ajax update="@this" />
 					</p:selectBooleanCheckbox>
 
@@ -141,6 +150,11 @@
 
 					<p:outputLabel value="Facebook: " />
 					<p:selectBooleanCheckbox value="#{newSubmissionCDI.facebook}">
+						<p:ajax update="@this" />
+					</p:selectBooleanCheckbox>
+
+					<p:outputLabel value="Net-emprego: " />
+					<p:selectBooleanCheckbox value="#{newSubmissionCDI.netemprego}">
 						<p:ajax update="@this" />
 					</p:selectBooleanCheckbox>
 

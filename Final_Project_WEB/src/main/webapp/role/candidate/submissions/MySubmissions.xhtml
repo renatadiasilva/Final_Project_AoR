@@ -30,7 +30,8 @@
 				paginator="true" rows="10">
 				<f:facet name="header">Listagem</f:facet>
 				<p:column headerText="Data">
-					<h:outputText value="#{s.date}" />
+					<h:outputText
+					value="#{submissionSearchCDI.getDateWithoutTime(s.date)}" />
 				</p:column>
 				<p:column headerText="Posição">
 					<h:outputText value="#{s.position.positionCode}" />
@@ -75,14 +76,15 @@
 
 		<h:form id="mySubmissionsNon">
 
-			<p:dataTable emptyMessage="Não tem candidaturas." var="s"
+			<p:dataTable emptyMessage="Não tem candidaturas espontâneas." var="s"
 				value="#{submissionSearchCDI.spontaneousSubmissions()}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
 				<f:facet name="header">Listagem</f:facet>
 				<p:column headerText="Data">
-					<h:outputText value="#{s.date}" />
+					<h:outputText 					
+					value="#{submissionSearchCDI.getDateWithoutTime(s.date)}" />
 				</p:column>
 				<p:column headerText="Estado">
 					<h:outputText value="#{s.status}" />

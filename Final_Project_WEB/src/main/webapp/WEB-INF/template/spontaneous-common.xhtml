@@ -20,7 +20,8 @@
 				paginator="true" rows="10">
 				<f:facet name="header">Listagem</f:facet>
 				<p:column headerText="Data">
-					<h:outputText value="#{s.date}" />
+					<h:outputText 					
+					value="#{submissionSearchCDI.getDateWithoutTime(s.date)}" />
 				</p:column>
 				<p:column headerText="Candidato">
 					<h:outputText

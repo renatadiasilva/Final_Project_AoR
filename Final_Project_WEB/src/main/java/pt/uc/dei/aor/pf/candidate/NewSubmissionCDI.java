@@ -49,7 +49,7 @@ public class NewSubmissionCDI implements Serializable{
 
 	private UploadedFile file;
 
-	private boolean critical, linkedin, glassdoor, facebook;
+	private boolean expresso, linkedin, glassdoor, facebook, netemprego;
 
 	private List<String> advertisingChannels;
 
@@ -60,10 +60,11 @@ public class NewSubmissionCDI implements Serializable{
 	private void compileAds(){
 
 		// advertisingChannels
-		if(this.critical)this.advertisingChannels.add(Constants.SOCIAL_CRITICAL);
-		if(this.linkedin)this.advertisingChannels.add(Constants.SOCIAL_LINKEDIN);
-		if(this.glassdoor)this.advertisingChannels.add(Constants.SOCIAL_GLASSDOOR);
-		if(this.facebook)this.advertisingChannels.add(Constants.SOCIAL_FACEBOOK);
+		if(this.expresso)this.advertisingChannels.add(Constants.SOURCE_EXPRESSO);
+		if(this.linkedin)this.advertisingChannels.add(Constants.SOURCE_LINKEDIN);
+		if(this.glassdoor)this.advertisingChannels.add(Constants.SOURCE_GLASSDOOR);
+		if(this.facebook)this.advertisingChannels.add(Constants.SOURCE_FACEBOOK);
+		if(this.netemprego)this.advertisingChannels.add(Constants.SOURCE_NETEMPREGO);
 		if(!this.altAdvertisingChannels.isEmpty())
 			for(ExtraAd ad:this.altAdvertisingChannels)
 				this.advertisingChannels.add(ad.getAd());
@@ -71,7 +72,7 @@ public class NewSubmissionCDI implements Serializable{
 	}
 
 	public void cleanAds(){
-		critical=linkedin=glassdoor=facebook=false;
+		expresso=linkedin=glassdoor=facebook=netemprego=false;
 
 		this.advertisingChannels=new ArrayList<String>();
 		this.altAdvertisingChannels=new ArrayList<ExtraAd>();
@@ -127,14 +128,6 @@ public class NewSubmissionCDI implements Serializable{
 		return this.position!=null;
 	}
 
-	public boolean isCritical() {
-		return critical;
-	}
-
-	public void setCritical(boolean critical) {
-		this.critical = critical;
-	}
-
 	public boolean isLinkedin() {
 		return linkedin;
 	}
@@ -173,6 +166,22 @@ public class NewSubmissionCDI implements Serializable{
 
 	public void setAltAdvertisingChannels(List<ExtraAd> altAdvertisingChannels) {
 		this.altAdvertisingChannels = altAdvertisingChannels;
+	}
+
+	public boolean isExpresso() {
+		return expresso;
+	}
+
+	public void setExpresso(boolean expresso) {
+		this.expresso = expresso;
+	}
+
+	public boolean isNetemprego() {
+		return netemprego;
+	}
+
+	public void setNetemprego(boolean netemprego) {
+		this.netemprego = netemprego;
 	}
 
 }

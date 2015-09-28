@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.admin;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,8 @@ public class SubmissionSearchCDI implements Serializable {
 	private Date date1, date2;
 	private String source;
 	private Long id;
+
+	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
 	private List<SubmissionEntity> slist;
 
@@ -228,7 +231,9 @@ public class SubmissionSearchCDI implements Serializable {
 		+submission.getCandidate().getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
 	}
 
-
+	public String getDateWithoutTime(Date date) {
+		return ftDate.format(date);
+	}
 
 	// getters e setters
 
