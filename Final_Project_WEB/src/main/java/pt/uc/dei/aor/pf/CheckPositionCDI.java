@@ -8,6 +8,7 @@ import javax.inject.Named;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.candidate.NewSubmissionCDI;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
@@ -19,6 +20,9 @@ import java.util.List;
 @SessionScoped
 public class CheckPositionCDI implements Serializable {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = -5955528757542061330L;
 
 	@Inject
