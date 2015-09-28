@@ -38,7 +38,7 @@ public class ChangeEmailCDI implements Serializable {
 
 	private String password;
 
-	private String newEmail;
+	private String newEmail, repeatNewEmail;
 
 	public void clean(){
 		this.password=this.newEmail="";
@@ -52,16 +52,22 @@ public class ChangeEmailCDI implements Serializable {
 		String userEmail=request.getRemoteUser();
 		UserEntity user=this.userEJB.findUserByEmail(userEmail);
 
-		// Verifica a password
-		if(!this.userEJB.checkPassword(user, this.password)){
-			valid=false;
-			this.error("Password Errada.");
-		}
-
 		// Verifica a validade do novo email
 		if(!EmailPattern.checkEmailPattern(this.newEmail)){
 			valid=false;
 			this.error("Novo email inválido.");
+		}
+
+		//Verifica se o email repetido é igual 
+		if(!this.newEmail.equals(this.repeatNewEmail)){
+			valid=false;
+			this.error("Emails não combinam.");
+		}
+
+		// Verifica a password
+		if(!this.userEJB.checkPassword(user, this.password)){
+			valid=false;
+			this.error("Password Errada.");
 		}
 
 		//Verifica se o novo email já está a uso
@@ -108,6 +114,14 @@ public class ChangeEmailCDI implements Serializable {
 
 	public void setNewEmail(String newEmail) {
 		this.newEmail = newEmail;
+	}
+
+	public String getRepeatNewEmail() {
+		return repeatNewEmail;
+	}
+
+	public void setRepeatNewEmail(String repeatNewEmail) {
+		this.repeatNewEmail = repeatNewEmail;
 	}
 
 }
