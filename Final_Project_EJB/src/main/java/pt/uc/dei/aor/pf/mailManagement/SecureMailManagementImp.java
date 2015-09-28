@@ -193,8 +193,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+"\n\nCumprimentos,\nA equipa "
 				+companyName;
 		
-		this.sendEmail(null, bcc, position+": aproximação de data de fecho",
-				text);
+		this.sendEmail(null, bcc, position.getPositionCode()
+				+": aproximação de data de fecho", text);
 
 	}
 
