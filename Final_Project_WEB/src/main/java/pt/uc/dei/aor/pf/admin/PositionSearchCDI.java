@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -19,11 +19,14 @@ import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import java.io.Serializable;
 
 
 @Named
-@RequestScoped
-public class PositionSearchCDI {
+@SessionScoped
+public class PositionSearchCDI implements Serializable {
+
+	private static final long serialVersionUID = 5226923223683191514L;
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(PositionSearchCDI.class);

@@ -5,8 +5,6 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-
-
 	<ui:define name="titulo">
 	Gestor - As minhas posições
 	 - #{styleSessionManagement.companyName}
@@ -72,7 +70,10 @@
 					<h:outputText value="#{p.technicalArea}" />
 				</p:column>
 				<p:column headerText="Descrição">
-					<h:outputText value="#{p.description}" />
+					<p:commandButton value="Descrição" icon="ui-icon-script"
+						actionListener="#{checkPositionCDI.checkPosition(p)}"
+						update="checkPositionForm" style="width:100%"
+						oncomplete="PF('checkPosition').show();" />
 				</p:column>
 				<p:column headerText="Guião">
 					<h:outputText value="#{p.defaultScript.title}" />

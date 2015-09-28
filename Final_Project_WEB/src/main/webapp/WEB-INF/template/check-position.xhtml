@@ -16,10 +16,10 @@
 				modal="true">
 
 				<h:panelGroup id="changeEmailDialog" style="width:500px;">
-					<p:outputLabel />
-					<p:outputLabel value="#{checkPositionCDI.description}" />
-					<p:outputLabel />
-					<p:commandButton value="Fechar" icon="ui-icon-close" style="width: 100%"
+					<h:inputTextarea value="#{checkPositionCDI.description}" 
+					readonly="true" cols="35" rows="30"/>
+					<p:commandButton value="Fechar" icon="ui-icon-close" 
+						style="width: 100%"
 						onclick="PF('checkPosition').hide();" />
 				</h:panelGroup>
 

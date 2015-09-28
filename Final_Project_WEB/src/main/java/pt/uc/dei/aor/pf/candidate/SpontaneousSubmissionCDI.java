@@ -34,7 +34,7 @@ public class SpontaneousSubmissionCDI {
 	@EJB
 	private UserEJBInterface userEJB;
 
-	private UploadedFile motivationLetter, customCV;
+	private UploadedFile motivationLetter;
 	
 	public void createSpontaneousSubmission(FileUploadEvent event){
 		

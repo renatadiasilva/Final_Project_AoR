@@ -150,18 +150,60 @@ public class InitDB {
 				new QuestionEntity(QuestionEntity.ANSWER, "Qual é o significado da vida?"), // qlist[4]
 				new QuestionEntity(QuestionEntity.ISTRUE, "O Benfica não vale nada?"), // qlist[5]
 		};
+		
+		String bigDescription = "Working for us is like nothing on earth. "
+				+ "Every day, our teams across the globe challenge the limits "
+				+ "of human achievement, engineering solutions for our planet "
+				+ "and beyond.Our astronomically talented engineers build "
+				+ "rock-solid software for leading industries’ most critical "
+				+ "applications. Now, we’re looking for talented Technical "
+				+ "Managers for Embedded Systems to join our Systems and "
+				+ "Software Engineering team in breaching the frontiers of "
+				+ "space, aerospace and defence.\\nAcross international "
+				+ "projects, you’ll be working on some of the most critical "
+				+ "software applications developing today, as part of a global "
+				+ "team with more than 15 years’ experience working with "
+				+ "embedded software and systems.\\nSound like you? Then it’s "
+				+ "time to challenge your limits. It’s time to give your career"
+				+ " the rocket boost it deserves. It’s time you "
+				+ "joined CRITICAL Software!\\n\\nKEY RESPONSIBILITIES"
+				+ "\\n\\nUndertaking software development for embedded systems "
+				+ "\\nPerforming Verification & Validation testing of embedded "
+				+ "systems\\nLeading a team through your technical expertise "
+				+ "(task allocation, status reporting, and people management)"
+				+ "\\n\\nREQUIRED QUALIFICATIONS, SKILLS AND EXPERIENCE<"
+				+ "\\nMore than 7 years’ experience working in software "
+				+ "development and embedded systems engineering\\nDeep "
+				+ "knowledge of different Operating Systems, particularly "
+				+ "the concepts of real-time and embedded systems, computer "
+				+ "architectures and programming languages (C/C++, Ada95)\\n"
+				+ "Full-lifecycle software development experience, from "
+				+ "initial requirements elicitation to design, coding, "
+				+ "testing, documentation, implementation, integration "
+				+ "and training\\nTeamwork and technical project management "
+				+ "experience\\nStrong leadership, problem-solving and "
+				+ "communication skills\\nProficiency in English\\n"
+				+ "Good organisational skills\\nAvailability to travel, "
+				+ "mainly Europe (United Kingdom, Germany, France)\\n\\n"
+				+ "DESIRED QUALIFICATIONS, SKILLS AND EXPERIENCE<\\n\\n"
+				+ "Knowledge of embedded software development in "
+				+ "microcontrollers\\nKnowledge of safety-critical standards"
+				+ " (for example, ECSS, DO-178B/C, ISO 26262, IEC 61508)\\n"
+				+ "Knowledge of system development using model-based "
+				+ "development techniques and tools (for example, SCADE "
+				+ "and MATLAB)";
 
 		PositionEntity [] plist = {
 			new PositionEntity("Programadores Java", null, 4, 
 				Constants.STATUS_OPEN, null, 60, 
 				ulist[2], ulist[1], "Critical Software", 
-				Constants.TECH_JAVA, "Procuram-se programadores java "
-				+ "bla bla bla", null, sclist[2]), // plist[0]
+				Constants.TECH_JAVA, "Procuram-se programadores de"
+						+ " java bla bla bla", null,
+				sclist[2]), // plist[0]
 			new PositionEntity("Tecnico de Segurança", null, 1, 
 				Constants.STATUS_OPEN, null, 60, 
 				ulist[2], ulist[1], "Critical Software",
-				Constants.TECH_SAFETY, "Procura-se técnico de"
-				+ " segurança bla bla bla", null, sclist[2]), // plist[1]
+				Constants.TECH_SAFETY, bigDescription, null, sclist[2]), // plist[1]
 			new PositionEntity("Programadores .NET", null, 3, 
 				Constants.STATUS_OPEN, null, 150, 
 				ulist[10], ulist[1], "IT Grow", Constants.TECH_DOTNET,
