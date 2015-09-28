@@ -8,7 +8,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.mail.Message;
-import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -189,11 +188,13 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String positionMail=position.getPositionCode()+" ("+position.getTitle()+" - "+position.getCompany()+")";
 
 		String text="Caro administrador,"
-				+"\n\nO prazo do SLA da posição com o código "+positionMail+" está a aproximar-se do fim."
+				+"\n\nEstá a aproximar-se a data de fecho da posição com o"
+				+" código "+positionMail+" (de acordo com o SLA definido)."
 				+"\n\nCumprimentos,\nA equipa "
 				+companyName;
 		
-		this.sendEmail(null, bcc, position+": SLA próximo do fim", text);
+		this.sendEmail(null, bcc, position+": aproximação de data de fecho",
+				text);
 
 	}
 
