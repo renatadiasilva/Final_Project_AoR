@@ -6,9 +6,9 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener = "#{adminNewUserCDI.clear()}" />
+		<f:viewAction actionListener="#{adminNewUserCDI.clear()}" />
 	</f:metadata>
-	
+
 	<ui:define name="titulo">Admin - Novo Utilizador
 	 - #{styleSessionManagement.companyName}</ui:define>
 
@@ -18,102 +18,210 @@
 
 		<h:form id="adminNewUserFormNonCandidate">
 
-			<h:panelGrid columns="2" rendered="#{!adminNewUserCDI.candidate}">
+			<h:panelGroup rendered="#{!adminNewUserCDI.hasCandidate()}">
+				<h:panelGrid columns="2" rendered="#{!adminNewUserCDI.candidate}">
 
-				<ui:include src="admin-new-user-common-elements.xhtml" />
+					<ui:include src="admin-new-user-common-elements.xhtml" />
 
-				<p:commandButton value="Novo Utilizador"
-					action="#{adminNewUserCDI.newUserNC()}" update="@form, messages"
-					icon="ui-icon-person" />
+					<p:commandButton value="Novo Utilizador"
+						action="#{adminNewUserCDI.newUserNC()}" update="@all"
+						icon="ui-icon-person" />
 
-			</h:panelGrid>
+				</h:panelGrid>
+
+			</h:panelGroup>
 
 		</h:form>
 
 
 		<h:form id="adminNewUserFormCandidate">
 
-			<h:panelGrid columns="2" rendered="#{adminNewUserCDI.candidate}">
+			<h:panelGroup rendered="#{!adminNewUserCDI.hasCandidate()}">
 
-				<ui:include src="admin-new-user-common-elements.xhtml" />
+				<h:panelGrid columns="2" rendered="#{adminNewUserCDI.candidate}">
 
-				<p:outputLabel value="Data de Nascimento: "
-					for="adminSignup-birthday" />
-				<p:calendar id="adminSignup-birthday"
-					value="#{adminNewUserCDI.birthday}" pattern="dd/MM/yyyy"
-					readonlyInput="true" navigator="true" yearRange="c-100:c+0"
-					maxdate="#{adminNewUserCDI.maxDate}" locale="pt" size="35" />
+					<ui:include src="admin-new-user-common-elements.xhtml" />
 
-				<p:outputLabel value="Telefone: " for="adminSignup-homePhone" />
-				<p:inputMask mask="999 999 999" id="adminSignup-homePhone"
-					value="#{adminNewUserCDI.homePhone}" size="35" maxlength="20">
-					<p:ajax update="@this" />
-				</p:inputMask>
+					<p:outputLabel value="Data de Nascimento: "
+						for="adminSignup-birthday" />
+					<p:calendar id="adminSignup-birthday"
+						value="#{adminNewUserCDI.birthday}" pattern="dd/MM/yyyy"
+						readonlyInput="true" navigator="true" yearRange="c-100:c+0"
+						maxdate="#{adminNewUserCDI.maxDate}" locale="pt" size="35" />
 
-				<p:outputLabel value="Telemóvel: " for="adminSignup-mobilePhone" />
-				<p:inputMask mask="999 999 999" id="adminSignup-mobilePhone"
-					value="#{adminNewUserCDI.mobilePhone}" size="35" maxlength="20"
-					required="true" requiredMessage="Insira o telemóvel.">
-					<p:ajax update="@this" />
-				</p:inputMask>
-
-				<p:outputLabel value="Morada: " for="adminSignup-adress" />
-				<h:panelGroup>
-					<p:inputTextarea id="adminSignup-adress"
-						value="#{adminNewUserCDI.address}" cols="35" rows="3"
-						counter="maxAdress" counterTemplate=" - {0}" required="true"
-						requiredMessage="Insira a morada."
-						maxlength="#{max.length.userInfoAddress()}">
+					<p:outputLabel value="Telefone: " for="adminSignup-homePhone" />
+					<p:inputMask mask="999 999 999" id="adminSignup-homePhone"
+						value="#{adminNewUserCDI.homePhone}" size="35" maxlength="20">
 						<p:ajax update="@this" />
-					</p:inputTextarea>
-					<h:outputText id="maxAdress" />
-				</h:panelGroup>
+					</p:inputMask>
 
-				<p:outputLabel value="Cidade: " for="adminSignup-city" />
-				<p:inputText id="adminSignup-city" value="#{adminNewUserCDI.city}"
-					size="35" required="true" requiredMessage="Insira a cidade."
-					maxlength="#{max.length.userInfoCity()}">
-					<p:ajax update="@this" />
-				</p:inputText>
+					<p:outputLabel value="Telemóvel: " for="adminSignup-mobilePhone" />
+					<p:inputMask mask="999 999 999" id="adminSignup-mobilePhone"
+						value="#{adminNewUserCDI.mobilePhone}" size="35" maxlength="20"
+						required="true" requiredMessage="Insira o telemóvel.">
+						<p:ajax update="@this" />
+					</p:inputMask>
 
-				<p:outputLabel value="País: " for="adminSignup-country" />
-				<p:inputText id="adminSignup-country"
-					value="#{adminNewUserCDI.country}" size="35" required="true"
-					requiredMessage="Insira o país"
-					maxlength="#{max.length.userInfoCountry()}">
-					<p:ajax update="@this" />
-				</p:inputText>
+					<p:outputLabel value="Morada: " for="adminSignup-adress" />
+					<h:panelGroup>
+						<p:inputTextarea id="adminSignup-adress"
+							value="#{adminNewUserCDI.address}" cols="35" rows="3"
+							counter="maxAdress" counterTemplate=" - {0}" required="true"
+							requiredMessage="Insira a morada."
+							maxlength="#{max.length.userInfoAddress()}">
+							<p:ajax update="@this" />
+						</p:inputTextarea>
+						<h:outputText id="maxAdress" />
+					</h:panelGroup>
 
-				<p:outputLabel value="Curso: " for="adminSignup-course" />
-				<p:inputText id="adminSignup-course"
-					value="#{adminNewUserCDI.course}" size="35" required="true"
-					requiredMessage="Insira o curso."
-					maxlength="#{max.length.userInfoCourse()}">
-					<p:ajax update="@this" />
-				</p:inputText>
+					<p:outputLabel value="Cidade: " for="adminSignup-city" />
+					<p:inputText id="adminSignup-city" value="#{adminNewUserCDI.city}"
+						size="35" required="true" requiredMessage="Insira a cidade."
+						maxlength="#{max.length.userInfoCity()}">
+						<p:ajax update="@this" />
+					</p:inputText>
 
-				<p:outputLabel value="Escola/Universidade: "
-					for="adminSignup-school" />
-				<p:inputText id="adminSignup-school"
-					value="#{adminNewUserCDI.school}" size="35" required="true"
-					requiredMessage="Insira a escola."
-					maxlength="#{max.length.userInfoSchool()}">
-					<p:ajax update="@this" />
-				</p:inputText>
+					<p:outputLabel value="País: " for="adminSignup-country" />
+					<p:inputText id="adminSignup-country"
+						value="#{adminNewUserCDI.country}" size="35" required="true"
+						requiredMessage="Insira o país"
+						maxlength="#{max.length.userInfoCountry()}">
+						<p:ajax update="@this" />
+					</p:inputText>
 
-				<p:outputLabel value="LinkedIn: " for="adminSignup-linkedin" />
-				<p:inputText id="adminSignup-linkedin"
-					value="#{adminNewUserCDI.linkedin}" size="35" maxlength="40">
-					<p:ajax update="@this" />
-				</p:inputText>
+					<p:outputLabel value="Curso: " for="adminSignup-course" />
+					<p:inputText id="adminSignup-course"
+						value="#{adminNewUserCDI.course}" size="35" required="true"
+						requiredMessage="Insira o curso."
+						maxlength="#{max.length.userInfoCourse()}">
+						<p:ajax update="@this" />
+					</p:inputText>
 
-				<p:commandButton value="Novo Utilizador"
-					actionListener="#{adminNewUserCDI.newUser()}"
-					update="adminNewUserFormCandidate adminNewUserFormNonCandidate messages"
-					icon="ui-icon-person" />
+					<p:outputLabel value="Escola/Universidade: "
+						for="adminSignup-school" />
+					<p:inputText id="adminSignup-school"
+						value="#{adminNewUserCDI.school}" size="35" required="true"
+						requiredMessage="Insira a escola."
+						maxlength="#{max.length.userInfoSchool()}">
+						<p:ajax update="@this" />
+					</p:inputText>
 
-			</h:panelGrid>
+					<p:outputLabel value="LinkedIn: " for="adminSignup-linkedin" />
+					<p:inputText id="adminSignup-linkedin"
+						value="#{adminNewUserCDI.linkedin}" size="35" maxlength="40">
+						<p:ajax update="@this" />
+					</p:inputText>
 
+					<p:commandButton value="Novo Utilizador"
+						actionListener="#{adminNewUserCDI.newUser()}" ajax="false"
+						icon="ui-icon-person" />
+
+				</h:panelGrid>
+
+			</h:panelGroup>
+
+		</h:form>
+
+		<h:form id="openPositionsForm">
+
+			<h:panelGroup rendered="#{adminNewUserCDI.hasCandidate()}">
+
+				<h1>Associar candidato #{adminNewUserCDI.userMail}</h1>
+
+				<p:dataTable emptyMessage="Neste momento não há posições abertas."
+					var="p" value="#{checkPositionCDI.positions}" id="tableHome"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 	{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<f:facet name="header">Posições Abertas</f:facet>
+					<p:column headerText="Código">
+						<h:outputText value="#{p.positionCode}" />
+					</p:column>
+					<p:column headerText="Título">
+						<h:outputText value="#{p.title}" />
+					</p:column>
+					<p:column headerText="Data Abertura">
+						<h:outputText value="#{p.openingDate}" />
+					</p:column>
+					<p:column headerText="Vagas">
+						<h:outputText value="#{p.openings}" />
+					</p:column>
+					<p:column headerText="Empresa">
+						<h:outputText value="#{p.company}" />
+					</p:column>
+					<p:column headerText="Área Técnica">
+						<h:outputText value="#{p.technicalArea}" />
+					</p:column>
+					<p:column headerText="Descrição">
+						<p:commandButton value="Ver descrição" icon="ui-icon-script"
+							actionListener="#{checkPositionCDI.checkPosition(p)}"
+							update="checkPositionForm" style="width:100%"
+							oncomplete="PF('checkPosition').show();" />
+					</p:column>
+
+					<p:column headerText="Escolher"
+						rendered="#{!adminNewUserCDI.candidateHasCV()}">
+						<p:commandButton value="Upload CV do candidato"
+							style="width: 100%" onclick="PF('uploadCVNewCandidate').show();"
+							icon="ui-icon-locked" />
+					</p:column>
+
+					<p:column headerText="Escolher"
+						rendered="#{adminNewUserCDI.candidateHasCV()}">
+						<p:commandButton value="Escolher Posição" icon="ui-icon-suitcase"
+							rendered="#{!adminNewUserCDI.checkPosition()}"
+							style="width: 100%"
+							action="#{adminNewUserCDI.associatePosition(p)}" ajax="false" />
+						<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+							rendered="#{adminNewUserCDI.checkPosition()}" style="width: 100%"
+							action="#{adminNewUserCDI.dissociatePosition()}" ajax="false" />
+					</p:column>
+
+				</p:dataTable>
+				<br />
+				<p:commandButton value="Concluir" icon="ui-icon-check"
+					style="width: 100%" action="#{adminNewUserCDI.cleanPandC()}"
+					ajax="false" />
+
+			</h:panelGroup>
+
+		</h:form>
+
+		<h:form id="uploadCVNewCandidateForm">
+			<p:dialog header="Upload CV" widgetVar="uploadCVNewCandidate"
+				draggable="false" resizable="false" modal="true">
+
+				<p:fileUpload id="file-upload-local"
+					update="openPositionsForm messages newSubmissionForm"
+					label="Escolha o CV (*.pdf)" uploadLabel="Submeter CV"
+					cancelLabel="Cancelar" required="true"
+					requiredMessage="Submeta um CV"
+					fileUploadListener="#{adminNewUserCDI.uploadCV}" mode="advanced"
+					dragDropSupport="true" sizeLimit="1000000" fileLimit="1"
+					oncomplete="PF('uploadCVNewCandidate').hide();"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .pdf"
+					allowTypes="/(\.|\/)(pdf)$/" />
+
+				<p:button value="Cancelar"
+					onclick="PF('uploadCVNewCandidate').hide();" icon="ui-icon-close"
+					style="width:100%" />
+
+			</p:dialog>
+		</h:form>
+
+		<h:form id="newSubmissionForm">
+			<p:fileUpload id="motivation-letter-upload-admin-submission"
+				rendered="#{associateCandidateToPositionCDI.hasPosition()}"
+				label="Escolha a carta de motivação (*.pdf)"
+				uploadLabel="Submeter candidatura" cancelLabel="Cancelar"
+				required="true" requiredMessage="Submeta uma carta de motivação"
+				fileUploadListener="#{adminNewUserCDI.createSubmission}"
+				mode="advanced" dragDropSupport="true" sizeLimit="1000000"
+				invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+				invalidFileMessage="Só é permitido o formato .pdf"
+				allowTypes="/(\.|\/)(pdf)$/" fileLimit="1" />
 		</h:form>
 
 	</ui:define>

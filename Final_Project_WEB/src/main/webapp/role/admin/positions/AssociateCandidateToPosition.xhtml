@@ -1,0 +1,110 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Admin - Associar novo Candidato a posição
+	 - #{styleSessionManagement.companyName}</ui:define>
+
+	<ui:define name="contents">
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{userSessionManagement.checkTemporaryPassword()}" />
+			<f:viewAction
+				actionListener="#{positionSearchCDI.searchOpenPositions()}" />
+		</f:metadata>
+
+		<h:form id="openPositionsForm">
+
+			<h1>User #{associateCandidateToPositionCDI.userMail}</h1>
+
+			<p:dataTable emptyMessage="Neste momento não há posições abertas."
+				var="p" value="#{checkPositionCDI.positions}" id="tableHome"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+
+				<f:facet name="header">Posições Abertas</f:facet>
+				<p:column headerText="Código">
+					<h:outputText value="#{p.positionCode}" />
+				</p:column>
+				<p:column headerText="Título">
+					<h:outputText value="#{p.title}" />
+				</p:column>
+				<p:column headerText="Data Abertura">
+					<h:outputText value="#{p.openingDate}" />
+				</p:column>
+				<p:column headerText="Vagas">
+					<h:outputText value="#{p.openings}" />
+				</p:column>
+				<p:column headerText="Empresa">
+					<h:outputText value="#{p.company}" />
+				</p:column>
+				<p:column headerText="Área Técnica">
+					<h:outputText value="#{p.technicalArea}" />
+				</p:column>
+				<p:column headerText="Descrição">
+					<p:commandButton value="Ver descrição" icon="ui-icon-script"
+						actionListener="#{checkPositionCDI.checkPosition(p)}"
+						update="checkPositionForm" style="width:100%"
+						oncomplete="PF('checkPosition').show();" />
+				</p:column>
+
+				<p:column headerText="Escolher">
+					<p:commandButton value="Upload CV do candidato" style="width: 100%"
+						rendered="#{!associateCandidateToPositionCDI.candidateHasCV()}"
+						onclick="PF('uploadCVNewCandidate').show();" icon="ui-icon-locked" />
+					<p:commandButton value="Escolher Posição" icon="ui-icon-suitcase"
+						rendered="#{associateCandidateToPositionCDI.candidateHasCV()}"
+						action="#{associateCandidateToPositionCDI.associatePosition(p)}"
+						update="openPositionsForm newSubmissionForm" />
+					<p:commandButton value="Cancelar" icon="ui-icon-cancel"
+						rendered="#{associateCandidateToPositionCDI.cancelPosition()}"
+						action="#{associateCandidateToPositionCDI.dissociatePosition()}"
+						update="openPositionsForm newSubmissionForm" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+		<h:form id="uploadCVNewCandidateForm">
+
+			<p:dialog header="Upload CV" widgetVar="uploadCVNewCandidate"
+				draggable="false" resizable="false" modal="true">
+
+				<p:fileUpload id="file-upload-local"
+					update="openPositionsForm messages" label="Escolha o CV (*.pdf)"
+					uploadLabel="Submeter CV" cancelLabel="Cancelar" required="true"
+					requiredMessage="Submeta um CV"
+					fileUploadListener="#{associateCandidateToPositionCDI.uploadCV}"
+					mode="advanced" dragDropSupport="true" sizeLimit="1000000"
+					fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .pdf"
+					allowTypes="/(\.|\/)(pdf)$/" oncomplete="PF('uploadCV').hide();" />
+
+				<p:button value="Cancelar" onclick="PF('uploadCVLocal').hide();"
+					icon="ui-icon-close" style="width:100%" />
+
+			</p:dialog>
+
+		</h:form>
+
+		<h:form id="newSubmissionForm">
+			<p:fileUpload id="motivation-letter-upload-admin-submission"
+				rendered="#{associateCandidateToPositionCDI.hasPosition()}"
+				update="@all" label="Escolha a carta de motivação (*.pdf)"
+				uploadLabel="Submeter candidatura" cancelLabel="Cancelar"
+				required="true" requiredMessage="Submeta uma carta de motivação"
+				fileUploadListener="#{associateCandidateToPositionCDI.createSubmission}"
+				mode="advanced" dragDropSupport="true" sizeLimit="1000000"
+				fileLimit="1"
+				invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+				invalidFileMessage="Só é permitido o formato .pdf"
+				allowTypes="/(\.|\/)(pdf)$/" />
+		</h:form>
+	</ui:define>
+</ui:composition>

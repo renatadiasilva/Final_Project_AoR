@@ -4,14 +4,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
+import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
+import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.emailpattern.EmailPattern;
+import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
+import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
+import pt.uc.dei.aor.pf.upload.UploadFile;
+
 import java.io.Serializable;
 
 
@@ -22,7 +35,10 @@ public class AdminNewUserCDI implements Serializable {
 	private static final long serialVersionUID = -8739801850337571946L;
 
 	@Inject
-	UserSessionManagement userSessionManagement;
+	private UserSessionManagement userSessionManagement;
+
+	@EJB
+	private UserEJBInterface userEJB;	
 
 	// UserEntity
 	private String email, firstName, lastName;
@@ -36,7 +52,7 @@ public class AdminNewUserCDI implements Serializable {
 
 	public AdminNewUserCDI() {
 	}
-	
+
 	public void clear(){
 		email=firstName=lastName=null;
 		address=city=homePhone=mobilePhone=country=course=school=linkedin;
@@ -54,17 +70,17 @@ public class AdminNewUserCDI implements Serializable {
 					course, school, linkedin, true, admin, manager, 
 					interviewer);
 
+			this.newCandidate = this.userEJB.findUserByEmail(email);
+
 			this.clear();
 			this.candidate=true;
-			
-		} else FacesContext.getCurrentInstance().addMessage(null, 
-				new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Email inválido.", "Email inválido."));
 
+		} else FacesContext.getCurrentInstance().addMessage(null, 
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email inválido.", "Email inválido."));
 	}
 
 	public void newUserNC(){
-		
+
 		if (EmailPattern.checkEmailPattern(email)) {
 
 			if(this.admin||this.manager||this.interviewer){
@@ -72,7 +88,7 @@ public class AdminNewUserCDI implements Serializable {
 				this.userSessionManagement.newUserNC(email, 
 						userSessionManagement.getRandomPass(), 
 						firstName, lastName, admin, manager, interviewer);
-				
+
 				this.clear();
 
 			} else FacesContext.getCurrentInstance().addMessage(null, 
@@ -82,8 +98,7 @@ public class AdminNewUserCDI implements Serializable {
 
 		} else FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Email inválido.", "Email inválido."));
-
+						"Email inválido.", "Email inválido."));
 	}
 
 	public String getEmail() {
@@ -222,5 +237,106 @@ public class AdminNewUserCDI implements Serializable {
 	public void setCandidate(boolean candidate) {
 		this.candidate = candidate;
 	}
+	
+	
+	
+	
+	
+	@Inject
+	private UserSessionManagement userManagement;
 
+	@Inject
+	private UploadFile uploadFile;
+
+	@EJB
+	private SubmissionEJBInterface submissionEJB;
+
+	@EJB
+	private PositionEJBInterface positionEJB;
+
+	private UserEntity newCandidate;
+
+	private PositionEntity position;
+
+	public void uploadCV(FileUploadEvent event){
+		UploadedFile file=event.getFile();
+
+		this.newCandidate.setUploadedCV(true);
+		this.userEJB.update(newCandidate);
+
+		this.uploadFile.uploadFile(file, UploadFile.FOLDER_USER_CV, this.newCandidate.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("CV do candidato submetido."));
+	}
+
+	public void createSubmission(FileUploadEvent event){
+		UploadedFile motivationLetter=event.getFile();
+
+		UserEntity admin=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
+
+		SubmissionEntity submission=new SubmissionEntity(newCandidate, Constants.STATUS_SUBMITED, null, null, false);
+		submission.setAssociatedBy(admin);
+
+		submission=this.submissionEJB.saveAndReturn(submission);
+
+		this.uploadFile.uploadFile(motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, submission.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+
+		this.position=null;
+	}
+
+	public void associateCandidate(UserEntity candidate) {
+		System.out.println("Candidate: "+candidate.getEmail());
+		
+		this.newCandidate = candidate;
+	}
+
+	public void associatePosition(PositionEntity position){
+		System.out.println(newCandidate.getEmail());
+		System.out.println(position.getTitle());
+		if(!this.positionEJB.alreadyCandidateOfPosition(newCandidate, position)){
+			System.out.println("posição definida");
+			this.position = position;
+		}
+			
+			
+		else{
+			this.position=null;
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Já é candidato."));
+		}		
+	}
+	
+	public void cleanPandC(){
+		this.position=null;
+		this.newCandidate=null;
+	}
+
+	public void dissociatePosition(){
+		this.position=null;
+	}
+
+	public boolean cancelPosition(){
+		return this.candidateHasCV()&&this.hasPosition();
+	}
+	
+	public boolean checkPosition(PositionEntity position){
+		if(this.position==null) return false;
+		return this.position.getPositionCode().equals(position.getPositionCode());
+	}
+
+	public boolean hasPosition(){
+		return this.position!=null;
+	}
+	
+	public boolean hasCandidate(){
+		return this.newCandidate!=null;
+	}
+
+	public boolean candidateHasCV(){
+		if(this.newCandidate==null)return false;
+		return this.newCandidate.isUploadedCV();
+	}
+	
+	public String getUserMail(){
+		if(this.newCandidate==null) return"";
+		return this.newCandidate.getEmail();
+	}
 }
