@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
+import pt.uc.dei.aor.pf.ExtraAd;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
@@ -16,7 +17,6 @@ import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 import java.util.ArrayList;
@@ -37,9 +37,6 @@ public class NewPositionCDI implements Serializable {
 
 	@Inject
 	private UserSessionManagement userManagement;
-	
-	@EJB
-	private SecureMailManagementImp mail;
 
 	@EJB
 	private UserEJBInterface userEJB;
@@ -74,7 +71,7 @@ public class NewPositionCDI implements Serializable {
 
 	private List<String> advertisingChannels;
 
-	private List<NewPositionCDIextraAd>altAdvertisingChannels;
+	private List<ExtraAd>altAdvertisingChannels;
 
 	private String extraAdvertising;
 
@@ -90,7 +87,7 @@ public class NewPositionCDI implements Serializable {
 
 	private boolean editPosition;
 
-	private List<PositionEntity>positions;
+	private List<PositionEntity>openPositions;
 
 	private PositionEntity position;
 
@@ -135,8 +132,8 @@ public class NewPositionCDI implements Serializable {
 			// Se é para um manager editar, só vai buscar as dele (open)
 			if(this.managedPositions){
 				this.manager=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
-				this.positions=this.positionEJB.findPositionsManagedByUser(this.manager);				
-			}else this.positions=this.positionEJB.findAllOrderByCode();
+				this.openPositions=this.positionEJB.findOpenPositionsManagedByUser(this.manager);				
+			}else this.openPositions=this.positionEJB.findAllOrderByCode();
 		}
 
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -157,7 +154,7 @@ public class NewPositionCDI implements Serializable {
 		this.locations=new ArrayList<String>();
 
 		this.advertisingChannels=new ArrayList<String>();
-		this.altAdvertisingChannels=new ArrayList<NewPositionCDIextraAd>();
+		this.altAdvertisingChannels=new ArrayList<ExtraAd>();
 		this.extraAdvertising="";
 		this.advertisingChannels.clear();
 		this.critical=this.linkedin=this.glassdoor=this.facebook=false;
@@ -187,7 +184,7 @@ public class NewPositionCDI implements Serializable {
 		if(this.glassdoor)this.advertisingChannels.add(Constants.SOCIAL_GLASSDOOR);
 		if(this.facebook)this.advertisingChannels.add(Constants.SOCIAL_FACEBOOK);
 		if(!this.altAdvertisingChannels.isEmpty())
-			for(NewPositionCDIextraAd ad:this.altAdvertisingChannels)
+			for(ExtraAd ad:this.altAdvertisingChannels)
 				this.advertisingChannels.add(ad.getAd());
 
 		// technicalArea
@@ -282,8 +279,6 @@ public class NewPositionCDI implements Serializable {
 
 				this.positionEJB.save(newPositionEntity);
 
-				this.mail.newPositionWarning(newPositionEntity);
-				
 				this.cleanBean();
 
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova posição criada."));
@@ -328,16 +323,16 @@ public class NewPositionCDI implements Serializable {
 		return false;
 	}
 
-	public List<NewPositionCDIextraAd> getAltAdvertisingChannels() {
+	public List<ExtraAd> getAltAdvertisingChannels() {
 		return altAdvertisingChannels;
 	}
 
 	public void addAltAdvertisingChannels() {
-		this.altAdvertisingChannels.add(new NewPositionCDIextraAd(this.extraAdvertising));
+		this.altAdvertisingChannels.add(new ExtraAd(this.extraAdvertising));
 		this.extraAdvertising="";
 	}
 
-	public void deleteAltAdvertisingChannels(NewPositionCDIextraAd ad) {
+	public void deleteAltAdvertisingChannels(ExtraAd ad) {
 		this.altAdvertisingChannels.remove(ad);
 	}
 
@@ -581,12 +576,12 @@ public class NewPositionCDI implements Serializable {
 		this.editPosition = editPosition;
 	}
 
-	public List<PositionEntity> getPositions() {
-		return positions;
+	public List<PositionEntity> getOpenPositions() {
+		return openPositions;
 	}
 
-	public void setPositions(List<PositionEntity> positions) {
-		this.positions = positions;
+	public void setOpenPositions(List<PositionEntity> openPositions) {
+		this.openPositions = openPositions;
 	}
 
 	public PositionEntity getPosition() {
@@ -627,7 +622,7 @@ public class NewPositionCDI implements Serializable {
 			else if(ad.equals(Constants.SOCIAL_FACEBOOK))this.facebook=true;
 			else if(ad.equals(Constants.SOCIAL_GLASSDOOR))this.glassdoor=true;
 			else if(ad.equals(Constants.SOCIAL_LINKEDIN))this.linkedin=true;
-			else this.altAdvertisingChannels.add(new NewPositionCDIextraAd(ad));
+			else this.altAdvertisingChannels.add(new ExtraAd(ad));
 		}
 
 		this.manager=this.position.getPositionManager();

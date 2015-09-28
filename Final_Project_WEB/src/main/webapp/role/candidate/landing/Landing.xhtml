@@ -22,9 +22,6 @@
 		#{styleSessionManagement.welcomeMessage}
 		<br />
 		<br />
-		#{userSessionManagement.bithdayMessage()}
-		<br />
-		<br />
 		<br />
 		<h3>Acesso rápido</h3>
 		<br />
@@ -34,8 +31,11 @@
 		</h:form>
 		<br />
 		<br />
+		<br />
+		<br />
+		<br />
 
-		<h:form>
+		<h:form id="openPositionsForm">
 
 			<p:dataTable emptyMessage="Neste momento não há posições abertas."
 				var="p" value="#{checkPositionCDI.positions}" id="tableHome"
@@ -71,8 +71,9 @@
 
 				<p:column headerText="Candidatar-se"
 					rendered="#{!userSessionManagement.cv}">
-					<p:commandButton value="Upload CV" onclick="PF('uploadCVLocal').show();"
-						icon="ui-icon-locked" style="width: 100%" />
+					<p:commandButton value="Upload CV"
+						onclick="PF('uploadCVLocal').show();" icon="ui-icon-locked"
+						style="width: 100%" />
 				</p:column>
 
 				<p:column headerText="Candidatar-se"
@@ -85,18 +86,20 @@
 						rendered="#{checkPositionCDI.candidate(p)}" style="width: 100%" />
 					<!-- 3ª Não mudar a ordem -->
 					<p:commandButton value="Candidatar-se" icon="ui-icon-suitcase"
-						rendered="#{checkPositionCDI.submitable()}" style="width: 100%" />
+						rendered="#{checkPositionCDI.submitable(p)}"
+						update="newSubmissionForm1 newSubmissionForm2 newSubmissionForm3 newSubmissionForm4"
+						actionListener="#{newSubmissionCDI.associatePosition(p)}"
+						style="width: 100%" />
 				</p:column>
 
 			</p:dataTable>
 
-			<p:dialog header="Upload CV" widgetVar="uploadCVLocal" draggable="false"
-				resizable="false" modal="true">
+			<p:dialog header="Upload CV" widgetVar="uploadCVLocal"
+				draggable="false" resizable="false" modal="true">
 
 				<p:fileUpload id="file-upload-local"
-					update="@form messages headerMenu"
-					label="Escolha o CV (*.pdf)" uploadLabel="Submeter CV"
-					cancelLabel="Cancelar" required="true"
+					update="@form messages headerMenu" label="Escolha o CV (*.pdf)"
+					uploadLabel="Submeter CV" cancelLabel="Cancelar" required="true"
 					requiredMessage="Submeta um CV"
 					fileUploadListener="#{uploadCVCDI.uploadCV}" mode="advanced"
 					dragDropSupport="true" sizeLimit="1000000" fileLimit="1"
@@ -111,6 +114,93 @@
 
 		</h:form>
 
+		<h:form id="newSubmissionForm1">
+			<h:panelGroup rendered="#{newSubmissionCDI.hasPosition()}">
+
+				<h3>Canais de Publicidade:</h3>
+				<!-- Advertisement Channels -->
+				<h:panelGrid id="newPositionAd" columns="4">
+
+					<p:outputLabel value="Critical Software site: " />
+					<p:selectBooleanCheckbox value="#{newSubmissionCDI.critical}">
+						<p:ajax update="@this" />
+					</p:selectBooleanCheckbox>
+
+					<p:outputLabel value="LinkedIn: " />
+					<p:selectBooleanCheckbox value="#{newSubmissionCDI.linkedin}">
+						<p:ajax update="@this" />
+					</p:selectBooleanCheckbox>
+
+					<p:outputLabel value="Glassdoor: " />
+					<p:selectBooleanCheckbox value="#{newSubmissionCDI.glassdoor}">
+						<p:ajax update="@this" />
+					</p:selectBooleanCheckbox>
+
+					<p:outputLabel value="Facebook: " />
+					<p:selectBooleanCheckbox value="#{newSubmissionCDI.facebook}">
+						<p:ajax update="@this" />
+					</p:selectBooleanCheckbox>
+
+				</h:panelGrid>
+				<p:outputLabel />
+				<p:outputLabel />
+
+			</h:panelGroup>
+		</h:form>
+
+		<h:form id="newSubmissionForm2">
+			<p:dataTable id="altAdvertisementChannels" var="advertisingChannel"
+				value="#{newSubmissionCDI.altAdvertisingChannels}"
+				style="width:300px" rendered="#{newSubmissionCDI.hasPosition()}"
+				emptyMessage="Sem canais de publicidade alternativos">
+				<p:column headerText="Outros canais">
+					<p:outputLabel value="#{advertisingChannel.ad}" />
+				</p:column>
+				<p:column headerText="Remover">
+					<p:commandButton
+						actionListener="#{newSubmissionCDI.deleteAltAdvertisingChannels(advertisingChannel)}"
+						icon="ui-icon-trash" update="@form" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="newSubmissionForm3">
+			<h:panelGrid columns="3" style="widht:300px"
+				rendered="#{newSubmissionCDI.hasPosition()}">
+				<p:inputText id="new-position-extra-ad"
+					value="#{newSubmissionCDI.extraAd}" />
+				<p:watermark for="new-position-extra-ad"
+					value="Insira mais canais de publicidade" />
+				<p:commandButton icon="ui-icon-plus"
+					update="newSubmissionForm2 newSubmissionForm3"
+					actionListener="#{newSubmissionCDI.addAltAdvertisingChannels()}" />
+			</h:panelGrid>
+		</h:form>
+
+		<br />
+
+		<h:form id="newSubmissionForm4">
+			<h:panelGroup rendered="#{newSubmissionCDI.hasPosition()}">
+				<p:fileUpload id="motivation-letter-upload-new-submission"
+					update="newSubmissionForm1 newSubmissionForm2 newSubmissionForm3
+					newSubmissionForm4 messages openPositionsForm"
+					label="Escolha a carta de motivação (*.pdf)"
+					uploadLabel="Submeter candidatura" cancelLabel="Cancelar"
+					required="true" requiredMessage="Submeta uma carta de motivação"
+					fileUploadListener="#{newSubmissionCDI.newSubmission}"
+					mode="advanced" dragDropSupport="true" sizeLimit="1000000"
+					fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .pdf"
+					allowTypes="/(\.|\/)(pdf)$/"
+					oncomplete="PF('newSubmission').hide();" />
+
+				<p:commandButton value="Cancelar"
+					actionListener="#{newSubmissionCDI.dissociatePosition()}"
+					update="newSubmissionForm1 newSubmissionForm2 newSubmissionForm3 newSubmissionForm4"
+					icon="ui-icon-close" style="width:100%" />
+			</h:panelGroup>
+		</h:form>
 
 	</ui:define>
 
