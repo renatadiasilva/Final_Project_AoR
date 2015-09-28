@@ -23,6 +23,7 @@ import pt.uc.dei.aor.pf.upload.UploadFile;
 import pt.uc.dei.aor.pf.webManagement.UserManagementInterface;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.io.Serializable;
@@ -314,6 +315,23 @@ public class UserSessionManagement implements Serializable {
 	public void recoverPassword(String email, String temporaryPassword){
 		this.userManagement.recoverPassword(email, temporaryPassword);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Foi enviado um email para a sua conta com os novos dados de autenticação."));
+	}
+	
+	public String bithdayMessage() {
+		if (currentUserClone.getUserInfo() != null) {
+			Date userBirthday = currentUserClone.getUserInfo().getBirthDate();
+			if (userBirthday != null) {
+				Calendar calToday = Calendar.getInstance();
+				Calendar calBirth = Calendar.getInstance();
+				calBirth.setTime(userBirthday);
+				if (calBirth.get(Calendar.DAY_OF_MONTH) ==
+						calToday.get(Calendar.DAY_OF_MONTH)
+				  &&calBirth.get(Calendar.MONTH) == 
+				  		calToday.get(Calendar.MONTH))
+				return "E TENHA UM FELIZ DIA DE ANIVERSÁRIO!";
+			}
+		}
+		return "";
 	}
 
 	@SuppressWarnings("unused")

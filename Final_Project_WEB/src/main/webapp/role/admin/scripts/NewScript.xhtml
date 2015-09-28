@@ -17,11 +17,11 @@
 			<br />
 			<br />
 			<h:panelGrid columns="2" style="width:550px;">
-				<p:outputLabel value="Título: " />
+				<p:outputLabel value="Título: *" />
 				<p:inputText value="#{newScriptCDI.title}" style="width:100%;">
 					<p:ajax update="@this" />
 				</p:inputText>
-				<p:outputLabel value="Comentários: " />
+				<p:outputLabel value="Comentários: *" />
 				<p:inputTextarea value="#{newScriptCDI.comments}"
 					style="width:100%;" rows="3">
 					<p:ajax update="@this" />
@@ -71,7 +71,7 @@
 				converter="questionConverter">
 
 				<f:facet name="sourceCaption">Questões Disponíveis</f:facet>
-				<f:facet name="targetCaption">Questões do Guião</f:facet>
+				<f:facet name="targetCaption">Questões do Guião *</f:facet>
 
 				<p:ajax event="transfer" listener="#{newScriptCDI.onTransfer}" />
 
