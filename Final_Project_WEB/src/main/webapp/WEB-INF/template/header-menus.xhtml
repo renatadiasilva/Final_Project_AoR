@@ -14,6 +14,8 @@
 		<ui:include src="edit-candidate-info.xhtml" />
 		<ui:include src="upload-cv.xhtml" />
 		<ui:include src="change-email.xhtml" />
+		<ui:include src="spontaneous-submission.xhtml" />
+		<ui:include src="check-position.xhtml" />
 
 		<h:form id="headerMenu">
 
@@ -62,7 +64,8 @@
 								url="../../../role/admin/search/InterviewSearch.xhtml" />
 						</p:submenu>
 						<p:submenu label="Guiões">
-							<p:menuitem value="Novo Guião" url="../../../role/admin/scripts/NewScript.xhtml" />
+							<p:menuitem value="Novo Guião"
+								url="../../../role/admin/scripts/NewScript.xhtml" />
 							<p:menuitem value="Editar Guião" url="#" />
 							<p:menuitem value="Procurar Guiões"
 								url="../../../role/admin/search/ScriptSearch.xhtml" />
@@ -81,7 +84,7 @@
 								url="../../../role/admin/search/CandidateSearch.xhtml" />
 							<p:menuitem value="Procurar Candidaturas"
 								url="../../../role/admin/search/SubmissionSearch.xhtml" />
-							<p:menuitem value="Candidaturas Espontâneas" 
+							<p:menuitem value="Candidaturas Espontâneas"
 								url="../../../role/admin/search/SpontaneousSearch.xhtml" />
 						</p:submenu>
 					</p:column>
@@ -111,8 +114,8 @@
 						</p:submenu>
 						<p:submenu label="Candidaturas">
 							<p:menuitem value="Procurar Candidatos" url="#" />
-							<p:menuitem value="Candidaturas Espontâneas" 
-							url="../../../role/manager/search/SpontaneousSearch.xhtml" />
+							<p:menuitem value="Candidaturas Espontâneas"
+								url="../../../role/manager/search/SpontaneousSearch.xhtml" />
 						</p:submenu>
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="Agendar Entrevista" url="#" />
@@ -148,9 +151,16 @@
 				<p:submenu label="Candidato" icon="ui-icon-wrench"
 					rendered="#{userSessionManagement.candidate}">
 					<p:column>
+						<p:submenu label="Ofertas">
+							<p:menuitem value="Em aberto"
+								url="../../../role/candidate/landing/Landing.xhtml" />
+						</p:submenu>
 						<p:submenu label="Candidaturas">
-							<p:menuitem value="As Minhas Candidaturas" 
+							<p:menuitem value="As Minhas Candidaturas"
 								url="../../../role/candidate/submissions/MySubmissions.xhtml" />
+							<p:menuitem value="Submeter Candidatura Espontânea"
+								rendered="#{userSessionManagement.cv}"
+								oncomplete="PF('spontaneousSubmission').show();" />
 						</p:submenu>
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="As minhas Entrevistas" url="#" />

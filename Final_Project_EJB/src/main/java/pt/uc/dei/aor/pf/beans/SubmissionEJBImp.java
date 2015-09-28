@@ -131,6 +131,13 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 	
 	@Override
+	public List<SubmissionEntity> findSpontaneousSubmissionsOfCandidate(
+			UserEntity candidate) {
+		log.info("Finding submissions of a candidate");
+		return submissionDAO.findSpontaneousSubmissionsOfCandidate(candidate);
+	}
+	
+	@Override
 	public List<Object[]> averageTimeToHired(Date date1, Date date2, char p) {
 		log.info("Computing the average time to hired between two dates");
 		return submissionDAO.averageTimeToHired(date1, date2, p);
@@ -229,6 +236,11 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 		if (hasError)
 			throw new IllegalArgumentException("The submission is missing"
 					+ " data. Check the notnull attributes.");
+	}
+
+	@Override
+	public SubmissionEntity saveAndReturn(SubmissionEntity spontaneousSubmission) {
+		return this.submissionDAO.saveAndReturn(spontaneousSubmission);
 	}
 
 }

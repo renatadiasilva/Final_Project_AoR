@@ -14,7 +14,8 @@
 			<p:dialog header="Upload CV" widgetVar="uploadCV" draggable="false"
 				resizable="false" modal="true">
 
-				<p:fileUpload id="file-upload" update="uploadCVForm messages headerMenu"
+				<p:fileUpload id="file-upload"
+					update="uploadCVForm messages headerMenu"
 					label="Escolha o CV (*.pdf)" uploadLabel="Submeter CV"
 					cancelLabel="Cancelar" required="true"
 					requiredMessage="Submeta um CV"
@@ -22,9 +23,10 @@
 					dragDropSupport="true" sizeLimit="1000000" fileLimit="1"
 					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
 					invalidFileMessage="Só é permitido o formato .pdf"
-					allowTypes="/(\.|\/)(pdf)$/" />
+					allowTypes="/(\.|\/)(pdf)$/"
+					oncomplete="PF('uploadCV').hide();" />
 
-				<p:commandButton value="Fechar" onclick="PF('uploadCV').hide();"
+				<p:button value="Cancelar" onclick="PF('uploadCV').hide();"
 					icon="ui-icon-close" style="width:100%" />
 
 			</p:dialog>

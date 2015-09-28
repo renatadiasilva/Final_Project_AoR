@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+
+		<h:form id="spontaneousSubmissionForm">
+
+			<p:dialog header="Candidatura Espontânea"
+				widgetVar="spontaneousSubmission" draggable="false"
+				resizable="false" modal="true">
+
+				<p:fileUpload id="motivation-letter-upload-spontaneous-submission"
+					update="spontaneousSubmissionForm headerMenu messages"
+					label="Escolha a carta de motivação (*.pdf)"
+					uploadLabel="Submeter candidatura espontânea" cancelLabel="Cancelar"
+					required="true" requiredMessage="Submeta uma carta de motivação"
+					fileUploadListener="#{spontaneousSubmissionCDI.createSpontaneousSubmission}"
+					mode="advanced" dragDropSupport="true" sizeLimit="1000000"
+					fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .pdf"
+					allowTypes="/(\.|\/)(pdf)$/"
+					oncomplete="PF('spontaneousSubmission').hide();"/>
+
+				<p:button value="Cancelar"
+					onclick="PF('spontaneousSubmission').hide();" icon="ui-icon-close"
+					style="width:100%" />
+
+			</p:dialog>
+
+		</h:form>
+		
+	</ui:composition>
+
+</h:body>
+</html>

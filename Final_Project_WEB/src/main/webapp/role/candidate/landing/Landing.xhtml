@@ -15,9 +15,9 @@
 			<f:viewAction
 				actionListener="#{positionSearchCDI.searchOpenPositions()}" />
 		</f:metadata>
-		<br /> 
+		<br />
 		<b>CANDIDATO(A) #{userSessionManagement.userFullName}</b>,
-		<br /> 		
+		<br />
 		<br /> 
 		#{styleSessionManagement.welcomeMessage}
 		<br />
@@ -26,20 +26,19 @@
 		<h3>Acesso rápido</h3>
 		<br />
 		<h:form>
-		<p:link value="As Minhas Candidaturas"
-			href="../submissions/MySubmissions.xhtml" />
+			<p:link value="As Minhas Candidaturas"
+				href="../submissions/MySubmissions.xhtml" />
 		</h:form>
 		<br />
 		<br />
 		<br />
 		<br />
 		<br />
-		
+
 		<h:form>
 
 			<p:dataTable emptyMessage="Neste momento não há posições abertas."
-				var="p" value="#{positionSearchCDI.plist}" id="tableHomeLanding"
-				rendered="#{positionSearchCDI.checkIfNotEmpty()}"
+				var="p" value="#{checkPositionCDI.positions}" id="tableHome"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
@@ -64,9 +63,51 @@
 					<h:outputText value="#{p.technicalArea}" />
 				</p:column>
 				<p:column headerText="Descrição">
-					<h:outputText value="#{p.description}" />
+					<p:commandButton value="Ver descrição" icon="ui-icon-script"
+						actionListener="#{checkPositionCDI.checkPosition(p)}"
+						update="checkPositionForm" style="width:100%"
+						oncomplete="PF('checkPosition').show();" />
 				</p:column>
+
+				<p:column headerText="Candidatar-se"
+					rendered="#{!userSessionManagement.cv}">
+					<p:commandButton value="Upload CV" onclick="PF('uploadCVLocal').show();"
+						icon="ui-icon-locked" style="width: 100%" />
+				</p:column>
+
+				<p:column headerText="Candidatar-se"
+					rendered="#{userSessionManagement.cv}">
+					<!-- 1ª Não mudar a ordem -->
+					<p:button value="Acesso negado" icon="ui-icon-cancel"
+						rendered="#{checkPositionCDI.forbidden(p)}" style="width: 100%" />
+					<!-- 2ª Não mudar a ordem -->
+					<p:button value="Candidato" icon="ui-icon-check"
+						rendered="#{checkPositionCDI.candidate(p)}" style="width: 100%" />
+					<!-- 3ª Não mudar a ordem -->
+					<p:commandButton value="Candidatar-se" icon="ui-icon-suitcase"
+						rendered="#{checkPositionCDI.submitable()}" style="width: 100%" />
+				</p:column>
+
 			</p:dataTable>
+
+			<p:dialog header="Upload CV" widgetVar="uploadCVLocal" draggable="false"
+				resizable="false" modal="true">
+
+				<p:fileUpload id="file-upload-local"
+					update="@form messages headerMenu"
+					label="Escolha o CV (*.pdf)" uploadLabel="Submeter CV"
+					cancelLabel="Cancelar" required="true"
+					requiredMessage="Submeta um CV"
+					fileUploadListener="#{uploadCVCDI.uploadCV}" mode="advanced"
+					dragDropSupport="true" sizeLimit="1000000" fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .pdf"
+					allowTypes="/(\.|\/)(pdf)$/" oncomplete="PF('uploadCV').hide();" />
+
+				<p:button value="Cancelar" onclick="PF('uploadCVLocal').hide();"
+					icon="ui-icon-close" style="width:100%" />
+
+			</p:dialog>
 
 		</h:form>
 

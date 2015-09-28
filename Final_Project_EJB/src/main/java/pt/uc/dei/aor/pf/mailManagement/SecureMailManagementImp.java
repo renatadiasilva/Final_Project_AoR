@@ -1,11 +1,14 @@
 package pt.uc.dei.aor.pf.mailManagement;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -16,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
+import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -31,9 +35,12 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	@EJB
 	private StyleEJBInterface styleEJB;
 
+	@EJB
+	private UserEJBInterface userEJB;
+
 	private static final String FROM="itjobs.aor@gmail.com";
 
-	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com, renatadiasilva@gmail.com";
+	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com,renatadiasilva@gmail.com,";
 	private static final boolean OVERRIDE = true;
 
 	private static final String SERVICE_CONTEXT="https://localhost/Final_Project_WEB/services/";
@@ -42,27 +49,45 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	}
 
 	@Asynchronous
-	private void sendEmail(String receiver, String subject, String content) {
+	private void sendEmail(String to, String bcc, String subject, String content) {
 
-		log.info("Sending Email from " + FROM + " to " + receiver + " : " + subject);
+		log.info("Sending Email from " + FROM + " to " + to + " : " + subject);
 
-		if(OVERRIDE)receiver=RECEIVER;
-
-		try {
-
-			Message message = new MimeMessage(gmailSession);
-			message.setFrom(new InternetAddress(FROM));
-			message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(receiver));
-			message.setSubject(subject);
-			message.setText(content);
-
-			Transport.send(message);
-
-			log.info("Email was sent");
-
-		} catch (MessagingException e) {
-			log.error("Error while sending email : " + e.getMessage());
+		if(OVERRIDE){
+			if(to!=null)
+				to=RECEIVER;
+			if(bcc!=null)
+				bcc=RECEIVER;
 		}
+		
+		if(to!=null||bcc!=null){
+			
+			try {
+
+				Message message = new MimeMessage(gmailSession);
+				message.setFrom(new InternetAddress(FROM));
+
+				if(to!=null)
+					message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
+				
+				if(bcc!=null)
+					if(to==null)message.setRecipients(Message.RecipientType.BCC,InternetAddress.parse(bcc));
+					else message.addRecipients(Message.RecipientType.BCC,InternetAddress.parse(bcc));
+
+				message.setSubject(subject);
+				message.setText(content);
+
+				Transport.send(message);
+
+				log.info("Email was sent");
+
+			} catch (MessagingException e) {
+				log.error("Error while sending email : " + e.getMessage());
+			}
+			
+		}else log.error("No defined recipients, email not sent");
+
+		
 	}
 
 	@Override
@@ -78,7 +103,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		log.info("Envio de email para "+user.getEmail()+" para "
 				+ "notificar da password temporária "+temporaryPassword);
-		this.sendEmail(receiver, subject, text);
+		this.sendEmail(receiver, null, subject, text);
 	}
 
 	@Override
@@ -97,7 +122,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+"\n\nCumprimentos,\nA equipa "
 				+companyName;
 
-		this.sendEmail(newUser.getEmail(), "Registo na plataforma "
+		this.sendEmail(newUser.getEmail(), null, "Registo na plataforma "
 				+ companyName+" - Autenticação do email", text);
 	}
 
@@ -109,7 +134,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+ "concluído."
 				+"\n\nCumprimentos,\nA equipa "+companyName;
 
-		this.sendEmail(user.getEmail(), "Registo na plataforma "
+		this.sendEmail(user.getEmail(), null, "Registo na plataforma "
 				+ companyName+" - Registo concluído", text);
 	}
 
@@ -128,7 +153,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+ newUser.getEmail()+" with "
 				+ "temporary password "+temporaryPassword);
 
-		this.sendEmail(newUser.getEmail(), "Registo na plataforma "
+		this.sendEmail(newUser.getEmail(), null, "Registo na plataforma "
 				+ companyName+" - Envio de password temporária", text);
 	}
 
@@ -145,13 +170,31 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+"\n\nCumprimentos,\nA equipa "
 				+companyName;
 
-		this.sendEmail(user.getEmail(), "Registo na plataforma "
+		this.sendEmail(user.getEmail(), null, "Registo na plataforma "
 				+ companyName+" - Autenticação do novo email", text);
 	}
 
 	@Override
 	public void slaWarning(PositionEntity position) {
-		// Envia um mail a todos os admins a alertar a aproximação do fim do SLA		
+		// Envia um mail a todos os admins a alertar a aproximação do fim do SLA
+		List<UserEntity>admins=this.userEJB.findAllAdmins();
+
+		String bcc="";
+
+		for(UserEntity admin:admins)
+			bcc+=(admin.getEmail())+",";
+
+		String companyName=styleEJB.findDefaulStyle().getCompanyName();
+		
+		String positionMail=position.getPositionCode()+" ("+position.getTitle()+" - "+position.getCompany()+")";
+
+		String text="Caro administrador,"
+				+"\n\nO prazo do SLA da posição com o código "+positionMail+" está a aproximar-se do fim."
+				+"\n\nCumprimentos,\nA equipa "
+				+companyName;
+		
+		this.sendEmail(null, bcc, position+": SLA próximo do fim", text);
+
 	}
 
 }

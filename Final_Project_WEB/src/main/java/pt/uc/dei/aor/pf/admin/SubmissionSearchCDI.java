@@ -1,16 +1,21 @@
 package pt.uc.dei.aor.pf.admin;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +23,11 @@ import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.session.UserSessionManagement;
 import pt.uc.dei.aor.pf.upload.UploadFile;
 
 import java.io.Serializable;
@@ -34,6 +41,12 @@ public class SubmissionSearchCDI implements Serializable {
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(SubmissionSearchCDI.class);
+
+	@Inject
+	private UploadFile uploadFile;
+	
+	@Inject
+	private UserSessionManagement userManagement;
 
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
@@ -54,7 +67,64 @@ public class SubmissionSearchCDI implements Serializable {
 
 	private List<SubmissionEntity> slist;
 
+	private SubmissionEntity submissionToEdit;
+
 	public SubmissionSearchCDI() {
+	}
+
+	public boolean changeCV(SubmissionEntity submission){
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.HOUR_OF_DAY, -1);
+
+		Date oneHourAgo=calendar.getTime();
+
+		// Só deixa alterar o CV/Motivation Letter se a submission tem menos de uma hora
+		return submission.getDate().after(oneHourAgo);
+	}
+
+	public void editSubmission(SubmissionEntity submissionToEdit){
+		this.submissionToEdit=submissionToEdit;	
+	}
+
+	public void cancelEditSubmission(){
+		this.submissionToEdit=null;
+	}
+
+	public void uploadCustomCV(FileUploadEvent event){
+
+		UploadedFile customCV=event.getFile();
+
+		// Actualiza a submissão
+		this.submissionToEdit.setCustomCV(true);
+		this.submissionEJB.update(this.submissionToEdit);
+
+		// Grava o customCV
+		this.uploadFile.uploadFile(customCV, UploadFile.FOLDER_SUBMISSION_CV, this.submissionToEdit.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo CV submetido."));
+
+		this.submissionToEdit=null;
+	}
+
+	public void uploadNewMotivationLetter(FileUploadEvent event){
+		UploadedFile motivationLetter=event.getFile();
+
+		// Grava o customCV
+		this.uploadFile.uploadFile(motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, this.submissionToEdit.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova carta de motivação submetida."));
+
+		this.submissionToEdit=null;
+	}
+	
+	public List<SubmissionEntity> associatedSubmissions() {
+		UserEntity candidate=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
+		return this.submissionEJB.findSubmissionsOfCandidate(candidate);
+	}
+	
+	public List<SubmissionEntity> spontaneousSubmissions() {
+		UserEntity candidate=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
+		return this.submissionEJB.findSpontaneousSubmissionsOfCandidate(candidate);
 	}
 
 	public void searchAll() {
@@ -121,26 +191,46 @@ public class SubmissionSearchCDI implements Serializable {
 	public void redirectExternalURl(String site) throws IOException {
 		if (site != null) {
 			ExternalContext externalContext = FacesContext.getCurrentInstance().
-				getExternalContext();
+					getExternalContext();
 			externalContext.redirect(site);
 		}
 	}
 
 	public boolean hasLikedin(UserEntity candidate) {
+		// Facultativo
+		if(candidate.getUserInfo()==null) return false;
+
 		return candidate.getUserInfo().getLinkedin() != null;
 	}
-	
-	public String getCvPath(UserEntity candidate) {
+
+	public String getMotivatioLetterPath(SubmissionEntity submission) {
 		// (.pdf)
 		HttpServletRequest request = (HttpServletRequest) FacesContext.
 				getCurrentInstance().getExternalContext().getRequest();
 		return request.getScheme()+"://"+request.getServerName()+":"
-				+request.getServerPort()+"/userCV/"
-				+candidate.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
+		+request.getServerPort()+"/"+UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER+"/"
+		+submission.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
+	}
+
+	public String getCvPath(SubmissionEntity submission) {
+		// (.pdf)
+		HttpServletRequest request = (HttpServletRequest) FacesContext.
+				getCurrentInstance().getExternalContext().getRequest();
+
+		// Se a submission tem um customCV
+		if(submission.isCustomCV())
+			return request.getScheme()+"://"+request.getServerName()+":"
+			+request.getServerPort()+"/"+UploadFile.FOLDER_SUBMISSION_CV+"/"
+			+submission.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
+
+		// Caso não tenha, vai o CV por defeito do candidato
+		return request.getScheme()+"://"+request.getServerName()+":"
+		+request.getServerPort()+"/"+UploadFile.FOLDER_USER_CV+"/"
+		+submission.getCandidate().getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
 	}
 
 
-	
+
 	// getters e setters
 
 	public Date getDate1() {

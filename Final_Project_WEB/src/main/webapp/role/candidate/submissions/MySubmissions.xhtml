@@ -18,13 +18,13 @@
 					currentUserClone.id)}" />
 		</f:metadata>
 
-		<h1>As minhas candidaturas (associadas a posições)</h1>
+		<h1>As minhas candidaturas</h1>
 
 		<h:form id="mySubmissions">
 
 			<p:dataTable
-				emptyMessage="Não tem candidaturas associadas a posições."
-				var="s" value="#{submissionSearchCDI.slist}"
+				emptyMessage="Não tem candidaturas associadas a posições." var="s"
+				value="#{submissionSearchCDI.associatedSubmissions()}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
@@ -38,7 +38,138 @@
 				<p:column headerText="Estado">
 					<h:outputText value="#{s.status}" />
 				</p:column>
+				<p:column headerText="Carta de Motivação">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getMotivatioLetterPath(s)}"
+							target="_blank">Consultar a Carta de Motivação</a>
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="CV">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getCvPath(s)}" target="_blank">
+							Consultar CV</a>
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="Mudar Carta de Motivação">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<p:commandButton value="Mudar CV" icon="ui-icon-refresh"
+							rendered="#{submissionSearchCDI.changeCV(s)}"
+							actionListener="#{submissionSearchCDI.editSubmission(s)}"
+							oncomplete="PF('changeSubmissionMotivationLetter').show();" />
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="Mudar CV">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<p:commandButton value="Mudar CV" icon="ui-icon-refresh"
+							rendered="#{submissionSearchCDI.changeCV(s)}"
+							actionListener="#{submissionSearchCDI.editSubmission(s)}"
+							oncomplete="PF('changeSubmissionCV').show();" />
+					</h:panelGroup>
+				</p:column>
 			</p:dataTable>
+			<br />
+		</h:form>
+		
+		<h1>As minhas candidaturas espontâneas</h1>
+		
+		<h:form id="mySubmissionsNon">
+
+			<p:dataTable emptyMessage="Não tem candidaturas." var="s"
+				value="#{submissionSearchCDI.spontaneousSubmissions()}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Listagem</f:facet>
+				<p:column headerText="Data">
+					<h:outputText value="#{s.date}" />
+				</p:column>
+				<p:column headerText="Estado">
+					<h:outputText value="#{s.status}" />
+				</p:column>
+				<p:column headerText="Carta de Motivação">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getMotivatioLetterPath(s)}"
+							target="_blank">Consultar a Carta de Motivação</a>
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="CV">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getCvPath(s)}" target="_blank">
+							Consultar CV</a>
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="Mudar Carta de Motivação">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<p:commandButton value="Mudar Carta de Motivação" icon="ui-icon-refresh"
+							rendered="#{submissionSearchCDI.changeCV(s)}"
+							actionListener="#{submissionSearchCDI.editSubmission(s)}"
+							oncomplete="PF('changeSubmissionMotivationLetter').show();" />
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="Mudar CV">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<p:commandButton value="Mudar CV" icon="ui-icon-refresh"
+							rendered="#{submissionSearchCDI.changeCV(s)}"
+							actionListener="#{submissionSearchCDI.editSubmission(s)}"
+							oncomplete="PF('changeSubmissionCV').show();" />
+					</h:panelGroup>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+		<h:form id="changeSubmissionMotivationLetterForm">
+
+			<p:dialog header="Mudar a Carta de Motivação"
+				widgetVar="changeSubmissionMotivationLetter" draggable="false"
+				resizable="false" modal="true">
+
+				<p:fileUpload id="motivation-letter-submission-replace"
+					update="changeSubmissionMotivationLetterForm mySubmissions mySubmissionsNon messages"
+					label="Escolha a nova Carta de Motivação (*.pdf)"
+					uploadLabel="Submeter a nova Carta de Motivação"
+					cancelLabel="Cancelar" required="true"
+					requiredMessage="Submeta uma nova Carta de Motivação"
+					fileUploadListener="#{submissionSearchCDI.uploadNewMotivationLetter}"
+					mode="advanced" dragDropSupport="true" sizeLimit="1000000"
+					fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .pdf"
+					allowTypes="/(\.|\/)(pdf)$/" />
+
+				<p:commandButton value="Cancelar"
+					onclick="PF('changeSubmissionMotivationLetter').hide();"
+					icon="ui-icon-close"
+					actionListener="#{submissionSearchCDI.cancelEditSubmission()}"
+					style="width:100%" />
+
+			</p:dialog>
+
+		</h:form>
+
+		<h:form id="changeSubmissionCVForm">
+
+			<p:dialog header="Mudar o CV" widgetVar="changeSubmissionCV"
+				draggable="false" resizable="false" modal="true">
+
+				<p:fileUpload id="cv-submission-replace"
+					update="changeSubmissionCVForm mySubmissions mySubmissionsNon messages"
+					label="Escolha o novo CV (*.pdf)" uploadLabel="Submeter novo CV"
+					cancelLabel="Cancelar" required="true"
+					requiredMessage="Submeta um novo CV"
+					fileUploadListener="#{submissionSearchCDI.uploadCustomCV}"
+					mode="advanced" dragDropSupport="true" sizeLimit="1000000"
+					fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .pdf"
+					allowTypes="/(\.|\/)(pdf)$/" />
+
+				<p:commandButton value="Cancelar"
+					onclick="PF('changeSubmissionCV').hide();" icon="ui-icon-close"
+					actionListener="#{submissionSearchCDI.cancelEditSubmission()}"
+					style="width:100%" />
+
+			</p:dialog>
 
 		</h:form>
 

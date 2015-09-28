@@ -56,6 +56,12 @@ public class PositionSearchCDI {
 
 	public PositionSearchCDI() {
 	}
+	
+	public List<PositionEntity> directOpenPositions() {
+		log.info("Searching for all open positions");
+		return this.positionEJB.findOpenPositions();
+	}
+
 
 	public boolean checkIfNotEmpty() {
 		return plist != null && !plist.isEmpty();

@@ -97,6 +97,14 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		return super.findSomeResults("Submission.findSubmissionsOfCandidate",
 				parameters);	
 	}
+	
+	public List<SubmissionEntity> findSpontaneousSubmissionsOfCandidate(
+			UserEntity candidate) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("user", candidate);
+		return super.findSomeResults("Submission.findSpontaneousSubmissionsOfCandidate",
+				parameters);	
+	}
 
 	public Long countTotalSubmissionsPos(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();

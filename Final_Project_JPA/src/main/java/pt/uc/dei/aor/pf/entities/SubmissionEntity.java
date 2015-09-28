@@ -57,6 +57,10 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE s.candidate = :user"
 					+ " AND s.spontaneous = FALSE ORDER BY s.date DESC"),
+	@NamedQuery(name = "Submission.findSpontaneousSubmissionsOfCandidate",
+			query = "SELECT s FROM SubmissionEntity s"
+					+ " WHERE s.candidate = :user"
+					+ " AND s.spontaneous = TRUE ORDER BY s.date DESC"),
 	@NamedQuery(name = "Submission.countTotalSubmissionsPos",
 			query = "SELECT COUNT(s) FROM SubmissionEntity s"
 					+ " WHERE s.position.openingDate"
@@ -130,6 +134,9 @@ public class SubmissionEntity implements Serializable {
 
 	@Column(name = "motivation_letter")
 	private String motivationLetter;
+	
+	@Column(name="custom_cv", nullable = false)
+	private boolean customCV;
 
 	@ElementCollection
 	@CollectionTable(name = "sources",
@@ -139,7 +146,7 @@ public class SubmissionEntity implements Serializable {
 
 	@NotNull
 	@Column(name = "date", nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@NotNull
@@ -173,6 +180,8 @@ public class SubmissionEntity implements Serializable {
 		this.sources = sources;
 		this.spontaneous = spontaneous;
 		this.status = status;
+		
+		this.customCV = false;
 	}
 
 	public Long getId() {
@@ -221,6 +230,14 @@ public class SubmissionEntity implements Serializable {
 
 	public void setMotivationLetter(String motivationLetter) {
 		this.motivationLetter = motivationLetter;
+	}
+
+	public boolean isCustomCV() {
+		return customCV;
+	}
+
+	public void setCustomCV(boolean customCV) {
+		this.customCV = customCV;
 	}
 
 	public List<String> getSources() {

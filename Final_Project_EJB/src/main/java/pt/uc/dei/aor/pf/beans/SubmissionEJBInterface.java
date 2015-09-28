@@ -51,4 +51,8 @@ public interface SubmissionEJBInterface {
 			Date date2, List<String> sources);	
 	public abstract List<SubmissionEntity> findDetailOfPosition(
 			PositionEntity position);
+	public abstract SubmissionEntity saveAndReturn(
+			SubmissionEntity spontaneousSubmission);
+	public abstract List<SubmissionEntity> findSpontaneousSubmissionsOfCandidate(
+			UserEntity candidate);
 }

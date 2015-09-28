@@ -36,11 +36,17 @@
 				<p:column headerText="Escola/Universidade">
 					<h:outputText value="#{s.candidate.userInfo.school}" />
 				</p:column>
+				<p:column headerText="Carta de Motivação">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getMotivatioLetterPath(s)}"
+							target="_blank">Consultar a Carta de Motivação</a>
+					</h:panelGroup>
+				</p:column>
 				<p:column headerText="CV">
-					<h:commandLink value="Consultar CV"
-						rendered="#{s.candidate.uploadedCV}"
-						action="#{submissionSearchCDI.getCvPath(s.candidate)}"
-						target="_blank" />
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getCvPath(s)}" target="_blank">
+							Consultar CV</a>
+					</h:panelGroup>
 				</p:column>
 				<p:column headerText="Linkedin">
 					<h:commandLink value="Ir para a página Linkedin" target="_blank"

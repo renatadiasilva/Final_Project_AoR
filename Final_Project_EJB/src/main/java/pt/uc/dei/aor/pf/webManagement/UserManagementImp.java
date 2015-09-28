@@ -1,7 +1,6 @@
 package pt.uc.dei.aor.pf.webManagement;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,8 +43,6 @@ public class UserManagementImp implements UserManagementInterface {
 	private boolean admin, manager, interviewer, candidate;
 
 	private boolean newPasswordCheck;
-	
-	private Calendar yesterday;
 
 	public UserManagementImp() {		
 		this.currentUser=new UserEntity();
@@ -74,8 +71,7 @@ public class UserManagementImp implements UserManagementInterface {
 		// Roles para mostrar na web
 		this.setAvailableRoles();
 		
-		// Quando se loga um Admin
-		// Fecha as posições que já passaram o SLA
+		// Quando se loga um Admin, fecha as posições que já passaram o SLA
 		// Também notifica quando o SLA se aproxima do fim
 		if(this.admin)
 			this.checkSLAs();
@@ -83,7 +79,7 @@ public class UserManagementImp implements UserManagementInterface {
 
 	private void checkSLAs() {
 		
-		List<PositionEntity>overdueSLAs=this.positionEJB.findCloseToSLAPositions(0);
+		List<PositionEntity>overdueSLAs=this.positionEJB.findAfterSLAPositions();
 		
 		// Fecha as posições que já passaram o SLA
 		for(PositionEntity position:overdueSLAs){
@@ -94,30 +90,15 @@ public class UserManagementImp implements UserManagementInterface {
 		
 		// Procura as posições que têm uma margem de 3 dias para acabar
 		List<PositionEntity>threeDaysToCloseSLAs=this.positionEJB.findCloseToSLAPositions(3);
-
-		this.yesterday=Calendar.getInstance();
-		this.yesterday.add(Calendar.DAY_OF_YEAR, -1);
 		
 		// Envia email a alertar a aproximação do fim do SLA
 		for(PositionEntity position:threeDaysToCloseSLAs)			
-			if(this.sendMail(position)){
+			if(position.getLastSlaMailDate()==null){
 				this.mail.slaWarning(position);
 				position.setLastSlaMailDate(new Date());
 				this.positionEJB.update(position);
 			}
 		
-	}
-	
-	private boolean sendMail(PositionEntity position){
-		// Se ainda não foi enviado nenhum email, envia agora
-		if(position.getLastSlaMailDate()==null)
-			return true;
-		
-		// Se o último mail foi há mais de um dia envia de novo
-		if(position.getLastSlaMailDate().after(this.yesterday.getTime()))
-			return true;
-		
-		return false;
 	}
 
 	@Override
