@@ -99,7 +99,6 @@ public class Constants {
 	public static final String QUERY_PROPO = "PROPOSAL";
 	public static final String QUERY_HIRED = "HIRED";
 	
-
 	// No occurencies
 	public static final String REPORT_NO_HIRED = "Sem contratações";
 	
@@ -108,4 +107,8 @@ public class Constants {
 	public static final String SERVLET_AUTH_CANDIDATE = "authCand";
 	public static final String SERVLET_EMAIL = "email";
 	public static final String SERVLET_EMAIL_KEY = "key";
+	
+	// days to SLA
+	public static final int DAYS_TO_SLA = 3;
+	
 }

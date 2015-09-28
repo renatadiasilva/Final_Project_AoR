@@ -88,8 +88,9 @@ public class UserManagementImp implements UserManagementInterface {
 			this.positionEJB.update(position);
 		}
 		
-		// Procura as posições que têm uma margem de 3 dias para acabar
-		List<PositionEntity>threeDaysToCloseSLAs=this.positionEJB.findCloseToSLAPositions(3);
+		// Procura as posições que têm uma margem de x dias para acabar
+		List<PositionEntity>threeDaysToCloseSLAs=
+				this.positionEJB.findCloseToSLAPositions(Constants.DAYS_TO_SLA);
 		
 		// Envia email a alertar a aproximação do fim do SLA
 		for(PositionEntity position:threeDaysToCloseSLAs)			
