@@ -14,7 +14,7 @@
 		<h:form id="editPosition">
 			<h:panelGroup id="editPosition">
 				<p:dataTable emptyMessage="#{newPositionCDI.emptyTable}"
-					var="position" value="#{newPositionCDI.openPositions}"
+					var="position" value="#{newPositionCDI.positions}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 					paginator="true" rows="10">
 					<f:facet name="header">Posições</f:facet>

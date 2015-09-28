@@ -81,13 +81,6 @@ public class UserManagementImp implements UserManagementInterface {
 		
 		List<PositionEntity>overdueSLAs=this.positionEJB.findAfterSLAPositions();
 		
-		// Fecha as posições que já passaram o SLA
-		for(PositionEntity position:overdueSLAs){
-			position.setStatus(Constants.STATUS_CLOSED);
-			position.setClosingDate(new Date());
-			this.positionEJB.update(position);
-		}
-		
 		// Procura as posições que têm uma margem de x dias para acabar
 		List<PositionEntity>threeDaysToCloseSLAs=
 				this.positionEJB.findCloseToSLAPositions(Constants.DAYS_TO_SLA);
@@ -99,6 +92,13 @@ public class UserManagementImp implements UserManagementInterface {
 				position.setLastSlaMailDate(new Date());
 				this.positionEJB.update(position);
 			}
+		
+		// Fecha as posições que já passaram o SLA
+		for(PositionEntity position:overdueSLAs){
+			position.setStatus(Constants.STATUS_CLOSED);
+			position.setClosingDate(new Date());
+			this.positionEJB.update(position);
+		}
 		
 	}
 

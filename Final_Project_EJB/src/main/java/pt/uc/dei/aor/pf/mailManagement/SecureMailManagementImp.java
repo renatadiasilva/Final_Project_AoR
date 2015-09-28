@@ -197,7 +197,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+companyName;
 		
 		this.sendEmail(null, bcc, position.getPositionCode()
-				+": data de fecho a "+Constants.DAYS_TO_SLA+" dias", text);
+				+": data de fecho a "+Constants.DAYS_TO_SLA+" dias ou menos", text);
 
 	}
 
