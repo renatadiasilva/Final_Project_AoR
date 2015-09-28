@@ -110,13 +110,8 @@ public class UserSessionManagement implements Serializable {
 
 		// Se por alguma razão do diabo há uma tentativa de login
 		// com um User logado na sessão é feito um logout
-		if(this.userManagement.isUserLogged()) {
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Já existe um user logado", ""));
-			this.logout();
-		}
-
+		if(this.userManagement.isUserLogged()) this.logout();
+		
 		try{
 			// Login no servidor - vai buscar os roles lá dentro
 			// Se falha salta os passos seguintes - excepção

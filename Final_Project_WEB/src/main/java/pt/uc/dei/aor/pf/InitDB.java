@@ -96,7 +96,7 @@ public class InitDB {
 		};
 		
 		UserInfoEntity [] uilist = {
-			new UserInfoEntity(ftDate.parse("1960-05-11"), 
+			new UserInfoEntity(ftDate.parse("1960-10-06"), 
 					"Avenida da Liberdade",
 					"Lisboa", null, "969 362 531", "Portugal",
 					"Engenharia Informática","Universidade do Porto, Portugal",
