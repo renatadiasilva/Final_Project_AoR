@@ -5,6 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
+	<f:metadata>
+		<f:viewAction
+			actionListener="#{newScriptCDI.init()}" />
+	</f:metadata>
+
 	<ui:define name="titulo">
 	Admin - Novo Guião - #{styleSessionManagement.companyName}
 	</ui:define>
@@ -84,10 +89,16 @@
 		<br />
 
 		<h:form id="createScriptForm">
+			<h:panelGrid columns="2">
+			<p:commandButton value="Limpar Campos" style="width:100%"
+					action="#{newScriptCDI.init()}"
+					update="messages scriptAttributesForm questionTypeForm 
+						pickListForm createScriptForm" />
 			<p:commandButton value="Criar novo guião" icon="ui-icon-disk"
-				update="messages scriptAttributesForm questionTypeForm pickListForm createScriptForm"
+				update="messages scriptAttributesForm questionTypeForm 
+					pickListForm createScriptForm" icon="ui-icon-cancel"
 				style="width:550px;" action="#{newScriptCDI.createScript()}" />
-			<br />
+			</h:panelGrid>
 		</h:form>
 
 	</ui:define>
