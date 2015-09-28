@@ -237,10 +237,11 @@ public class AdminNewUserCDI implements Serializable {
 	public void setCandidate(boolean candidate) {
 		this.candidate = candidate;
 	}
-	
-	
-	
-	
+
+
+
+
+	// Associar novo user a posições
 	
 	@Inject
 	private UserSessionManagement userManagement;
@@ -274,6 +275,7 @@ public class AdminNewUserCDI implements Serializable {
 		UserEntity admin=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
 
 		SubmissionEntity submission=new SubmissionEntity(newCandidate, Constants.STATUS_SUBMITED, null, null, false);
+		submission.setPosition(this.position);
 		submission.setAssociatedBy(admin);
 
 		submission=this.submissionEJB.saveAndReturn(submission);
@@ -281,30 +283,29 @@ public class AdminNewUserCDI implements Serializable {
 		this.uploadFile.uploadFile(motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, submission.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
 
 		this.position=null;
+
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Candidatura Submetida"));
 	}
 
 	public void associateCandidate(UserEntity candidate) {
 		System.out.println("Candidate: "+candidate.getEmail());
-		
+
 		this.newCandidate = candidate;
 	}
 
 	public void associatePosition(PositionEntity position){
-		System.out.println(newCandidate.getEmail());
-		System.out.println(position.getTitle());
-		if(!this.positionEJB.alreadyCandidateOfPosition(newCandidate, position)){
-			System.out.println("posição definida");
-			this.position = position;
-		}
-			
-			
+
+		if(!this.positionEJB.alreadyCandidateOfPosition(newCandidate, position))this.position = position;
+
 		else{
 			this.position=null;
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Já é candidato."));
-		}		
+		}
+
 	}
-	
+
 	public void cleanPandC(){
+		System.out.println("Clean P and C");
 		this.position=null;
 		this.newCandidate=null;
 	}
@@ -316,7 +317,7 @@ public class AdminNewUserCDI implements Serializable {
 	public boolean cancelPosition(){
 		return this.candidateHasCV()&&this.hasPosition();
 	}
-	
+
 	public boolean checkPosition(PositionEntity position){
 		if(this.position==null) return false;
 		return this.position.getPositionCode().equals(position.getPositionCode());
@@ -325,7 +326,7 @@ public class AdminNewUserCDI implements Serializable {
 	public boolean hasPosition(){
 		return this.position!=null;
 	}
-	
+
 	public boolean hasCandidate(){
 		return this.newCandidate!=null;
 	}
@@ -334,9 +335,42 @@ public class AdminNewUserCDI implements Serializable {
 		if(this.newCandidate==null)return false;
 		return this.newCandidate.isUploadedCV();
 	}
-	
+
 	public String getUserMail(){
 		if(this.newCandidate==null) return"";
 		return this.newCandidate.getEmail();
+	}
+	
+	public String positionTitle(){
+		if(this.position==null)return"";
+		return this.position.getTitle();
+	}
+	
+	
+	
+	private boolean forbidden, currentCandidate;
+
+	// 1ª Verificação
+	public boolean forbidden(PositionEntity position){
+		this.forbidden=this.currentCandidate=false;
+
+		this.forbidden=position.getPositionManager().getEmail().equals(this.newCandidate.getEmail());
+
+		return this.forbidden;
+	}
+
+	// 2ª Verificação
+	public boolean candidate(PositionEntity position){
+		
+		if(!this.forbidden){
+			this.currentCandidate = positionEJB.alreadyCandidateOfPosition(newCandidate, position);
+			return this.currentCandidate;
+		}
+		return false;
+	}
+
+	// 3ª Verificação
+	public boolean submitable(){
+		return !this.forbidden&&!this.currentCandidate;
 	}
 }

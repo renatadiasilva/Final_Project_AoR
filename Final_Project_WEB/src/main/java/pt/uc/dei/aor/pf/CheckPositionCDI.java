@@ -42,11 +42,11 @@ public class CheckPositionCDI implements Serializable {
 
 	private List<PositionEntity> positions;
 
-	private boolean forbidden, candidate;
+	private boolean forbidden, currentCandidate;
 
 	// 1ª Verificação
 	public boolean forbidden(PositionEntity position){
-		this.forbidden=this.candidate=false;
+		this.forbidden=this.currentCandidate=false;
 
 		this.forbidden=position.getPositionManager().getEmail().equals(userManagement.getUserMail());
 
@@ -59,15 +59,15 @@ public class CheckPositionCDI implements Serializable {
 		if(!this.forbidden){
 			UserEntity candidate=this.userEJB.findUserByEmail(userManagement.getUserMail());
 			
-			this.candidate = positionEJB.alreadyCandidateOfPosition(candidate, position);
-			return this.candidate;
+			this.currentCandidate = positionEJB.alreadyCandidateOfPosition(candidate, position);
+			return this.currentCandidate;
 		}
 		return false;
 	}
 
 	// 3ª Verificação
 	public boolean submitable(){
-		return !this.forbidden&&!this.candidate;
+		return !this.forbidden&&!this.currentCandidate;
 	}
 
 	public void checkPosition(PositionEntity position){

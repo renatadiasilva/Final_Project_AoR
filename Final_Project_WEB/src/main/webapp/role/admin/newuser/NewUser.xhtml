@@ -169,21 +169,22 @@
 
 					<p:column headerText="Escolher"
 						rendered="#{adminNewUserCDI.candidateHasCV()}">
+						<!-- 1 -->
+						<p:commandButton value="Bloqueado" icon="ui-icon-cancel"
+							rendered="#{adminNewUserCDI.forbidden(p)}" />
+						<!-- 2 -->
+						<p:commandButton value="Candidato" icon="ui-icon-check"
+							rendered="#{adminNewUserCDI.candidate(p)}" style="width: 100%" />
+						<!-- 3 -->
 						<p:commandButton value="Escolher Posição" icon="ui-icon-suitcase"
-							rendered="#{!adminNewUserCDI.checkPosition()}"
-							style="width: 100%"
+							rendered="#{adminNewUserCDI.submitable()}" style="width: 100%"
 							action="#{adminNewUserCDI.associatePosition(p)}" ajax="false" />
-						<p:commandButton value="Cancelar" icon="ui-icon-cancel"
-							rendered="#{adminNewUserCDI.checkPosition()}" style="width: 100%"
-							action="#{adminNewUserCDI.dissociatePosition()}" ajax="false" />
 					</p:column>
 
 				</p:dataTable>
 				<br />
-				<p:commandButton value="Concluir" icon="ui-icon-check"
-					style="width: 100%" action="#{adminNewUserCDI.cleanPandC()}"
-					ajax="false" />
 
+				<h2>#{adminNewUserCDI.positionTitle()}</h2>
 			</h:panelGroup>
 
 		</h:form>
@@ -213,7 +214,7 @@
 
 		<h:form id="newSubmissionForm">
 			<p:fileUpload id="motivation-letter-upload-admin-submission"
-				rendered="#{associateCandidateToPositionCDI.hasPosition()}"
+				rendered="#{adminNewUserCDI.hasPosition()}"
 				label="Escolha a carta de motivação (*.pdf)"
 				uploadLabel="Submeter candidatura" cancelLabel="Cancelar"
 				required="true" requiredMessage="Submeta uma carta de motivação"
@@ -221,7 +222,16 @@
 				mode="advanced" dragDropSupport="true" sizeLimit="1000000"
 				invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
 				invalidFileMessage="Só é permitido o formato .pdf"
-				allowTypes="/(\.|\/)(pdf)$/" fileLimit="1" />
+				allowTypes="/(\.|\/)(pdf)$/" fileLimit="1"
+				update="newSubmissionForm openPositionsForm messages" />
+		</h:form>
+
+		<br />
+
+		<h:form style="width:100%">
+			<p:commandButton value="Concluir" icon="ui-icon-check"
+				rendered="#{adminNewUserCDI.hasCandidate()}" style="width: 100%"
+				action="#{adminNewUserCDI.cleanPandC()}" ajax="false" />
 		</h:form>
 
 	</ui:define>
