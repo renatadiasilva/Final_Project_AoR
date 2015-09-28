@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -38,9 +37,6 @@ public class QuestionEntity implements Serializable{
 
 	@ManyToMany(mappedBy = "questions")
 	private List<ScriptEntity> scripts;
-
-	@OneToMany(mappedBy = "question")
-	private List<AnswerEntity> answers;
 
 	public QuestionEntity() {
 	}
@@ -89,14 +85,6 @@ public class QuestionEntity implements Serializable{
 		this.scripts = scripts;
 	}
 
-	public List<AnswerEntity> getAnswers() {
-		return answers;
-	}
-
-	public void setAnswers(List<AnswerEntity> answers) {
-		this.answers = answers;
-	}
-	
 	@Override 
 	public String toString() {
 		return this.question;

@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pt.uc.dei.aor.pf.entities.AnswerEntity;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.QuestionEntity;
@@ -148,16 +147,5 @@ public class EntityFieldLengthsImp implements EntityFieldLengthsInterface {
 	}
 	
 	
-	
-	//AnswerEntity
-	@Override
-	public int answerAnswer() {
-		return this.getLength(AnswerEntity.class, "answer", "answerAnswer");
-	}
-	
-	@Override
-	public int answerComments() {
-		return this.getLength(AnswerEntity.class, "comments", "answerComments");
-	}
 	
 }

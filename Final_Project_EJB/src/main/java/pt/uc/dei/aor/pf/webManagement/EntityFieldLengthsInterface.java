@@ -46,9 +46,4 @@ public interface EntityFieldLengthsInterface {
 	//QuestionEntity
 	public abstract int questionQuestion();
 
-	//AnswerEntity
-	public abstract int answerAnswer();
-
-	public abstract int answerComments();
-
 }

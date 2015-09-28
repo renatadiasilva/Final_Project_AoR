@@ -17,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -113,8 +112,9 @@ public class InterviewEntity implements Serializable {
 	@JoinColumn(name = "script")
 	private ScriptEntity script;
 
-	@OneToMany(mappedBy = "interview")
-	private List<AnswerEntity> answers;
+	// has answers
+	@Column(name = "answers", length = 100)
+	private boolean answers;
 
 	@Column(name = "feedback", length = 100)
 	private String feedback;
@@ -185,11 +185,11 @@ public class InterviewEntity implements Serializable {
 		this.script = script;
 	}
 
-	public List<AnswerEntity> getAnswers() {
+	public boolean getAnswers() {
 		return answers;
 	}
 
-	public void setAnswers(List<AnswerEntity> answers) {
+	public void setAnswers(boolean answers) {
 		this.answers = answers;
 	}
 
