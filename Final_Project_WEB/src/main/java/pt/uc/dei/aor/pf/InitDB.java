@@ -3,6 +3,7 @@ package pt.uc.dei.aor.pf;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -96,7 +97,7 @@ public class InitDB {
 		};
 		
 		UserInfoEntity [] uilist = {
-			new UserInfoEntity(ftDate.parse("1960-10-06"), 
+			new UserInfoEntity(new Date(), 
 					"Avenida da Liberdade",
 					"Lisboa", null, "969 362 531", "Portugal",
 					"Engenharia Informática","Universidade do Porto, Portugal",

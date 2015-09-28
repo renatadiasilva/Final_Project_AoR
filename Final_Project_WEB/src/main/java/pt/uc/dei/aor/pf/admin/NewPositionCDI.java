@@ -17,6 +17,7 @@ import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 import java.util.ArrayList;
@@ -30,13 +31,13 @@ import java.io.Serializable;
 @SessionScoped
 public class NewPositionCDI implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5067846817471456766L;
 
 	@Inject
 	private UserSessionManagement userManagement;
+
+	@EJB
+	private SecureMailManagementImp mail;
 
 	@EJB
 	private UserEJBInterface userEJB;
@@ -87,7 +88,7 @@ public class NewPositionCDI implements Serializable {
 
 	private boolean editPosition;
 
-	private List<PositionEntity>openPositions;
+	private List<PositionEntity>positions;
 
 	private PositionEntity position;
 
@@ -132,8 +133,8 @@ public class NewPositionCDI implements Serializable {
 			// Se é para um manager editar, só vai buscar as dele (open)
 			if(this.managedPositions){
 				this.manager=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
-				this.openPositions=this.positionEJB.findOpenPositionsManagedByUser(this.manager);				
-			}else this.openPositions=this.positionEJB.findAllOrderByCode();
+				this.positions=this.positionEJB.findPositionsManagedByUser(this.manager);				
+			}else this.positions=this.positionEJB.findAllOrderByCode();
 		}
 
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -278,6 +279,8 @@ public class NewPositionCDI implements Serializable {
 						company, technicalArea, description, advertisingChannels, script);
 
 				this.positionEJB.save(newPositionEntity);
+				
+				this.mail.newPositionWarning(newPositionEntity);
 
 				this.cleanBean();
 
@@ -576,12 +579,12 @@ public class NewPositionCDI implements Serializable {
 		this.editPosition = editPosition;
 	}
 
-	public List<PositionEntity> getOpenPositions() {
-		return openPositions;
+	public List<PositionEntity> getPositions() {
+		return positions;
 	}
 
-	public void setOpenPositions(List<PositionEntity> openPositions) {
-		this.openPositions = openPositions;
+	public void setPositions(List<PositionEntity> positions) {
+		this.positions = positions;
 	}
 
 	public PositionEntity getPosition() {
