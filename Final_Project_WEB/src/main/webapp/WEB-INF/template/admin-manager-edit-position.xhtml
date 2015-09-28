@@ -113,19 +113,17 @@
 			<h:panelGrid columns="2"
 				rendered="#{newPositionCDI.loadedPositionAdmin()}">
 
-				<p:outputLabel value="Título: " for="new-position-title" />
+				<p:outputLabel value="Título: *" for="new-position-title" />
 				<p:inputText id="new-position-title" value="#{newPositionCDI.title}"
-					size="70" required="true" requiredMessage="Insira um título."
-					maxlength="#{max.length.positionTitle()}">
+					size="70" maxlength="#{max.length.positionTitle()}">
 					<p:ajax update="editPositionPart1" />
 				</p:inputText>
 
-				<p:outputLabel value="Descrição" for="new-position-description" />
+				<p:outputLabel value="Descrição: *" for="new-position-description" />
 				<h:panelGroup>
 					<p:inputTextarea id="new-position-description"
-						value="#{newPositionCDI.description}" cols="70" required="true"
+						value="#{newPositionCDI.description}" cols="70"
 						counterTemplate=" - {0}" rows="15"
-						requiredMessage="Insira a descrição da Posição."
 						maxlength="#{max.length.positionDescription()}"
 						counter="maxDescription">
 						<p:ajax update="editPositionPart1" />
@@ -138,7 +136,7 @@
 			<br />
 
 			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<h2>Localização:</h2>
+				<h2>Localização: *</h2>
 			</h:panelGroup>
 
 			<!-- Locations -->
@@ -175,7 +173,7 @@
 			<br />
 
 			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<h2>Canais de Publicidade:</h2>
+				<h2>Canais de Publicidade: *</h2>
 			</h:panelGroup>
 
 			<!-- Advertisement Channels -->
@@ -247,7 +245,7 @@
 
 			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<br />
-				<h2>Gestor Responsável:</h2>
+				<h2>Gestor Responsável: *</h2>
 				<p:dataTable id="managersTable"
 					emptyMessage="Não foram encontrados utilizadores." var="manager"
 					value="#{newPositionCDI.managers}"
@@ -282,7 +280,7 @@
 
 			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
 				<br />
-				<h2>Guião Padrão:</h2>
+				<h2>Guião Padrão: *</h2>
 				<p:dataTable id="scriptsTable"
 					emptyMessage="Não foram encontrados guiões." var="script"
 					value="#{newPositionCDI.scripts}"
@@ -321,7 +319,7 @@
 		<h:form id="editExistingPosition" rendered="#{!newPositionCDI.managedPositions}">
 			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
 				<p:messages />
-				<p:commandButton value="Limpar campos" style="width:100%"
+				<p:commandButton value="Cancelar" style="width:100%"
 					action="#{newPositionCDI.unloadPosition()}" icon="ui-icon-cancel"
 					update="editPosition messages editPositionPart1 editPositionPart2
 					editPositionPart2b editPositionPart2c editPositionPart3

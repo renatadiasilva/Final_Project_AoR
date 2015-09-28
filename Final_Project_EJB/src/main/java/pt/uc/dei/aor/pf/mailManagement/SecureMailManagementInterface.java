@@ -21,4 +21,6 @@ public interface SecureMailManagementInterface {
 
 	public abstract void slaWarning(PositionEntity position);
 
+	public abstract void newPositionWarning(PositionEntity position);
+
 }

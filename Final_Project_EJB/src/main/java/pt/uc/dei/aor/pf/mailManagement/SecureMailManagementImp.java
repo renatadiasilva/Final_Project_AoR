@@ -116,7 +116,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","
-				+"\n\nBem vindo à plataforma "+companyName+". Para terminar o "
+				+"\n\nBem vindo(a) à plataforma "+companyName+". Para terminar o "
 				+ "seu registo, por favor siga o link: "+link
 				+"\n\nCumprimentos,\nA equipa "
 				+companyName;
@@ -143,7 +143,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		// Send email to a new user with temporary password
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 		String text="Olá "+newUser.getFirstName()+" "+newUser.getLastName()+","
-				+"\n\nBem vindo à plataforma "+companyName+"."
+				+"\n\nBem vindo(a) à plataforma "+companyName+"."
 				+"\n\nA sua password (temporária) para aceder à plataforma "
 				+companyName+" é "
 				+temporaryPassword+"\n\nCumprimentos,\nA equipa "+companyName;
@@ -188,7 +188,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String positionMail=position.getPositionCode()
 				+", \'"+position.getTitle()+"\' - "+position.getCompany();
 
-		String text="Caro administrador,"
+		String text="Caro(a) administrador(a),"
 				+"\n\nEstá a aproximar-se ou já foi ultrapassada"
 				+" a data de fecho ("
 				+position.getSlaDate()+") da posição com o"
@@ -199,6 +199,27 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		this.sendEmail(null, bcc, position.getPositionCode()
 				+": data de fecho a "+Constants.DAYS_TO_SLA+" dias ou menos", text);
 
+	}
+
+	@Override
+	public void newPositionWarning(PositionEntity position) {
+		// Sent an email to the manager of a new position
+
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+
+		String positionMail=position.getPositionCode()
+				+", \'"+position.getTitle()+"\' - "+position.getCompany();
+
+		String text="Olá "+position.getPositionManager().getFirstName()
+				+" "+position.getPositionManager().getLastName()+","
+				+"\n\nFoi escolhido(a) como gestor(a) da nova posição "
+				+positionMail+"."
+				+"\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(position.getPositionManager().getEmail(), null,
+				"Gestor(a) da nova posição "+position.getPositionCode(), text);
+		
 	}
 
 }

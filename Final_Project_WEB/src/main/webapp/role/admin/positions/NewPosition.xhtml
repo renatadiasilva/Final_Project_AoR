@@ -19,28 +19,25 @@
 		<h:form id="newPositionPart1">
 
 			<h:panelGrid columns="2">
-				<p:outputLabel value="Título: " for="new-position-title" />
+				<p:outputLabel value="Título: *" for="new-position-title" />
 				<p:inputText id="new-position-title" value="#{newPositionCDI.title}"
-					size="70" required="true" requiredMessage="Insira um título."
-					maxlength="#{max.length.positionTitle()}">
+					size="70" maxlength="#{max.length.positionTitle()}">
 					<p:ajax update="newPositionPart1" />
 				</p:inputText>
 
-				<p:outputLabel value="Empresa: " for="new-position-company" />
+				<p:outputLabel value="Empresa: *" for="new-position-company" />
 				<p:inputText id="new-position-company"
-					value="#{newPositionCDI.company}" size="70" required="true"
-					requiredMessage="Insira o nome da Empresa."
+					value="#{newPositionCDI.company}" size="70"
 					maxlength="#{max.length.positionCompany()}">
 					<p:ajax update="newPositionPart1" />
 				</p:inputText>
 
-				<p:outputLabel value="Descrição" for="new-position-description" />
+				<p:outputLabel value="Descrição: *" for="new-position-description" />
 
 				<h:panelGroup>
 					<p:inputTextarea id="new-position-description"
-						value="#{newPositionCDI.description}" cols="70" required="true"
+						value="#{newPositionCDI.description}" cols="70"
 						counterTemplate=" - {0}" rows="15"
-						requiredMessage="Insira a descrição da Posição."
 						maxlength="#{max.length.positionDescription()}"
 						counter="maxDescription">
 						<p:ajax update="newPositionPart1" />
@@ -51,7 +48,7 @@
 			</h:panelGrid>
 
 			<br />
-			<h2>Localização:</h2>
+			<h2>Localização: *</h2>
 			<!-- Locations -->
 			<h:panelGrid columns="8">
 
@@ -82,7 +79,7 @@
 		<h:form id="newPositionPart2">
 
 			<br />
-			<h2>Canais de Publicidade:</h2>
+			<h2>Canais de Publicidade: *</h2>
 			<!-- Advertisement Channels -->
 			<h:panelGrid id="newPositionAd" columns="4">
 
@@ -142,7 +139,7 @@
 		<h:form id="newPositionPart3">
 
 			<br />
-			<h2>Área Técnica:</h2>
+			<h2>Área Técnica: *</h2>
 			<!-- Technical Area -->
 			<h:panelGrid id="newPositionTech" columns="12">
 
@@ -203,7 +200,7 @@
 
 			<h:panelGroup rendered="#{userSessionManagement.admin}">
 				<br />
-				<h2>Gestor Responsável:</h2>
+				<h2>Gestor Responsável: *</h2>
 				<p:dataTable id="managersTable"
 					emptyMessage="Não foram encontrados utilizadores." var="manager"
 					value="#{newPositionCDI.managers}"
@@ -237,7 +234,7 @@
 		<h:form id="newPositionPart5">
 
 			<br />
-			<h2>Guião Padrão:</h2>
+			<h2>Guião Padrão: *</h2>
 			<p:dataTable id="scriptsTable"
 				emptyMessage="Não foram encontrados guiões." var="script"
 				value="#{newPositionCDI.scripts}"

@@ -16,6 +16,7 @@ import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class NewPositionCDI implements Serializable {
 
 	@Inject
 	private UserSessionManagement userManagement;
+	
+	@EJB
+	private SecureMailManagementImp mail;
 
 	@EJB
 	private UserEJBInterface userEJB;
@@ -278,6 +282,8 @@ public class NewPositionCDI implements Serializable {
 
 				this.positionEJB.save(newPositionEntity);
 
+				this.mail.newPositionWarning(newPositionEntity);
+				
 				this.cleanBean();
 
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova posição criada."));
