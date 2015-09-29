@@ -248,4 +248,29 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		
 	}
 
+	@Override
+	public void newCandidateWarning(SubmissionEntity submission) {
+		// Sent an email notifiyng position manager about a new submission
+
+		UserEntity candidate = submission.getCandidate();
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+
+		String positionMail=submission.getPosition().getPositionCode()
+				+", \'"+submission.getPosition()+"\' - "
+				+submission.getPosition().getCompany();
+
+		String text="Olá "+candidate.getFirstName()
+				+" "+candidate.getLastName()+","
+				+"\n\nFoi submetida uma candidatura sua à posição "
+				+positionMail+". Faça login para visualizar o "
+				+ "estado das suas candidaturas."
+				+"\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(candidate.getEmail(), null, "Nova candidatura à "
+				+ "posição "+submission.getPosition().getPositionCode(), text);
+		
+		
+	}
+
 }

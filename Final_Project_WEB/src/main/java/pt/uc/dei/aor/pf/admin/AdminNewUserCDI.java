@@ -22,6 +22,7 @@ import pt.uc.dei.aor.pf.emailpattern.EmailPattern;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 import pt.uc.dei.aor.pf.upload.UploadFile;
 
@@ -36,6 +37,9 @@ public class AdminNewUserCDI implements Serializable {
 
 	@Inject
 	private UserSessionManagement userSessionManagement;
+	
+	@EJB
+	private SecureMailManagementImp mail;
 
 	@EJB
 	private UserEJBInterface userEJB;	
@@ -49,6 +53,23 @@ public class AdminNewUserCDI implements Serializable {
 	private Date birthday;
 
 	private boolean admin, manager, interviewer, candidate;
+	private boolean submissionDone;
+	
+	@Inject
+	private UserSessionManagement userManagement;
+
+	@Inject
+	private UploadFile uploadFile;
+
+	@EJB
+	private SubmissionEJBInterface submissionEJB;
+
+	@EJB
+	private PositionEJBInterface positionEJB;
+
+	private UserEntity newCandidate;
+
+	private PositionEntity position;
 
 	public AdminNewUserCDI() {
 	}
@@ -243,22 +264,6 @@ public class AdminNewUserCDI implements Serializable {
 
 	// Associar novo user a posições
 	
-	@Inject
-	private UserSessionManagement userManagement;
-
-	@Inject
-	private UploadFile uploadFile;
-
-	@EJB
-	private SubmissionEJBInterface submissionEJB;
-
-	@EJB
-	private PositionEJBInterface positionEJB;
-
-	private UserEntity newCandidate;
-
-	private PositionEntity position;
-
 	public void uploadCV(FileUploadEvent event){
 		UploadedFile file=event.getFile();
 
@@ -284,6 +289,11 @@ public class AdminNewUserCDI implements Serializable {
 
 		this.position=null;
 
+		// notification to manager of position
+		this.mail.newSubmissionWarning(submission);
+		
+		this.submissionDone = true;
+
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Candidatura Submetida"));
 	}
 
@@ -305,9 +315,18 @@ public class AdminNewUserCDI implements Serializable {
 	}
 
 	public void cleanPandC(){
-		System.out.println("Clean P and C");
-		this.position=null;
-		this.newCandidate=null;
+//		this.position=null;
+//		this.newCandidate=null;
+		if (this.submissionDone)
+			FacesContext.getCurrentInstance().addMessage(
+				null, new FacesMessage("Concluído com sucesso o processo de"
+						+ " registo do candidato "
+						+ newCandidate.getEmail()
+						+" e submissão manual das suas candidaturas"));
+		else
+			FacesContext.getCurrentInstance().addMessage(
+				null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Tem de associar o candidato a uma posição",""));
 	}
 
 	public void dissociatePosition(){
@@ -320,7 +339,16 @@ public class AdminNewUserCDI implements Serializable {
 
 	public boolean checkPosition(PositionEntity position){
 		if(this.position==null) return false;
-		return this.position.getPositionCode().equals(position.getPositionCode());
+		if(this.position.getId()==position.getId())return true;
+		return false;
+	}
+
+	public boolean checkPositionNull(){
+		return this.position==null;
+	}
+
+	public void unloadPosition(){
+		this.position=null;
 	}
 
 	public boolean hasPosition(){
@@ -346,7 +374,15 @@ public class AdminNewUserCDI implements Serializable {
 		return this.position.getTitle();
 	}
 	
+	public String positionCode() {
+		if(this.position==null)return"";
+		return this.position.getPositionCode();
+	}
 	
+	public String positionCompany() {
+		if(this.position==null)return"";
+		return this.position.getCompany();
+	}
 	
 	private boolean forbidden, currentCandidate;
 
@@ -370,7 +406,17 @@ public class AdminNewUserCDI implements Serializable {
 	}
 
 	// 3ª Verificação
-	public boolean submitable(){
-		return !this.forbidden&&!this.currentCandidate;
+	public boolean submitable(PositionEntity position){
+		return !this.forbidden&&!this.currentCandidate
+				&&!checkPosition(position);
 	}
+
+	public boolean isSubmissionDone() {
+		return submissionDone;
+	}
+
+	public void setSubmissionDone(boolean submissionDone) {
+		this.submissionDone = submissionDone;
+	}
+
 }

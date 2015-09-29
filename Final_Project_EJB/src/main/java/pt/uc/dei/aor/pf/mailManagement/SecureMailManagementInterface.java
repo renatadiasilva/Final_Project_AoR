@@ -26,4 +26,6 @@ public interface SecureMailManagementInterface {
 
 	public abstract void newSubmissionWarning(SubmissionEntity submission);
 
+	public abstract void newCandidateWarning(SubmissionEntity submission);
+
 }
