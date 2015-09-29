@@ -124,16 +124,23 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	}
 
 	@Override
+	public List<SubmissionEntity> findAllSubmissionsOfCandidate(
+			UserEntity candidate) {
+		log.info("Finding all submissions of a candidate");
+		return submissionDAO.findAllSubmissionsOfCandidate(candidate);
+	}
+
+	@Override
 	public List<SubmissionEntity> findSubmissionsOfCandidate(
 			UserEntity candidate) {
-		log.info("Finding submissions of a candidate");
+		log.info("Finding submissions of position for a given candidate");
 		return submissionDAO.findSubmissionsOfCandidate(candidate);
 	}
 	
 	@Override
 	public List<SubmissionEntity> findSpontaneousSubmissionsOfCandidate(
 			UserEntity candidate) {
-		log.info("Finding submissions of a candidate");
+		log.info("Finding spontaneous submissions of a candidate");
 		return submissionDAO.findSpontaneousSubmissionsOfCandidate(candidate);
 	}
 	

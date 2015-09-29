@@ -209,9 +209,8 @@ public class DangerZoneCDI implements Serializable {
 			}
 
 			// check if there are submissions of user
-			// find all also spontaneous!!
 			List<SubmissionEntity> slist = 
-					submissionEJB.findSubmissionsOfCandidate(userToRemove);
+					submissionEJB.findAllSubmissionsOfCandidate(userToRemove);
 			if (slist != null && !slist.isEmpty()) {
 				errorMessage("Não é possível apagar os dados do"
 						+ " utilizador.");
@@ -221,7 +220,11 @@ public class DangerZoneCDI implements Serializable {
 						+userToRemoveEmail;
 				showInfo = true;
 				for (SubmissionEntity s : slist)
-					info.add("Candidatura à posição \'"
+					if (s.isSpontaneous())
+						info.add("Candidatura espontânea ("
+								+"data: "+ftDate.format(s.getDate())+")");
+					else
+						info.add("Candidatura à posição \'"
 							+s.getPosition().getPositionCode()
 							+"\' (estado: "+s.getStatus()+")");
 				log.info("Failure in removing user");

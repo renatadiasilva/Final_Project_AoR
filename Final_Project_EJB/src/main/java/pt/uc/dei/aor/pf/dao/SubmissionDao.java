@@ -90,6 +90,14 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 				"Submission.findSubmissionsOfPositionByDate", parameters);	
 	}
 	
+	public List<SubmissionEntity> findAllSubmissionsOfCandidate(
+			UserEntity candidate) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("user", candidate);
+		return super.findSomeResults("Submission.findAllSubmissionsOfCandidate",
+				parameters);	
+	}
+	
 	public List<SubmissionEntity> findSubmissionsOfCandidate(
 			UserEntity candidate) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -105,7 +113,7 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 		return super.findSomeResults("Submission.findSpontaneousSubmissionsOfCandidate",
 				parameters);	
 	}
-
+	
 	public Long countTotalSubmissionsPos(Date date1, Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("date1", date1);

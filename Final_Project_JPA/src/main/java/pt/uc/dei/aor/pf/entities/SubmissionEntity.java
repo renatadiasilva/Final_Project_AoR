@@ -53,6 +53,9 @@ import javax.validation.constraints.NotNull;
 	@NamedQuery(name = "Submission.findSubmissionsOfPosition",
 			query = "SELECT s FROM SubmissionEntity s "
 					+ "WHERE s.position = :position ORDER BY s.date"),
+	@NamedQuery(name = "Submission.findAllSubmissionsOfCandidate",
+			query = "SELECT s FROM SubmissionEntity s"
+					+ " WHERE s.candidate = :user ORDER BY s.date DESC"),
 	@NamedQuery(name = "Submission.findSubmissionsOfCandidate",
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE s.candidate = :user"
