@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,31 +21,37 @@ public class UserDao extends GenericDao<UserEntity> {
 
 	@Override
 	public void save (UserEntity user){
-		user.setRoles(this.verifyRoles(user.getRoles()));
+		List<String>verifyRoles=user.getRoles();
+		user.setRoles(this.verifyRoles(verifyRoles));
 		super.save(user);
 	}
 	
 	@Override
 	public UserEntity update (UserEntity user){
-		user.setRoles(this.verifyRoles(user.getRoles()));
+		List<String>verifyRoles=user.getRoles();
+		user.setRoles(this.verifyRoles(verifyRoles));
 		return super.update(user);
 	}
 	
 	private List<String> verifyRoles(List<String>roles){
 		// Se é ADMIN ou MANAGER tem de ser também INTERVIEWER
 		
-		if(roles.contains(Constants.ROLE_INTERVIEWER))
-			return roles;
+		List<String>verifyRoles=new ArrayList<>();
 		
-		if(roles.contains(Constants.ROLE_ADMIN)){
-			roles.add(Constants.ROLE_INTERVIEWER);
-			return roles;
+		verifyRoles.addAll(roles);
+		
+		if(verifyRoles.contains(Constants.ROLE_INTERVIEWER))
+			return verifyRoles;
+		
+		if(verifyRoles.contains(Constants.ROLE_ADMIN)){
+			verifyRoles.add(Constants.ROLE_INTERVIEWER);
+			return verifyRoles;
 		}
 		
-		if(roles.contains(Constants.ROLE_MANAGER))
-			roles.add(Constants.ROLE_INTERVIEWER);
+		if(verifyRoles.contains(Constants.ROLE_MANAGER))
+			verifyRoles.add(Constants.ROLE_INTERVIEWER);
 		
-		return roles;
+		return verifyRoles;
 	}
 	
 	public List<UserEntity> findAllNotRemoved() {
