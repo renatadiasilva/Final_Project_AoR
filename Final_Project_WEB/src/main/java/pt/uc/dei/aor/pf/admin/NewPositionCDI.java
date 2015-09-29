@@ -642,20 +642,25 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	public void updateStatus(){
-		// Se o status actual é CLOSED desmarca a closingDate
-		if(this.position.getStatus().equals(Constants.STATUS_CLOSED))
+		// Se o status actual é CLOSED e o novo não, desmarca a closingDate
+		if(this.position.getStatus().equals(Constants.STATUS_CLOSED)
+		 &&!this.status.equals(Constants.STATUS_CLOSED)) {
 			this.position.setClosingDate(null);
-
-		// Se o novo status é CLOSED, a closingDate é agora
-		if(this.status.equals(Constants.STATUS_CLOSED)){
-			this.position.setStatus(Constants.STATUS_CLOSED);
-			this.position.setClosingDate(new Date());
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Atenção que abriu/pôr em hold"
+						+ "uma posição fechada."));
 		}
 
+		// Se o novo status é CLOSED e o actual não, a closingDate é agora
+		if(this.status.equals(Constants.STATUS_CLOSED)
+		 &&!this.position.getStatus().equals(Constants.STATUS_CLOSED)){
+			this.position.setStatus(status);
+			this.position.setClosingDate(new Date());
+		}
 		else if(this.status.equals(Constants.STATUS_OPEN))
-			this.position.setStatus(Constants.STATUS_OPEN);
+			this.position.setStatus(status);
 		else if(this.status.equals(Constants.STATUS_ONHOLD))
-			this.position.setStatus(Constants.STATUS_ONHOLD);
+			this.position.setStatus(status);
 
 		this.positionEJB.update(this.position);
 

@@ -277,4 +277,59 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		
 	}
 
+	@Override
+	public void notifyHired(SubmissionEntity submission) {
+		// Sent an email notifiyng candidate that was hired
+
+		UserEntity candidate = submission.getCandidate();
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+
+		String positionMail=submission.getPosition().getPositionCode()
+				+", \'"+submission.getPosition().getTitle()+"\' - "
+				+submission.getPosition().getCompany();
+
+		String text="Olá "+candidate.getFirstName()
+				+" "+candidate.getLastName()+","
+				+"\n\nTemos o prazer de o informar que foi contratado(a)"
+				+ " para a posição "
+				+positionMail+". Em breve será contactado(a) pela empresa "
+				+ submission.getPosition().getCompany()+" de modo a regularizar"
+				+ " o seu processo.\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(candidate.getEmail(), null, "Contratação referente à "
+				+ "posição "+submission.getPosition().getPositionCode(), text);
+		
+		
+	}
+
+	@Override
+	public void notifyRejected(SubmissionEntity submission) {
+		// Sent an email notifiyng candidate that was rejected
+
+		UserEntity candidate = submission.getCandidate();
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+
+		String positionMail=submission.getPosition().getPositionCode()
+				+", \'"+submission.getPosition().getTitle()+"\' - "
+				+submission.getPosition().getCompany();
+
+		String text="Olá "+candidate.getFirstName()
+				+" "+candidate.getLastName()+","
+				+"\n\nLamentamos informar que a sua candidatura à"
+				+ " posição "
+				+positionMail+" foi rejeitada"
+//				+ " (motivo: "+submission.getRejectReason()+")"
+				+ ". Desejamos-lhe a melhor"
+				+ " sorte na continuação da procura de emprego."
+				+ "\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(candidate.getEmail(), null, "Candidatura à"
+				+ "posição "+submission.getPosition().getPositionCode()
+				+ "rejeitada", text);
+		
+		
+	}
+
 }

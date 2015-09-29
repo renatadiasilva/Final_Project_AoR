@@ -28,4 +28,8 @@ public interface SecureMailManagementInterface {
 
 	public abstract void newCandidateWarning(SubmissionEntity submission);
 
+	public abstract void notifyHired(SubmissionEntity submission);
+
+	public abstract void notifyRejected(SubmissionEntity submission);
+
 }

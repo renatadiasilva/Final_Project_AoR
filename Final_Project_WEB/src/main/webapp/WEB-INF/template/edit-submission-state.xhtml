@@ -9,70 +9,78 @@
 
 	<ui:composition>
 
-		<h1>Editar Posição</h1>
+		<h1>Editar estado da Candidatura</h1>
 
 		<h:form id="editSubmission">
-			<h:panelGroup>
-				<p:dataTable emptyMessage="#{newPositionCDI.emptyTable}"
-					var="position" value="#{newPositionCDI.positions}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-					paginator="true" rows="10">
-					<f:facet name="header">Posições</f:facet>
-					<p:column headerText="Código">
-						<h:outputText value="#{position.positionCode}" />
-					</p:column>
-					<p:column headerText="Título">
-						<h:outputText value="#{position.title}" />
-					</p:column>
-					<p:column headerText="Empresa">
-						<h:outputText value="#{position.company}" />
-					</p:column>
-					<p:column headerText="Seleccionar">
-						<p:commandButton value="Seleccionar" style="width:100%"
-							rendered="#{!newPositionCDI.checkPosition(position)}"
-							actionListener="#{newPositionCDI.setPosition(position)}"
-							icon="ui-icon-suitcase"
-							update="@form messages editPositionPart1 editPositionPart2
-							editPositionPart2b editPositionPart2c editPositionPart3 
-							editPositionPart4 editPositionPart5 editExistingPosition
-							editPositionStatus" />
-						<p:commandButton
-							rendered="#{newPositionCDI.checkPosition(position)}"
-							style="width:100%" value="Cancelar"
-							actionListener="#{newPositionCDI.unloadPosition()}"
-							icon="ui-icon-cancel"
-							update="@form messages editPositionPart1 editPositionPart2
-							editPositionPart2b editPositionPart2c editPositionPart3 
-							editPositionPart4 editPositionPart5 editExistingPosition
-							editPositionStatus" />
-					</p:column>
-				</p:dataTable>
-			</h:panelGroup>
+
+			<p:dataTable emptyMessage="Não há candidaturas." var="s"
+				value="#{submissionSearchCDI.submissions}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Candidaturas</f:facet>
+				<p:column headerText="id">
+					<h:outputText
+						value="#{s.id}" />
+				</p:column>
+				<p:column headerText="Data">
+					<h:outputText
+						value="#{submissionSearchCDI.getDateWithoutTime(s.date)}" />
+				</p:column>
+				<p:column headerText="Posição">
+					<h:outputText value="#{s.position.positionCode}" />
+				</p:column>
+				<p:column headerText="Estado">
+					<h:outputText value="#{s.status}" />
+				</p:column>
+				<p:column headerText="Carta de Motivação">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getMotivatioLetterPath(s)}"
+							target="_blank">Consultar a Carta de Motivação</a>
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="CV">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getCvPath(s)}" target="_blank">
+							Consultar CV</a>
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="Seleccionar">
+					<p:commandButton value="Seleccionar" style="width:100%"
+						rendered="#{!submissionSearchCDI.checkSubmission(s)}"
+						actionListener="#{submissionSearchCDI.setSubmission(s)}"
+						icon="ui-icon-person" update="@form messages editSubmissionStatus" />
+					<p:commandButton
+						rendered="#{submissionSearchCDI.checkSubmission(s)}"
+						style="width:100%" value="Cancelar"
+						actionListener="#{submissionSearchCDI.unloadSubmission()}"
+						icon="ui-icon-cancel" update="@form messages editSubmissionStatus" />
+				</p:column>
+			</p:dataTable>
 			<br />
 		</h:form>
 
 		<!-- Status -->
-		<h:form id="editPositionStatus">
+		<h:form id="editSubmissionStatus">
 			<h:panelGrid columns="3" style="width:1000px"
-				rendered="#{newPositionCDI.loadedPosition()}">
+				rendered="#{submissionSearchCDI.loadedSubmission()}">
 
-				<p:outputLabel for="edit-position-status" value="Estado: " />
+				<p:outputLabel for="edit-submission-status" value="Estado: " />
 
 				<h:panelGroup>
 					<h:panelGrid columns="4" style="width:100%">
-						<p:selectOneMenu id="edit-position-status" style="width:100%"
-							value="#{newPositionCDI.status}">
-							<f:selectItems value="#{newPositionCDI.availableStatus}" />
+						<p:selectOneMenu id="edit-submission-status" style="width:100%"
+							value="#{submissionSearchCDI.status}">
+							<f:selectItems value="#{submissionSearchCDI.availableStatus}" />
 							<f:ajax event="change" />
 						</p:selectOneMenu>
 						<p:commandButton value="Actualizar estado" style="width:100%"
-							action="#{newPositionCDI.updateStatus()}" icon="ui-icon-disk"
-							update="editPosition messages editPositionPart1 editPositionPart2
-							editPositionPart2b editPositionPart2c editPositionPart3
-							editPositionPart4 editPositionPart5 editExistingPosition
-							editPositionStatus">
+							action="#{submissionSearchCDI.updateStatus()}"
+							icon="ui-icon-disk"
+							update="editSubmission 
+								editSubmissionStatus editSubmissionReason messages">
 							<p:confirm header="Confirmação"
-								message="Tem a certeza que quer actualizar o estado da posição?"
+								message="Tem a certeza que quer actualizar o estado da candidatura?"
 								icon="ui-icon-alert" />
 						</p:commandButton>
 
@@ -87,280 +95,32 @@
 
 					</h:panelGrid>
 				</h:panelGroup>
-
-				<h:panelGroup rendered="#{!newPositionCDI.managedPositions}" >
-
-					<!-- Vagas, título, descrição -->
-					<p:outputLabel value="Número de vagas: "
-						for="new-position-openings" />
-					<p:spinner id="new-position-openings" size="35"
-						value="#{newPositionCDI.openings}" required="true"
-						requiredMessage="Defina o número de vagas." max="100" min="1">
-						<p:ajax update="@this" />
-					</p:spinner>
-
-				</h:panelGroup>
-
 			</h:panelGrid>
 
-			<br />
-			<br />
-
 		</h:form>
 
-		<h:form id="editPositionPart1">
-
-			<h:panelGrid columns="2"
-				rendered="#{newPositionCDI.loadedPositionAdmin()}">
-
-				<p:outputLabel value="Título: *" for="new-position-title" />
-				<p:inputText id="new-position-title" value="#{newPositionCDI.title}"
-					size="70" maxlength="#{max.length.positionTitle()}">
-					<p:ajax update="editPositionPart1" />
-				</p:inputText>
-
-				<p:outputLabel value="Descrição: *" for="new-position-description" />
-				<h:panelGroup>
-					<p:inputTextarea id="new-position-description"
-						value="#{newPositionCDI.description}" cols="70"
-						counterTemplate=" - {0}" rows="15"
-						maxlength="#{max.length.positionDescription()}"
-						counter="maxDescription">
-						<p:ajax update="editPositionPart1" />
-					</p:inputTextarea>
-					<h:outputText id="maxDescription" />
-				</h:panelGroup>
-
+		<h:form id="editSubmissionReason"
+			rendered="#{submissionSearchCDI.needsReason}">
+			<h:panelGrid>
+				<p:outputLabel value="Motivo de rejeição: "
+					for="edit-submission-reason" />
+				<p:inputTextarea value="#{submissionSearchCDI.reason}" rows="15"
+					cols="70" maxlength="100"
+					counter="maxDescriptionSub" required="true"
+					id="edit-submission-reason"
+					requiredMessage="Introduza o motivo de rejeição.">
+					<p:ajax update="editSubmissionReason messages" />
+				</p:inputTextarea>
+				<h:outputText id="maxDescriptionSub" />
 			</h:panelGrid>
 
-			<br />
+			<p:messages />
 
-			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<h2>Localização: *</h2>
-			</h:panelGroup>
-
-			<!-- Locations -->
-			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<h:panelGrid columns="8">
-
-					<p:outputLabel value="Lisboa: " />
-					<p:selectBooleanCheckbox value="#{newPositionCDI.lisboa}">
-						<p:ajax update="editPositionPart1" />
-					</p:selectBooleanCheckbox>
-
-					<p:outputLabel value="Porto: " />
-					<p:selectBooleanCheckbox value="#{newPositionCDI.porto}">
-						<p:ajax update="editPositionPart1" />
-					</p:selectBooleanCheckbox>
-
-					<p:outputLabel value="Coimbra: " />
-					<p:selectBooleanCheckbox value="#{newPositionCDI.coimbra}">
-						<p:ajax update="editPositionPart1" />
-					</p:selectBooleanCheckbox>
-
-					<p:outputLabel value="Outro: " />
-					<p:inputText value="#{newPositionCDI.extraLocation}" maxlength="40"
-						size="35">
-						<p:ajax update="editPositionPart1" />
-					</p:inputText>
-
-				</h:panelGrid>
-			</h:panelGroup>
-		</h:form>
-
-		<h:form id="editPositionPart2">
-
-			<br />
-
-			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<h2>Canais de Publicidade: *</h2>
-			</h:panelGroup>
-
-			<!-- Advertisement Channels -->
-			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<h:panelGrid id="newPositionAd" columns="4">
-
-					<p:outputLabel value="Critical Software site: " />
-					<p:selectBooleanCheckbox value="#{newPositionCDI.critical}">
-						<p:ajax update="@this" />
-					</p:selectBooleanCheckbox>
-
-					<p:outputLabel value="LinkedIn: " />
-					<p:selectBooleanCheckbox value="#{newPositionCDI.linkedin}">
-						<p:ajax update="@this" />
-					</p:selectBooleanCheckbox>
-
-					<p:outputLabel value="Glassdoor: " />
-					<p:selectBooleanCheckbox value="#{newPositionCDI.glassdoor}">
-						<p:ajax update="@this" />
-					</p:selectBooleanCheckbox>
-
-					<p:outputLabel value="Facebook: " />
-					<p:selectBooleanCheckbox value="#{newPositionCDI.facebook}">
-						<p:ajax update="@this" />
-					</p:selectBooleanCheckbox>
-					<p:outputLabel />
-					<p:outputLabel />
-				</h:panelGrid>
-			</h:panelGroup>
-
-		</h:form>
-
-		<h:form id="editPositionPart2b">
-			<p:dataTable id="altAdvertisementChannels" var="advertisingChannel"
-				value="#{newPositionCDI.altAdvertisingChannels}" style="width:300px"
-				emptyMessage="Sem canais de publicidade alternativos"
-				rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<p:column headerText="Outros canais">
-					<p:outputLabel value="#{advertisingChannel.ad}" />
-				</p:column>
-				<p:column headerText="Remover">
-					<p:commandButton
-						actionListener="#{newPositionCDI.deleteAltAdvertisingChannels(advertisingChannel)}"
-						icon="ui-icon-trash" update="altAdvertisementChannels" />
-				</p:column>
-			</p:dataTable>
-		</h:form>
-
-		<h:form id="editPositionPart2c">
-			<h:panelGrid columns="3" style="widht:300px"
-				rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<p:inputText id="new-position-extra-ad"
-					value="#{newPositionCDI.extraAdvertising}" />
-				<p:watermark for="new-position-extra-ad"
-					value="Insira mais canais de publicidade" />
-				<p:commandButton icon="ui-icon-plus"
-					update="editPositionPart2b editPositionPart2c"
-					actionListener="#{newPositionCDI.addAltAdvertisingChannels()}" />
-			</h:panelGrid>
-		</h:form>
-
-		<h:form id="editPositionPart3">
-			<!-- Technical Area -->
-			<!-- Vagas e prazos -->
-		</h:form>
-
-		<h:form id="editPositionPart4"
-			rendered="#{userSessionManagement.admin}">
-
-			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<br />
-				<h2>Gestor Responsável: *</h2>
-				<p:dataTable id="managersTable"
-					emptyMessage="Não foram encontrados utilizadores." var="manager"
-					value="#{newPositionCDI.managers}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-					paginator="true" rows="10">
-					<f:facet name="header">Gestores</f:facet>
-					<p:column headerText="Primeiro nome">
-						<h:outputText value="#{manager.firstName}" />
-					</p:column>
-					<p:column headerText="Sobrenome">
-						<h:outputText value="#{manager.lastName}" />
-					</p:column>
-					<p:column headerText="Email">
-						<h:outputText value="#{manager.email}" />
-					</p:column>
-					<p:column headerText="Seleccionar">
-						<p:commandButton value="Seleccionar" style="width:100%"
-							rendered="#{!newPositionCDI.checkManager(manager)}"
-							actionListener="#{newPositionCDI.setManager(manager)}"
-							icon="ui-icon-person" update="editPositionPart4" />
-						<p:commandButton
-							rendered="#{newPositionCDI.checkManager(manager)}"
-							style="width:100%" value="Manager Seleccionado"
-							icon="ui-icon-check" />
-					</p:column>
-				</p:dataTable>
-			</h:panelGroup>
-
-		</h:form>
-
-		<h:form id="editPositionPart5">
-
-			<h:panelGroup rendered="#{newPositionCDI.loadedPositionAdmin()}">
-				<br />
-				<h2>Guião Padrão: *</h2>
-				<p:dataTable id="scriptsTable"
-					emptyMessage="Não foram encontrados guiões." var="script"
-					value="#{newPositionCDI.scripts}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-					paginator="true" rows="10">
-					<f:facet name="header">Listagem guiões</f:facet>
-					<p:column headerText="Título">
-						<h:outputText value="#{script.title}" />
-					</p:column>
-					<p:column headerText="Criado em">
-						<h:outputText value="#{script.creationDate}" />
-					</p:column>
-					<p:column headerText="Consultar">
-						<p:commandButton value="Consultar" style="width:100%"
-							icon="ui-icon-zoomin"
-							actionListener="#{newPositionCDI.setCheckScript(script)}"
-							oncomplete="PF('checkScript').show();" update="checkScriptForm" />
-					</p:column>
-					<p:column headerText="Seleccionar">
-						<p:commandButton value="Seleccionar" style="width:100%"
-							rendered="#{!newPositionCDI.checkScript(script)}"
-							actionListener="#{newPositionCDI.setScript(script)}"
-							icon="ui-icon-script" update="scriptsTable" />
-						<p:commandButton value="Guião Seleccionado" style="width:100%"
-							rendered="#{newPositionCDI.checkScript(script)}"
-							icon="ui-icon-check" />
-					</p:column>
-				</p:dataTable>
-			</h:panelGroup>
-
-		</h:form>
-
-		<br />
-		<br />
-
-		<h:form id="editExistingPosition" rendered="#{!newPositionCDI.managedPositions}">
-			<h:panelGroup rendered="#{newPositionCDI.loadedPosition()}">
-				<p:messages />
-				<p:commandButton value="Cancelar" style="width:100%"
-					action="#{newPositionCDI.unloadPosition()}" icon="ui-icon-cancel"
-					update="editPosition messages editPositionPart1 editPositionPart2
-					editPositionPart2b editPositionPart2c editPositionPart3
-					editPositionPart4 editPositionPart5 editExistingPosition
-					editPositionStatus" />
-				<br />
-				<p:commandButton value="Guardar alterações (não actualiza o estado)"
-					style="width:100%" icon="ui-icon-disk"
-					action="#{newPositionCDI.createPosition()}"
-					update="editPosition messages editPositionPart1 editPositionPart2
-					editPositionPart2b editPositionPart2c editPositionPart3
-					editPositionPart4 editPositionPart5 editExistingPosition
-					editPositionStatus" />
-			</h:panelGroup>
-		</h:form>
-
-		<h:form id="checkScriptForm">
-			<p:dialog widgetVar="checkScript" draggable="false" resizable="false"
-				modal="true" style="max-width:300px" header="Guião">
-				<h:panelGrid>
-					<p:outputLabel value="Título: #{newPositionCDI.checkScript.title}" />
-					<br />
-					<p:outputLabel
-						value="Comentários: #{newPositionCDI.checkScript.comments}" />
-					<br />
-					<p:dataTable id="questionsTable" emptyMessage="Sem questões."
-						var="q" value="#{newPositionCDI.checkScript.questions}"
-						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-						paginator="true" rows="10">
-						<f:facet name="header">Questões</f:facet>
-						<p:column headerText="Título">
-							<h:outputText value="#{q.question}" />
-						</p:column>
-						<p:column headerText="Tipo">
-							<h:outputText value="#{newPositionCDI.getTypeTextOfQuestion(q)}" />
-						</p:column>
-					</p:dataTable>
-				</h:panelGrid>
-				<p:commandButton value="Fechar" onclick="PF('checkScript').hide();"
-					style="width:100%" icon="ui-icon-close" />
-			</p:dialog>
+			<p:commandButton icon="ui-icon-disk"
+				value="Gravar motivo de rejeição" style="width:100%"
+				action="#{submissionSearchCDI.saveRejectedReason()}"
+				update="editSubmissionReason editSubmissionStatus
+					messages" />
 		</h:form>
 
 	</ui:composition>

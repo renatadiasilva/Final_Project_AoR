@@ -5,121 +5,18 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
+	<f:metadata>
+		<f:viewAction
+			actionListener="#{submissionSearchCDI.clean()}" />
+	</f:metadata>
+
 	<ui:define name="titulo">
-	Admin - Pesquisas de Candidaturas
+	Admin - Mudança de estado de candidaturas
 	 - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>Pesquisas de Candidaturas</h1>
-
-		<h:form id="submissionSearch">
-
-			<h:panelGrid id="buttonsSubmissionSearch" columns="7">
-
-				<p:commandButton value="Todas candidaturas"
-					action="#{submissionSearchCDI.searchAll()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Candidaturas espontâneas"
-					action="#{submissionSearchCDI.searchAllSponteanous()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Candidaturas entre duas datas"
-					action="#{submissionSearchCDI.searchByDate()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Espontâneas entre duas datas"
-					action="#{submissionSearchCDI.searchSpontanouseByDate()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Rejeitadas entre duas datas"
-					action="#{submissionSearchCDI.searchRejectedByDate()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Propostas entre duas datas"
-					action="#{submissionSearchCDI.searchProposalByDate()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Candidaturas entre duas datas (fonte)"
-					action="#{submissionSearchCDI.searchBySourceAndDate()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Candidaturas (posição)"
-					action="#{submissionSearchCDI.
-						searchSubmissionsOfPosition()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-				<p:commandButton value="Candidaturas (candidato)"
-					action="#{submissionSearchCDI.searchSubmissionsOfCandidate()}" 
-					update="@form, messages"
-					icon="ui-icon-search" />
-
-			</h:panelGrid>
-
-			<h:panelGrid id="gridSubmissionSearch" columns="8">
-
-				<p:outputLabel value="Primeira Data: " for="search-date1s" />
-				<p:calendar id="search-date1s"
-					value="#{submissionSearchCDI.date1}" pattern="dd/MM/yyyy"
-					readonlyInput="true" navigator="true" 
-					yearRange="c-100:c+100"
-					locale="pt" size="35" />
-
-				<p:outputLabel value="Segunda Data: " for="search-date2s" />
-				<p:calendar id="search-date2s"
-					value="#{submissionSearchCDI.date2}" pattern="dd/MM/yyyy"
-					readonlyInput="true" navigator="true" 
-					yearRange="c-100:c+100"
-					locale="pt" size="35" />
-
-				<p:outputLabel value="Fonte: " for="search-source" />
-				<p:inputText id="search-source" 
-					value="#{submissionSearchCDI.source}"
-					size="35" />
-
-				<p:outputLabel value="Id: " for="search-ids" />
-				<p:inputText id="search-ids" value="#{submissionSearchCDI.id}"
-					size="35" />
-
-			</h:panelGrid>
-
-			<p:dataTable emptyMessage="Não foram encontradas candidaturas." 
-				var="s" value="#{submissionSearchCDI.slist}">
-				<f:facet name="header">Listagem candidaturas</f:facet>
-				<p:column headerText="Data">
-					<h:outputText value="#{s.date}" />
-				</p:column>
-				<p:column headerText="Candidato">
-					<h:outputText value="#{s.candidate.firstName}" />
-				</p:column>
-				<p:column headerText="Posição">
-					<h:outputText value="#{s.position.positionCode}" />
-				</p:column>
-				<p:column headerText="Espontânea?">
-					<h:outputText value="#{s.spontaneous}" />
-				</p:column>
-				<p:column headerText="Associada por">
-					<h:outputText value="#{s.associatedBy.firstName}" />
-				</p:column>
-				<p:column headerText="Estado">
-					<h:outputText value="#{s.status}" />
-				</p:column>
-				<p:column headerText="Motivo rejeição">
-					<h:outputText value="#{s.rejectReason}" />
-				</p:column>
-			</p:dataTable>
-
-		</h:form>
-
+		<ui:include src="../../../WEB-INF/template/edit-submission-state.xhtml" />
 	</ui:define>
 
 </ui:composition>

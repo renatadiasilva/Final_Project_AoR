@@ -72,7 +72,7 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 	@Override
 	public List<SubmissionEntity> findAll() {
 		log.info("Creating Query for all submissions");
-		return submissionDAO.findAll();
+		return submissionDAO.findAllOrderByDate();
 	}
 
 	@Override

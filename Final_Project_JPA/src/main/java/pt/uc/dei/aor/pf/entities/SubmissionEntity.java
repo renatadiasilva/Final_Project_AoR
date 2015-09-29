@@ -27,8 +27,9 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "submissions")
-//DATE_PART
 @NamedQueries({
+	@NamedQuery(name = "Submission.findAllOrderByDate",
+			query = "SELECT s FROM SubmissionEntity s ORDER BY s.date"),
 	@NamedQuery(name = "Submission.findSpontaneousSubmissions",
 			query = "SELECT s FROM SubmissionEntity s"
 					+ " WHERE s.spontaneous = TRUE ORDER BY s.date DESC"),

@@ -25,6 +25,11 @@ public class SubmissionDao extends GenericDao<SubmissionEntity> {
 				null);
 	}
 	
+	public List<SubmissionEntity> findAllOrderByDate() {
+		return super.findSomeResults("Submission.findAllOrderByDate",
+				null);
+	}
+
 	public List<SubmissionEntity> findSubmissionsByDate(Date date1,
 			Date date2) {
 		Map<String, Object> parameters = new HashMap<String, Object>();

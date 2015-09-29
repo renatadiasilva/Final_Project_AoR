@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -24,9 +26,11 @@ import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 import pt.uc.dei.aor.pf.upload.UploadFile;
 
@@ -44,9 +48,12 @@ public class SubmissionSearchCDI implements Serializable {
 
 	@Inject
 	private UploadFile uploadFile;
-	
+
 	@Inject
 	private UserSessionManagement userManagement;
+
+	@EJB
+	private SecureMailManagementImp mail;
 
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
@@ -64,14 +71,39 @@ public class SubmissionSearchCDI implements Serializable {
 	private Date date1, date2;
 	private String source;
 	private Long id;
+	private SubmissionEntity submission;
+	private String status, reason;
+	private boolean needsReason;
 
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
 
-	private List<SubmissionEntity> slist;
+	private List<SubmissionEntity> slist, submissions;
 
 	private SubmissionEntity submissionToEdit;
 
+	private Map<String,String> availableStatus=new HashMap<String, String>();
+
 	public SubmissionSearchCDI() {
+	}
+
+	public void clean() {
+		// Vai buscar os Status
+		availableStatus.put(Constants.STATUS_SUBMITED, 
+				Constants.STATUS_SUBMITED);
+		availableStatus.put(Constants.STATUS_ACCEPTED,
+				Constants.STATUS_ACCEPTED);
+		availableStatus.put(Constants.STATUS_PROPOSAL,
+				Constants.STATUS_PROPOSAL);
+		availableStatus.put(Constants.STATUS_NEGOTIATION,
+				Constants.STATUS_NEGOTIATION);
+		availableStatus.put(Constants.STATUS_REJECTED,
+				Constants.STATUS_REJECTED);
+		availableStatus.put(Constants.STATUS_HIRED,
+				Constants.STATUS_HIRED);
+
+		this.submissions=submissionEJB.findAll();
+		needsReason = false;
+		reason="";
 	}
 
 	public boolean changeCV(SubmissionEntity submission){
@@ -118,20 +150,115 @@ public class SubmissionSearchCDI implements Serializable {
 
 		this.submissionToEdit=null;
 	}
-	
+
 	public List<SubmissionEntity> associatedSubmissions() {
 		UserEntity candidate=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
 		return this.submissionEJB.findSubmissionsOfCandidate(candidate);
 	}
-	
+
 	public List<SubmissionEntity> spontaneousSubmissions() {
 		UserEntity candidate=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
 		return this.submissionEJB.findSpontaneousSubmissionsOfCandidate(candidate);
 	}
 
-	public void searchAll() {
-		log.info("Searching for all submissions");
-		this.slist = submissionEJB.findAll();
+	public void updateStatus(){
+		log.info("Updating status of submission");
+
+		// if current status is HIRED and new one is not, clean hiredDate
+		if(this.submission.getStatus().equals(Constants.STATUS_HIRED)
+				&&!this.status.equals(Constants.STATUS_HIRED)) {
+			this.submission.setHiredDate(null);
+			//updates the number of hired people of position
+			int oldhiredP = this.submission.getPosition().getHired_people();
+			oldhiredP--;
+			if (oldhiredP < 0) log.debug("Hired people counting is negative!");
+			this.submission.getPosition().setHired_people(oldhiredP);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Apagada data de contratação."));
+		}
+		// if current status is REJECTED and new one isnt, clean rejectedReason
+		if(this.submission.getStatus().equals(Constants.STATUS_REJECTED)
+				&&!this.status.equals(Constants.STATUS_REJECTED)) {
+			this.submission.setRejectReason(null);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Apagado motivo de rejeição."));
+		}
+
+		// if current status one of PROP/ON NEGO, and new is SUB/ACCEPTED
+		if((this.submission.getStatus().equals(Constants.STATUS_PROPOSAL)
+				||this.submission.getStatus().equals(Constants.STATUS_NEGOTIATION))
+				&&(this.status.equals(Constants.STATUS_SUBMITED)||
+						this.status.equals(Constants.STATUS_ACCEPTED))) {
+			this.submission.setProposalDate(null);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Apagada data de proposta."));
+		}
+
+		this.submission.setStatus(status);
+		// Se o novo status é ACCEPTED, avisa para marcar entrevista
+		if(this.status.equals(Constants.STATUS_ACCEPTED)
+				&&!this.submission.getStatus().equals(Constants.STATUS_ACCEPTED)) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Não se esqueça de agendar entrevista."));
+		} else if((this.status.equals(Constants.STATUS_PROPOSAL) 
+				||this.status.equals(Constants.STATUS_NEGOTIATION))
+				&&(this.submission.getStatus().equals(Constants.STATUS_SUBMITED) 
+						||this.status.equals(Constants.STATUS_ACCEPTED)))
+			this.submission.setProposalDate(new Date());
+		else if(this.status.equals(Constants.STATUS_REJECTED)
+				&&!this.submission.equals(Constants.STATUS_REJECTED)) {
+			this.needsReason=true;
+			return;
+		} else if(this.status.equals(Constants.STATUS_HIRED)
+				&&!this.submission.equals(Constants.STATUS_HIRED)) {
+			PositionEntity position=this.submission.getPosition();
+			
+			//updates the number of hired people of position
+			int oldhiredP = position.getHired_people();
+			oldhiredP++;
+			position.setHired_people(oldhiredP);
+			
+			if (oldhiredP == position.getOpenings()) {
+				// close position if hired people equal to openings
+				position.setStatus(Constants.STATUS_CLOSED);
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage("Todas as vagas da posição"
+								+ " foram preenchidas. A posição foi"
+								+ " fechada automaticamente."));
+			} else if (oldhiredP > position.getOpenings())
+				log.debug("Hired people counting is greater than openings!");
+
+			this.submission.setHiredDate(new Date());
+			positionEJB.update(position);
+			this.mail.notifyHired(submission);
+		}			
+
+		this.submissionEJB.update(this.submission);
+
+		this.submission=null;
+
+		this.clean();
+
+		FacesContext.getCurrentInstance().addMessage(
+				null, new FacesMessage("Estado actualizado."));
+	}
+
+	public void saveRejectedReason() {
+		log.info("Saving rejected reason");
+		if(reason!=null&&!reason.isEmpty()) {
+			this.submission.setRejectReason(this.reason);
+			this.submission.setStatus(Constants.STATUS_REJECTED);
+			this.submissionEJB.update(submission);
+			this.mail.notifyRejected(submission);
+			this.submission=null;
+			clean();
+			FacesContext.getCurrentInstance().addMessage(
+					null, new FacesMessage("Estado actualizado."));
+		} else
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Introduza o motivo de rejeição.",""));
+
 	}
 
 	public void searchAllSponteanous() {
@@ -235,6 +362,20 @@ public class SubmissionSearchCDI implements Serializable {
 		return ftDate.format(date);
 	}
 
+	public boolean loadedSubmission() {
+		return this.submission!=null;
+	}
+
+	public boolean checkSubmission(SubmissionEntity submission){
+		if(this.submission==null)return false;
+		if(this.submission.getId()==submission.getId())return true;
+		return false;
+	}
+
+	public void unloadSubmission(){
+		this.submission=null;
+	}
+
 	// getters e setters
 
 	public Date getDate1() {
@@ -275,6 +416,55 @@ public class SubmissionSearchCDI implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public SubmissionEntity getSubmission() {
+		return submission;
+	}
+
+	public void setSubmission(SubmissionEntity submission) {
+		this.submission = submission;
+		this.status = this.submission.getStatus();
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Map<String, String> getAvailableStatus() {
+		return availableStatus;
+	}
+
+	public void setAvailableStatus(Map<String, String> availableStatus) {
+		this.availableStatus = availableStatus;
+	}
+
+	public List<SubmissionEntity> getSubmissions() {
+		return submissions;
+	}
+
+	public void setSubmissions(List<SubmissionEntity> submissions) {
+		this.submissions = submissions;
+	}
+
+	public boolean isNeedsReason() {
+		return needsReason;
+	}
+
+	public void setNeedsReason(boolean needsReason) {
+		this.needsReason = needsReason;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 }
