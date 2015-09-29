@@ -15,8 +15,207 @@
 	</ui:define>
 
 	<ui:define name="contents">
-		<ui:include
-			src="../../../WEB-INF/template/admin-manager-edit-position.xhtml" />
+		<h1>Editar Posição</h1>
+
+		<h:form id="editPosition">
+			<h:panelGroup>
+				<p:dataTable emptyMessage="#{newPositionCDI.emptyTable}"
+					var="position" value="#{newPositionCDI.positions}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+					<f:facet name="header">Posições</f:facet>
+					<p:column headerText="Código">
+						<h:outputText value="#{position.positionCode}" />
+					</p:column>
+					<p:column headerText="Título">
+						<h:outputText value="#{position.title}" />
+					</p:column>
+					<p:column headerText="Empresa">
+						<h:outputText value="#{position.company}" />
+					</p:column>
+					<p:column headerText="Seleccionar">
+						<p:commandButton value="Seleccionar" style="width:100%"
+							rendered="#{!newPositionCDI.checkPosition(position)}"
+							action="#{scheduleInterviewCDI.setPosition(position)}"
+							actionListener="#{newPositionCDI.setPosition(position)}"
+							icon="ui-icon-suitcase" ajax="false" />
+						<p:commandButton
+							rendered="#{newPositionCDI.checkPosition(position)}"
+							style="width:100%" value="Cancelar"
+							action="#{scheduleInterviewCDI.unloadPosition()}"
+							actionListener="#{newPositionCDI.unloadPosition()}"
+							icon="ui-icon-cancel" ajax="false" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+			<br />
+		</h:form>
+
+		<!-- Status -->
+		<h:form id="editPositionStatus">
+			<h:panelGrid columns="3" style="width:1000px"
+				rendered="#{newPositionCDI.loadedPosition()}">
+
+				<p:outputLabel for="edit-position-status" value="Estado: " />
+
+				<h:panelGroup>
+					<h:panelGrid columns="4" style="width:100%">
+						<p:selectOneMenu id="edit-position-status" style="width:100%"
+							value="#{newPositionCDI.status}">
+							<f:selectItems value="#{newPositionCDI.availableStatus}" />
+							<f:ajax event="change" />
+						</p:selectOneMenu>
+						<p:commandButton value="Actualizar estado" style="width:100%"
+							action="#{newPositionCDI.updateStatus()}" icon="ui-icon-disk"
+							update="@all">
+							<p:confirm header="Confirmação"
+								message="Tem a certeza que quer actualizar o estado da posição?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:confirmDialog global="true">
+							<h:panelGrid columns="2" style="width:100%">
+								<p:commandButton value="Sim" type="button" style="width:100%"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Não" type="button" style="width:100%"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</h:panelGrid>
+						</p:confirmDialog>
+
+					</h:panelGrid>
+				</h:panelGroup>
+
+			</h:panelGrid>
+
+		</h:form>
+
+		<h:form id="scheduleInterviewPart1">
+			<!-- Lista as candidaturas -->
+			<h:panelGroup rendered="#{scheduleInterviewCDI.loadedPosition()}">
+				<h2>Candidaturas</h2>
+				<p:dataTable emptyMessage="Sem candidaturas" var="submission"
+					value="#{scheduleInterviewCDI.submissions}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+					<p:column headerText="Candidato">
+						<h:outputText
+							value="#{submission.candidate.firstName} #{submission.candidate.lastName}" />
+					</p:column>
+					<p:column headerText="Carta de Motivação">
+						<a
+							href="#{submissionSearchCDI.getMotivatioLetterPath(submission)}"
+							target="_blank">Consultar a Carta de Motivação</a>
+					</p:column>
+					<p:column headerText="Carta de Motivação">
+						<a href="#{submissionSearchCDI.getCvPath(submission)}"
+							target="_blank">Consultar CV</a>
+					</p:column>
+					<p:column headerText="Marcar Entrevista">
+
+						<p:commandButton value="Marcar" style="width:100%"
+							rendered="#{!scheduleInterviewCDI.currentSubmission(submission)}"
+							actionListener="#{scheduleInterviewCDI.loadSubmission(submission)}"
+							icon="ui-icon-suitcase"
+							update="scheduleInterviewPart1 scheduleInterviewPart2
+							scheduleInterviewPart3 scheduleInterviewPart4" />
+
+						<p:commandButton style="width:100%" value="Cancelar"
+							rendered="#{scheduleInterviewCDI.currentSubmission(submission)}"
+							icon="ui-icon-cancel"
+							actionListener="#{scheduleInterviewCDI.unloadSubmission()}"
+							update="scheduleInterviewPart1 scheduleInterviewPart2
+							scheduleInterviewPart3 scheduleInterviewPart4" />
+
+					</p:column>
+				</p:dataTable>
+
+			</h:panelGroup>
+		</h:form>
+
+		<br />
+
+		<h:form id="scheduleInterviewPart2">
+			<!-- Mostra as Entrevistas -->
+			<h:panelGroup rendered="#{scheduleInterviewCDI.loadedSubmission()}">
+				<h2>Entrevistas já realizadas</h2>
+				<p:dataTable emptyMessage="Sem entrevistas até ao momento"
+					var="interview" value="#{scheduleInterviewCDI.interviews}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+					<f:facet name="header">Entrevistas a 
+						#{scheduleInterviewCDI.submission.candidate.firstName} 
+						#{scheduleInterviewCDI.submission.candidate.lastName}</f:facet>
+
+					<p:column headerText="Data">
+						<h:outputText value="#{interview.date}" />
+					</p:column>
+
+					<p:column headerText="FeedBack">
+						<h:outputText value="#{interview.feedback}" />
+					</p:column>
+
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+
+		<br />
+
+		<h:form id="scheduleInterviewPart3">
+			<!-- Lista Interviewers -->
+			<h:panelGroup rendered="#{scheduleInterviewCDI.loadedSubmission()}">
+				<h2>Entrevistadores Disponíveis</h2>
+				<p:dataTable emptyMessage="Sem Entrevistadores" var="interviewer"
+					value="#{scheduleInterviewCDI.interviewers}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<p:column headerText="Nome">
+						<h:outputText
+							value="#{interviewer.firstName} #{interviewer.lastName}" />
+					</p:column>
+
+					<p:column headerText="Email">
+						<h:outputText value="#{interviewer.email}" />
+					</p:column>
+
+					<p:column headerText="Associar à entrevista">
+						<p:commandButton value="Associar" icon="ui-icon-plus"
+							style="width:100%"
+							rendered="#{!scheduleInterviewCDI.selectedInterviewer(interviewer)}"
+							actionListener="#{scheduleInterviewCDI.addInterviewer(interviewer)}"
+							update="scheduleInterviewPart3" />
+						<p:commandButton value="Desassociar" icon="ui-icon-cancel"
+							style="width:100%"
+							rendered="#{scheduleInterviewCDI.selectedInterviewer(interviewer)}"
+							actionListener="#{scheduleInterviewCDI.removeInterviewer(interviewer)}"
+							update="scheduleInterviewPart3" />
+					</p:column>
+
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+
+		<br />
+
+		<h:form id="scheduleInterviewPart4">
+			<!-- Data -->
+			<h:panelGrid columns="1" style="width:100%"
+				rendered="#{scheduleInterviewCDI.loadedSubmission()}">
+				<h2>Faltam os guiões | Falta verificar os conflitos de agenda | WTF Date?!?</h2>
+				<p:outputLabel value="Escolher data: " for="interview-date" />
+				<p:calendar id="interview-date" mode="inline"
+					value="#{scheduleInterviewCDI.interviewDate}"
+					requiredMessage="Escolha uma data e hora"
+					pattern="dd/MM/yyyy HH:mm" readonlyInput="true" navigator="true"
+					yearRange="c-100:c+100" locale="pt" size="35" stepMinute="15"
+					mindate="#{scheduleInterviewCDI.minDate()}">
+				</p:calendar>
+				<p:commandButton value="Submeter entrevista" style="width:100%"
+					icon="ui-icon-disk" ajax="false"
+					action="#{scheduleInterviewCDI.createInterview()}" />
+				<p:messages />
+			</h:panelGrid>
+		</h:form>
 	</ui:define>
 
 </ui:composition>
