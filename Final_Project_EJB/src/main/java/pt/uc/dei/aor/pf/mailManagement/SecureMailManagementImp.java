@@ -21,6 +21,7 @@ import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
+import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
@@ -219,6 +220,31 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		this.sendEmail(position.getPositionManager().getEmail(), null,
 				"Gestor(a) da nova posição "+position.getPositionCode(), text);
+		
+	}
+
+	@Override
+	public void newSubmissionWarning(SubmissionEntity submission) {
+		// Sent an email notifiyng position manager about a new submission
+
+		PositionEntity position = submission.getPosition();
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+
+		String positionMail=position.getPositionCode()
+				+", \'"+position.getTitle()+"\' - "+position.getCompany();
+
+		String text="Olá "+position.getPositionManager().getFirstName()
+				+" "+position.getPositionManager().getLastName()+","
+				+"\n\nFoi submetida uma nova candidatura (de "
+				+submission.getCandidate().getFirstName()+" "
+				+submission.getCandidate().getLastName()+") à posição "
+				+positionMail+"."
+				+"\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(position.getPositionManager().getEmail(), null,
+				"Nova candidatura à posição "+position.getPositionCode(), text);
+		
 		
 	}
 

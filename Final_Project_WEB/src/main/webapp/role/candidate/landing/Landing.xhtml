@@ -30,14 +30,16 @@
 		<br />
 		<h3>Acesso rápido</h3>
 		<br />
-		<h:form>
+		<h:form id="quickAccessCandidate">
 			<p:link value="As Minhas Candidaturas"
 				href="../submissions/MySubmissions.xhtml" />
+			<br />
 			<br />
 			<p:commandLink value="Submeter Candidatura Espontânea"
 				rendered="#{userSessionManagement.cv}"
 				oncomplete="PF('spontaneousSubmission').show();" />
-			<p:commandLink value="Faça Upload do CV para se poder candidatar"
+			<p:commandLink value="Faça Upload do CV para se poder candidatar 
+					ou submeter uma candidatura espontânea"
 				onclick="PF('uploadCVLocal').show();"
 				rendered="#{!userSessionManagement.cv}" style="width: 100%" />
 		</h:form>
@@ -110,7 +112,8 @@
 				draggable="false" resizable="false" modal="true">
 
 				<p:fileUpload id="file-upload-local"
-					update="@form messages headerMenu" label="Escolha o CV (*.pdf)"
+					update="@form messages headerMenu quickAccessCandidate"
+					label="Escolha o CV (*.pdf)"
 					uploadLabel="Submeter CV" cancelLabel="Cancelar" required="true"
 					requiredMessage="Submeta um CV"
 					fileUploadListener="#{uploadCVCDI.uploadCV}" mode="advanced"
@@ -169,8 +172,8 @@
 			<p:dataTable id="altAdvertisementChannels" var="advertisingChannel"
 				value="#{newSubmissionCDI.altAdvertisingChannels}"
 				style="width:300px" rendered="#{newSubmissionCDI.hasPosition()}"
-				emptyMessage="Sem canais de publicidade alternativos">
-				<p:column headerText="Outros canais">
+				emptyMessage="Sem fontes alternativas">
+				<p:column headerText="Outras fontes">
 					<p:outputLabel value="#{advertisingChannel.ad}" />
 				</p:column>
 				<p:column headerText="Remover">
@@ -200,7 +203,7 @@
 			<h:panelGroup rendered="#{newSubmissionCDI.hasPosition()}">
 				<p:fileUpload id="motivation-letter-upload-new-submission"
 					update="newSubmissionForm1 newSubmissionForm2 newSubmissionForm3
-					newSubmissionForm4 messages openPositionsForm"
+					newSubmissionForm4 messages openPositionsForm quickAccessCandidate"
 					label="Escolha a carta de motivação (*.pdf)"
 					uploadLabel="Submeter candidatura" cancelLabel="Cancelar"
 					required="true" requiredMessage="Submeta uma carta de motivação"

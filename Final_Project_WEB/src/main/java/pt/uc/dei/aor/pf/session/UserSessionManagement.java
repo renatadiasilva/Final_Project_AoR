@@ -257,12 +257,10 @@ public class UserSessionManagement implements Serializable {
 
 			this.context=FacesContext.getCurrentInstance();
 
-			// Se foi criado à mão, fecha o dialog (Home.xhtml)
+			// Foi criado à mão
 			if(!createdByAdmin){
-				//				RequestContext requestContext = RequestContext.getCurrentInstance();
-				//				requestContext.execute("PF('signup').hide();");
-				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
-				this.context.addMessage(null, new FacesMessage("Consulte a sua caixa de correio e siga as instruções apresentadas."));
+				this.context.addMessage(null, new FacesMessage("Utilizador criado com sucesso: "+email));
+				this.context.addMessage(null, new FacesMessage("Consulte a sua caixa de correio e siga as instruções."));
 			}else{
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
 				//				this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
@@ -270,7 +268,8 @@ public class UserSessionManagement implements Serializable {
 
 		}else {
 			log.info("Registration failure: the email already exists");
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,"Email já se encontra em uso: "+email, ""));
 		}
 	}
 
@@ -288,7 +287,8 @@ public class UserSessionManagement implements Serializable {
 			this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
 			//			this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 
-		}else this.context.addMessage(null, new FacesMessage("Registo falhou, email já se encontra em uso: "+email));
+		}else this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+				"Registo falhou, email já se encontra em uso: "+email, ""));
 	}
 
 	public void updateUserData(String firstName, String lastName, 

@@ -21,6 +21,7 @@ import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 import pt.uc.dei.aor.pf.upload.UploadFile;
 
@@ -38,6 +39,9 @@ public class NewSubmissionCDI implements Serializable{
 
 	@Inject
 	private UploadFile uploadFile;
+	
+	@EJB
+	private SecureMailManagementImp mail;
 
 	@EJB
 	private UserEJBInterface userEJB;
@@ -110,6 +114,9 @@ public class NewSubmissionCDI implements Serializable{
 
 		this.cleanAds();
 		this.position=null;
+
+		// notification to manager of position
+		this.mail.newSubmissionWarning(submission);
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova candidatura submetida. Durante a próxima hora pode mudar o CV e a Carta de Motivação desta candidatura na área das suas candidaturas."));
 	}
