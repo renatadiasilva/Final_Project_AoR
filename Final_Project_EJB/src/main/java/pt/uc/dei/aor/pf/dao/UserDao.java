@@ -17,6 +17,35 @@ public class UserDao extends GenericDao<UserEntity> {
 	public UserDao() {
 		super(UserEntity.class);
 	}
+
+	@Override
+	public void save (UserEntity user){
+		user.setRoles(this.verifyRoles(user.getRoles()));
+		super.save(user);
+	}
+	
+	@Override
+	public UserEntity update (UserEntity user){
+		user.setRoles(this.verifyRoles(user.getRoles()));
+		return super.update(user);
+	}
+	
+	private List<String> verifyRoles(List<String>roles){
+		// Se é ADMIN ou MANAGER tem de ser também INTERVIEWER
+		
+		if(roles.contains(Constants.ROLE_INTERVIEWER))
+			return roles;
+		
+		if(roles.contains(Constants.ROLE_ADMIN)){
+			roles.add(Constants.ROLE_INTERVIEWER);
+			return roles;
+		}
+		
+		if(roles.contains(Constants.ROLE_MANAGER))
+			roles.add(Constants.ROLE_INTERVIEWER);
+		
+		return roles;
+	}
 	
 	public List<UserEntity> findAllNotRemoved() {
 		Map<String, Object> parameters = new HashMap<String, Object>();
