@@ -43,6 +43,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com,renatadiasilva@gmail.com,";
 	private static final boolean OVERRIDE = true;
 
+	private static final String PLATAFORM_LINK="https://localhost/Final_Project_WEB/";
 	private static final String SERVICE_CONTEXT="https://localhost/Final_Project_WEB/services/";
 
 	public SecureMailManagementImp() {
@@ -99,7 +100,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","+
 				"\n\nA sua nova password para aceder à plataforma "
 				+companyName+": "
-				+temporaryPassword+"\n\nCumprimentos,\nA equipa "+companyName;
+				+temporaryPassword+".\nAceda à plataforma em "
+				+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "+companyName;
 
 		log.info("Envio de email para "+user.getEmail()+" para "
 				+ "notificar da password temporária "+temporaryPassword);
@@ -131,8 +133,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 		String text="Olá "+user.getFirstName()+" "+user.getLastName()+","+
 				"\n\nO seu email encontra-se autenticado e o seu registo "
-				+ "concluído."
-				+"\n\nCumprimentos,\nA equipa "+companyName;
+				+ "concluído.\nAceda à plataforma em "
+				+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "+companyName;
 
 		this.sendEmail(user.getEmail(), null, "Registo na plataforma "
 				+ companyName+" - Registo concluído", text);
@@ -147,7 +149,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+"\n\nBem vindo(a) à plataforma "+companyName+"."
 				+"\n\nA sua password (temporária) para aceder à plataforma "
 				+companyName+" é "
-				+temporaryPassword+"\n\nCumprimentos,\nA equipa "+companyName;
+				+temporaryPassword+".\nFaça login em "
+				+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "+companyName;
 
 		log.info("An email was sent to a new user: "
 				+ newUser.getEmail()+" with "
@@ -214,8 +217,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String text="Olá "+position.getPositionManager().getFirstName()
 				+" "+position.getPositionManager().getLastName()+","
 				+"\n\nFoi escolhido(a) como gestor(a) da nova posição "
-				+positionMail+"."
-				+"\n\nCumprimentos,\nA equipa "
+				+positionMail+".\nAceda à plataforma em "
+						+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "
 				+companyName;
 
 		this.sendEmail(position.getPositionManager().getEmail(), null,
@@ -238,8 +241,9 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+"\n\nFoi submetida uma nova candidatura (de "
 				+submission.getCandidate().getFirstName()+" "
 				+submission.getCandidate().getLastName()+") à posição "
-				+positionMail+"."
-				+"\n\nCumprimentos,\nA equipa "
+				+positionMail+".\nFaça login para visualizar "
+						+ "as suas posições: "
+				+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "
 				+companyName;
 
 		this.sendEmail(position.getPositionManager().getEmail(), null,
@@ -256,15 +260,15 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
 
 		String positionMail=submission.getPosition().getPositionCode()
-				+", \'"+submission.getPosition()+"\' - "
+				+", \'"+submission.getPosition().getTitle()+"\' - "
 				+submission.getPosition().getCompany();
 
 		String text="Olá "+candidate.getFirstName()
 				+" "+candidate.getLastName()+","
 				+"\n\nFoi submetida uma candidatura sua à posição "
-				+positionMail+". Faça login para visualizar o "
-				+ "estado das suas candidaturas."
-				+"\n\nCumprimentos,\nA equipa "
+				+positionMail+".\nFaça login para visualizar o "
+				+ "estado das suas candidaturas: "
+				+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "
 				+companyName;
 
 		this.sendEmail(candidate.getEmail(), null, "Nova candidatura à "

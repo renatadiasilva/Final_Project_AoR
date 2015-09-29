@@ -243,7 +243,7 @@ public class UserSessionManagement implements Serializable {
 
 	// Novo utilizador com ROLE_CANDIDATE. Se vem do signup: boolean createdByAdmin=false.
 	// Se é criado por admin: boolean createdByAdmin=true
-	public void newUser(String email, String password, String firstName, String lastName,
+	public boolean newUser(String email, String password, String firstName, String lastName,
 			Date birthday, String address, String city,
 			String homePhone, String mobilePhone, String country, String course, String school, 
 			String linkedin, boolean createdByAdmin,
@@ -265,12 +265,14 @@ public class UserSessionManagement implements Serializable {
 				this.context.addMessage(null, new FacesMessage("Novo Utilizador criado com sucesso: "+email));
 				//				this.context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Anote a password temporária: "+password, ""));
 			}
-
-		}else {
-			log.info("Registration failure: the email already exists");
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,"Email já se encontra em uso: "+email, ""));
+			
+			return true;
 		}
+
+		log.info("Registration failure: the email already exists");
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+				FacesMessage.SEVERITY_ERROR,"Email já se encontra em uso: "+email, ""));
+		return false;
 	}
 
 	// Novo utilizador criado por um admin sem o ROLE_CANDIDATE

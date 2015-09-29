@@ -37,7 +37,7 @@ public class AdminNewUserCDI implements Serializable {
 
 	@Inject
 	private UserSessionManagement userSessionManagement;
-	
+
 	@EJB
 	private SecureMailManagementImp mail;
 
@@ -54,7 +54,7 @@ public class AdminNewUserCDI implements Serializable {
 
 	private boolean admin, manager, interviewer, candidate;
 	private boolean submissionDone;
-	
+
 	@Inject
 	private UserSessionManagement userManagement;
 
@@ -85,18 +85,19 @@ public class AdminNewUserCDI implements Serializable {
 
 		if (EmailPattern.checkEmailPattern(email)) {
 
-			this.userSessionManagement.newUser(email, 
+			if (this.userSessionManagement.newUser(email, 
 					userSessionManagement.getRandomPass(), firstName, lastName,
 					birthday, address, city, homePhone, mobilePhone, country,
 					course, school, linkedin, true, admin, manager, 
-					interviewer);
+					interviewer)) {
 
-			this.newCandidate = this.userEJB.findUserByEmail(email);
+				this.newCandidate = this.userEJB.findUserByEmail(email);
 
-			this.clear();
-			this.candidate=true;
+				this.candidate=true;
+			}
 
-		} else FacesContext.getCurrentInstance().addMessage(null, 
+		} else
+			FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email inválido.", "Email inválido."));
 	}
 
@@ -263,7 +264,7 @@ public class AdminNewUserCDI implements Serializable {
 
 
 	// Associar novo user a posições
-	
+
 	public void uploadCV(FileUploadEvent event){
 		UploadedFile file=event.getFile();
 
@@ -289,9 +290,10 @@ public class AdminNewUserCDI implements Serializable {
 
 		this.position=null;
 
-		// notification to manager of position
+		// notification to manager of position and candidate
 		this.mail.newSubmissionWarning(submission);
-		
+		this.mail.newCandidateWarning(submission);
+
 		this.submissionDone = true;
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Candidatura Submetida"));
@@ -315,26 +317,24 @@ public class AdminNewUserCDI implements Serializable {
 	}
 
 	public void cleanPandC(){
-//		this.position=null;
-//		this.newCandidate=null;
-		if (this.submissionDone)
+		if (this.submissionDone) {
 			FacesContext.getCurrentInstance().addMessage(
-				null, new FacesMessage("Concluído com sucesso o processo de"
-						+ " registo do candidato "
-						+ newCandidate.getEmail()
-						+" e submissão manual das suas candidaturas"));
-		else
+					null, new FacesMessage("Concluído com sucesso o processo de"
+							+ " registo do candidato "
+							+ newCandidate.getEmail()
+							+" e submissão manual das suas candidaturas"));
+			clear();
+			this.position=null;
+			this.newCandidate=null;
+			submissionDone = false;
+		} else
 			FacesContext.getCurrentInstance().addMessage(
-				null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Tem de associar o candidato a uma posição",""));
+					null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Tem de associar o candidato a uma posição",""));
 	}
 
 	public void dissociatePosition(){
 		this.position=null;
-	}
-
-	public boolean cancelPosition(){
-		return this.candidateHasCV()&&this.hasPosition();
 	}
 
 	public boolean checkPosition(PositionEntity position){
@@ -368,22 +368,22 @@ public class AdminNewUserCDI implements Serializable {
 		if(this.newCandidate==null) return"";
 		return this.newCandidate.getEmail();
 	}
-	
+
 	public String positionTitle(){
 		if(this.position==null)return"";
 		return this.position.getTitle();
 	}
-	
+
 	public String positionCode() {
 		if(this.position==null)return"";
 		return this.position.getPositionCode();
 	}
-	
+
 	public String positionCompany() {
 		if(this.position==null)return"";
 		return this.position.getCompany();
 	}
-	
+
 	private boolean forbidden, currentCandidate;
 
 	// 1ª Verificação
@@ -397,7 +397,7 @@ public class AdminNewUserCDI implements Serializable {
 
 	// 2ª Verificação
 	public boolean candidate(PositionEntity position){
-		
+
 		if(!this.forbidden){
 			this.currentCandidate = positionEJB.alreadyCandidateOfPosition(newCandidate, position);
 			return this.currentCandidate;
