@@ -1,46 +1,24 @@
-<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
 
-	<f:metadata>
-		<f:metadata>
-			<f:viewAction
-				actionListener="#{scheduleInterviewCDI.
-					searchPositionsManagedByUser(userSessionManagement.
-					currentUserClone.id)}" />
-		</f:metadata>
-	</f:metadata>
+	<ui:composition>
 
-	<ui:define name="titulo">
-	Manager - Agendar Entrevistas - #{styleSessionManagement.companyName}
-	</ui:define>
-
-	<ui:define name="contents">
-		<h1>Editar Posição</h1>
+		<h1>Agendar Entrevista</h1>
 
 		<h:form id="editPosition">
 
-			<h:panelGrid columns="3" style="width:100%"
-				rendered="#{!scheduleInterviewCDI.loadedPosition()}">
-				<p:watermark value="Procurar posições por palavra chave: "
-					for="mypos-keyword" />
-				<p:inputText id="mypos-keyword" value="#{scheduleInterviewCDI.keyword}"
-					style="width:100%" />
-				<p:commandButton
-					action="#{scheduleInterviewCDI.searchPositionsByKeywordAndManager(
-					userSessionManagement.currentUserClone.id)}"
-					update="@form" icon="ui-icon-search" />
-			</h:panelGrid>
-
 			<h:panelGroup>
-				<p:dataTable emptyMessage="Sem posições"
-					var="position" value="#{scheduleInterviewCDI.positions}"
+				<p:dataTable emptyMessage="Sem posições" var="position"
+					value="#{scheduleInterviewCDI.positions}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 					paginator="true" rows="10">
-					<f:facet name="header">Posições</f:facet>
+					<f:facet name="header">Posições Geridas por #{userSessionManagement.userFullName}</f:facet>
 					<p:column headerText="Código">
 						<h:outputText value="#{position.positionCode}" />
 					</p:column>
@@ -49,6 +27,42 @@
 					</p:column>
 					<p:column headerText="Empresa">
 						<h:outputText value="#{position.company}" />
+					</p:column>
+					<p:column headerText="Estado">
+						<h:outputText value="#{position.status}" />
+					</p:column>
+					<p:column headerText="Guião">
+						<p:commandButton value="Ver Guião Padrão" style="width:100%"
+							actionListener="#{newPositionCDI.setCheckScript(position.defaultScript)}"
+							oncomplete="PF('checkDefaultScript').show();" update="@form"
+							icon="ui-icon-script" />
+
+						<p:dialog widgetVar="checkDefaultScript" draggable="false"
+							resizable="false" modal="true" style="max-width:300px"
+							header="Guião">
+
+							<h:panelGrid>
+								<p:dataTable id="questionsTableDefault"
+									emptyMessage="Sem questões." var="q"
+									value="#{newPositionCDI.checkScript.questions}"
+									paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+									{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+									paginator="true" rows="10">
+									<f:facet name="header">Questões</f:facet>
+									<p:column headerText="Título">
+										<h:outputText value="#{q.question}" />
+									</p:column>
+									<p:column headerText="Tipo">
+										<h:outputText
+											value="#{newPositionCDI.getTypeTextOfQuestion(q)}" />
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<p:commandButton value="Fechar"
+								onclick="PF('checkDefaultScript').hide();" />
+
+						</p:dialog>
+
 					</p:column>
 					<p:column headerText="Seleccionar">
 						<p:commandButton value="Seleccionar" style="width:100%"
@@ -117,7 +131,8 @@
 							value="#{submission.candidate.firstName} #{submission.candidate.lastName}" />
 					</p:column>
 					<p:column headerText="Carta de Motivação">
-						<a href="#{submissionSearchCDI.getMotivatioLetterPath(submission)}"
+						<a
+							href="#{submissionSearchCDI.getMotivatioLetterPath(submission)}"
 							target="_blank">Consultar a Carta de Motivação</a>
 					</p:column>
 					<p:column headerText="Carta de Motivação">
@@ -356,7 +371,8 @@
 				<p:messages />
 			</h:panelGrid>
 		</h:form>
-		
-	</ui:define>
 
-</ui:composition>
+	</ui:composition>
+
+</h:body>
+</html>

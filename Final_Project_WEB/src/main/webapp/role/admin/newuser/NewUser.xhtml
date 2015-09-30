@@ -14,11 +14,14 @@
 
 	<ui:define name="contents">
 
-		<h1>Novo Registo</h1>
-
 		<h:form id="adminNewUserFormNonCandidate">
 
 			<h:panelGroup rendered="#{!adminNewUserCDI.hasCandidate()}">
+
+				<h:panelGroup rendered="#{!adminNewUserCDI.candidate}">
+					<h1>Novo Registo</h1>
+				</h:panelGroup>
+
 				<h:panelGrid columns="2" rendered="#{!adminNewUserCDI.candidate}">
 
 					<ui:include src="admin-new-user-common-elements.xhtml" />
@@ -37,7 +40,9 @@
 		<h:form id="adminNewUserFormCandidate">
 
 			<h:panelGroup rendered="#{!adminNewUserCDI.hasCandidate()}">
-
+				<h:panelGroup rendered="#{adminNewUserCDI.candidate}">
+					<h1>Novo Registo com Candidatura</h1>
+				</h:panelGroup>
 				<h:panelGrid columns="2" rendered="#{adminNewUserCDI.candidate}">
 
 					<ui:include src="admin-new-user-common-elements.xhtml" />
@@ -248,8 +253,7 @@
 		<h:form style="width:100%" id="conclude">
 			<p:commandButton value="Concluir" icon="ui-icon-check"
 				rendered="#{adminNewUserCDI.hasCandidate()}" style="width: 100%"
-				action="#{adminNewUserCDI.cleanPandC()}"
-				ajax="false" />
+				action="#{adminNewUserCDI.cleanPandC()}" ajax="false" />
 		</h:form>
 
 	</ui:define>

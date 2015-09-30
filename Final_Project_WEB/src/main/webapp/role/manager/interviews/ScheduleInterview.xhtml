@@ -1,0 +1,42 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{scheduleInterviewCDI.
+					searchPositionsManagedByUser(userSessionManagement.
+					currentUserClone.id)}" />
+		</f:metadata>
+	</f:metadata>
+
+	<ui:define name="titulo">
+	Manager - Agendar Entrevista - #{styleSessionManagement.companyName}
+	</ui:define>
+
+	<ui:define name="contents">
+
+		<h:form id="search">
+			<h:panelGrid columns="3" style="width:100%"
+				rendered="#{!scheduleInterviewCDI.loadedPosition()}">
+				<p:watermark value="Procurar posições por palavra chave: "
+					for="mypos-keyword" />
+				<p:inputText id="mypos-keyword"
+					value="#{scheduleInterviewCDI.keyword}" style="width:100%" />
+				<p:commandButton
+					action="#{scheduleInterviewCDI.searchPositionsByKeywordAndManager(
+					userSessionManagement.currentUserClone.id)}"
+					update="@form" icon="ui-icon-search" />
+			</h:panelGrid>
+		</h:form>
+
+		<ui:include
+			src="../../../WEB-INF/template/admin-manager-schedule-interview-common.xhtml" />
+
+	</ui:define>
+
+</ui:composition>
