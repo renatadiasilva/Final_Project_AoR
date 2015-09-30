@@ -48,7 +48,8 @@
 					<p:commandButton value="Seleccionar" style="width:100%"
 						rendered="#{!submissionSearchCDI.checkSubmission(s)}"
 						actionListener="#{submissionSearchCDI.setSubmission(s)}"
-						icon="ui-icon-person" update="@form messages editSubmissionStatus" />
+						icon="ui-icon-person" 
+						update="@form messages editSubmissionStatus editSubmissionReason" />
 					<p:commandButton
 						rendered="#{submissionSearchCDI.checkSubmission(s)}"
 						style="width:100%" value="Cancelar"
@@ -66,19 +67,19 @@
 				<h2>Candidatura de
 					#{submissionSearchCDI.submission.candidate.firstName}
 					#{submissionSearchCDI.submission.candidate.lastName} à posição
-					#{submissionSearchCDI.submission.position.positionCode}"
-					rendered="#{!adminNewUserCDI.checkPositionNull()}</h2>
+					#{submissionSearchCDI.submission.position.positionCode}</h2>
 			</h:panelGrid>
 			<h:panelGrid columns="3" style="width:1000px"
 				rendered="#{submissionSearchCDI.loadedSubmission()}">
 
-				<p:outputLabel for="edit-submission-status" value="Estado: " />
+				<p:outputLabel rendered="#{!submissionSearchCDI.needsReason}" 
+					for="edit-submission-status" value="Estado: " />
 
 				<h:panelGroup>
 					<h:panelGrid columns="4" style="width:100%">
 						<p:selectOneMenu id="edit-submission-status" style="width:100%"
 							value="#{submissionSearchCDI.status}"
-							rendered="#{!submissionSearchCDI.needsReason}" >
+							rendered="#{!submissionSearchCDI.needsReason}">
 							<f:selectItems value="#{submissionSearchCDI.availableStatus}" />
 							<f:ajax event="change" />
 						</p:selectOneMenu>
@@ -87,7 +88,7 @@
 							icon="ui-icon-disk"
 							update="editSubmission 
 								editSubmissionStatus editSubmissionReason messages"
-								rendered="#{!submissionSearchCDI.needsReason}">
+							rendered="#{!submissionSearchCDI.needsReason}">
 							<p:confirm header="Confirmação"
 								message="Tem a certeza que quer actualizar o estado da candidatura?"
 								icon="ui-icon-alert" />
@@ -120,7 +121,8 @@
 
 				<p:commandButton icon="ui-icon-disk"
 					value="Mudar para estado rejeitado e 
-						gravar motivo de rejeição" style="width:100%"
+						gravar motivo de rejeição"
+					style="width:100%"
 					action="#{submissionSearchCDI.saveRejectedReason()}"
 					update="editSubmissionReason editSubmissionStatus
 					editSubmission messages" />
