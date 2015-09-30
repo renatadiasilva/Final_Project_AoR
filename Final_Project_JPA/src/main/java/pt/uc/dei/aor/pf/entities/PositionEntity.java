@@ -373,4 +373,14 @@ public class PositionEntity implements Serializable {
 		this.hired_people = hired_people;
 	}
 
+	public String allLocations() {
+		String s = "";
+		int l = locations.size()-1;
+		for(int i = 0; i < l; i++)
+			s += locations.get(i)+", ";
+		s += locations.get(l);
+		return s;
+	}
+
+
 }

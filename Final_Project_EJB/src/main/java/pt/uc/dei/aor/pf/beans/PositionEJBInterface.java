@@ -19,19 +19,21 @@ public interface PositionEJBInterface {
 	public abstract List<PositionEntity> findCloseToSLAPositions(
 			int daysBefore);
 	public abstract List<PositionEntity> findPositionsByDate(Date openingDate1, 
-			Date openingDate2);
+			Date openingDate2, UserEntity manager);
 	public abstract List<PositionEntity> findPositionsByCode(
-			String codePattern);
-	public abstract List<PositionEntity> findPositionsByTitle(String title);
+			String codePattern, UserEntity manager);
+	public abstract List<PositionEntity> findPositionsByTitle(String title,
+			UserEntity manager);
 	public abstract List<PositionEntity> findPositionsByLocationsOne(
-			List<String> location);
+			List<String> location, UserEntity manager);
 	public abstract List<PositionEntity> findPositionsByLocationsAll(
-			List<String> location);
+			List<String> location, UserEntity manager);
 	public abstract List<PositionEntity> findPositionsByStatus(
-			String currentState);
-	public abstract List<PositionEntity> findPositionsByCompany(String company);
+			String currentState, UserEntity manager);
+	public abstract List<PositionEntity> findPositionsByCompany(String company,
+			UserEntity manager);
 	public abstract List<PositionEntity> findPositionsByTechArea(
-			String tecnhicalArea);
+			String tecnhicalArea, UserEntity manager);
 	public abstract List<PositionEntity> findPositions(Date openingDate1, 
 			Date openingDate2, String positionCode,
 			String title, String location, String currentStatus, String company, 

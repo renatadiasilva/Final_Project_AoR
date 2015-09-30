@@ -24,10 +24,13 @@ public class PositionDao extends GenericDao<PositionEntity> {
 
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositionsByLocationsOne(
-			List<String> locations) {
+			List<String> locations, UserEntity positionManager) {
 		
 		int sizel = locations.size();
 		if (sizel == 0) return new ArrayList<PositionEntity>();
+		
+		String extra = "";
+		if (positionManager != null) extra = " AND positions.manager = :id";
 		
 		String queryS = "SELECT DISTINCT positions.*"
 				+" FROM positions, locations WHERE "
@@ -42,26 +45,32 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
 				+") LIKE :loc"+i;
 		
-		queryS += ") AND positions.id = locations.position_id"
+		queryS += ") AND positions.id = locations.position_id"+extra
 				+" ORDER BY code";
 	
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		for (int i = 0; i < sizel; i++)
 			query.setParameter("loc"+i, locations.get(i));
+		if (positionManager != null)
+			query.setParameter("id", positionManager.getId());
 		return (List<PositionEntity>) query.getResultList();
 
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositionsByLocationsAll(
-			List<String> locations) {
+			List<String> locations, UserEntity positionManager) {
 		
 		int sizel = locations.size(); 
 		if (sizel == 0) return new ArrayList<PositionEntity>();
+
+		String extra = "";
+		if (positionManager != null) extra = " AND positions.manager = :id";
+
 		String queryS = "SELECT * FROM"
 			+ " (SELECT positions.*, count(positions.*)"
 			+ " FROM positions, locations"
-			+ " WHERE positions.id = locations.position_id AND"
+			+ " WHERE positions.id = locations.position_id"+extra+" AND"
 			+ " (locations.location LIKE :loc0";
 		for (int i = 1; i < sizel; i++) 
 			queryS += " OR locations.location LIKE :loc"+i;
@@ -72,6 +81,8 @@ public class PositionDao extends GenericDao<PositionEntity> {
 		for (int i = 0; i < sizel; i++)
 			query.setParameter("loc"+i, locations.get(i));
 		query.setParameter("size", sizel);
+		if (positionManager != null)
+			query.setParameter("id", positionManager.getId());
 		return (List<PositionEntity>) query.getResultList();
 	
 	}

@@ -49,8 +49,10 @@
 						<p:submenu label="Posições">
 							<p:menuitem value="Nova Posição"
 								url="../../../role/admin/positions/NewPosition.xhtml" />
-							<p:menuitem value="Listar/Editar Posições"
+							<p:menuitem value="Editar Posições"
 								url="../../../role/admin/positions/EditPosition.xhtml" />
+							<p:menuitem value="Pesquisar Posições"
+								url="../../../role/admin/positions/AllPositions.xhtml" />
 						</p:submenu>
 					</p:column>
 
@@ -77,7 +79,7 @@
 							<p:menuitem value="Submeter Candidatura Manual?" 
 								url="../../../role/admin/newuser/NewUser.xhtml" />
 							<p:menuitem value="Pesquisar Candidatos"
-								url="../../../role/admin/search/CandidateSearch.xhtml" />
+								url="../../../role/admin/search/AllCandidates.xhtml" />
 							<p:menuitem value="Mudar estado Candidaturas (remover!!)"
 								url="../../../role/admin/search/SubmissionSearch.xhtml" />
 							<p:menuitem value="Candidaturas Espontâneas"
@@ -109,7 +111,8 @@
 								url="../../../role/manager/positions/EditPosition.xhtml" />
 						</p:submenu>
 						<p:submenu label="Candidaturas">
-							<p:menuitem value="Procurar Candidatos?" url="#" />
+							<p:menuitem value="Procurar Candidatos?" 
+								url="../../../role/manager/search/MyCandidates.xhtml" />
 							<p:menuitem value="Candidaturas Espontâneas"
 								url="../../../role/manager/search/SpontaneousSearch.xhtml" />
 						</p:submenu>

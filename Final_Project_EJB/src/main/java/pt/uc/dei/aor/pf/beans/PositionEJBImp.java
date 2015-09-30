@@ -61,59 +61,66 @@ public class PositionEJBImp implements PositionEJBInterface {
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByCode(String code) {
+	public List<PositionEntity> findPositionsByCode(String code,
+			UserEntity manager) {
 		log.info("Finding positions by code");
-		return positionDAO.findPositions(code, "%", "%", "%", "%", "%", null);
+		return positionDAO.findPositions(code, "%", "%", "%", "%", "%", manager);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByDate(Date openingDate1,
-			Date openingDate2) {
+			Date openingDate2, UserEntity manager) {
 		log.info("Finding all positions opened between two dates");
 		return positionDAO.findPositionsByDate(openingDate1, openingDate2, "%",
-				"%", "%", "%", "%", "%", null);
+				"%", "%", "%", "%", "%", manager);
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByTitle(String title) {
+	public List<PositionEntity> findPositionsByTitle(String title,
+			UserEntity manager) {
 		log.info("Finding positions by title");
 		return positionDAO.findPositions("%", title, "%",
-				"%", "%", "%", null);
+				"%", "%", "%", manager);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByLocationsOne(
-			List<String> locations) {
+			List<String> locations, UserEntity manager) {
 		log.info("Finding positions by locations");
-		return positionDAO.findPositionsByLocationsOne(locations);
+		return positionDAO.findPositionsByLocationsOne(locations,
+				manager);
 	}
 
 	@Override
 	public List<PositionEntity> findPositionsByLocationsAll(
-			List<String> locations) {
+			List<String> locations, UserEntity manager) {
 		log.info("Finding positions by locations");
-		return positionDAO.findPositionsByLocationsAll(locations);
+		return positionDAO.findPositionsByLocationsAll(locations,
+				manager);
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByStatus(String currentStatus) {
+	public List<PositionEntity> findPositionsByStatus(String currentStatus,
+			UserEntity manager) {
 		log.info("Finding positions by status");
 		return positionDAO.findPositions("%", "%", "%",
-				currentStatus, "%", "%", null);
+				currentStatus, "%", "%", manager);
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByCompany(String company) {
+	public List<PositionEntity> findPositionsByCompany(String company,
+			UserEntity manager) {
 		log.info("Finding positions by company");
 		return positionDAO.findPositions("%", "%", "%",
-				"%", company, "%", null);
+				"%", company, "%", manager);
 	}
 
 	@Override
-	public List<PositionEntity> findPositionsByTechArea(String tecnhicalArea) {
+	public List<PositionEntity> findPositionsByTechArea(String tecnhicalArea,
+			UserEntity manager) {
 		log.info("Finding positions by technical area");
 		return positionDAO.findPositions("%", "%", "%",	"%", "%", 
-				tecnhicalArea, null);
+				tecnhicalArea, manager);
 	}
 
 	@Override

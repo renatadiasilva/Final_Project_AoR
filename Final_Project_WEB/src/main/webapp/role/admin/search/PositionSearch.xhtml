@@ -26,18 +26,6 @@
 					update="@form, messages"
 					icon="ui-icon-search" />
 
-				<p:commandButton value="Posições abertas"
-					action="#{positionSearchCDI.searchOpenPositions()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Posições que passaram o SLA"
-					action="#{positionSearchCDI.searchAfterSLAPositions()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Posições perto do SLA"
-					action="#{positionSearchCDI.searchCloseToSLAPositions()}"
-					update="@form, messages" icon="ui-icon-search" />
-
 				<p:commandButton value="Posições (código)"
 					action="#{positionSearchCDI.searchPositionsByCode()}"
 					update="@form, messages" icon="ui-icon-search" />
@@ -70,34 +58,19 @@
 					action="#{positionSearchCDI.searchPositionsByTechArea()}"
 					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Posições (todos os campos)"
-					action="#{positionSearchCDI.searchPositions()}"
-					update="@form, messages" icon="ui-icon-search" />
-
 				<p:commandButton value="Posições (keyword)"
 					action="#{positionSearchCDI.searchPositionsByKeyword()}"
 					update="@form, messages" icon="ui-icon-search" />
 
+<!-- meter no my positions -->
 				<p:commandButton value="Posições (keyword/gestor)"
 					action="#{positionSearchCDI.
 						searchPositionsByKeywordAndManager()}"
 					update="@form, messages" icon="ui-icon-search" />
 
-				<p:commandButton value="Posições (campos/gestor)"
-					action="#{positionSearchCDI.searchPositionsByManager()}"
-					update="@form, messages" icon="ui-icon-search" />
-
+<!-- meter no procurar candidatos -->
 				<p:commandButton value="Posições (candidato)"
 					action="#{positionSearchCDI.searchPositionsByCandidate()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Posições abertas (gestor)"
-					action="#{positionSearchCDI.
-						searchOpenPositionManagedByUser()}"
-					update="@form, messages" icon="ui-icon-search" />
-
-				<p:commandButton value="Candidato associado a posição?"
-					action="#{positionSearchCDI.alreadyCandidateOfPosition()}"
 					update="@form, messages" icon="ui-icon-search" />
 
 			</h:panelGrid>

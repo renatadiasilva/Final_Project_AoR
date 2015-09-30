@@ -226,4 +226,15 @@ public class InterviewEntity implements Serializable {
 		this.first = first;
 	}
 	
+	public String first3Interviewers() {
+		String s = "";
+		int limit = (int) Math.min(interviewers.size(), 3)-1;
+		for(int i = 0; i < limit; i++)
+			s += interviewers.get(i).getFirstName()+" "
+					+interviewers.get(i).getLastName()+", ";
+		s += interviewers.get(limit).getFirstName()+" "
+				+interviewers.get(limit).getLastName();
+		return s;
+	}
+
 }

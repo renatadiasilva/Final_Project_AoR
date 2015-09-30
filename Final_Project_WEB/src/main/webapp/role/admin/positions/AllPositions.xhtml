@@ -7,17 +7,17 @@
 
 	<f:metadata>
 		<f:viewAction
-			actionListener="#{positionSearchCDI.enterMyPositions()}" />
+			actionListener="#{positionSearchCDI.enterAllPositions()}" />
 	</f:metadata>
 
 	<ui:define name="titulo">
-	Gestor - As minhas posições - #{styleSessionManagement.companyName}
+	Admin - Todas as posições - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		<h1>As minhas posições</h1>
-
+		<h1>Todas as posições</h1>
 		<br />		
+
 		<ui:include src="../../../WEB-INF/template/list-positions.xhtml" />
 	</ui:define>
 

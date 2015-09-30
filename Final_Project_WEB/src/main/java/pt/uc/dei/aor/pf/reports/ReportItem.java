@@ -2,12 +2,10 @@ package pt.uc.dei.aor.pf.reports;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
-import pt.uc.dei.aor.pf.entities.UserEntity;
 
 public class ReportItem implements Serializable {
 
@@ -90,16 +88,7 @@ public class ReportItem implements Serializable {
 	}
 
 	public String getInterviewers() {
-		String s = "";
-		if (interview == null) return "";
-		List<UserEntity> interviewers = interview.getInterviewers();
-		int limit = (int) Math.min(interviewers.size(), 3)-1;
-		for(int i = 0; i < limit; i++)
-			s += interviewers.get(i).getFirstName()+" "
-					+interviewers.get(i).getLastName()+", ";
-		s += interviewers.get(limit).getFirstName()+" "
-				+interviewers.get(limit).getLastName();
-		return s;
+		return interview.first3Interviewers();
 	}
 
 	public SubmissionEntity getSubmission() {

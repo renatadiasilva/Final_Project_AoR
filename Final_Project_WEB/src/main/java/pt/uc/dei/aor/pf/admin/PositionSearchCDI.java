@@ -2,10 +2,13 @@ package pt.uc.dei.aor.pf.admin;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -22,6 +25,7 @@ import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 import java.io.Serializable;
 
@@ -35,21 +39,24 @@ public class PositionSearchCDI implements Serializable {
 	private static final Logger log = 
 			LoggerFactory.getLogger(PositionSearchCDI.class);
 
+	@Inject
+	private UserSessionManagement userSession;
+
 	@EJB
 	private UserEJBInterface userEJB;
 
 	@EJB
 	private PositionEJBInterface positionEJB;
-	
+
 	@EJB
 	private ScriptEJBInterface scriptEJB;
-	
+
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
-	
+
 	@EJB
 	private QuestionEJBInterface questionEJB;
-	
+
 	// search fields
 	private Date date1, date2;
 	private String code, title, status;
@@ -63,12 +70,46 @@ public class PositionSearchCDI implements Serializable {
 	private boolean result;
 	private ScriptEntity checkScript;
 	private ScriptEntity script;
+	private boolean open, close, onhold;
+	private Map<String,String> availableStatus=new HashMap<String, String>();
+
 
 	private List<PositionEntity> plist;
 
+	private UserEntity manager;
+	private String headerTable;
+
 	public PositionSearchCDI() {
 	}
-	
+
+	public void enterAllPositions() {
+		manager = null;
+		plist = positionEJB.findAllOrderByCode();		
+		headerTable ="Não existem posições.";
+		clean();
+	}
+
+	public void enterMyPositions() {
+		manager = userEJB.find(userSession.getCurrentUserClone().getId());
+		plist = positionEJB.findPositionsManagedByUser(manager);
+		headerTable ="Não é gestor de nenhuma posição neste momento.";
+		clean();
+	}
+
+	public void clean() {
+		this.availableStatus.put(Constants.STATUS_OPEN, Constants.STATUS_OPEN);
+		this.availableStatus.put(Constants.STATUS_ONHOLD, Constants.STATUS_ONHOLD);
+		this.availableStatus.put(Constants.STATUS_CLOSED, Constants.STATUS_CLOSED);
+		code = title = status = company = tarea = keyword = location = "";
+		coimbra = porto = lisboa = other = false;
+		date1 = date2 = null;
+	}
+
+	public void cleanAll() {
+		clean();
+		plist = new ArrayList<PositionEntity>();
+	}
+
 	public List<PositionEntity> directOpenPositions() {
 		log.info("Searching for all open positions");
 		return this.positionEJB.findOpenPositions();
@@ -81,28 +122,30 @@ public class PositionSearchCDI implements Serializable {
 
 	public void searchAll() {
 		log.info("Searching for all positions");
-		this.plist = positionEJB.findAll();
+		if (manager != null) 
+			plist = positionEJB.findPositionsManagedByUser(manager);
+		plist = positionEJB.findAllOrderByCode();		
 	}
 
-	
+
 	public void searchPositionsByCode() {
 		log.info("Searching for positions by code");
 		String pattern = SearchPattern.preparePattern(code);
 		log.debug("Internal search string: "+pattern);
-		this.plist = positionEJB.findPositionsByCode(pattern);
+		this.plist = positionEJB.findPositionsByCode(pattern, manager);
 	}	
 
 	public void searchPositionsByDate() {
 		log.info("Searching for positions between two dates");
 		log.debug("Dates between "+date1+" and "+date2);
-		this.plist = positionEJB.findPositionsByDate(date1, date2);
+		this.plist = positionEJB.findPositionsByDate(date1, date2, manager);
 	}	
 
 	public void searchPositionsByTitle() {
 		log.info("Searching for positions by title");
 		String pattern = SearchPattern.preparePattern(title);
 		log.debug("Internal search string: "+pattern);
-		this.plist = positionEJB.findPositionsByTitle(pattern);
+		this.plist = positionEJB.findPositionsByTitle(pattern, manager);
 	}	
 
 	public void searchPositionsByLocationsOne() {
@@ -114,7 +157,7 @@ public class PositionSearchCDI implements Serializable {
 			log.debug(l);
 			pattern.add(SearchPattern.preparePattern(l));
 		}
-		this.plist = positionEJB.findPositionsByLocationsOne(pattern);
+		this.plist = positionEJB.findPositionsByLocationsOne(pattern, manager);
 	}	
 
 	public void searchPositionsByLocationsAll() {
@@ -122,28 +165,28 @@ public class PositionSearchCDI implements Serializable {
 		addLocations();
 		log.debug("Locations: ");
 		for(String l : locations) log.debug(l);
-		this.plist = positionEJB.findPositionsByLocationsAll(locations);
+		this.plist = positionEJB.findPositionsByLocationsAll(locations, manager);
 	}	
 
 	public void searchPositionsByStatus() {
 		log.info("Searching for positions by status");
 		log.debug("Status "+status);
 		String pattern = SearchPattern.preparePattern(status);
-		this.plist = positionEJB.findPositionsByStatus(pattern);
+		this.plist = positionEJB.findPositionsByStatus(pattern, manager);
 	}	
 
 	public void searchPositionsByCompany() {
 		log.info("Searching for positions by company");
 		String pattern = SearchPattern.preparePattern(company);
 		log.debug("Internal search string: "+pattern);
-		this.plist = positionEJB.findPositionsByCompany(pattern);
+		this.plist = positionEJB.findPositionsByCompany(pattern, manager);
 	}	
 
 	public void searchPositionsByTechArea() {
 		log.info("Searching for positions by tecnical area");
 		String pattern = SearchPattern.preparePattern(tarea);
 		log.debug("Internal search string: "+pattern);
-		this.plist = positionEJB.findPositionsByTechArea(pattern);
+		this.plist = positionEJB.findPositionsByTechArea(pattern, manager);
 	}	
 
 	public void searchPositions() {
@@ -233,30 +276,11 @@ public class PositionSearchCDI implements Serializable {
 		log.info("Searching for positions by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);
-		this.plist = positionEJB.findPositionsByKeyword(pattern);
-	}
-
-	public void searchPositionsByKeywordAndManager(Long idM) {
-		log.info("Searching for positions of manager by keyword");
-		log.debug("Id "+idM);
-		UserEntity manager = userEJB.find(idM);
-		if ( (manager != null) && (manager.getRoles().contains("MANAGER")) ) {
-			log.debug("Manager "+manager.getFirstName());
-			String pattern = SearchPattern.preparePattern(keyword);
-			log.debug("Internal search string: "+pattern);
+		if (manager == null)
+			this.plist = positionEJB.findPositionsByKeyword(pattern);
+		else
 			this.plist = positionEJB.findPositionsByKeywordAndManager(pattern,
-					manager);
-		} else log.error("No manager with id "+idM);
-	}
-	
-	public void searchPositionsManagedByUser(Long idM) {
-		log.info("Searching for positions by manager");
-		log.debug("Id "+idM);
-		UserEntity manager = userEJB.find(idM);
-		if (manager != null && manager.getRoles().contains("MANAGER")) {
-			log.debug("Manager "+manager.getFirstName());
-			this.plist = positionEJB.findPositionsManagedByUser(manager);
-		} else log.error("No manager with id "+idM);
+					manager);			
 	}
 
 	public void searchOpenPositionManagedByUser() {
@@ -381,7 +405,7 @@ public class PositionSearchCDI implements Serializable {
 	public void setResult(boolean result) {
 		this.result = result;
 	}
-	
+
 	public String getLocation() {
 		return location;
 	}
@@ -437,7 +461,7 @@ public class PositionSearchCDI implements Serializable {
 	public void setCheckScript(ScriptEntity checkScript) {
 		this.checkScript = checkScript;
 	}
-	
+
 	public boolean checkScript(ScriptEntity script){
 		if(this.script==null)return false;
 		if(this.script.getId()==script.getId())return true;
@@ -454,6 +478,54 @@ public class PositionSearchCDI implements Serializable {
 
 	public String getTypeTextOfQuestion(QuestionEntity question) {
 		return questionEJB.getTypeText(question);
+	}
+
+	public UserEntity getManager() {
+		return manager;
+	}
+
+	public void setManager(UserEntity manager) {
+		this.manager = manager;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
+
+	public boolean isClose() {
+		return close;
+	}
+
+	public void setClose(boolean close) {
+		this.close = close;
+	}
+
+	public boolean isOnhold() {
+		return onhold;
+	}
+
+	public void setOnhold(boolean onhold) {
+		this.onhold = onhold;
+	}
+
+	public String getHeaderTable() {
+		return headerTable;
+	}
+
+	public void setHeaderTable(String headerTable) {
+		this.headerTable = headerTable;
+	}
+
+	public Map<String,String> getAvailableStatus() {
+		return availableStatus;
+	}
+
+	public void setAvailableStatus(Map<String,String> availableStatus) {
+		this.availableStatus = availableStatus;
 	}
 
 }
