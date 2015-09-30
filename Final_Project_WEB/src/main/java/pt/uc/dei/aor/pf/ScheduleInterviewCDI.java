@@ -374,6 +374,15 @@ public class ScheduleInterviewCDI implements Serializable {
 
 		return this.position.getId()==position.getId();
 	}
+	
+	public void searchAllPositions(){
+		this.positions=this.positionEJB.findOpenPositions();
+	}
+	
+	public void searchByKeyword(){
+		String pattern = SearchPattern.preparePattern(keyword);
+		this.positions=this.positionEJB.findPositionsByKeyword(pattern);
+	}
 
 	public void searchPositionsManagedByUser(long idM){
 		log.info("Searching for positions by manager");
