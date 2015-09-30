@@ -16,7 +16,8 @@
 				<h:panelGrid columns="3" style="width:100%">
 					<p:commandButton value="Todas"
 						action="#{positionSearchCDI.searchAll()}"
-						update="myPositionsTable messages" icon="ui-icon-search"
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search"
 						style="width:100%" />
 				</h:panelGrid>
 			</h:form>
@@ -28,7 +29,8 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByCode()}"
-						update="myPositionsTable messages" icon="ui-icon-search" />
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
 
@@ -39,7 +41,8 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByTitle()}"
-						update="myPositionsTable messages" icon="ui-icon-search" />
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
 
@@ -50,7 +53,8 @@
 						value="#{positionSearchCDI.company}" style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByCompany()}"
-						update="myPositionsTable messages" icon="ui-icon-search" />
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
 
@@ -61,7 +65,8 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByTechArea()}"
-						update="myPositionsTable messages" icon="ui-icon-search" />
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
 
@@ -73,7 +78,8 @@
 						value="#{positionSearchCDI.keyword}" style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByKeyword()}"
-						update="myPositionsTable messages" icon="ui-icon-search" />
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
 
@@ -97,7 +103,8 @@
 				<h:panelGroup>
 					<p:commandButton value="Procurar por data"
 						action="#{positionSearchCDI.searchPositionsByDate()}"
-						update="myPositionsTable messages" icon="ui-icon-search" />
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
 				</h:panelGroup>
 			</h:form>
 
@@ -112,7 +119,8 @@
 
 					<p:commandButton value="Procurar por estado"
 						action="#{positionSearchCDI.searchPositionsByStatus()}"
-						update="myPositionsTable messages" icon="ui-icon-search" />
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
 		</h:panelGrid>
@@ -143,7 +151,8 @@
 				<h:panelGroup>
 					<p:commandButton value="Procurar por localização"
 						action="#{positionSearchCDI.searchPositionsByLocationsOne()}"
-						update="myPositionsTable messages" icon="ui-icon-search" />
+						update="myPositionsTable messages
+						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
 				</h:panelGroup>
 			</h:form>
 			<h:form style="width:100%">
@@ -151,7 +160,8 @@
 					value="Limpar pesquisa"
 					update="search-code-out search-company-out search-tarea-out
 						search-status-out search-datePos-out search-locations-out
-						  search-title-out search-keywordPos-out myPositionsTable messages"
+						  search-title-out search-keywordPos-out 
+						  editSubmissionReason editSubmissionStatus myPositionsTable messages"
 					icon="ui-icon-cancel" />
 			</h:form>
 		</h:panelGrid>
@@ -352,7 +362,7 @@
 
 		</h:form>
 
-		<h:form id="editSubmissionReason">
+		<h:form id="editSubmissionReason ">
 			<h:panelGrid rendered="#{positionSearchCDI.needsReason}">
 				<p:outputLabel value="Motivo de rejeição: *"
 					for="edit-submission-reason" />
