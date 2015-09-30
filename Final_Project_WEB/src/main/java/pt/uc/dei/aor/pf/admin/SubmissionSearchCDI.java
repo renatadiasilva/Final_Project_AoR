@@ -204,7 +204,6 @@ public class SubmissionSearchCDI implements Serializable {
 					new FacesMessage("Apagada data de proposta."));
 		}
 
-		this.submission.setStatus(status);
 		// Se o novo status é ACCEPTED, avisa para marcar entrevista
 		if(status.equals(Constants.STATUS_ACCEPTED)
 				&&!oldStatus.equals(Constants.STATUS_ACCEPTED)) {
@@ -244,6 +243,7 @@ public class SubmissionSearchCDI implements Serializable {
 
 		if(!needsReason) {
 			
+			this.submission.setStatus(status);
 			this.submissionEJB.update(this.submission);
 
 			this.submission=null;
@@ -435,6 +435,7 @@ public class SubmissionSearchCDI implements Serializable {
 	}
 
 	public void setSubmission(SubmissionEntity submission) {
+		needsReason = false;
 		this.submission = submission;
 		this.status = this.submission.getStatus();
 	}
