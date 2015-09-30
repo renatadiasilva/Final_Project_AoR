@@ -290,7 +290,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		String text="Olá "+candidate.getFirstName()
 				+" "+candidate.getLastName()+","
-				+"\n\nTemos o prazer de o informar que foi contratado(a)"
+				+"\n\nTemos o prazer de o(a) informar que foi contratado(a)"
 				+ " para a posição "
 				+positionMail+". Em breve será contactado(a) pela empresa "
 				+ submission.getPosition().getCompany()+" de modo a regularizar"
@@ -326,8 +326,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+companyName;
 
 		this.sendEmail(candidate.getEmail(), null, "Candidatura à"
-				+ "posição "+submission.getPosition().getPositionCode()
-				+ "rejeitada", text);
+				+ " posição "+submission.getPosition().getPositionCode()
+				+ " rejeitada", text);
 		
 		
 	}

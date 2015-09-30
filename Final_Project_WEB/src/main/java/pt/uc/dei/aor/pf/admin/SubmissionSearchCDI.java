@@ -163,32 +163,42 @@ public class SubmissionSearchCDI implements Serializable {
 
 	public void updateStatus(){
 		log.info("Updating status of submission");
+		String oldStatus=this.submission.getStatus();
+		boolean update = false;
 
+		log.debug("Current status: "+oldStatus);
+		log.debug("New status: "+status);
+		
 		// if current status is HIRED and new one is not, clean hiredDate
-		if(this.submission.getStatus().equals(Constants.STATUS_HIRED)
-				&&!this.status.equals(Constants.STATUS_HIRED)) {
+		if(oldStatus.equals(Constants.STATUS_HIRED)
+				&&!status.equals(Constants.STATUS_HIRED)) {
+			update = true;
 			this.submission.setHiredDate(null);
 			//updates the number of hired people of position
 			int oldhiredP = this.submission.getPosition().getHired_people();
 			oldhiredP--;
 			if (oldhiredP < 0) log.debug("Hired people counting is negative!");
-			this.submission.getPosition().setHired_people(oldhiredP);
+			PositionEntity position = this.submission.getPosition();
+			position.setHired_people(oldhiredP);
+			positionEJB.update(position);
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Apagada data de contratação."));
 		}
 		// if current status is REJECTED and new one isnt, clean rejectedReason
-		if(this.submission.getStatus().equals(Constants.STATUS_REJECTED)
-				&&!this.status.equals(Constants.STATUS_REJECTED)) {
+		if(oldStatus.equals(Constants.STATUS_REJECTED)
+				&&!status.equals(Constants.STATUS_REJECTED)) {
+			update = true;
 			this.submission.setRejectReason(null);
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Apagado motivo de rejeição."));
 		}
 
 		// if current status one of PROP/ON NEGO, and new is SUB/ACCEPTED
-		if((this.submission.getStatus().equals(Constants.STATUS_PROPOSAL)
-				||this.submission.getStatus().equals(Constants.STATUS_NEGOTIATION))
-				&&(this.status.equals(Constants.STATUS_SUBMITED)||
-						this.status.equals(Constants.STATUS_ACCEPTED))) {
+		if((oldStatus.equals(Constants.STATUS_PROPOSAL)
+				||oldStatus.equals(Constants.STATUS_NEGOTIATION))
+				&&(status.equals(Constants.STATUS_SUBMITED)||
+						status.equals(Constants.STATUS_ACCEPTED))) {
+			update = true;
 			this.submission.setProposalDate(null);
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Apagada data de proposta."));
@@ -196,31 +206,30 @@ public class SubmissionSearchCDI implements Serializable {
 
 		this.submission.setStatus(status);
 		// Se o novo status é ACCEPTED, avisa para marcar entrevista
-		if(this.status.equals(Constants.STATUS_ACCEPTED)
-				&&!this.submission.getStatus().equals(Constants.STATUS_ACCEPTED)) {
+		if(status.equals(Constants.STATUS_ACCEPTED)
+				&&!oldStatus.equals(Constants.STATUS_ACCEPTED)) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Não se esqueça de agendar entrevista."));
-		} else if((this.status.equals(Constants.STATUS_PROPOSAL) 
-				||this.status.equals(Constants.STATUS_NEGOTIATION))
-				&&(this.submission.getStatus().equals(Constants.STATUS_SUBMITED) 
-						||this.status.equals(Constants.STATUS_ACCEPTED)))
+		} else if((status.equals(Constants.STATUS_PROPOSAL) 
+				||status.equals(Constants.STATUS_NEGOTIATION))
+				&&(!oldStatus.equals(Constants.STATUS_PROPOSAL) 
+						&&!oldStatus.equals(Constants.STATUS_NEGOTIATION)))
 			this.submission.setProposalDate(new Date());
-		else if(this.status.equals(Constants.STATUS_REJECTED)
-				&&!this.submission.equals(Constants.STATUS_REJECTED)) {
+		else if(status.equals(Constants.STATUS_REJECTED))
 			this.needsReason=true;
-			return;
-		} else if(this.status.equals(Constants.STATUS_HIRED)
-				&&!this.submission.equals(Constants.STATUS_HIRED)) {
+		else if(status.equals(Constants.STATUS_HIRED)
+				&&!oldStatus.equals(Constants.STATUS_HIRED)) {
 			PositionEntity position=this.submission.getPosition();
-			
+
 			//updates the number of hired people of position
 			int oldhiredP = position.getHired_people();
 			oldhiredP++;
 			position.setHired_people(oldhiredP);
-			
+
 			if (oldhiredP == position.getOpenings()) {
 				// close position if hired people equal to openings
 				position.setStatus(Constants.STATUS_CLOSED);
+				position.setClosingDate(new Date());
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage("Todas as vagas da posição"
 								+ " foram preenchidas. A posição foi"
@@ -231,16 +240,19 @@ public class SubmissionSearchCDI implements Serializable {
 			this.submission.setHiredDate(new Date());
 			positionEJB.update(position);
 			this.mail.notifyHired(submission);
-		}			
+		}	
 
-		this.submissionEJB.update(this.submission);
+		if(!needsReason) {
+			
+			this.submissionEJB.update(this.submission);
 
-		this.submission=null;
+			this.submission=null;
 
-		this.clean();
+			this.clean();
 
-		FacesContext.getCurrentInstance().addMessage(
-				null, new FacesMessage("Estado actualizado."));
+			FacesContext.getCurrentInstance().addMessage(
+					null, new FacesMessage("Estado actualizado."));
+		} else if (update) this.submissionEJB.update(this.submission);
 	}
 
 	public void saveRejectedReason() {

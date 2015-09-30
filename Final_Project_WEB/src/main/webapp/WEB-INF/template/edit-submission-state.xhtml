@@ -20,8 +20,7 @@
 				paginator="true" rows="10">
 				<f:facet name="header">Candidaturas</f:facet>
 				<p:column headerText="id">
-					<h:outputText
-						value="#{s.id}" />
+					<h:outputText value="#{s.id}" />
 				</p:column>
 				<p:column headerText="Data">
 					<h:outputText
@@ -99,28 +98,23 @@
 
 		</h:form>
 
-		<h:form id="editSubmissionReason"
-			rendered="#{submissionSearchCDI.needsReason}">
-			<h:panelGrid>
-				<p:outputLabel value="Motivo de rejeição: "
+		<h:form id="editSubmissionReason">
+			<h:panelGrid rendered="#{submissionSearchCDI.needsReason}">
+				<p:outputLabel value="Motivo de rejeição: *"
 					for="edit-submission-reason" />
-				<p:inputTextarea value="#{submissionSearchCDI.reason}" rows="15"
-					cols="70" maxlength="100"
-					counter="maxDescriptionSub" required="true"
-					id="edit-submission-reason"
-					requiredMessage="Introduza o motivo de rejeição.">
-					<p:ajax update="editSubmissionReason messages" />
-				</p:inputTextarea>
+				<p:inputTextarea value="#{submissionSearchCDI.reason}" rows="10"
+					cols="50" maxlength="100" counter="maxDescriptionSub"
+					id="edit-submission-reason" />
 				<h:outputText id="maxDescriptionSub" />
+				<p:messages />
+
+				<p:commandButton icon="ui-icon-disk"
+					value="Gravar motivo de rejeição" style="width:100%"
+					action="#{submissionSearchCDI.saveRejectedReason()}"
+					update="editSubmissionReason editSubmissionStatus
+					editSubmission messages" />
 			</h:panelGrid>
 
-			<p:messages />
-
-			<p:commandButton icon="ui-icon-disk"
-				value="Gravar motivo de rejeição" style="width:100%"
-				action="#{submissionSearchCDI.saveRejectedReason()}"
-				update="editSubmissionReason editSubmissionStatus
-					messages" />
 		</h:form>
 
 	</ui:composition>

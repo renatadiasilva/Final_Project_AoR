@@ -387,6 +387,7 @@ public class InitDB {
 		plist[2].setLocations(locations);
 		plist[2].setAdvertisingChannels(channels);
 		plist[2].setOpeningDate(ftDate.parse("2015-07-31"));
+		plist[2].setHired_people(1);
 
 		locations = Arrays.asList(Constants.LOCATION_LISBOA,
 				Constants.LOCATION_COIMBRA, Constants.LOCATION_PORTO);
@@ -396,6 +397,7 @@ public class InitDB {
 		plist[3].setAdvertisingChannels(channels);
 		plist[3].setOpeningDate(ftDate.parse("2015-08-02"));
 		plist[3].setStatus(Constants.STATUS_CLOSED);
+		plist[3].setHired_people(2);
 		
 		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
@@ -404,6 +406,7 @@ public class InitDB {
 		plist[4].setAdvertisingChannels(channels);
 		plist[4].setOpeningDate(ftDate.parse("2015-06-29"));
 		plist[4].setStatus(Constants.STATUS_CLOSED);
+		plist[4].setHired_people(1);
 		
 		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL);
