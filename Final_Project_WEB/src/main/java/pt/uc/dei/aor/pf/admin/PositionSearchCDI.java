@@ -295,7 +295,8 @@ public class PositionSearchCDI implements Serializable {
 	// getters e setters
 
 	public Date getDate1() {
-		return date1;
+		if (date1 != null) return date1;
+		return new Date();
 	}
 
 	public void setDate1(Date date1) {
@@ -303,7 +304,8 @@ public class PositionSearchCDI implements Serializable {
 	}
 
 	public Date getDate2() {
-		return date2;
+		if (date2 != null) return date2;
+		return new Date();
 	}
 
 	public void setDate2(Date date2) {
