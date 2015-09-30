@@ -313,6 +313,7 @@ public class InitDB {
 				Constants.ROLE_CANDIDATE);
 		ulist[0].setDefaultRole(Constants.ROLE_ADMIN);
 		ulist[0].setRoles(roles);
+		ulist[0].setUploadedCV(true);
 
 		roles = Arrays.asList(Constants.ROLE_ADMIN);
 		ulist[1].setDefaultRole(Constants.ROLE_ADMIN);
@@ -343,7 +344,12 @@ public class InitDB {
 		
 		// manual submission... saved by admin
 		ulist[4].setCreatedBy(ulist[0]);	
+		ulist[4].setUploadedCV(true);
 		
+		ulist[6].setUploadedCV(true);
+		ulist[8].setUploadedCV(true);
+		ulist[9].setUploadedCV(true);
+
 		roles = Arrays.asList(Constants.ROLE_MANAGER);
 		ulist[10].setDefaultRole(Constants.ROLE_MANAGER);
 		ulist[10].setRoles(roles);
