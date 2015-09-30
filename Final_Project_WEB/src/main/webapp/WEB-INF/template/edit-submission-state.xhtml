@@ -61,6 +61,14 @@
 
 		<!-- Status -->
 		<h:form id="editSubmissionStatus">
+			<h2>
+				<h:outputText
+					value="Candidatura de #{submissionSearchCDI.submission.candidate.firstName}
+					#{submissionSearchCDI.submission.candidate.lastName}
+					à posição #{submissionSearchCDI.submission.position.positionCode}" 
+					rendered="#{!adminNewUserCDI.checkPositionNull()}" />
+			</h2>
+
 			<h:panelGrid columns="3" style="width:1000px"
 				rendered="#{submissionSearchCDI.loadedSubmission()}">
 

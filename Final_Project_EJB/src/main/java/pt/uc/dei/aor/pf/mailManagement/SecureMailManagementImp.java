@@ -313,10 +313,14 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String positionMail=submission.getPosition().getPositionCode()
 				+", \'"+submission.getPosition().getTitle()+"\' - "
 				+submission.getPosition().getCompany();
+		
+		String rejectedStuff;
+		if (submission.getProposalDate() != null) rejectedStuff = "proposta";
+		else rejectedStuff = "candidatura";
 
 		String text="Olá "+candidate.getFirstName()
 				+" "+candidate.getLastName()+","
-				+"\n\nLamentamos informar que a sua candidatura à"
+				+"\n\nLamentamos informar que a sua "+rejectedStuff+" à"
 				+ " posição "
 				+positionMail+" foi rejeitada"
 //				+ " (motivo: "+submission.getRejectReason()+")"
