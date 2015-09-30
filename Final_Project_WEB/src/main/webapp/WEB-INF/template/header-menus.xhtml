@@ -41,7 +41,7 @@
 					rendered="#{userSessionManagement.admin}">
 					<p:column>
 						<p:submenu label="Utilizadores">
-							<p:menuitem value="Registar Novo Utilizador"
+							<p:menuitem value="Novo Utilizador"
 								url="../../../role/admin/newuser/NewUser.xhtml" />
 							<p:menuitem value="Listar/Editar Utilizadores"
 								url="../../../role/admin/edit/EditUser.xhtml" />
@@ -49,25 +49,25 @@
 						<p:submenu label="Posições">
 							<p:menuitem value="Nova Posição"
 								url="../../../role/admin/positions/NewPosition.xhtml" />
-							<p:menuitem value="Editar Posição"
+							<p:menuitem value="Listar/Editar Posições"
 								url="../../../role/admin/positions/EditPosition.xhtml" />
-							<p:menuitem value="Procurar Posições"
-								url="../../../role/admin/search/PositionSearch.xhtml" />
+<!-- 							<p:menuitem value="Procurar Posições" -->
+<!-- 								url="../../../role/admin/search/PositionSearch.xhtml" /> -->
 						</p:submenu>
 					</p:column>
 
 					<p:column>
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="Agendar Entrevista" url="#" />
-							<p:menuitem value="Editar Entrevista" url="#" />
-							<p:menuitem value="Procurar Entrevistas"
+<!-- 							<p:menuitem value="Editar Entrevista" url="#" /> -->
+							<p:menuitem value="Listar/Editar Entrevistas"
 								url="../../../role/admin/search/InterviewSearch.xhtml" />
 						</p:submenu>
 						<p:submenu label="Guiões">
 							<p:menuitem value="Novo Guião"
 								url="../../../role/admin/scripts/NewScript.xhtml" />
-							<p:menuitem value="Editar Guião" url="#" />
-							<p:menuitem value="Procurar Guiões"
+<!-- 							<p:menuitem value="Editar Guião" url="#" /> -->
+							<p:menuitem value="Listar/Editar Guiões"
 								url="../../../role/admin/search/ScriptSearch.xhtml" />
 						</p:submenu>
 						<p:submenu label="Estilos">
@@ -78,11 +78,12 @@
 
 					<p:column>
 						<p:submenu label="Candidaturas">
-							<p:menuitem value="Nova Candidatura" url="#" />
-							<p:menuitem value="Editar Candidatura" url="#" />
-							<p:menuitem value="Procurar Candidatos"
+							<p:menuitem value="Submeter Candidatura Manual?" 
+								url="../../../role/admin/newuser/NewUser.xhtml" />
+<!-- 							<p:menuitem value="Editar Candidatura" url="#" /> -->
+							<p:menuitem value="Pesquisar Candidatos"
 								url="../../../role/admin/search/CandidateSearch.xhtml" />
-							<p:menuitem value="Procurar Candidaturas"
+							<p:menuitem value="Mudar estado Candidaturas (remover!!)"
 								url="../../../role/admin/search/SubmissionSearch.xhtml" />
 							<p:menuitem value="Candidaturas Espontâneas"
 								url="../../../role/admin/search/SpontaneousSearch.xhtml" />
@@ -109,18 +110,17 @@
 						<p:submenu label="Posições">
 							<p:menuitem value="As Minhas Posições"
 								url="../../../role/manager/positions/MyPositions.xhtml" />
-							<p:menuitem value="Editar Posições"
-								url="../../../role/manager/positions/EditPosition.xhtml" />
+<!-- 							<p:menuitem value="Editar Posições" -->
+<!-- 								url="../../../role/manager/positions/EditPosition.xhtml" /> -->
 						</p:submenu>
 						<p:submenu label="Candidaturas">
-							<p:menuitem value="Procurar Candidatos" url="#" />
+							<p:menuitem value="Procurar Candidatos?" url="#" />
 							<p:menuitem value="Candidaturas Espontâneas"
 								url="../../../role/manager/search/SpontaneousSearch.xhtml" />
 						</p:submenu>
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="Agendar Entrevista" url="#" />
-							<p:menuitem value="Editar Entrevista" url="#" />
-							<p:menuitem value="Procurar Entrevistas" url="#" />
+							<p:menuitem value="Listar/Editar Entrevistas" url="#" />
 						</p:submenu>
 
 						<p:submenu label="Perfil Inicial"
@@ -136,8 +136,9 @@
 					rendered="#{userSessionManagement.interviewer}">
 					<p:column>
 						<p:submenu label="Entrevistas">
-							<p:menuitem value="As minhas Entrevistas Agendadas" url="#" />
-							<p:menuitem value="As minhas Entrevistas Passadas" url="#" />
+							<p:menuitem value="As Minhas Entrevistas Agendadas" url="#" />
+							<p:menuitem value="As Minhas Entrevistas Passadas" url="#" />
+							<p:menuitem value="Submeter Resultado Entrevista" url="#" />
 						</p:submenu>
 						<p:submenu label="Perfil Inicial"
 							rendered="#{!userSessionManagement.checkDefaultInterviewer()}">
@@ -163,7 +164,7 @@
 								oncomplete="PF('spontaneousSubmission').show();" />
 						</p:submenu>
 						<p:submenu label="Entrevistas">
-							<p:menuitem value="As minhas Entrevistas" url="#" />
+							<p:menuitem value="As Minhas Entrevistas Agendadas" url="#" />
 						</p:submenu>
 
 						<p:submenu label="CV">
