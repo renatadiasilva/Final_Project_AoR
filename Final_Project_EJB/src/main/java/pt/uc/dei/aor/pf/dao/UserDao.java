@@ -14,7 +14,7 @@ import pt.uc.dei.aor.pf.entities.UserEntity;
 
 @Stateless
 public class UserDao extends GenericDao<UserEntity> {
-	
+
 	public UserDao() {
 		super(UserEntity.class);
 	}
@@ -25,35 +25,35 @@ public class UserDao extends GenericDao<UserEntity> {
 		user.setRoles(this.verifyRoles(verifyRoles));
 		super.save(user);
 	}
-	
+
 	@Override
 	public UserEntity update (UserEntity user){
 		List<String>verifyRoles=user.getRoles();
 		user.setRoles(this.verifyRoles(verifyRoles));
 		return super.update(user);
 	}
-	
+
 	private List<String> verifyRoles(List<String>roles){
 		// Se é ADMIN ou MANAGER tem de ser também INTERVIEWER
-		
+
 		List<String>verifyRoles=new ArrayList<>();
-		
+
 		verifyRoles.addAll(roles);
-		
+
 		if(verifyRoles.contains(Constants.ROLE_INTERVIEWER))
 			return verifyRoles;
-		
+
 		if(verifyRoles.contains(Constants.ROLE_ADMIN)){
 			verifyRoles.add(Constants.ROLE_INTERVIEWER);
 			return verifyRoles;
 		}
-		
+
 		if(verifyRoles.contains(Constants.ROLE_MANAGER))
 			verifyRoles.add(Constants.ROLE_INTERVIEWER);
-		
+
 		return verifyRoles;
 	}
-	
+
 	public List<UserEntity> findAllNotRemoved() {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("removed", "%"+Constants.REMOVED_DATA+"%");
@@ -82,8 +82,8 @@ public class UserDao extends GenericDao<UserEntity> {
 		String queryS = makeQuery("DISTINCT users.*", "users, roles",
 				"(", attributes, " OR ", 
 				"users.id = roles.user_id"
-				+ " AND email NOT LIKE :removed", "email");
-		
+						+ " AND email NOT LIKE :removed", "email");
+
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("first_name", name);
 		query.setParameter("last_name", name);
@@ -128,22 +128,57 @@ public class UserDao extends GenericDao<UserEntity> {
 		return (List<UserEntity>) query.getResultList();
 	}
 
-	public List<UserEntity> findCandidatesByPhone(String phone) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("phone", phone);
-		parameters.put("removed", Constants.REMOVED_DATA);
-		return super.findSomeResults("User.findCandidatesByPhone", parameters);
+	@SuppressWarnings("unchecked")
+	public List<UserEntity> findCandidatesByPhone(String phone,
+			UserEntity manager) {
+		
+		if (manager == null) {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("phone", phone);
+			parameters.put("removed", Constants.REMOVED_DATA);
+			return super.findSomeResults("User.findCandidatesByPhone", parameters);
+		}
+		
+		String queryS = "SELECT users.*"
+				+ " FROM users, users_info, submissions, positions"
+				+ " WHERE home_phone LIKE :phone"
+				+ " OR mobile_phone LIKE :phone"
+				+ " AND email NOT LIKE :removed"
+				+ " AND users.id = submissions.candidate"
+				+ " AND submissions.position = positions.id"
+				+ " AND positions.manager = :id"
+				+ " AND users.id = users_info.user_id"
+				+ " ORDER BY first_name";
+
+		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("phone", phone);
+		query.setParameter("removed", "%"+Constants.REMOVED_DATA+"%");
+		if (manager != null) query.setParameter("id", manager.getId());
+		return (List<UserEntity>) query.getResultList();
+
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<UserEntity> findCandidatesByKeyword(String keyword) {
+	public List<UserEntity> findCandidatesByKeyword(String keyword,
+			UserEntity manager) {
 
 		String[] attributes = {"address", "city", "country", "course",
-				"school"};
-		String queryS = makeQuery("users.*", "users, users_info", "(", 
-				attributes, " OR ",
-				"users.id = users_info.user_id"
-				+ " AND email NOT LIKE :removed", "email");
+		"school"};
+
+		String queryS;
+		if (manager == null)
+			queryS = makeQuery("users.*", "users, users_info", "(", 
+					attributes, " OR ",
+					"users.id = users_info.user_id"
+							+ " AND email NOT LIKE :removed", "first_name");
+		else queryS = makeQuery("users.*", 
+				"users, users_info, submissions, positions", 
+				"(UPPER(email) LIKE :email AND ", attributes, 
+				" OR ", "users.id = users_info.user_id AND"
+						+ " users.id = submissions.candidate"
+						+ " AND submissions.position = positions.id AND"
+						+ " positions.manager = :id"
+						+ " AND email NOT LIKE :removed", "first_name");
 
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("address", keyword);
@@ -152,6 +187,7 @@ public class UserDao extends GenericDao<UserEntity> {
 		query.setParameter("course", keyword);
 		query.setParameter("school", keyword);
 		query.setParameter("removed", "%"+Constants.REMOVED_DATA+"%");
+		if (manager != null) query.setParameter("id", manager.getId());
 		return (List<UserEntity>) query.getResultList();
 
 	}
@@ -160,25 +196,34 @@ public class UserDao extends GenericDao<UserEntity> {
 	public List<UserEntity> findCandidates(String email, String fname, 
 			String lname, String address, String city, 
 			String country, String course, String school, 
-			PositionEntity position) {
+			PositionEntity position, UserEntity manager) {
 
 		String[] attributes = {"first_name", "last_name", "address", "city", 
-			"country", "course", "school"};
-		
+				"country", "course", "school"};
+
 		String queryS;
 		if (position != null) queryS = makeQuery("users.*", 
-			"users, users_info, submissions, positions", 
-			"(UPPER(email) LIKE :email AND ", attributes, 
-			" AND ", "users.id = users_info.user_id AND"
-			+ " users.id = submissions.candidate"
-			+ " AND submissions.position = positions.id AND"
-			+ " positions.id = :id"
-			+ " AND email NOT LIKE :removed", "email");
-		else queryS = makeQuery("users.*", "users, users_info", 
-			"(UPPER(email) LIKE :email AND ", attributes, 
-			" AND ", "users.id = users_info.user_id"
-					+ " AND email NOT LIKE :removed", "email");
-		
+				"users, users_info, submissions, positions", 
+				"(UPPER(email) LIKE :email AND ", attributes, 
+				" AND ", "users.id = users_info.user_id AND"
+						+ " users.id = submissions.candidate"
+						+ " AND submissions.position = positions.id AND"
+						+ " positions.id = :id"
+						+ " AND email NOT LIKE :removed", "first_name");
+		else if (manager != null) {
+			queryS = makeQuery("users.*", 
+					"users, users_info, submissions, positions", 
+					"(UPPER(email) LIKE :email AND ", attributes, 
+					" AND ", "users.id = users_info.user_id AND"
+							+ " users.id = submissions.candidate"
+							+ " AND submissions.position = positions.id AND"
+							+ " positions.manager = :id"
+							+ " AND email NOT LIKE :removed", "first_name");
+		} else queryS = makeQuery("users.*", "users, users_info", 
+				"(UPPER(email) LIKE :email AND ", attributes, 
+				" AND ", "users.id = users_info.user_id"
+						+ " AND email NOT LIKE :removed", "first_name");
+
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("email", email);
 		query.setParameter("first_name", fname);
@@ -190,6 +235,7 @@ public class UserDao extends GenericDao<UserEntity> {
 		query.setParameter("school", school);
 		query.setParameter("removed", "%"+Constants.REMOVED_DATA+"%");
 		if (position != null) query.setParameter("id", position.getId());
+		else if (manager != null) query.setParameter("id", manager.getId());
 		return (List<UserEntity>) query.getResultList();
 
 	}

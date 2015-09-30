@@ -1,0 +1,24 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:viewAction
+			actionListener="#{candidateSearchCDI.enterMyCandidates()}" />
+	</f:metadata>
+
+	<ui:define name="titulo">
+	Gestor - Os meus candidatos - #{styleSessionManagement.companyName}
+	</ui:define>
+
+	<ui:define name="contents">
+		<h1>Os meus candidatos</h1>
+		<br />		
+
+		<ui:include src="../../../WEB-INF/template/list-candidates.xhtml" />
+	</ui:define>
+
+</ui:composition>

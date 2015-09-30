@@ -16,8 +16,8 @@
 				<h:panelGrid columns="3" style="width:100%">
 					<p:commandButton value="Todas"
 						action="#{positionSearchCDI.searchAll()}"
-						update="myPositionsTable messages"
-						icon="ui-icon-search" style="width:100%" />
+						update="myPositionsTable messages" icon="ui-icon-search"
+						style="width:100%" />
 				</h:panelGrid>
 			</h:form>
 
@@ -156,6 +156,8 @@
 			</h:form>
 		</h:panelGrid>
 
+		<br />
+		<br />
 		<h:form id="myPositionsTable">
 			<p:dataTable emptyMessage="#{positionSearchCDI.headerTable}" var="p"
 				value="#{positionSearchCDI.plist}"
@@ -172,17 +174,11 @@
 				<p:column headerText="Data Abertura">
 					<h:outputText value="#{p.openingDate}" />
 				</p:column>
-				<p:column headerText="Data Fecho">
-					<h:outputText value="#{p.closingDate}" />
-				</p:column>
 				<p:column headerText="Localizações">
 					<h:outputText value="#{p.allLocations()}" />
 				</p:column>
 				<p:column headerText="Estado">
 					<h:outputText value="#{p.status}" />
-				</p:column>
-				<p:column headerText="Vagas">
-					<h:outputText value="#{p.openings}" />
 				</p:column>
 				<p:column headerText="Empresa">
 					<h:outputText value="#{p.company}" />
@@ -202,6 +198,20 @@
 						actionListener="#{positionSearchCDI.setCheckScript(p.defaultScript)}"
 						oncomplete="PF('checkScriptMyPos').show();"
 						update="checkScriptFormMyPos" />
+				</p:column>
+				<p:column headerText="Ver candidaturas">
+					<p:commandButton value="Seleccionar" style="width:100%"
+						rendered="#{!positionSearchCDI.checkPosition(p)}"
+						actionListener="#{positionSearchCDI.setPosition(p)}"
+						icon="ui-icon-suitcase"
+						update="@form messages submissionsPos
+						editSubmissionStatus editSubmissionReason" />
+					<p:commandButton rendered="#{positionSearchCDI.checkPosition(p)}"
+						style="width:100%" value="Cancelar"
+						actionListener="#{positionSearchCDI.unloadPosition()}"
+						icon="ui-icon-cancel"
+						update="@form messages submissionsPos
+						editSubmissionStatus editSubmissionReason" />
 				</p:column>
 			</p:dataTable>
 
@@ -236,6 +246,131 @@
 				<p:commandButton value="Fechar"
 					onclick="PF('checkScriptMyPos').hide();" />
 			</p:dialog>
+		</h:form>
+
+		<h:form id="submissionsPos">
+			<h:panelGrid rendered="#{positionSearchCDI.loadedPosition()}">
+				<h2>Posição #{positionSearchCDI.position.positionCode},
+					#{positionSearchCDI.position.title} -
+					#{positionSearchCDI.position.company}</h2>
+			</h:panelGrid>
+			<h:panelGrid rendered="#{positionSearchCDI.checkIfClosed()}">
+				<h3>Data de fecho: #{positionSearchCDI.position.closingDate}</h3>
+			</h:panelGrid>
+			<h:panelGrid rendered="#{positionSearchCDI.checkIfNotClosed()}">
+				<h3>Vagas ainda em aberto:
+					#{positionSearchCDI.availableOpenings()}</h3>
+			</h:panelGrid>
+			<p:dataTable emptyMessage="A posição não tem candidaturas." var="s"
+				rendered="#{positionSearchCDI.loadedPosition()}"
+				value="#{positionSearchCDI.submissions}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Candidaturas da posição</f:facet>
+				<p:column headerText="Data">
+					<h:outputText
+						value="#{positionSearchCDI.getDateWithoutTime(s.date)}" />
+				</p:column>
+				<p:column headerText="Estado">
+					<h:outputText value="#{s.status}" />
+				</p:column>
+				<p:column headerText="Carta de Motivação">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getMotivatioLetterPath(s)}"
+							target="_blank">Consultar a Carta de Motivação</a>
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="CV">
+					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
+						<a href="#{submissionSearchCDI.getCvPath(s)}" target="_blank">
+							Consultar CV</a>
+					</h:panelGroup>
+				</p:column>
+				<p:column headerText="Mudar o estado">
+					<p:commandButton value="Seleccionar" style="width:100%"
+						rendered="#{!positionSearchCDI.checkSubmission(s)}"
+						actionListener="#{positionSearchCDI.setSubmission(s)}"
+						icon="ui-icon-person"
+						update="@form messages editSubmissionStatus editSubmissionReason" />
+					<p:commandButton rendered="#{positionSearchCDI.checkSubmission(s)}"
+						style="width:100%" value="Cancelar"
+						actionListener="#{positionSearchCDI.unloadSubmission()}"
+						icon="ui-icon-cancel" update="@form messages editSubmissionStatus" />
+				</p:column>
+			</p:dataTable>
+			<p:messages />
+
+		</h:form>
+
+		<!-- Status -->
+		<h:form id="editSubmissionStatus">
+
+			<h:panelGrid rendered="#{positionSearchCDI.loadedSubmission()}">
+				<h2>Candidatura de
+					#{positionSearchCDI.submission.candidate.firstName}
+					#{positionSearchCDI.submission.candidate.lastName} à posição
+					#{positionSearchCDI.submission.position.positionCode}</h2>
+			</h:panelGrid>
+			<h:panelGrid columns="3" style="width:1000px"
+				rendered="#{positionSearchCDI.loadedSubmission()}">
+
+				<p:outputLabel rendered="#{!positionSearchCDI.needsReason}"
+					for="edit-submission-status" value="Estado: " />
+
+				<h:panelGroup>
+					<h:panelGrid columns="4" style="width:100%">
+						<p:selectOneMenu id="edit-submission-status" style="width:100%"
+							value="#{positionSearchCDI.statusSub}"
+							rendered="#{!positionSearchCDI.needsReason}">
+							<f:selectItems value="#{positionSearchCDI.availableStatusSub}" />
+							<f:ajax event="change" />
+						</p:selectOneMenu>
+						<p:commandButton value="Actualizar estado" style="width:100%"
+							action="#{positionSearchCDI.updateStatusSub()}"
+							icon="ui-icon-disk"
+							update="submissionsPos
+								editSubmissionStatus editSubmissionReason messages"
+							rendered="#{!positionSearchCDI.needsReason}">
+							<p:confirm header="Confirmação"
+								message="Tem a certeza que quer actualizar o estado da candidatura?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:confirmDialog global="true">
+							<h:panelGrid columns="2" style="width:100%">
+								<p:commandButton value="Sim" type="button" style="width:100%"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Não" type="button" style="width:100%"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</h:panelGrid>
+						</p:confirmDialog>
+
+					</h:panelGrid>
+				</h:panelGroup>
+			</h:panelGrid>
+
+		</h:form>
+
+		<h:form id="editSubmissionReason">
+			<h:panelGrid rendered="#{positionSearchCDI.needsReason}">
+				<p:outputLabel value="Motivo de rejeição: *"
+					for="edit-submission-reason" />
+				<p:inputTextarea value="#{positionSearchCDI.reason}" rows="10"
+					cols="50" maxlength="100" counter="maxDescriptionSub"
+					id="edit-submission-reason" />
+				<h:outputText id="maxDescriptionSub" />
+				<p:messages />
+
+				<p:commandButton icon="ui-icon-disk"
+					value="Mudar para estado rejeitado e 
+						gravar motivo de rejeição"
+					style="width:100%"
+					action="#{positionSearchCDI.saveRejectedReason()}"
+					update="editSubmissionReason editSubmissionStatus
+					submissionsPos messages" />
+			</h:panelGrid>
+
 		</h:form>
 
 	</ui:composition>

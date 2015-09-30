@@ -40,7 +40,7 @@ import javax.validation.constraints.NotNull;
 			query = "SELECT u.owner FROM UserInfoEntity u WHERE"
 					+ " u.homePhone LIKE :phone OR u.mobilePhone LIKE :phone"
 					+ " AND u.owner.email NOT LIKE :removed"
-					+ " ORDER BY u.owner.email"),
+					+ " ORDER BY u.owner.firstName"),
 	@NamedQuery(name = "User.findRemovedEmails",
 			query = "SELECT u FROM UserEntity u WHERE"
 					+ " u.email LIKE :removed ORDER BY u.email"),

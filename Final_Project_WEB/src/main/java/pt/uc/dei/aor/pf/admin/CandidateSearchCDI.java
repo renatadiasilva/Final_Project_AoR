@@ -14,6 +14,7 @@ import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 
 @Named
@@ -36,76 +37,102 @@ public class CandidateSearchCDI {
 	private Long idPos;
 
 	private List<UserEntity> ulist;
-
+	
+	private UserEntity manager;
+	private String headerTable;
+	
+	private UserSessionManagement userSession;
+	
 	public CandidateSearchCDI() {
+	}
+
+	public void enterAllCandidates() {
+		manager = null;
+		ulist = userEJB.findAllCandidates();		
+		setHeaderTable("Não existem candidatos.");
+		clean();
+	}
+
+	public void enterMyCandidates() {
+		manager = userEJB.find(userSession.getCurrentUserClone().getId());
+		ulist = userEJB.findCandidatesByKeyword("%", manager);
+		setHeaderTable("Não tem posições ou não tem candidaturas"
+				+ " às suas posições.");
+		clean();
+	}
+
+	public void clean() {
+		email = fname = lname = keyword = address = city = "";
+		phone = country = course = school = "";
 	}
 
 	public void searchAllCandidates() {
 		log.info("Searching for all candidates");
-		this.ulist = userEJB.findAllCandidates();
+		if (manager != null) userEJB.findCandidatesByKeyword("%", manager);
+		else this.ulist = userEJB.findAllCandidates();
 	}
 
 	public void searchCandidatesByEmail() {
 		log.info("Searching for candidates by email");
 		String pattern = SearchPattern.preparePattern(email);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByEmail(pattern);
+		this.ulist = userEJB.findCandidatesByEmail(pattern, manager);
 	}	
 
 	public void searchCandidatesByFirstName() {
 		log.info("Searching for candidates by first name");
 		String pattern = SearchPattern.preparePattern(fname);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByFirstName(pattern);
+		this.ulist = userEJB.findCandidatesByFirstName(pattern, manager);
 	}	
 
 	public void searchCandidatesByLastName() {
 		log.info("Searching for candidates by last name");
 		String pattern = SearchPattern.preparePattern(lname);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByLastName(pattern);
+		this.ulist = userEJB.findCandidatesByLastName(pattern, manager);
 	}	
 
 	public void searchCandidatesByAddress() {
 		log.info("Searching for candidates by address");
 		String pattern = SearchPattern.preparePattern(address);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByAddress(pattern);
+		this.ulist = userEJB.findCandidatesByAddress(pattern, manager);
 	}	
 
 	public void searchCandidatesByCity() {
 		log.info("Searching for candidates by city");
 		String pattern = SearchPattern.preparePattern(city);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByCity(pattern);
+		this.ulist = userEJB.findCandidatesByCity(pattern, manager);
 	}	
 
 	public void searchCandidatesByPhone() {
 		log.info("Searching for candidates by phone");
 		String pattern = SearchPattern.preparePattern(phone);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByPhone(pattern);
+		this.ulist = userEJB.findCandidatesByPhone(pattern, manager);
 	}	
 
 	public void searchCandidatesByCountry() {
 		log.info("Searching for candidates by country");
 		String pattern = SearchPattern.preparePattern(country);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByCountry(pattern);
+		this.ulist = userEJB.findCandidatesByCountry(pattern, manager);
 	}	
 
 	public void searchCandidatesByCourse() {
 		log.info("Searching for candidates by course");
 		String pattern = SearchPattern.preparePattern(course);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByCourse(pattern);
+		this.ulist = userEJB.findCandidatesByCourse(pattern, manager);
 	}	
 
 	public void searchCandidatesBySchool() {
 		log.info("Searching for candidates by school");
 		String pattern = SearchPattern.preparePattern(school);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesBySchool(pattern);
+		this.ulist = userEJB.findCandidatesBySchool(pattern, manager);
 	}	
 
 	public void searchCandidatesByPositionOnly() {
@@ -187,7 +214,7 @@ public class CandidateSearchCDI {
 		log.info("Searching for candidates by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);
-		this.ulist = userEJB.findCandidatesByKeyword(pattern);
+		this.ulist = userEJB.findCandidatesByKeyword(pattern, manager);
 	}	
 
 	// getters e setters
@@ -286,6 +313,22 @@ public class CandidateSearchCDI {
 
 	public void setIdPos(Long idPos) {
 		this.idPos = idPos;
+	}
+
+	public UserEntity getManager() {
+		return manager;
+	}
+
+	public void setManager(UserEntity manager) {
+		this.manager = manager;
+	}
+
+	public String getHeaderTable() {
+		return headerTable;
+	}
+
+	public void setHeaderTable(String headerTable) {
+		this.headerTable = headerTable;
 	}
 
 }

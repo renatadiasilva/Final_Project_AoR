@@ -191,71 +191,80 @@ public class UserEJBImp implements UserEJBInterface {
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByEmail(String email) {
+	public List<UserEntity> findCandidatesByEmail(String email,
+			UserEntity manager) {
 		log.info("Finding candidates by email");
 		return userDAO.findCandidates(email, "%", "%", "%", "%", "%", "%",
-				"%", null);
+				"%", null, manager);
 	}
 
-	public List<UserEntity> findCandidatesByFirstName(String firstName) {
+	public List<UserEntity> findCandidatesByFirstName(String firstName,
+			UserEntity manager) {
 		log.info("Finding candidates by first name");
 		return userDAO.findCandidates("%", firstName, "%", "%", "%", "%",
-				"%", "%", null);
+				"%", "%", null, manager);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByLastName(String lastName) {
+	public List<UserEntity> findCandidatesByLastName(String lastName,
+			UserEntity manager) {
 		log.info("Finding candidates by last name");
 		return userDAO.findCandidates("%", "%", lastName, "%", "%", "%",
-				"%", "%", null);
+				"%", "%", null, manager);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByAddress(String address) {
+	public List<UserEntity> findCandidatesByAddress(String address,
+			UserEntity manager) {
 		log.info("Finding candidates by address");
 		return userDAO.findCandidates("%", "%", "%", address, "%", "%", "%",
-				"%", null);
+				"%", null, manager);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByCity(String city) {
+	public List<UserEntity> findCandidatesByCity(String city,
+			UserEntity manager) {
 		log.info("Finding candidates by city");
 		return userDAO.findCandidates("%", "%", "%", "%", city, "%", "%",
-				"%", null);
+				"%", null, manager);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByPhone(String phone) {
+	public List<UserEntity> findCandidatesByPhone(String phone,
+			UserEntity manager) {
 		log.info("Finding candidates by (home) phone");
-		return userDAO.findCandidatesByPhone(phone);
+		return userDAO.findCandidatesByPhone(phone, manager);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByCountry(String country) {
+	public List<UserEntity> findCandidatesByCountry(String country,
+			UserEntity manager) {
 		log.info("Finding candidates by country");
 		return userDAO.findCandidates("%", "%", "%", "%", "%", country, "%",
-				"%", null);
+				"%", null, manager);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByCourse(String course) {
+	public List<UserEntity> findCandidatesByCourse(String course,
+			UserEntity manager) {
 		log.info("Finding candidates by course");
 		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", course, 
-				"%", null);
+				"%", null, manager);
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesBySchool(String school) {
+	public List<UserEntity> findCandidatesBySchool(String school,
+			UserEntity manager) {
 		log.info("Finding candidates by school");
 		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", "%",
-				school, null);
+				school, null, manager);
 	}
 
 	@Override
 	public List<UserEntity> findCandidatesByPosition(PositionEntity position) {
 		log.info("Finding candidates by position");
 		return userDAO.findCandidates("%", "%", "%", "%", "%", "%", "%",
-				"%", position);
+				"%", position, null);
 	}
 
 	@Override
@@ -263,7 +272,7 @@ public class UserEJBImp implements UserEJBInterface {
 			String lastName, PositionEntity position) {
 		log.info("Finding candidates of a given position by email or name");
 		return userDAO.findCandidates(email, firstName, lastName, "%", "%",
-				"%", "%", "%", position);
+				"%", "%", "%", position, null);
 	}
 
 	@Override
@@ -274,7 +283,7 @@ public class UserEJBImp implements UserEJBInterface {
 		log.info("Finding candidates of a given position by several"
 				+ " attributes");
 		return userDAO.findCandidates(email, firstName, lastName, address, city, 
-				country, course, school, position);
+				country, course, school, position, null);
 	}
 
 	@Override
@@ -283,7 +292,7 @@ public class UserEJBImp implements UserEJBInterface {
 			String course, String school) {
 		log.info("Finding candidates by several attributes");
 		return userDAO.findCandidates(email, firstName, lastName, 
-				address, city, country, course, school, null);
+				address, city, country, course, school, null, null);
 	}
 
 	@Override
@@ -293,9 +302,10 @@ public class UserEJBImp implements UserEJBInterface {
 	}
 
 	@Override
-	public List<UserEntity> findCandidatesByKeyword(String keyword) {
+	public List<UserEntity> findCandidatesByKeyword(String keyword,
+			UserEntity manager) {
 		log.info("Finding candidates by keyword");
-		return userDAO.findCandidatesByKeyword(keyword);
+		return userDAO.findCandidatesByKeyword(keyword, manager);
 	}
 
 	@Override
