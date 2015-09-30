@@ -387,7 +387,7 @@ public class SubmissionSearchCDI implements Serializable {
 	public void unloadSubmission(){
 		this.submission=null;
 	}
-
+	
 	// getters e setters
 
 	public Date getDate1() {

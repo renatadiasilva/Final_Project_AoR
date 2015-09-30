@@ -315,13 +315,14 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+submission.getPosition().getCompany();
 		
 		String rejectedStuff;
-		if (submission.getProposalDate() != null) rejectedStuff = "proposta";
-		else rejectedStuff = "candidatura";
+		if (submission.getProposalDate() != null)
+			rejectedStuff = "Proposta relativa";
+		else rejectedStuff = "Candidatura";
 
 		String text="Olá "+candidate.getFirstName()
 				+" "+candidate.getLastName()+","
-				+"\n\nLamentamos informar que a sua "+rejectedStuff+" à"
-				+ " posição "
+				+"\n\nLamentamos informar que a sua "
+				+rejectedStuff.toLowerCase()+" à posição "
 				+positionMail+" foi rejeitada"
 //				+ " (motivo: "+submission.getRejectReason()+")"
 				+ ". Desejamos-lhe a melhor"
@@ -329,7 +330,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+ "\n\nCumprimentos,\nA equipa "
 				+companyName;
 
-		this.sendEmail(candidate.getEmail(), null, "Candidatura à"
+		this.sendEmail(candidate.getEmail(), null, rejectedStuff+" à"
 				+ " posição "+submission.getPosition().getPositionCode()
 				+ " rejeitada", text);
 		
