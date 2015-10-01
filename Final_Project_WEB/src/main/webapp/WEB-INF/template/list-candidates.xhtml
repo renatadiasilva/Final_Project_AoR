@@ -15,8 +15,8 @@
 			<h:form id="search-all-candidates" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
 					<p:commandButton value="Todos"
-						action="#{candidateSearchCDI.searchAllCandidates()}"
-						update="candidatesTable messages
+						action="#{candidateSearchCDI.searchAllCandidatesWithInfo()}"
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search"
 						style="width:100%" />
 				</h:panelGrid>
@@ -30,7 +30,7 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByFirstName()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -42,7 +42,7 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByLastName()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -54,7 +54,7 @@
 						value="#{candidateSearchCDI.email}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByEmail()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -66,7 +66,7 @@
 						value="#{candidateSearchCDI.email}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByAddress()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -78,7 +78,7 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByCity()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -90,7 +90,7 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByPhone()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -102,7 +102,7 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByCountry()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -114,7 +114,7 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByCountry()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -126,7 +126,7 @@
 						style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesBySchool()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -139,7 +139,7 @@
 						value="#{candidateSearchCDI.keyword}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByKeyword()}"
-						update="candidatesTable messages
+						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
@@ -179,8 +179,7 @@
 					<h:outputText value="#{u.userInfo.city}" />
 				</p:column>
 				<p:column headerText="Telefones">
-					<h:outputText value="#{u.userInfo.homePhone},
-								#{u.userInfo.mobilePhone}" />
+					<h:outputText value="#{candidateSearchCDI.getPhones(u)}" />
 				</p:column>
 				<p:column headerText="País">
 					<h:outputText value="#{u.userInfo.country}" />

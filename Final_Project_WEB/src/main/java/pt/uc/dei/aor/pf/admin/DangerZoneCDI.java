@@ -253,6 +253,7 @@ public class DangerZoneCDI implements Serializable {
 		removeTried = true;
 		log.info("Removing script");
 		if (scriptToRemove != null) {
+			boolean inUse = false;
 			String scriptToRemoveTitle = scriptToRemove.getTitle();
 			log.debug("Title "+scriptToRemoveTitle);
 
@@ -272,7 +273,7 @@ public class DangerZoneCDI implements Serializable {
 							+") aberta em "+ p.getOpeningDate());
 				log.info("Failure in removing script");
 				log.debug("Title "+scriptToRemoveTitle);
-				return;
+				inUse = true;
 			}
 
 			// check if there are interviews using script
@@ -295,7 +296,7 @@ public class DangerZoneCDI implements Serializable {
 							+", "+ftHour.format(i.getDate())+")");
 				log.info("Failure in removing script");
 				log.debug("Título "+scriptToRemoveTitle);
-				return;
+				inUse = true;
 			}
 
 			// check if there are script childs
@@ -312,16 +313,26 @@ public class DangerZoneCDI implements Serializable {
 							+" (criado a"+sc.getCreationDate()+")");
 				log.info("Failure in removing script");
 				log.debug("Título "+scriptToRemoveTitle);
-				return;
+				inUse = true;
 			}
 			
-			scriptEJB.delete(scriptToRemove);
-
-			log.info("Script removed");
-			log.debug("Título "+scriptToRemoveTitle);
+			if (!inUse) {
+				scriptEJB.delete(scriptToRemove);
+				log.info("Script removed");
+				log.debug("Título "+scriptToRemoveTitle);
+				notErrorMessage("Guião "+ scriptToRemoveTitle+" removido");
+			}
+			else {
+				// if in use set reusable false but don't remove
+				scriptToRemove.setReusable(false);
+				scriptEJB.update(scriptToRemove);
+				log.info("Script set as not reusable");
+				log.debug("Título "+scriptToRemoveTitle);
+				notErrorMessage("Guião "+ scriptToRemoveTitle+" tornado"
+						+ "não reutilizável");
+			}
 
 			removeTried = true;
-			notErrorMessage("Guião "+ scriptToRemoveTitle+" removido");
 
 		} else {
 			removeTried = false;

@@ -181,6 +181,7 @@ public class UserDao extends GenericDao<UserEntity> {
 						+ " AND email NOT LIKE :removed", "first_name");
 
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("email", keyword);
 		query.setParameter("address", keyword);
 		query.setParameter("city", keyword);
 		query.setParameter("country", keyword);

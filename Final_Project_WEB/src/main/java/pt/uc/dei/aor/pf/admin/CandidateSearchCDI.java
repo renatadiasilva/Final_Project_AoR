@@ -85,14 +85,14 @@ public class CandidateSearchCDI implements Serializable {
 
 	public void enterAllCandidates() {
 		manager = null;
-		ulist = userEJB.findAllCandidates();		
+		ulist = userEJB.findAllCandidatesWithInfo(manager);		
 		setHeaderTable("Não existem candidatos.");
 		clean();
 	}
 
 	public void enterMyCandidates() {
 		manager = userEJB.find(userSession.getCurrentUserClone().getId());
-		ulist = userEJB.findCandidatesByKeyword("%", manager);
+		ulist = userEJB.findAllCandidatesWithInfo(manager);
 		setHeaderTable("Não tem posições ou não tem candidaturas"
 				+ " às suas posições.");
 		clean();
@@ -453,6 +453,11 @@ public class CandidateSearchCDI implements Serializable {
 		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findCandidatesByKeyword(pattern, manager);
 	}	
+	
+	public String getPhones(UserEntity candidate) {
+		return candidate.getUserInfo().getHomePhone().replace(" ", "")+", "
+				+candidate.getUserInfo().getMobilePhone().replace(" ", "");
+	}
 
 	// getters e setters
 
