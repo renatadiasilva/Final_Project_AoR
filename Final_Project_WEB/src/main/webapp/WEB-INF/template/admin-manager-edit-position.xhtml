@@ -18,16 +18,17 @@
 					<p:watermark value="Procurar por keyword: "
 					 	for="search-keyword" />
 					<p:inputText id="search-keyword"
-					 	value="#{checkPositionCDI.keyword}"
+					 	value="#{newPositionCDI.keyword}"
 						style="width:100%" />
 					<p:commandButton
-						action="#{checkPositionCDI.searchOpenPositionsByKeyword()}"
-						update="openPositionsForm messages" icon="ui-icon-search" />
+						action="#{newPositionCDI.searchPositionsByKeyword()}"
+						update="editPosition messages editPositionPart1 editPositionPart2
+					editPositionPart2b editPositionPart2c editPositionPart3
+					editPositionPart4 editPositionPart5 editExistingPosition
+					editPositionStatus" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
 		</h:panelGrid>
-
-		
 
 		<h:form id="editPosition">
 			<h:panelGroup>

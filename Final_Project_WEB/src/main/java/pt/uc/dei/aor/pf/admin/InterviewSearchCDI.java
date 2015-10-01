@@ -1,10 +1,12 @@
 package pt.uc.dei.aor.pf.admin;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 
 @Named
@@ -43,12 +46,19 @@ public class InterviewSearchCDI {
 	@EJB
 	private ScriptEJBInterface scriptEJB;
 	
+	@Inject
+	private UserSessionManagement userSession;
+	
 	// search fields
 	private Date date1, date2;
 	private Long id;
 	private boolean result;
+	private UserEntity candidate;
 
 	private List<InterviewEntity> ilist;
+
+	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
+	private SimpleDateFormat ftHour = new SimpleDateFormat ("HH:mm"); 
 
 	public InterviewSearchCDI() {
 	}
@@ -139,13 +149,12 @@ public class InterviewSearchCDI {
 
 	public void searchScheduledInterviewsByCandidate() {
 		log.info("Searching scheduled interviews of candidate");
-		log.debug("Id "+id);
-		UserEntity candidate = userEJB.find(id);
+		this.candidate = userEJB.find(userSession.getCurrentUserClone().getId());
 		if ( (candidate != null) && 
 				(candidate.getRoles().contains("CANDIDATE"))) {
 			this.ilist = interviewEJB.findScheduledInterviewsByCandidate(
 					candidate);
-		} else log.error("No candidate with id "+id);
+		} else log.error("No candidate?!??");
 	}
 
 	public void searchInterviewsOfUser() {
@@ -168,10 +177,19 @@ public class InterviewSearchCDI {
 		} else log.error("No submission with id "+id);
 	}
 
+	public String getDay(InterviewEntity i) {
+		return ftDate.format(i.getDate());	
+	}
+	
+	public String getHour(InterviewEntity i) {
+		return ftHour.format(i.getDate());	
+	}
+	
 	// getters e setters
 
 	public Date getDate1() {
-		return date1;
+		if (date1 != null) return date1;
+		return new Date();
 	}
 
 	public void setDate1(Date date1) {
@@ -179,7 +197,8 @@ public class InterviewSearchCDI {
 	}
 
 	public Date getDate2() {
-		return date2;
+		if (date2 != null) return date2;
+		return new Date();
 	}
 
 	public void setDate2(Date date2) {
@@ -208,6 +227,14 @@ public class InterviewSearchCDI {
 
 	public void setResult(boolean result) {
 		this.result = result;
+	}
+
+	public UserEntity getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(UserEntity candidate) {
+		this.candidate = candidate;
 	}
 
 }

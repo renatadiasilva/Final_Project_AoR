@@ -282,6 +282,7 @@ public class CandidateSearchCDI implements Serializable {
 	}
 
 	public void searchAllCandidates() {
+		this.candidate = null;
 		log.info("Searching for all candidates");
 		if (manager != null) 
 			this.ulist=userEJB.findCandidatesByKeyword("%", manager);
@@ -289,11 +290,13 @@ public class CandidateSearchCDI implements Serializable {
 	}
 
 	public void searchAllCandidatesWithInfo() {
+		this.candidate = null;
 		log.info("Searching for all candidates with info");
 		this.ulist = userEJB.findAllCandidatesWithInfo(manager);
 	}
 
 	public void searchCandidatesByEmail() {
+		this.candidate = null;
 		log.info("Searching for candidates by email");
 		String pattern = SearchPattern.preparePattern(email);
 		log.debug("Internal search string: "+pattern);
@@ -301,6 +304,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByFirstName() {
+		this.candidate = null;
 		log.info("Searching for candidates by first name");
 		String pattern = SearchPattern.preparePattern(fname);
 		log.debug("Internal search string: "+pattern);
@@ -308,6 +312,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByLastName() {
+		this.candidate = null;
 		log.info("Searching for candidates by last name");
 		String pattern = SearchPattern.preparePattern(lname);
 		log.debug("Internal search string: "+pattern);
@@ -315,6 +320,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByAddress() {
+		this.candidate = null;
 		log.info("Searching for candidates by address");
 		String pattern = SearchPattern.preparePattern(address);
 		log.debug("Internal search string: "+pattern);
@@ -322,6 +328,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByCity() {
+		this.candidate = null;
 		log.info("Searching for candidates by city");
 		String pattern = SearchPattern.preparePattern(city);
 		log.debug("Internal search string: "+pattern);
@@ -329,6 +336,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByPhone() {
+		this.candidate = null;
 		log.info("Searching for candidates by phone");
 		String pattern = SearchPattern.preparePattern(phone);
 		log.debug("Internal search string: "+pattern);
@@ -336,6 +344,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByCountry() {
+		this.candidate = null;
 		log.info("Searching for candidates by country");
 		String pattern = SearchPattern.preparePattern(country);
 		log.debug("Internal search string: "+pattern);
@@ -343,6 +352,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByCourse() {
+		this.candidate = null;
 		log.info("Searching for candidates by course");
 		String pattern = SearchPattern.preparePattern(course);
 		log.debug("Internal search string: "+pattern);
@@ -350,6 +360,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesBySchool() {
+		this.candidate = null;
 		log.info("Searching for candidates by school");
 		String pattern = SearchPattern.preparePattern(school);
 		log.debug("Internal search string: "+pattern);
@@ -357,6 +368,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByPositionOnly() {
+		this.candidate = null;
 		log.info("Searching for candidates by position");
 		PositionEntity pos = positionEJB.find(idPos);
 		if (pos != null) {
@@ -366,6 +378,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByPositionShort() {
+		this.candidate = null;
 		log.info("Searching for candidates by position and email/name");
 		PositionEntity pos = positionEJB.find(idPos);
 		if (pos != null) {
@@ -382,6 +395,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByPositionLong() {
+		this.candidate = null;
 		log.info("Searching for candidates by position and more attributes");
 		PositionEntity pos = positionEJB.find(idPos);
 		if (pos != null) {
@@ -409,6 +423,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidates() {
+		this.candidate = null;
 		log.info("Searching for candidates by several attributes");
 		String pattern1 = SearchPattern.preparePattern(email);
 		log.debug("Internal search string (email): "+pattern1);
@@ -432,6 +447,7 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 
 	public void searchCandidatesByKeyword() {
+		this.candidate = null;
 		log.info("Searching for candidates by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);

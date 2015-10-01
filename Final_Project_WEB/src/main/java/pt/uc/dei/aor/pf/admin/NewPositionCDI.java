@@ -103,10 +103,13 @@ public class NewPositionCDI implements Serializable {
 	private String status;  
 	
 	private String emptyTable;
+	
+	private String keyword;
 
 	private Map<String,String> availableStatus=new HashMap<String, String>();
 
 	public void searchPositionsByKeyword() {
+		this.position=null;
 		String pattern = SearchPattern.preparePattern(keyword);
 		this.positions = positionEJB.findPositionsByKeywordShort(pattern,
 				Constants.STATUS_OPEN);
@@ -715,6 +718,14 @@ public class NewPositionCDI implements Serializable {
 
 	public void setEmptyTable(String emptyTable) {
 		this.emptyTable = emptyTable;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 }

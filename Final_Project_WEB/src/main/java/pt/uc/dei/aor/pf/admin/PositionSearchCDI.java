@@ -331,6 +331,7 @@ public class PositionSearchCDI implements Serializable {
 	}
 
 	public void searchAll() {
+		this.position = null;
 		log.info("Searching for all positions");
 		if (manager != null) 
 			plist = positionEJB.findPositionsManagedByUser(manager);
@@ -338,6 +339,7 @@ public class PositionSearchCDI implements Serializable {
 	}
 
 	public void searchPositionsByCode() {
+		this.position = null;
 		log.info("Searching for positions by code");
 		String pattern = SearchPattern.preparePattern(code);
 		log.debug("Internal search string: "+pattern);
@@ -345,12 +347,14 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchPositionsByDate() {
+		this.position = null;
 		log.info("Searching for positions between two dates");
 		log.debug("Dates between "+date1+" and "+date2);
 		this.plist = positionEJB.findPositionsByDate(date1, date2, manager);
 	}	
 
 	public void searchPositionsByTitle() {
+		this.position = null;
 		log.info("Searching for positions by title");
 		String pattern = SearchPattern.preparePattern(title);
 		log.debug("Internal search string: "+pattern);
@@ -358,6 +362,7 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchPositionsByLocationsOne() {
+		this.position = null;
 		log.info("Searching for positions with one of the given locations");
 		addLocations();
 		List<String> pattern = new ArrayList<String>(locations.size());
@@ -370,6 +375,7 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchPositionsByLocationsAll() {
+		this.position = null;
 		log.info("Searching for positions with all the given locations");
 		addLocations();
 		log.debug("Locations: ");
@@ -378,6 +384,7 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchPositionsByStatus() {
+		this.position = null;
 		log.info("Searching for positions by status");
 		log.debug("Status "+status);
 		String pattern = SearchPattern.preparePattern(status);
@@ -385,6 +392,7 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchPositionsByCompany() {
+		this.position = null;
 		log.info("Searching for positions by company");
 		String pattern = SearchPattern.preparePattern(company);
 		log.debug("Internal search string: "+pattern);
@@ -392,6 +400,7 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchPositionsByTechArea() {
+		this.position = null;
 		log.info("Searching for positions by tecnical area");
 		String pattern = SearchPattern.preparePattern(tarea);
 		log.debug("Internal search string: "+pattern);
@@ -399,6 +408,7 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchPositions() {
+		this.position = null;
 		log.info("Searching for positions by several attributes");		
 		String pattern1 = SearchPattern.preparePattern(code);
 		log.debug("Internal search string (code): "+pattern1);
@@ -417,6 +427,7 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchPositionsByManager() {
+		this.position = null;
 		log.info("Searching for positions of a manager by several attributes");
 		UserEntity manager = userEJB.find(idU);
 		if ( (manager != null) && (manager.getRoles().contains("MANAGER")) ) {
@@ -440,11 +451,13 @@ public class PositionSearchCDI implements Serializable {
 	}	
 
 	public void searchOpenPositions() {
+		this.position = null;
 		log.info("Searching for all open positions");
 		this.plist = positionEJB.findOpenPositions();
 	}
 
 	public void searchPositionsByCandidate() {
+		this.position = null;
 		log.info("Searching for positions by candidate");
 		UserEntity candidate = userEJB.find(idU);
 		if ( (candidate != null) &&
@@ -455,6 +468,7 @@ public class PositionSearchCDI implements Serializable {
 	}
 
 	public void alreadyCandidateOfPosition() {
+		this.position = null;
 		log.info("Checking if candidate is already associated "
 				+ "with a positions");
 		UserEntity candidate = userEJB.find(idU);
@@ -471,6 +485,7 @@ public class PositionSearchCDI implements Serializable {
 	}
 
 	public void searchCloseToSLAPositions() {
+		this.position = null;
 		log.info("Searching for close to SLA positions");
 		log.debug("Days before: "+days);
 		this.plist = positionEJB.findCloseToSLAPositions(days);
@@ -478,10 +493,12 @@ public class PositionSearchCDI implements Serializable {
 
 	public void searchAfterSLAPositions() {
 		log.info("Searching for positions which passed by SLA");
+		this.position = null;
 		this.plist = positionEJB.findAfterSLAPositions();
 	}
 
 	public void searchPositionsByKeyword() {
+		this.position = null;
 		log.info("Searching for positions by keyword");
 		String pattern = SearchPattern.preparePattern(keyword);
 		log.debug("Internal search string: "+pattern);
@@ -493,6 +510,7 @@ public class PositionSearchCDI implements Serializable {
 	}
 
 	public void searchOpenPositionManagedByUser() {
+		this.position = null;
 		log.info("Searching for open positions by manager");
 		UserEntity manager = userEJB.find(idU);
 		if (manager != null && manager.getRoles().contains("MANAGER")) {

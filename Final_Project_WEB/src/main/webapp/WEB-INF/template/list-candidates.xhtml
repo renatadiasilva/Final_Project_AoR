@@ -47,18 +47,6 @@
 				</h:panelGrid>
 			</h:form>
 
-			<h:form id="search-last-name-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por sobrenome: " for="search-last-name" />
-					<p:inputText id="search-last-name" value="#{candidateSearchCDI.lname}"
-						style="width:100%" />
-					<p:commandButton
-						action="#{candidateSearchCDI.searchCandidatesByLastName()}"
-						update="candidatesTable messages
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
-				</h:panelGrid>
-			</h:form>
-
 			<h:form id="search-email-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
 					<p:watermark value="Procurar por email: " for="search-email" />
@@ -66,6 +54,18 @@
 						value="#{candidateSearchCDI.email}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByEmail()}"
+						update="candidatesTable messages
+						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
+
+			<h:form id="search-address-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por morada: " for="search-address" />
+					<p:inputText id="search-address"
+						value="#{candidateSearchCDI.email}" style="width:100%" />
+					<p:commandButton
+						action="#{candidateSearchCDI.searchCandidatesByAddress()}"
 						update="candidatesTable messages
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>

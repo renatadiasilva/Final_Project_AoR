@@ -1,0 +1,42 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">
+		Candidato - A Minhas Entrevistas
+		 - #{styleSessionManagement.companyName}
+	</ui:define>
+
+	<ui:define name="contents">
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{interviewSearchCDI.searchScheduledInterviewsByCandidate()}" />
+		</f:metadata>
+
+		<h1>As Minhas Entrevistas Agendadas</h1>
+
+		<h:form>
+			<p:dataTable emptyMessage="Não tem entrevistas agendadas."
+				var="i" value="#{interviewSearchCDI.ilist}">
+				<f:facet name="header">Listagem</f:facet>
+				<p:column headerText="Dia">
+					<h:outputText value="#{interviewSearchCDI.getDay(i)}" />
+				</p:column>
+				<p:column headerText="Hora">
+					<h:outputText value="#{interviewSearchCDI.getHour(i)}" />
+				</p:column>
+				<p:column headerText="Posição">
+					<h:outputText value="#{i.submission.position.positionCode},
+						'#{i.submission.position.title}'
+						#{i.submission.position.company}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
