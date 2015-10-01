@@ -283,8 +283,14 @@ public class CandidateSearchCDI implements Serializable {
 
 	public void searchAllCandidates() {
 		log.info("Searching for all candidates");
-		if (manager != null) userEJB.findCandidatesByKeyword("%", manager);
+		if (manager != null) 
+			this.ulist=userEJB.findCandidatesByKeyword("%", manager);
 		else this.ulist = userEJB.findAllCandidates();
+	}
+
+	public void searchAllCandidatesWithInfo() {
+		log.info("Searching for all candidates with info");
+		this.ulist = userEJB.findAllCandidatesWithInfo(manager);
 	}
 
 	public void searchCandidatesByEmail() {

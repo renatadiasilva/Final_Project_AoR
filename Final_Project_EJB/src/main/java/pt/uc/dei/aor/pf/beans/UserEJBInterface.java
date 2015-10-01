@@ -58,5 +58,6 @@ public interface UserEJBInterface {
 			UserEntity manager);
 	public abstract List<UserEntity> findCandidatesByKeywordShort(
 			String keyword);
-	public abstract boolean checkPassword(UserEntity user, String password);	
+	public abstract boolean checkPassword(UserEntity user, String password);
+	public abstract List<UserEntity> findAllCandidatesWithInfo(UserEntity manager);	
 }

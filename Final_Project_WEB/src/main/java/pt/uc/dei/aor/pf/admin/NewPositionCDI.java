@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
 import pt.uc.dei.aor.pf.ExtraAd;
+import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.QuestionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
@@ -104,6 +105,12 @@ public class NewPositionCDI implements Serializable {
 	private String emptyTable;
 
 	private Map<String,String> availableStatus=new HashMap<String, String>();
+
+	public void searchPositionsByKeyword() {
+		String pattern = SearchPattern.preparePattern(keyword);
+		this.positions = positionEJB.findPositionsByKeywordShort(pattern,
+				Constants.STATUS_OPEN);
+	}
 
 	public void createNewPosition(){
 		this.managedPositions=false;

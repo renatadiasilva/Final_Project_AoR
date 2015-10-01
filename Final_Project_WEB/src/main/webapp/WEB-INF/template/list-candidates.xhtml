@@ -47,13 +47,25 @@
 				</h:panelGrid>
 			</h:form>
 
-			<h:form id="search-address-out" style="width:100%">
+			<h:form id="search-last-name-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por morada: " for="search-address" />
-					<p:inputText id="search-address"
-						value="#{candidateSearchCDI.address}" style="width:100%" />
+					<p:watermark value="Procurar por sobrenome: " for="search-last-name" />
+					<p:inputText id="search-last-name" value="#{candidateSearchCDI.lname}"
+						style="width:100%" />
 					<p:commandButton
-						action="#{candidateSearchCDI.searchCandidatesByAddress()}"
+						action="#{candidateSearchCDI.searchCandidatesByLastName()}"
+						update="candidatesTable messages
+						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
+
+			<h:form id="search-email-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por email: " for="search-email" />
+					<p:inputText id="search-email"
+						value="#{candidateSearchCDI.email}" style="width:100%" />
+					<p:commandButton
+						action="#{candidateSearchCDI.searchCandidatesByEmail()}"
 						update="candidatesTable messages
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
@@ -136,7 +148,8 @@
 				<p:commandButton action="#{candidateSearchCDI.cleanAll()}"
 					value="Limpar pesquisa"
 					update="search-first-name-out search-address-out search-city-out
-					search-phone-out search-country-out search-course-out search-school-out
+						  search-phone-out search-country-out search-course-out
+						  search-school-out search-email-out
 						  search-last-name-out search-keywordPos-out 
 						  editSubmissionCandReason editSubmissionCandStatus 
 						  candidatesTable messages submissionsCand"
@@ -166,7 +179,7 @@
 					<h:outputText value="#{u.userInfo.city}" />
 				</p:column>
 				<p:column headerText="Telefones">
-					<h:outputText value="#{u.userInfo.homePhone}
+					<h:outputText value="#{u.userInfo.homePhone},
 								#{u.userInfo.mobilePhone}" />
 				</p:column>
 				<p:column headerText="País">

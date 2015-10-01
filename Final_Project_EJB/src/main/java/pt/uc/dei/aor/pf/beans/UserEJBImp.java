@@ -179,6 +179,12 @@ public class UserEJBImp implements UserEJBInterface {
 	}
 
 	@Override
+	public List<UserEntity> findAllCandidatesWithInfo(UserEntity manager) {
+		log.info("Finding all candidates");
+		return userDAO.findCandidatesByKeyword("%", manager);
+	}
+
+	@Override
 	public List<UserEntity> findUsersByKeywordAndRole(String keyword,
 			String role) {
 		log.info("Finding users by keyword and role");

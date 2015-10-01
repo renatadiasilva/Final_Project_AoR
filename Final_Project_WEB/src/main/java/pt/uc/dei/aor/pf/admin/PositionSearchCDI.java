@@ -100,6 +100,7 @@ public class PositionSearchCDI implements Serializable {
 		plist = positionEJB.findAllOrderByCode();		
 		headerTable ="Não existem posições.";
 		clean();
+		position = null;
 	}
 
 	public void enterMyPositions() {
@@ -107,6 +108,7 @@ public class PositionSearchCDI implements Serializable {
 		plist = positionEJB.findPositionsManagedByUser(manager);
 		headerTable ="Não é gestor de nenhuma posição neste momento.";
 		clean();
+		position = null;
 	}
 
 	public void clean() {

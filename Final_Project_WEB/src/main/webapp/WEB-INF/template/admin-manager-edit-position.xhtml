@@ -10,6 +10,24 @@
 	<ui:composition>
 
 		<h1>Gerir Posições</h1>
+		
+		<!-- Pesquisas -->
+		<h:panelGrid style="width:100%">
+			<h:form id="search-keyword-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por keyword: "
+					 	for="search-keyword" />
+					<p:inputText id="search-keyword"
+					 	value="#{checkPositionCDI.keyword}"
+						style="width:100%" />
+					<p:commandButton
+						action="#{checkPositionCDI.searchOpenPositionsByKeyword()}"
+						update="openPositionsForm messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
+		</h:panelGrid>
+
+		
 
 		<h:form id="editPosition">
 			<h:panelGroup>
@@ -26,6 +44,9 @@
 					</p:column>
 					<p:column headerText="Empresa">
 						<h:outputText value="#{position.company}" />
+					</p:column>
+					<p:column headerText="Estado">
+						<h:outputText value="#{position.status}" />
 					</p:column>
 					<p:column headerText="Seleccionar">
 						<p:commandButton value="Seleccionar" style="width:100%"
