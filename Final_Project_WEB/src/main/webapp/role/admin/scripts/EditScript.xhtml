@@ -88,7 +88,7 @@
 				<p:column headerText="Ver questões">
 					<p:commandButton value="Seleccionar" style="width:100%"
 						rendered="#{!scriptSearchCDI.checkScript(sc)}"
-						actionListener="#{scriptSearchCDI.setScript(s)}"
+						actionListener="#{scriptSearchCDI.setScript(sc)}"
 						icon="ui-icon-script" update="@form messages questions" />
 					<p:commandButton rendered="#{scriptSearchCDI.checkScript(sc)}"
 						style="width:100%" value="Cancelar"
