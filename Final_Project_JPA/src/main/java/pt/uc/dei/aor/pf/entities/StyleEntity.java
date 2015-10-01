@@ -143,5 +143,5 @@ public class StyleEntity implements Serializable{
 	public void setUserDefaultStyle(boolean userDefaultStyle) {
 		this.userDefaultStyle = userDefaultStyle;
 	}
-
+	
 }

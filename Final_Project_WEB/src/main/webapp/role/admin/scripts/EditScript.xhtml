@@ -69,17 +69,18 @@
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
 				<f:facet name="header">Listagem</f:facet>
-				<p:column headerText="Título">
-					<h:outputText value="#{sc.title}" />
-				</p:column>
 				<p:column headerText="Data">
 					<h:outputText value="#{sc.creationDate}" />
+				</p:column>
+				<p:column headerText="Título">
+					<h:outputText value="#{sc.title}" />
 				</p:column>
 				<p:column headerText="Comentários">
 					<h:outputText value="#{sc.comments}" />
 				</p:column>
 				<p:column headerText="Reutilizável?">
-					<h:outputText value="#{sc.reusable}" />
+					<h:outputText rendered="#{sc.reusable}" value="sim" />
+					<h:outputText rendered="#{!sc.reusable}" value="não" />
 				</p:column>
 				<p:column headerText="Derivado de">
 					<h:outputText value="#{sc.derivedFrom.title}" />

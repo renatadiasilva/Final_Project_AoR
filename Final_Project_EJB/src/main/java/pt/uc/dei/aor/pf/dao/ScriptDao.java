@@ -25,7 +25,7 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 
 		String[] attributes = {"title"};
 		String queryS = makeQuery("*", "scripts", "(", attributes,
-				" OR ", "", "title");
+				" OR ", "", "creation_date DESC, title");
 
 		Query query = em.createNativeQuery(queryS, ScriptEntity.class);
 		query.setParameter("title", title);

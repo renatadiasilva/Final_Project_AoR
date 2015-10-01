@@ -115,13 +115,6 @@ public class NewPositionCDI implements Serializable {
 				Constants.STATUS_OPEN);
 	}
 
-	public void searchPositionsByKeywordShort() {
-		this.position=null;
-		String pattern = SearchPattern.preparePattern(keyword);
-		System.out.println("manager "+manager+" "+keyword+" "+pattern);
-		this.positions = positionEJB.findPositionsByKeywordAndManager(pattern, manager);
-	}
-
 	public void createNewPosition(){
 		this.managedPositions=false;
 		this.editPosition=false;

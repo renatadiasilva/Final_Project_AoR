@@ -261,8 +261,7 @@ public class DangerZoneCDI implements Serializable {
 			List<PositionEntity> plist = 
 					positionEJB.findPositionsByScript(scriptToRemove);
 			if (plist != null && !plist.isEmpty()) {
-				errorMessage("Não é possível apagar o guião.");
-				errorMessage("O guião é guião por defeito nas seguintes"
+				notErrorMessage("O guião é guião por defeito nas seguintes"
 						+ " posições:");
 				tableHeader = "Posições com o guião "
 						+scriptToRemoveTitle+" por defeito";
@@ -280,10 +279,9 @@ public class DangerZoneCDI implements Serializable {
 			List<InterviewEntity> ilist = 
 					interviewEJB.findInterviewsWithScript(scriptToRemove);
 			if (ilist != null && !ilist.isEmpty()) {
-				errorMessage("Não é possível apagar o guião.");
-				errorMessage("O guião é/foi usado nas seguintes"
+				notErrorMessage("O guião é/foi usado nas seguintes"
 						+ " entrevistas:");
-				tableHeader = "Entrevistas que usam o guião"
+				tableHeader = "Entrevistas que usam o guião "
 						+scriptToRemoveTitle;
 				showInfo = true;
 				for (InterviewEntity i : ilist)
@@ -303,9 +301,8 @@ public class DangerZoneCDI implements Serializable {
 			List<ScriptEntity> sclist = 
 					scriptEJB.findChildScripts(scriptToRemove);
 			if (sclist != null && !sclist.isEmpty()) {
-				errorMessage("Não é possível apagar o guião.");
-				errorMessage("Os seguintes scripts são derivados deste guião:");
-				tableHeader = "Guiões derivados do guião"
+				notErrorMessage("Os seguintes scripts são derivados deste guião:");
+				tableHeader = "Guiões derivados do guião "
 						+scriptToRemoveTitle;
 				showInfo = true;
 				for (ScriptEntity sc : sclist)

@@ -20,7 +20,7 @@
 				<h1>Remoção de guiões</h1>
 			</h:panelGroup>
 		</h:form>
-		
+
 		<h:form id="buttonsDangerZoneScript">
 			<h:panelGrid columns="5">
 
@@ -47,7 +47,7 @@
 
 				<h:panelGrid>
 					<p:link value="Voltar à lista de guiões"
-						href="../../../role/admin/search/EditScript.xhtml" />
+						href="../../../role/admin/scripts/EditScript.xhtml" />
 				</h:panelGrid>
 
 
@@ -78,11 +78,15 @@
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 						paginator="true" rows="10">
 						<f:facet name="header">Guiões</f:facet>
+						<p:column headerText="Data">
+							<h:outputText value="#{sc.creationDate}" />
+						</p:column>
 						<p:column headerText="Título">
 							<h:outputText value="#{sc.title}" />
 						</p:column>
-						<p:column headerText="Data">
-							<h:outputText value="#{sc.creationDate}" />
+						<p:column headerText="Reutilizável?">
+							<h:outputText rendered="#{sc.reusable}" value="sim" />
+							<h:outputText rendered="#{!sc.reusable}" value="não" />
 						</p:column>
 						<p:column headerText="Seleccionar">
 							<p:commandButton value="Seleccionar" style="width:100%"

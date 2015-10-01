@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
 	@NamedQuery(name = "Script.findReusableScripts",
 			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
-					+ " ORDER BY s.creationDate DESC"),
+					+ " ORDER BY s.creationDate DESC, s.title"),
 	@NamedQuery(name = "Script.findChildScripts",
 			query = "SELECT s FROM ScriptEntity s"
 					+ " WHERE s.derivedFrom = :script"),
@@ -43,7 +43,6 @@ public class ScriptEntity implements Serializable{
 	@Column(name = "id")
 	private Long id;
 
-	//tirar
 	@ManyToOne
 	@JoinColumn(name = "derived_from")
 	private ScriptEntity derivedFrom;
