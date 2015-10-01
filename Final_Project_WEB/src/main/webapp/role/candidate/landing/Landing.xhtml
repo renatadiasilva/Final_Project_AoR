@@ -60,7 +60,7 @@
 							style="width:100%" />
 						<p:commandButton
 							action="#{positionSearchCDI.searchPositionsByCode()}"
-							update="tableHome messages"
+							update="openPositionsForm messages"
 							icon="ui-icon-search" />
 					</h:panelGrid>
 				</h:form>
@@ -72,7 +72,7 @@
 							style="width:100%" />
 						<p:commandButton
 							action="#{positionSearchCDI.searchPositionsByTitle()}"
-							update="tableHome messages"
+							update="openPositionsForm messages"
 							icon="ui-icon-search" />
 					</h:panelGrid>
 				</h:form>
@@ -84,7 +84,7 @@
 							value="#{positionSearchCDI.company}" style="width:100%" />
 						<p:commandButton
 							action="#{positionSearchCDI.searchPositionsByCompany()}"
-							update="tableHome messages"
+							update="openPositionsForm messages"
 							icon="ui-icon-search" />
 					</h:panelGrid>
 				</h:form>
@@ -97,7 +97,7 @@
 							style="width:100%" />
 						<p:commandButton
 							action="#{positionSearchCDI.searchPositionsByTechArea()}"
-							update="tableHome messages"
+							update="openPositionsForm messages"
 							icon="ui-icon-search" />
 					</h:panelGrid>
 				</h:form>
@@ -123,11 +123,11 @@
 					<h:panelGroup>
 						<p:commandButton value="Procurar posições com uma das localizações"
 							action="#{positionSearchCDI.searchPositionsByLocationsOne()}"
-							update="tableHome messages"
+							update="openPositionsForm messages"
 							icon="ui-icon-search" />
 						<p:commandButton value="Procurar posições com todas as localizações"
 							action="#{positionSearchCDI.searchPositionsByLocationsAll()}"
-							update="tableHome messages"
+							update="openPositionsForm messages"
 							icon="ui-icon-search" />
 					</h:panelGroup>
 				</h:form>
@@ -136,7 +136,7 @@
 						value="Limpar pesquisa"
 						update="search-code-out search-company-out search-tarea-out
 						search-locations-out
-						  search-title-out tableHome messages"
+						  search-title-out openPositionsForm messages"
 						icon="ui-icon-cancel" />
 			</h:form>
 			</h:panelGrid>

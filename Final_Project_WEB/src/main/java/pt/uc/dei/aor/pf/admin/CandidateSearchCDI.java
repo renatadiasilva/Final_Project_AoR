@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -29,11 +30,14 @@ import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
+import java.io.Serializable;
 
 
 @Named
-@RequestScoped
-public class CandidateSearchCDI {
+@SessionScoped
+public class CandidateSearchCDI implements Serializable {
+
+	private static final long serialVersionUID = 550423548893126270L;
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(CandidateSearchCDI.class);
@@ -73,6 +77,7 @@ public class CandidateSearchCDI {
 	private SubmissionEntity submission;
 	private UserEntity candidate;
 
+	@Inject
 	private UserSessionManagement userSession;
 	
 	public CandidateSearchCDI() {
@@ -86,7 +91,6 @@ public class CandidateSearchCDI {
 	}
 
 	public void enterMyCandidates() {
-		System.out.println(userSession.getCurrentUserClone());
 		manager = userEJB.find(userSession.getCurrentUserClone().getId());
 		ulist = userEJB.findCandidatesByKeyword("%", manager);
 		setHeaderTable("Não tem posições ou não tem candidaturas"

@@ -14,7 +14,7 @@
 
 			<h:form id="search-all-positions" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
-					<p:commandButton value="Todas"
+					<p:commandButton value="Todas as posições"
 						action="#{positionSearchCDI.searchAll()}"
 						update="myPositionsTable messages
 						editSubmissionReason editSubmissionStatus" icon="ui-icon-search"
@@ -24,7 +24,7 @@
 
 			<h:form id="search-code-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por código: " for="search-code" />
+					<p:watermark value="Procurar posição por código: " for="search-code" />
 					<p:inputText id="search-code" value="#{positionSearchCDI.code}"
 						style="width:100%" />
 					<p:commandButton
@@ -36,7 +36,7 @@
 
 			<h:form id="search-title-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por título: " for="search-title" />
+					<p:watermark value="Procurar posição por título: " for="search-title" />
 					<p:inputText id="search-title" value="#{positionSearchCDI.title}"
 						style="width:100%" />
 					<p:commandButton
@@ -48,7 +48,7 @@
 
 			<h:form id="search-company-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por empresa: " for="search-company" />
+					<p:watermark value="Procurar posição por empresa: " for="search-company" />
 					<p:inputText id="search-company"
 						value="#{positionSearchCDI.company}" style="width:100%" />
 					<p:commandButton
@@ -60,7 +60,7 @@
 
 			<h:form id="search-tarea-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por área técnica: " for="search-tarea" />
+					<p:watermark value="Procurar posição por área técnica: " for="search-tarea" />
 					<p:inputText id="search-tarea" value="#{positionSearchCDI.tarea}"
 						style="width:100%" />
 					<p:commandButton
@@ -72,7 +72,7 @@
 
 			<h:form id="search-keywordPos-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por palavra chave: "
+					<p:watermark value="Procurar posição por palavra chave: "
 						for="search-keywordPos" />
 					<p:inputText id="search-keywordPos"
 						value="#{positionSearchCDI.keyword}" style="width:100%" />
@@ -101,7 +101,7 @@
 						yearRange="c-100:c+100" locale="pt" size="35" />
 				</h:panelGroup>
 				<h:panelGroup>
-					<p:commandButton value="Procurar por data"
+					<p:commandButton value="Procurar posição por data"
 						action="#{positionSearchCDI.searchPositionsByDate()}"
 						update="myPositionsTable messages
 						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
@@ -117,7 +117,7 @@
 						<f:ajax event="change" />
 					</p:selectOneMenu>
 
-					<p:commandButton value="Procurar por estado"
+					<p:commandButton value="Procurar posição por estado"
 						action="#{positionSearchCDI.searchPositionsByStatus()}"
 						update="myPositionsTable messages
 						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
@@ -149,7 +149,7 @@
 						value="#{positionSearchCDI.location}" size="35" />
 				</h:panelGroup>
 				<h:panelGroup>
-					<p:commandButton value="Procurar por localização"
+					<p:commandButton value="Procurar posição por localização"
 						action="#{positionSearchCDI.searchPositionsByLocationsOne()}"
 						update="myPositionsTable messages
 						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
@@ -160,7 +160,7 @@
 					value="Limpar pesquisa"
 					update="search-code-out search-company-out search-tarea-out
 						search-status-out search-datePos-out search-locations-out
-						  search-title-out search-keywordPos-out 
+						  search-title-out search-keywordPos-out submissionsPos
 						  editSubmissionReason editSubmissionStatus myPositionsTable messages"
 					icon="ui-icon-cancel" />
 			</h:form>
@@ -174,7 +174,7 @@
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
-				<f:facet name="header">Listagem</f:facet>
+				<f:facet name="header">Listagem de posições</f:facet>
 				<p:column headerText="Código">
 					<h:outputText value="#{p.positionCode}" />
 				</p:column>
@@ -366,7 +366,7 @@
 
 		</h:form>
 
-		<h:form id="editSubmissionReason ">
+		<h:form id="editSubmissionReason">
 			<h:panelGrid rendered="#{positionSearchCDI.needsReason}">
 				<p:outputLabel value="Motivo de rejeição: *"
 					for="edit-submission-reason" />

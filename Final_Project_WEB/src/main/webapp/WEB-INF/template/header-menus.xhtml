@@ -43,15 +43,15 @@
 						<p:submenu label="Utilizadores">
 							<p:menuitem value="Novo Utilizador"
 								url="../../../role/admin/newuser/NewUser.xhtml" />
-							<p:menuitem value="Listar/Editar Utilizadores"
+							<p:menuitem value="Gerir Utilizadores"
 								url="../../../role/admin/edit/EditUser.xhtml" />
 						</p:submenu>
 						<p:submenu label="Posições">
 							<p:menuitem value="Nova Posição"
 								url="../../../role/admin/positions/NewPosition.xhtml" />
-							<p:menuitem value="Editar Posições"
+							<p:menuitem value="Gerir Posições"
 								url="../../../role/admin/positions/EditPosition.xhtml" />
-							<p:menuitem value="Pesquisar Posições"
+							<p:menuitem value="Gerir Posições (Candidaturas)"
 								url="../../../role/admin/positions/AllPositions.xhtml" />
 						</p:submenu>
 					</p:column>
@@ -60,26 +60,13 @@
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="Agendar Entrevista"
 								url="../../../role/admin/interviews/ScheduleInterview.xhtml" />
-							<p:menuitem value="Listar/Editar Entrevistas"
+							<p:menuitem value="Gerir Entrevistas"
 								url="../../../role/admin/search/InterviewSearch.xhtml" />
 						</p:submenu>
-						<p:submenu label="Guiões">
-							<p:menuitem value="Novo Guião"
-								url="../../../role/admin/scripts/NewScript.xhtml" />
-							<p:menuitem value="Listar/Editar Guiões"
-								url="../../../role/admin/scripts/EditScript.xhtml" />
-						</p:submenu>
-						<p:submenu label="Estilos">
-							<p:menuitem value="Gerir estilos"
-								url="../../../role/admin/style/NewStyle.xhtml" />
-						</p:submenu>
-					</p:column>
-
-					<p:column>
 						<p:submenu label="Candidaturas">
 							<p:menuitem value="Submeter Candidatura Manual"
 								url="../../../role/admin/newuser/NewUser.xhtml" />
-							<p:menuitem value="Pesquisar Candidatos"
+							<p:menuitem value="Gerir Candidatos"
 								url="../../../role/admin/search/AllCandidates.xhtml" />
 							<p:menuitem value="Candidaturas Espontâneas"
 								url="../../../role/admin/search/SpontaneousSearch.xhtml" />
@@ -87,6 +74,12 @@
 					</p:column>
 
 					<p:column>
+						<p:submenu label="Guiões">
+							<p:menuitem value="Novo Guião"
+								url="../../../role/admin/scripts/NewScript.xhtml" />
+							<p:menuitem value="Gerir Guiões"
+								url="../../../role/admin/scripts/EditScript.xhtml" />
+						</p:submenu>
 						<p:submenu label="Relatórios">
 							<p:menuitem value="Criar Relatório"
 								url="../../../role/admin/reports/CreateReport.xhtml" />
@@ -96,6 +89,10 @@
 							<p:menuitem value="Definir Por Defeito"
 								actionListener="#{userSessionManagement.defaultRoleAdmin()}"
 								update="@form" icon="ui-icon-home" />
+						</p:submenu>
+						<p:submenu label="Estilos">
+							<p:menuitem value="Gerir estilos"
+								url="../../../role/admin/style/NewStyle.xhtml" />
 						</p:submenu>
 					</p:column>
 				</p:submenu>
@@ -108,7 +105,7 @@
 								url="../../../role/manager/positions/MyPositions.xhtml" />
 						</p:submenu>
 						<p:submenu label="Candidaturas">
-							<p:menuitem value="Procurar Candidatos?"
+							<p:menuitem value="Os Meus Candidatos"
 								url="../../../role/manager/search/MyCandidates.xhtml" />
 							<p:menuitem value="Candidaturas Espontâneas"
 								url="../../../role/manager/search/SpontaneousSearch.xhtml" />
@@ -116,7 +113,7 @@
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="Agendar Entrevista"
 								url="../../../role/manager/interviews/ScheduleInterview.xhtml" />
-							<p:menuitem value="Listar/Editar Entrevistas" url="#" />
+							<p:menuitem value="As Minhas Entrevistas" url="#" />
 						</p:submenu>
 
 						<p:submenu label="Perfil Inicial"

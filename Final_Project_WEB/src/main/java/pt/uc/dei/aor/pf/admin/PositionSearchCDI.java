@@ -137,6 +137,7 @@ public class PositionSearchCDI implements Serializable {
 	public void cleanAll() {
 		clean();
 		plist = new ArrayList<PositionEntity>();
+		position=null;
 	}
 
 	public List<PositionEntity> directOpenPositions() {
@@ -331,7 +332,7 @@ public class PositionSearchCDI implements Serializable {
 		log.info("Searching for all positions");
 		if (manager != null) 
 			plist = positionEJB.findPositionsManagedByUser(manager);
-		plist = positionEJB.findAllOrderByCode();		
+		else plist = positionEJB.findAllOrderByCode();		
 	}
 
 	public void searchPositionsByCode() {

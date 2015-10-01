@@ -139,7 +139,8 @@
 					search-phone-out search-country-out search-course-out search-school-out
 						search-status-out search-datePos-out search-locations-out
 						  search-last-name-out search-keywordPos-out 
-						  editSubmissionCandReason editSubmissionCandStatus candidatesTable messages"
+						  editSubmissionCandReason editSubmissionCandStatus 
+						  candidatesTable messages submissionsCand"
 					icon="ui-icon-cancel" />
 			</h:form>
 		</h:panelGrid>
@@ -298,7 +299,7 @@
 
 		</h:form>
 
-		<h:form id="editSubmissionCandReason ">
+		<h:form id="editSubmissionCandReason">
 			<h:panelGrid rendered="#{candidateSearchCDI.needsReason}">
 				<p:outputLabel value="Motivo de rejeição: *"
 					for="edit-submission-reason" />

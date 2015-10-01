@@ -127,6 +127,55 @@ public class NewPositionCDI implements Serializable {
 	}
 
 	@PostConstruct
+	public void cleanBeanAll() {
+		// Se é para edição vai buscar as posições
+		if(this.editPosition){
+			// Vai buscar os Status
+			this.availableStatus.put(Constants.STATUS_OPEN, Constants.STATUS_OPEN);
+			this.availableStatus.put(Constants.STATUS_ONHOLD, Constants.STATUS_ONHOLD);
+			this.availableStatus.put(Constants.STATUS_CLOSED, Constants.STATUS_CLOSED);
+
+			// Se é para um manager editar, só vai buscar as dele (open)
+			if(this.managedPositions){
+				this.manager=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
+				this.positions=this.positionEJB.findPositionsManagedByUser(this.manager);				
+			}else this.positions=this.positionEJB.findAllOrderByCode();
+		}
+
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+		this.creatorEmail=request.getRemoteUser();
+
+		this.title="";
+		this.company="";
+		this.description="";
+
+		this.manager=null;
+
+		this.script=null;
+		this.scripts=this.scriptEJB.findReusableScripts();
+
+		this.openings=this.slaDays=0;
+
+		this.locations=new ArrayList<String>();
+
+		this.advertisingChannels=new ArrayList<String>();
+		this.altAdvertisingChannels=new ArrayList<ExtraAd>();
+		this.extraAdvertising="";
+		this.advertisingChannels.clear();
+		this.critical=this.linkedin=this.glassdoor=this.facebook=false;
+
+		this.cleanTechnicalAreas();
+		this.technicalArea="";
+
+		this.lisboa=this.porto=this.coimbra=false;
+		this.extraLocation="";
+		this.locations.clear();
+
+		this.script=null;
+		this.position=null;
+	}
+
 	public void cleanBean() {
 		// Se é para edição vai buscar as posições
 		if(this.editPosition){
@@ -173,6 +222,7 @@ public class NewPositionCDI implements Serializable {
 		this.locations.clear();
 
 		this.script=null;
+		
 	}
 
 	public void createPosition() {
