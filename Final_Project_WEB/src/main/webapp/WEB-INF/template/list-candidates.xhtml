@@ -63,7 +63,7 @@
 				<h:panelGrid columns="3" style="width:100%">
 					<p:watermark value="Procurar por morada: " for="search-address" />
 					<p:inputText id="search-address"
-						value="#{candidateSearchCDI.email}" style="width:100%" />
+						value="#{candidateSearchCDI.address}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByAddress()}"
 						update="candidatesTable messages submissionsCand
@@ -113,7 +113,7 @@
 					<p:inputText id="search-course" value="#{candidateSearchCDI.course}"
 						style="width:100%" />
 					<p:commandButton
-						action="#{candidateSearchCDI.searchCandidatesByCountry()}"
+						action="#{candidateSearchCDI.searchCandidatesByCourse()}"
 						update="candidatesTable messages submissionsCand
 						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
 				</h:panelGrid>
@@ -190,7 +190,7 @@
 				<p:column headerText="Escola/Universidade">
 					<h:outputText value="#{u.userInfo.school}" />
 				</p:column>
-				<p:column headerText="Ver candidaturas/posições">
+				<p:column headerText="Ver candidaturas">
 					<p:commandButton value="Seleccionar" style="width:100%"
 						rendered="#{!candidateSearchCDI.checkCandidate(u)}"
 						actionListener="#{candidateSearchCDI.setCandidate(u)}"
@@ -217,7 +217,7 @@
 			</h:panelGrid>
 			<p:dataTable emptyMessage="O candidato não tem candidaturas."
 			 	var="s"
-				rendered="#{candidateSearchCDI.loadedSubmission()}"
+				rendered="#{candidateSearchCDI.loadedCandidate()}"
 				value="#{candidateSearchCDI.submissions}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "

@@ -88,6 +88,7 @@ public class CandidateSearchCDI implements Serializable {
 		ulist = userEJB.findAllCandidatesWithInfo(manager);		
 		setHeaderTable("Não existem candidatos.");
 		clean();
+		candidate = null;
 	}
 
 	public void enterMyCandidates() {
@@ -96,6 +97,7 @@ public class CandidateSearchCDI implements Serializable {
 		setHeaderTable("Não tem posições ou não tem candidaturas"
 				+ " às suas posições.");
 		clean();
+		candidate = null;
 	}
 
 	public void clean() {
@@ -121,6 +123,7 @@ public class CandidateSearchCDI implements Serializable {
 	public void cleanAll() {
 		clean();
 		ulist = new ArrayList<UserEntity>();
+		candidate = null;
 	}
 
 	public String getDateWithoutTime(Date date) {

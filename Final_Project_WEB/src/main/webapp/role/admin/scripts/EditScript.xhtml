@@ -105,7 +105,7 @@
 
 			<p:dataTable emptyMessage="O guião não tem questões." var="q"
 				rendered="#{scriptSearchCDI.loadedScript()}"
-				value="#{scriptSearchCDI.questions}"
+				value="#{scriptSearchCDI.script.questions}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">

@@ -139,7 +139,7 @@ public class UserDao extends GenericDao<UserEntity> {
 			return super.findSomeResults("User.findCandidatesByPhone", parameters);
 		}
 		
-		String queryS = "SELECT users.*"
+		String queryS = "DISTINCT SELECT users.*"
 				+ " FROM users, users_info, submissions, positions"
 				+ " WHERE home_phone LIKE :phone"
 				+ " OR mobile_phone LIKE :phone"
@@ -162,8 +162,8 @@ public class UserDao extends GenericDao<UserEntity> {
 	public List<UserEntity> findCandidatesByKeyword(String keyword,
 			UserEntity manager) {
 
-		String[] attributes = {"address", "city", "country", "course",
-		"school"};
+		String[] attributes = {"email", "first_name", "last_name",
+				"address", "city", "country", "course", "school"};
 
 		String queryS;
 		if (manager == null)
@@ -171,7 +171,7 @@ public class UserDao extends GenericDao<UserEntity> {
 					attributes, " OR ",
 					"users.id = users_info.user_id"
 							+ " AND email NOT LIKE :removed", "first_name");
-		else queryS = makeQuery("users.*", 
+		else queryS = makeQuery("DISTINCT users.*", 
 				"users, users_info, submissions, positions", 
 				"(", attributes, 
 				" OR ", "users.id = users_info.user_id AND"
@@ -182,6 +182,9 @@ public class UserDao extends GenericDao<UserEntity> {
 
 		System.out.println("candidates"+queryS);
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
+		query.setParameter("email", keyword);
+		query.setParameter("first_name", keyword);
+		query.setParameter("last_name", keyword);
 		query.setParameter("address", keyword);
 		query.setParameter("city", keyword);
 		query.setParameter("country", keyword);
@@ -203,7 +206,7 @@ public class UserDao extends GenericDao<UserEntity> {
 				"country", "course", "school"};
 
 		String queryS;
-		if (position != null) queryS = makeQuery("users.*", 
+		if (position != null) queryS = makeQuery("DISTINCT users.*", 
 				"users, users_info, submissions, positions", 
 				"(UPPER(email) LIKE :email AND ", attributes, 
 				" AND ", "users.id = users_info.user_id AND"
@@ -212,7 +215,7 @@ public class UserDao extends GenericDao<UserEntity> {
 						+ " positions.id = :id"
 						+ " AND email NOT LIKE :removed", "first_name");
 		else if (manager != null) {
-			queryS = makeQuery("users.*", 
+			queryS = makeQuery("DISTINCT users.*", 
 					"users, users_info, submissions, positions", 
 					"(UPPER(email) LIKE :email AND ", attributes, 
 					" AND ", "users.id = users_info.user_id AND"

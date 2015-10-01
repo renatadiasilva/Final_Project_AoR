@@ -56,7 +56,7 @@ public class NewPositionCDI implements Serializable {
 
 	private String creatorEmail;
 
-	private UserEntity manager;
+	private UserEntity manager, currentManager;
 
 	private String title;
 
@@ -111,11 +111,11 @@ public class NewPositionCDI implements Serializable {
 	public void searchPositionsByKeyword() {
 		this.position=null;
 		String pattern = SearchPattern.preparePattern(keyword);
-		if (manager == null)
+		if (currentManager == null)
 			this.positions = positionEJB.findPositionsByKeyword(pattern);
 		else
 			this.positions = positionEJB.findPositionsByKeywordAndManager(pattern,
-					manager);			
+					currentManager);			
 	}
 
 	public void createNewPosition(){
@@ -153,6 +153,7 @@ public class NewPositionCDI implements Serializable {
 			// Se é para um manager editar, só vai buscar as dele (open)
 			if(this.managedPositions){
 				this.manager=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
+				this.currentManager = this.manager;
 				this.positions=this.positionEJB.findPositionsManagedByUser(this.manager);				
 			}else this.positions=this.positionEJB.findAllOrderByCode();
 		}
@@ -188,6 +189,7 @@ public class NewPositionCDI implements Serializable {
 		this.locations.clear();
 
 		this.script=null;
+		this.keyword="";
 	}
 
 	public void createPosition() {
@@ -729,6 +731,14 @@ public class NewPositionCDI implements Serializable {
 
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
+	}
+
+	public UserEntity getCurrentManager() {
+		return currentManager;
+	}
+
+	public void setCurrentManager(UserEntity currentManager) {
+		this.currentManager = currentManager;
 	}
 
 }
