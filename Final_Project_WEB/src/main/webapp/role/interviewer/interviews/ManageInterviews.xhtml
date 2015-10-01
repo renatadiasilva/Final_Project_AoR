@@ -1,0 +1,242 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{manageInterviewsCDI.loadRole(userSessionManagement.userMail)}" />
+		</f:metadata>
+	</f:metadata>
+
+	<ui:define name="titulo">
+	Entrevistador - Gerir Entrevistas - #{styleSessionManagement.companyName}
+	</ui:define>
+
+	<ui:define name="contents">
+
+		<h1>As minhas entrevistas</h1>
+
+		<h:form id="viewPositionForm">
+
+			<p:dialog header="#{manageInterviewsCDI.position.positionCode}"
+				widgetVar="checkPosition" draggable="false" resizable="false"
+				modal="true">
+
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Título:" />
+					<p:outputLabel value="#{manageInterviewsCDI.position.title}" />
+					<p:outputLabel />
+					<p:outputLabel />
+					<p:outputLabel value="Empresa:" />
+					<p:outputLabel value="#{manageInterviewsCDI.position.company}" />
+					<p:outputLabel />
+					<p:outputLabel />
+					<p:outputLabel value="Descrição:" />
+
+				</h:panelGrid>
+
+				<p:inputTextarea cols="50" rows="10" readonly="true"
+					value="#{manageInterviewsCDI.position.description}" />
+				<p:outputLabel />
+
+				<p:commandButton value="Fechar" style="width:100%"
+					icon="ui-icon-close" onclick="PF('checkPosition').hide();" />
+
+			</p:dialog>
+
+		</h:form>
+
+		<h:form id="myInterviews">
+
+			<p:dataTable emptyMessage="Sem entrevistas marcadas." var="interview"
+				value="#{manageInterviewsCDI.interviews}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+
+				<f:facet name="header">Entrevistas por Realizar</f:facet>
+
+				<p:column headerText="Data">
+					<h:outputText value="#{interview.date}" />
+				</p:column>
+
+				<p:column headerText="Consultar posição">
+					<p:commandButton
+						value="#{interview.submission.position.positionCode}"
+						style="width:100%" update="@form viewPositionForm"
+						oncomplete="PF('checkPosition').show();"
+						action="#{manageInterviewsCDI.loadPosition(interview.submission.position)}" />
+				</p:column>
+
+				<p:column headerText="Candidato">
+					<p:outputLabel
+						value="#{interview.submission.candidate.firstName} #{interview.submission.candidate.lastName}" />
+				</p:column>
+
+				<p:column headerText="Carta de Motivação">
+					<a
+						href="#{submissionSearchCDI.getMotivatioLetterPath(interview.submission)}"
+						target="_blank">Consultar a Carta de Motivação</a>
+				</p:column>
+
+				<p:column headerText="CV">
+					<a href="#{submissionSearchCDI.getCvPath(interview.submission)}"
+						target="_blank"> Consultar CV</a>
+				</p:column>
+
+				<p:column headerText="Ver Script">
+					<a href="#{submissionSearchCDI.getCvPath(interview.submission)}"
+						target="_blank"> Consultar CV</a>
+				</p:column>
+
+				<p:column headerText="Consultar/Baixar Guião">
+
+					<p:commandButton value="Consultar/Baixar" style="width:100%"
+						update="@form viewScript myCarriedInterviews"
+						rendered="#{!manageInterviewsCDI.currentScript(interview.script)}"
+						actionListener="#{manageInterviewsCDI.loadInterview(interview)}"
+						icon="ui-icon-script" />
+
+					<p:commandButton value="Fechar" style="width:100%"
+						update="@form viewScript myCarriedInterviews"
+						rendered="#{manageInterviewsCDI.currentScript(interview.script)}"
+						actionListener="#{manageInterviewsCDI.unloadScript()}"
+						icon="ui-icon-close" />
+
+				</p:column>
+
+				<p:column headerText="Editar Entrevista">
+					<!-- Por fazer -->
+					<p:commandButton value="Editar" style="width:100%"
+						icon="ui-icon-pencil"
+						rendered="#{!manageInterviewsCDI.interviewer}" />
+					<!-- Por fazer -->
+					<p:commandButton value="Acesso negado" style="width:100%"
+						icon="ui-icon-cancel"
+						rendered="#{manageInterviewsCDI.interviewer}" />
+
+				</p:column>
+
+				<p:column headerText="Concluir Entrevista">
+					<!-- Por fazer -->
+					<p:commandButton value="Concluir" style="width:100%"
+						icon="ui-icon-check"
+						action="#{manageInterviewsCDI.loadInterview(interview)}" />
+
+				</p:column>
+
+			</p:dataTable>
+			<br />
+		</h:form>
+
+		<br />
+
+		<h:form id="viewScript">
+			<h:panelGroup rendered="#{manageInterviewsCDI.hasScript()}">
+
+				<p:dataTable id="xls" emptyMessage="Sem Perguntas" var="question"
+					value="#{manageInterviewsCDI.script.questions}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+					{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<f:facet name="header">
+						<h:outputText value="#{manageInterviewsCDI.interviewTitle()}" />
+					</f:facet>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Questão" />
+						</f:facet>
+						<p:outputLabel value="#{question.question}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Tipo de resposta" />
+						</f:facet>
+						<p:outputLabel
+							value="#{manageInterviewsCDI.questionType(question)}" />
+					</p:column>
+
+				</p:dataTable>
+
+				<h:panelGroup style="width:100%">
+					<div style="float: left">
+						<h:commandLink value="Baixar .xls">
+							<p:graphicImage library="images/logos" name="xls.png" />
+							<p:dataExporter type="xls" target="xls"
+								fileName="#{manageInterviewsCDI.interviewTitle()}" />
+						</h:commandLink>
+					</div>
+				</h:panelGroup>
+
+			</h:panelGroup>
+
+		</h:form>
+
+		<br />
+
+		<h:form id="myCarriedInterviews">
+
+			<h:panelGroup rendered="#{!manageInterviewsCDI.hasScript()}">
+
+				<p:dataTable emptyMessage="Sem entrevistas realizadas."
+					var="interview" value="#{manageInterviewsCDI.carriedInterviews}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+					{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<f:facet name="header">Entrevistas Realizadas</f:facet>
+
+					<p:column headerText="Data">
+						<h:outputText value="#{interview.date}" />
+					</p:column>
+
+					<p:column headerText="Consultar posição">
+						<p:commandButton
+							value="#{interview.submission.position.positionCode}"
+							style="width:100%" update="@form viewPositionForm"
+							oncomplete="PF('checkPosition').show();"
+							action="#{manageInterviewsCDI.loadPosition(interview.submission.position)}" />
+					</p:column>
+
+					<p:column headerText="Candidato">
+						<p:outputLabel
+							value="#{interview.submission.candidate.firstName} #{interview.submission.candidate.lastName}" />
+					</p:column>
+
+					<p:column headerText="Carta de Motivação">
+						<a
+							href="#{submissionSearchCDI.getMotivatioLetterPath(interview.submission)}"
+							target="_blank">Consultar a Carta de Motivação</a>
+					</p:column>
+
+					<p:column headerText="CV">
+						<a href="#{submissionSearchCDI.getCvPath(interview.submission)}"
+							target="_blank"> Consultar CV</a>
+					</p:column>
+
+					<p:column headerText="Baixar Entrevista">
+
+						<!-- Por fazer -->
+						<p:commandButton value="Baixar" style="width:100%"
+							icon="ui-icon-arrowthick-1-s" />
+
+					</p:column>
+
+				</p:dataTable>
+
+			</h:panelGroup>
+
+			<br />
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
