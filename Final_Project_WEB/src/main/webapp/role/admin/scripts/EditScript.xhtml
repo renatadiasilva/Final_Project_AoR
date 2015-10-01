@@ -32,14 +32,14 @@
 					<p:inputText id="search-sctitle" value="#{scriptSearchCDI.title}"
 						style="width:100%" />
 					<p:commandButton action="#{scriptSearchCDI.searchByTitle()}"
-						update="scriptSearch messages" icon="ui-icon-search" />
+						update="scriptSearch messages questions" icon="ui-icon-search" />
 				</h:panelGrid>
 			</h:form>
 
 			<h:form style="width:100%">
 				<p:commandButton action="#{scriptSearchCDI.cleanAll()}"
 					value="Limpar pesquisa"
-					update="search-sctitle-out scriptSearch messages"
+					update="search-sctitle-out scriptSearch messages questions"
 					icon="ui-icon-cancel" />
 			</h:form>
 		</h:panelGrid>
@@ -50,12 +50,12 @@
 
 				<p:commandButton value="Todos"
 					action="#{scriptSearchCDI.searchAllScripts()}"
-					update="scriptSearch messages" icon="ui-icon-search"
+					update="scriptSearch messages questions" icon="ui-icon-search"
 					style="width:100%" />
 
 				<p:commandButton value="Todos reutilizáveis"
 					action="#{scriptSearchCDI.searchReusableScripts()}"
-					update="scriptSearch messages" icon="ui-icon-search"
+					update="scriptSearch messages questions" icon="ui-icon-search"
 					style="width:100%" />
 
 			</h:panelGrid>

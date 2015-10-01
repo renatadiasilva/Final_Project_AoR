@@ -57,22 +57,26 @@ public class ScriptSearchCDI implements Serializable {
 		title="";
 		id = 0L;
 		searchAllScripts();
+		this.script = null;
 	}
 
 	public void cleanAll() {
 		title="";
 		id = 0L;
 		sclist = new ArrayList<ScriptEntity>();
+		this.script = null;
 	}
 
 	public void searchAllScripts() {
 		log.info("Searching for all scripts");
 		this.sclist = scriptEJB.findAll();
+		this.script = null;
 	}
 
 	public void searchReusableScripts() {
 		log.info("Searching reusable scripts");
 		this.sclist = scriptEJB.findReusableScripts();
+		this.script = null;
 	}
 
 	public void searchByTitle() {
@@ -80,6 +84,7 @@ public class ScriptSearchCDI implements Serializable {
 		String pattern = SearchPattern.preparePattern(title);
 		log.debug("Internal search string : "+pattern);
 		this.sclist = scriptEJB.findScriptsByTitle(pattern);
+		this.script = null;
 	}
 
 	public void searchChildScripts() {
@@ -89,6 +94,7 @@ public class ScriptSearchCDI implements Serializable {
 		if (script != null) {
 			this.sclist = scriptEJB.findChildScripts(script);
 		} else log.error("No script with id "+id);
+		this.script = null;
 	}
 
 	public boolean loadedScript() {
