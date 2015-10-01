@@ -72,6 +72,20 @@
 				<p:column headerText="Derivado de">
 					<h:outputText value="#{sc.derivedFrom.title}" />
 				</p:column>
+				<p:column headerText="Ver questões">
+					<p:commandButton value="Seleccionar" style="width:100%"
+						rendered="#{!positionSearchCDI.checkPosition(p)}"
+						actionListener="#{positionSearchCDI.setPosition(p)}"
+						icon="ui-icon-suitcase"
+						update="@form messages submissionsPos
+						editSubmissionStatus editSubmissionReason" />
+					<p:commandButton rendered="#{positionSearchCDI.checkPosition(p)}"
+						style="width:100%" value="Cancelar"
+						actionListener="#{positionSearchCDI.unloadPosition()}"
+						icon="ui-icon-cancel"
+						update="@form messages submissionsPos
+						editSubmissionStatus editSubmissionReason" />
+				</p:column>
 			</p:dataTable>
 
 		</h:form>

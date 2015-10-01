@@ -1,9 +1,10 @@
 package pt.uc.dei.aor.pf.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -12,13 +13,19 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.SearchPattern;
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
+import pt.uc.dei.aor.pf.beans.QuestionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
+import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
+
+import java.io.Serializable;
 
 
 @Named
-@RequestScoped
-public class ScriptSearchCDI {
+@SessionScoped
+public class ScriptSearchCDI implements Serializable {
+
+	private static final long serialVersionUID = -1275638845087957826L;
 
 	private static final Logger log = 
 			LoggerFactory.getLogger(ScriptSearchCDI.class);
@@ -31,13 +38,31 @@ public class ScriptSearchCDI {
 
 	@EJB
 	private InterviewEJBInterface interviewEJB;
+	
+	@EJB
+	private QuestionEJBInterface questionEJB;
+
 	// search fields
 	private String title;
 	private Long id;
 
+	private List<QuestionEntity> questions;
 	private List<ScriptEntity> sclist;
+	ScriptEntity script;
 
 	public ScriptSearchCDI() {
+	}
+
+	public void clean() {
+		title="";
+		id = 0L;
+		searchAllScripts();
+	}
+
+	public void cleanAll() {
+		title="";
+		id = 0L;
+		sclist = new ArrayList<ScriptEntity>();
 	}
 
 	public void searchAllScripts() {
@@ -66,6 +91,24 @@ public class ScriptSearchCDI {
 		} else log.error("No script with id "+id);
 	}
 
+	public boolean loadedScript() {
+		return this.script!=null;
+	}
+
+	public boolean checkScript(ScriptEntity script){
+		if(this.script==null)return false;
+		if(this.script.getId()==script.getId())return true;
+		return false;
+	}
+
+	public void unloadScript(){
+		this.script=null;
+	}
+	
+	public String getTypeText(QuestionEntity question) {
+		return questionEJB.getTypeText(question);
+	}
+	
 	// getters e setters
 
 	public String getTitle() {
@@ -94,6 +137,22 @@ public class ScriptSearchCDI {
 
 	public void setSclist(List<ScriptEntity> sclist) {
 		this.sclist = sclist;
+	}
+
+	public ScriptEntity getScript() {
+		return script;
+	}
+
+	public void setScript(ScriptEntity script) {
+		this.script = script;
+	}
+
+	public List<QuestionEntity> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<QuestionEntity> questions) {
+		this.questions = questions;
 	}
 
 }

@@ -1,0 +1,123 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<!-- mudar -->
+	<f:metadata>
+		<f:viewAction actionListener="#{scriptSearchCDI.clean()}" />
+	</f:metadata>
+
+	<ui:define name="titulo">Admin - 
+	Editar Guiões - #{styleSessionManagement.companyName}</ui:define>
+
+	<ui:define name="contents">
+		<h1>Editar Guiões</h1>
+
+		<br />
+		<!-- 		ver com calma -->
+		<h:form>
+			<p:link value="Eliminar guiões"
+				href="../../../role/admin/dangerzone/RemoveScript.xhtml" />
+		</h:form>
+		<br />
+		<!-- Pesquisas -->
+		<h:panelGrid columns="4" style="width:100%">
+
+			<h:form id="search-sctitle-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por título: " for="search-sctitle" />
+					<p:inputText id="search-sctitle" value="#{scriptSearchCDI.title}"
+						style="width:100%" />
+					<p:commandButton action="#{scriptSearchCDI.searchByTitle()}"
+						update="scriptSearch messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
+
+			<h:form style="width:100%">
+				<p:commandButton action="#{scriptSearchCDI.cleanAll()}"
+					value="Limpar pesquisa"
+					update="search-sctitle-out scriptSearch messages"
+					icon="ui-icon-cancel" />
+			</h:form>
+		</h:panelGrid>
+
+		<h:form>
+
+			<h:panelGrid columns="2" style="width:100%">
+
+				<p:commandButton value="Todos"
+					action="#{scriptSearchCDI.searchAllScripts()}"
+					update="scriptSearch messages" icon="ui-icon-search"
+					style="width:100%" />
+
+				<p:commandButton value="Todos reutilizáveis"
+					action="#{scriptSearchCDI.searchReusableScripts()}"
+					update="scriptSearch messages" icon="ui-icon-search"
+					style="width:100%" />
+
+			</h:panelGrid>
+
+		</h:form>
+
+		<h:form id="scriptSearch">
+
+			<p:dataTable emptyMessage="Não foram encontrados guiões." var="sc"
+				value="#{scriptSearchCDI.sclist}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Listagem</f:facet>
+				<p:column headerText="Título">
+					<h:outputText value="#{sc.title}" />
+				</p:column>
+				<p:column headerText="Data">
+					<h:outputText value="#{sc.creationDate}" />
+				</p:column>
+				<p:column headerText="Comentários">
+					<h:outputText value="#{sc.comments}" />
+				</p:column>
+				<p:column headerText="Reutilizável?">
+					<h:outputText value="#{sc.reusable}" />
+				</p:column>
+				<p:column headerText="Derivado de">
+					<h:outputText value="#{sc.derivedFrom.title}" />
+				</p:column>
+				<p:column headerText="Ver questões">
+					<p:commandButton value="Seleccionar" style="width:100%"
+						rendered="#{!scriptSearchCDI.checkScript(sc)}"
+						actionListener="#{scriptSearchCDI.setScript(s)}"
+						icon="ui-icon-script" update="@form messages questions" />
+					<p:commandButton rendered="#{scriptSearchCDI.checkScript(sc)}"
+						style="width:100%" value="Cancelar"
+						actionListener="#{scriptSearchCDI.unloadScript()}"
+						icon="ui-icon-cancel" update="@form messages questions" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="questions">
+			<h:panelGrid rendered="#{scriptSearchCDI.loadedScript()}">
+				<h2>Script #{scriptSearchCDI.script.title}</h2>
+			</h:panelGrid>
+
+			<p:dataTable emptyMessage="O guião não tem questões." var="q"
+				rendered="#{scriptSearchCDI.loadedScript()}"
+				value="#{scriptSearchCDI.questions}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+				paginator="true" rows="10">
+				<f:facet name="header">Questões do guião</f:facet>
+				<p:column headerText="Pergunta">
+					<h:outputText value="#{q.question}" />
+				</p:column>
+				<p:column headerText="Tipo">
+					<h:outputText value="#{scriptSearchCDI.getTypeText(q)}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

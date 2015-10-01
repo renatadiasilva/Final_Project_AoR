@@ -225,31 +225,113 @@
 				actionListener="#{initDB.populate()}" />
 		</h:form>
 
-		<h:form>
-
-			<br />
-			<br />
-			<br />
+		<br />
+		<br />
+		<br />
 			#{styleSessionManagement.welcomeMessage}
 			<br />
-			<br />
+		<br />
 			#{styleSessionManagement.companyDescription}
 			<br />
-			<br />
-			<br />
+		<br />
+		<br />
 
+		<!-- Pesquisas -->
+		<h:panelGrid columns="3" style="width:100%">
+
+			<!-- code and title?? -->
+			<h:form id="search-code-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por código: " for="search-code" />
+					<p:inputText id="search-code" value="#{positionSearchCDI.code}"
+						style="width:100%" />
+					<p:commandButton
+						action="#{positionSearchCDI.searchPositionsByCode()}"
+						update="tableHome messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
+
+			<h:form id="search-title-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por título: " for="search-title" />
+					<p:inputText id="search-title" value="#{positionSearchCDI.title}"
+						style="width:100%" />
+					<p:commandButton
+						action="#{positionSearchCDI.searchPositionsByTitle()}"
+						update="tableHome messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
+
+			<h:form id="search-company-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por empresa: " for="search-company" />
+					<p:inputText id="search-company"
+						value="#{positionSearchCDI.company}" style="width:100%" />
+					<p:commandButton
+						action="#{positionSearchCDI.searchPositionsByCompany()}"
+						update="tableHome messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
+
+			<h:form id="search-tarea-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por área técnica: " for="search-tarea" />
+					<p:inputText id="search-tarea" value="#{positionSearchCDI.tarea}"
+						style="width:100%" />
+					<p:commandButton
+						action="#{positionSearchCDI.searchPositionsByTechArea()}"
+						update="tableHome messages" icon="ui-icon-search" />
+				</h:panelGrid>
+			</h:form>
+
+		</h:panelGrid>
+
+		<h:panelGrid columns="3" style="width:100%">
+			<h:form id="search-locations-out">
+				<h:panelGroup>
+					<p:outputLabel value="Coimbra: " for="searchPos-coimbra" />
+					<p:selectBooleanCheckbox id="searchPos-coimbra"
+						value="#{positionSearchCDI.coimbra}" />
+
+					<p:outputLabel value="Porto: " for="searchPos-porto" />
+					<p:selectBooleanCheckbox id="searchPos-porto"
+						value="#{positionSearchCDI.porto}" />
+
+					<p:outputLabel value="Lisboa: " for="searchPos-lisboa" />
+					<p:selectBooleanCheckbox id="searchPos-lisboa"
+						value="#{positionSearchCDI.lisboa}" />
+
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:commandButton value="Procurar posições com uma das localizações"
+						action="#{positionSearchCDI.searchPositionsByLocationsOne()}"
+						update="tableHome messages" icon="ui-icon-search" />
+					<p:commandButton
+						value="Procurar posições com todas as localizações"
+						action="#{positionSearchCDI.searchPositionsByLocationsAll()}"
+						update="tableHome messages" icon="ui-icon-search" />
+				</h:panelGroup>
+			</h:form>
+			<h:form style="width:100%">
+				<p:commandButton action="#{positionSearchCDI.cleanAll()}"
+					value="Limpar pesquisa"
+					update="search-code-out search-company-out search-tarea-out
+						search-locations-out
+						  search-title-out tableHome messages"
+					icon="ui-icon-cancel" />
+			</h:form>
+		</h:panelGrid>
+
+		<h:form id="tableHome">
 			<p:dataTable emptyMessage="Neste momento não há posições abertas."
-				var="p" value="#{checkPositionCDI.positions}" id="tableHome"
+				var="p" value="#{checkPositionCDI.positions}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
 
 				<f:facet name="header">Posições Abertas</f:facet>
-				<p:column headerText="Código">
-					<h:outputText value="#{p.positionCode}" />
-				</p:column>
-				<p:column headerText="Título">
-					<h:outputText value="#{p.title}" />
+				<p:column headerText="Posição">
+					<h:outputText value="#{p.positionCode} '#{p.title}'" />
 				</p:column>
 				<p:column headerText="Data Abertura">
 					<h:outputText value="#{p.openingDate}" />
@@ -263,6 +345,9 @@
 				<p:column headerText="Área Técnica">
 					<h:outputText value="#{p.technicalArea}" />
 				</p:column>
+				<p:column headerText="Localizações">
+					<h:outputText value="#{p.allLocations()}" />
+				</p:column>
 				<p:column headerText="Descrição">
 					<p:commandButton value="Ver descrição" icon="ui-icon-script"
 						actionListener="#{checkPositionCDI.checkPosition(p)}"
@@ -270,14 +355,13 @@
 						oncomplete="PF('checkPosition').show();" />
 				</p:column>
 				<p:column headerText="Candidatar-se">
-					<p:commandButton value="Registar-se" oncomplete="PF('signup').show();"
-						update="messages signupForm" icon="ui-icon-locked"
-						style="width: 100%" />
+					<p:commandButton value="Registar-se"
+						oncomplete="PF('signup').show();" update="messages signupForm"
+						icon="ui-icon-locked" style="width: 100%" />
 				</p:column>
 			</p:dataTable>
 
 		</h:form>
-
 	</ui:define>
 
 </ui:composition>
