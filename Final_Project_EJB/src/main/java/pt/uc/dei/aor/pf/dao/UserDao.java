@@ -139,10 +139,10 @@ public class UserDao extends GenericDao<UserEntity> {
 			return super.findSomeResults("User.findCandidatesByPhone", parameters);
 		}
 		
-		String queryS = "DISTINCT SELECT users.*"
+		String queryS = "SELECT DISTINCT users.*"
 				+ " FROM users, users_info, submissions, positions"
-				+ " WHERE home_phone LIKE :phone"
-				+ " OR mobile_phone LIKE :phone"
+				+ " WHERE (home_phone LIKE :phone"
+				+ " OR mobile_phone LIKE :phone)"
 				+ " AND email NOT LIKE :removed"
 				+ " AND users.id = submissions.candidate"
 				+ " AND submissions.position = positions.id"
@@ -153,7 +153,7 @@ public class UserDao extends GenericDao<UserEntity> {
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("phone", phone);
 		query.setParameter("removed", "%"+Constants.REMOVED_DATA+"%");
-		if (manager != null) query.setParameter("id", manager.getId());
+		query.setParameter("id", manager.getId());
 		return (List<UserEntity>) query.getResultList();
 
 	}
@@ -180,7 +180,6 @@ public class UserDao extends GenericDao<UserEntity> {
 						+ " positions.manager = :id"
 						+ " AND email NOT LIKE :removed", "first_name");
 
-		System.out.println("candidates"+queryS);
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("email", keyword);
 		query.setParameter("first_name", keyword);

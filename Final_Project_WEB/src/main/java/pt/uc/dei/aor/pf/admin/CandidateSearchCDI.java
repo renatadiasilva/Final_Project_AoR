@@ -44,16 +44,16 @@ public class CandidateSearchCDI implements Serializable {
 
 	@EJB
 	private UserEJBInterface userEJB;
-	
+
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
-	
+
 	@EJB
 	private SecureMailManagementImp mail;
 
 	@EJB
 	private PositionEJBInterface positionEJB;
-	
+
 	@EJB
 	private QuestionEJBInterface questionEJB;
 
@@ -73,13 +73,13 @@ public class CandidateSearchCDI implements Serializable {
 
 	private UserEntity manager;
 	private String headerTable, reason;
-	
+
 	private SubmissionEntity submission;
 	private UserEntity candidate;
 
 	@Inject
 	private UserSessionManagement userSession;
-	
+
 	public CandidateSearchCDI() {
 	}
 
@@ -146,7 +146,7 @@ public class CandidateSearchCDI implements Serializable {
 		reason="";
 		this.submission = null;
 	}
-	
+
 	public boolean loadedSubmission() {
 		return this.submission!=null;
 	}
@@ -160,7 +160,7 @@ public class CandidateSearchCDI implements Serializable {
 	public void unloadSubmission(){
 		this.submission=null;
 	}
-	
+
 	public void updateStatusSub(){
 		log.info("Updating status of submission");
 		String oldStatus=this.submission.getStatus();
@@ -168,7 +168,7 @@ public class CandidateSearchCDI implements Serializable {
 
 		log.debug("Current status: "+oldStatus);
 		log.debug("New status: "+statusSub);
-		
+
 		// if current status is HIRED and new one is not, clean hiredDate
 		if(oldStatus.equals(Constants.STATUS_HIRED)
 				&&!statusSub.equals(Constants.STATUS_HIRED)) {
@@ -251,19 +251,19 @@ public class CandidateSearchCDI implements Serializable {
 		}	
 
 		if(!needsReason) {
-			
+
 			this.submission.setStatus(statusSub);
 			this.submissionEJB.update(this.submission);
 
 			this.submission=null;
-		
+
 
 			this.clean();
 
 			FacesContext.getCurrentInstance().addMessage(
 					null, new FacesMessage("Estado actualizado."));
 		} else if (update) this.submissionEJB.update(this.submission);
-		
+
 	}
 
 	public void saveRejectedReason() {
@@ -456,16 +456,18 @@ public class CandidateSearchCDI implements Serializable {
 		log.debug("Internal search string: "+pattern);
 		this.ulist = userEJB.findCandidatesByKeyword(pattern, manager);
 	}	
-	
+
 	public String getPhones(UserEntity candidate) {
-		String home = candidate.getUserInfo().getHomePhone();
-		String mobile = candidate.getUserInfo().getMobilePhone();
-		
-		if (home != null) home = home.replace(" ", "")+", ";
-		else home = "";
-		if (mobile != null) mobile = mobile.replace(" ", "");
-		else mobile = "";
-		return home+mobile;
+		if (candidate.getUserInfo() != null) {
+			String home = candidate.getUserInfo().getHomePhone();
+			String mobile = candidate.getUserInfo().getMobilePhone();
+
+			if (home != null) home = home.replace(" ", "")+", ";
+			else home = "";
+			if (mobile != null) mobile = mobile.replace(" ", "");
+			else mobile = "";
+			return home+mobile;
+		} else return "";
 	}
 
 	// getters e setters
