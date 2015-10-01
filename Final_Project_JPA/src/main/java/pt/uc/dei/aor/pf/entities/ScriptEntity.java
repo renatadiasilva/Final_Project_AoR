@@ -27,6 +27,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="scripts")
 @NamedQueries({
+	@NamedQuery(name = "Script.findAllScriptsOrderBy",
+			query = "SELECT s FROM ScriptEntity s"
+					+ " ORDER BY s.creationDate DESC, s.title"),
 	@NamedQuery(name = "Script.findReusableScripts",
 			query = "SELECT s FROM ScriptEntity s WHERE s.reusable = TRUE"
 					+ " ORDER BY s.creationDate DESC, s.title"),

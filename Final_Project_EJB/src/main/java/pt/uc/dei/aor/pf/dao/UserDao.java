@@ -180,6 +180,7 @@ public class UserDao extends GenericDao<UserEntity> {
 						+ " positions.manager = :id"
 						+ " AND email NOT LIKE :removed", "first_name");
 
+		System.out.println("candidates"+queryS);
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
 		query.setParameter("address", keyword);
 		query.setParameter("city", keyword);

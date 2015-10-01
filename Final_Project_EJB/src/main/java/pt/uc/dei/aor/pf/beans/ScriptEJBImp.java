@@ -57,7 +57,7 @@ public class ScriptEJBImp implements ScriptEJBInterface {
 	@Override
 	public List<ScriptEntity> findAll() {
 		log.info("Creating Query for all scripts");
-		return scriptDAO.findAll();
+		return scriptDAO.findAllScripts();
 	}
 
 	@Override

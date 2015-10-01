@@ -263,8 +263,8 @@ public class DangerZoneCDI implements Serializable {
 			if (plist != null && !plist.isEmpty()) {
 				notErrorMessage("O guião é guião por defeito nas seguintes"
 						+ " posições:");
-				tableHeader = "Posições com o guião "
-						+scriptToRemoveTitle+" por defeito";
+				tableHeader = "Posições com o guião \'"
+						+scriptToRemoveTitle+"\' por defeito";
 				showInfo = true;
 				for (PositionEntity p : plist)
 					info.add("Posição \'"+p.getTitle()+"\' ("
@@ -281,8 +281,8 @@ public class DangerZoneCDI implements Serializable {
 			if (ilist != null && !ilist.isEmpty()) {
 				notErrorMessage("O guião é/foi usado nas seguintes"
 						+ " entrevistas:");
-				tableHeader = "Entrevistas que usam o guião "
-						+scriptToRemoveTitle;
+				tableHeader = "Entrevistas que usam o guião \'"
+						+scriptToRemoveTitle+"\'";
 				showInfo = true;
 				for (InterviewEntity i : ilist)
 					info.add("Entrevista do candidato "
@@ -302,8 +302,8 @@ public class DangerZoneCDI implements Serializable {
 					scriptEJB.findChildScripts(scriptToRemove);
 			if (sclist != null && !sclist.isEmpty()) {
 				notErrorMessage("Os seguintes scripts são derivados deste guião:");
-				tableHeader = "Guiões derivados do guião "
-						+scriptToRemoveTitle;
+				tableHeader = "Guiões derivados do guião \'"
+						+scriptToRemoveTitle+"\'";
 				showInfo = true;
 				for (ScriptEntity sc : sclist)
 					info.add("Guião "+sc.getTitle()
@@ -317,7 +317,7 @@ public class DangerZoneCDI implements Serializable {
 				scriptEJB.delete(scriptToRemove);
 				log.info("Script removed");
 				log.debug("Título "+scriptToRemoveTitle);
-				notErrorMessage("Guião "+ scriptToRemoveTitle+" removido");
+				notErrorMessage("Guião \'"+ scriptToRemoveTitle+"\' removido");
 			}
 			else {
 				// if in use set reusable false but don't remove
@@ -325,8 +325,8 @@ public class DangerZoneCDI implements Serializable {
 				scriptEJB.update(scriptToRemove);
 				log.info("Script set as not reusable");
 				log.debug("Título "+scriptToRemoveTitle);
-				notErrorMessage("Guião "+ scriptToRemoveTitle+" tornado"
-						+ "não reutilizável");
+				notErrorMessage("Guião \'"+ scriptToRemoveTitle+"\' tornado"
+						+ " não reutilizável");
 			}
 
 			removeTried = true;

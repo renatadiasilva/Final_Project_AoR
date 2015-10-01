@@ -20,6 +20,10 @@ public class ScriptDao extends GenericDao<ScriptEntity> {
 		return super.findSomeResults("Script.findReusableScripts", null);
 	}
 
+	public List<ScriptEntity> findAllScripts() {
+		return super.findSomeResults("Script.findAllScriptsOrderBy", null);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<ScriptEntity> findScriptsByTitle(String title) {
 

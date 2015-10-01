@@ -12,8 +12,7 @@
 			<!-- Se houver um user logado redirecciona para a respectiva Landing.xhtml -->
 			<f:viewAction
 				actionListener="#{userSessionManagement.checkForUser()}" />
-			<f:viewAction
-				actionListener="#{checkPositionCDI.init()}" />
+			<f:viewAction actionListener="#{checkPositionCDI.init()}" />
 		</f:metadata>
 
 		<ui:include src="WEB-INF/template/check-position.xhtml" />
@@ -238,8 +237,8 @@
 		<br />
 
 		<!-- Pesquisas -->
-		<h:panelGrid style="width:100%">
-			<h:form id="search-keyword-out" style="width:100%">
+		<h:form id="search-keyword-out" style="width:100%">
+			<h:panelGrid style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
 					<p:watermark value="Procurar por keyword: " for="search-keyword" />
 					<p:inputText id="search-keyword"
@@ -248,8 +247,8 @@
 						action="#{checkPositionCDI.searchOpenPositionsByKeyword()}"
 						update="tableHome" icon="ui-icon-search" />
 				</h:panelGrid>
-			</h:form>
-		</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
 
 		<h:form id="tableHome">
 			<p:dataTable emptyMessage="Neste momento não há posições abertas."

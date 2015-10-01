@@ -455,9 +455,14 @@ public class CandidateSearchCDI implements Serializable {
 	}	
 	
 	public String getPhones(UserEntity candidate) {
-		return "qq merda";
-//		return candidate.getUserInfo().getHomePhone().replace(" ", "")+", "
-//				+candidate.getUserInfo().getMobilePhone().replace(" ", "");
+		String home = candidate.getUserInfo().getHomePhone();
+		String mobile = candidate.getUserInfo().getMobilePhone();
+		
+		if (home != null) home = home.replace(" ", "")+", ";
+		else home = "";
+		if (mobile != null) mobile = mobile.replace(" ", "");
+		else mobile = "";
+		return home+mobile;
 	}
 
 	// getters e setters
