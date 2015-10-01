@@ -282,6 +282,10 @@
 					<h:outputText
 						value="#{positionSearchCDI.getDateWithoutTime(s.date)}" />
 				</p:column>
+				<p:column headerText="Candidato">
+					<h:outputText value="#{s.candidate.firstName} 
+						#{s.candidate.lastName}" />
+				</p:column>
 				<p:column headerText="Estado">
 					<h:outputText value="#{s.status}" />
 				</p:column>
@@ -320,7 +324,7 @@
 				<h2>Candidatura de
 					#{positionSearchCDI.submission.candidate.firstName}
 					#{positionSearchCDI.submission.candidate.lastName} à posição
-					#{positionSearchCDI.submission.position.positionCode}</h2>
+					#{positionSearchCDI.position.positionCode}</h2>
 			</h:panelGrid>
 			<h:panelGrid columns="3" style="width:1000px"
 				rendered="#{positionSearchCDI.loadedSubmission()}">
