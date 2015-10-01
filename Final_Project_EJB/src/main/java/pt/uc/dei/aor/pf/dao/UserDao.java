@@ -173,7 +173,7 @@ public class UserDao extends GenericDao<UserEntity> {
 							+ " AND email NOT LIKE :removed", "first_name");
 		else queryS = makeQuery("users.*", 
 				"users, users_info, submissions, positions", 
-				"(UPPER(email) LIKE :email AND ", attributes, 
+				"(", attributes, 
 				" OR ", "users.id = users_info.user_id AND"
 						+ " users.id = submissions.candidate"
 						+ " AND submissions.position = positions.id AND"
@@ -181,7 +181,6 @@ public class UserDao extends GenericDao<UserEntity> {
 						+ " AND email NOT LIKE :removed", "first_name");
 
 		Query query = em.createNativeQuery(queryS, UserEntity.class);
-		query.setParameter("email", keyword);
 		query.setParameter("address", keyword);
 		query.setParameter("city", keyword);
 		query.setParameter("country", keyword);
