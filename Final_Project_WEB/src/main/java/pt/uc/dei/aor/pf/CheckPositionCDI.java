@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import javax.inject.Named;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
@@ -19,9 +21,6 @@ import java.util.List;
 @SessionScoped
 public class CheckPositionCDI implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5955528757542061330L;
 
 	@Inject
@@ -43,6 +42,12 @@ public class CheckPositionCDI implements Serializable {
 	private List<PositionEntity> positions;
 
 	private boolean forbidden, currentCandidate;
+	
+	private String keyword;
+	
+	public void init() {
+		this.positions=this.positionEJB.findOpenPositions();
+	}
 
 	// 1ª Verificação
 	public boolean forbidden(PositionEntity position){
@@ -83,13 +88,26 @@ public class CheckPositionCDI implements Serializable {
 		return description;
 	}
 
+	public void searchOpenPositionsByKeyword() {
+		String pattern = SearchPattern.preparePattern(keyword);
+		this.positions = positionEJB.findPositionsByKeywordShort(pattern,
+				Constants.STATUS_OPEN);
+	}
+
 	public List<PositionEntity> getPositions() {
-		this.positions=this.positionEJB.findOpenPositions();
 		return positions;
 	}
 
 	public void setPositions(List<PositionEntity> positions) {
 		this.positions = positions;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 }

@@ -13,9 +13,9 @@
 			<f:viewAction
 				actionListener="#{userSessionManagement.checkTemporaryPassword()}" />
 			<f:viewAction
-				actionListener="#{positionSearchCDI.searchOpenPositions()}" />
-			<f:viewAction
 				actionListener="#{newSubmissionCDI.dissociatePosition()}" />
+			<f:viewAction
+				actionListener="#{checkPositionCDI.init()}" />
 		</f:metadata>
 		<br />
 		<b>CANDIDATO(A) #{userSessionManagement.userFullName}</b>,
@@ -38,7 +38,8 @@
 			<p:commandLink value="Submeter Candidatura Espontânea"
 				rendered="#{userSessionManagement.cv}"
 				oncomplete="PF('spontaneousSubmission').show();" />
-			<p:commandLink value="Faça Upload do CV para se poder candidatar 
+			<p:commandLink
+				value="Faça Upload do CV para se poder candidatar 
 					ou submeter uma candidatura espontânea"
 				onclick="PF('uploadCVLocal').show();"
 				rendered="#{!userSessionManagement.cv}" style="width: 100%" />
@@ -49,97 +50,21 @@
 		<br />
 		<br />
 
-			<!-- Pesquisas -->
-			<h:panelGrid columns="3" style="width:100%">
-
-<!-- code and title?? -->
-				<h:form id="search-code-out" style="width:100%">
-					<h:panelGrid columns="3" style="width:100%">
-						<p:watermark value="Procurar por código: " for="search-code" />
-						<p:inputText id="search-code" value="#{positionSearchCDI.code}"
-							style="width:100%" />
-						<p:commandButton
-							action="#{positionSearchCDI.searchPositionsByCode()}"
-							update="openPositionsForm messages"
-							icon="ui-icon-search" />
-					</h:panelGrid>
-				</h:form>
-
-				<h:form id="search-title-out" style="width:100%">
-					<h:panelGrid columns="3" style="width:100%">
-						<p:watermark value="Procurar por título: " for="search-title" />
-						<p:inputText id="search-title" value="#{positionSearchCDI.title}"
-							style="width:100%" />
-						<p:commandButton
-							action="#{positionSearchCDI.searchPositionsByTitle()}"
-							update="openPositionsForm messages"
-							icon="ui-icon-search" />
-					</h:panelGrid>
-				</h:form>
-
-				<h:form id="search-company-out" style="width:100%">
-					<h:panelGrid columns="3" style="width:100%">
-						<p:watermark value="Procurar por empresa: " for="search-company" />
-						<p:inputText id="search-company"
-							value="#{positionSearchCDI.company}" style="width:100%" />
-						<p:commandButton
-							action="#{positionSearchCDI.searchPositionsByCompany()}"
-							update="openPositionsForm messages"
-							icon="ui-icon-search" />
-					</h:panelGrid>
-				</h:form>
-
-				<h:form id="search-tarea-out" style="width:100%">
-					<h:panelGrid columns="3" style="width:100%">
-						<p:watermark value="Procurar por área técnica: "
-							for="search-tarea" />
-						<p:inputText id="search-tarea" value="#{positionSearchCDI.tarea}"
-							style="width:100%" />
-						<p:commandButton
-							action="#{positionSearchCDI.searchPositionsByTechArea()}"
-							update="openPositionsForm messages"
-							icon="ui-icon-search" />
-					</h:panelGrid>
-				</h:form>
-
-			</h:panelGrid>
-
-			<h:panelGrid columns="3" style="width:100%">
-				<h:form id="search-locations-out">
-					<h:panelGroup>
-						<p:outputLabel value="Coimbra: " for="searchPos-coimbra" />
-						<p:selectBooleanCheckbox id="searchPos-coimbra"
-							value="#{positionSearchCDI.coimbra}" />
-
-						<p:outputLabel value="Porto: " for="searchPos-porto" />
-						<p:selectBooleanCheckbox id="searchPos-porto"
-							value="#{positionSearchCDI.porto}" />
-
-						<p:outputLabel value="Lisboa: " for="searchPos-lisboa" />
-						<p:selectBooleanCheckbox id="searchPos-lisboa"
-							value="#{positionSearchCDI.lisboa}" />
-
-					</h:panelGroup>
-					<h:panelGroup>
-						<p:commandButton value="Procurar posições com uma das localizações"
-							action="#{positionSearchCDI.searchPositionsByLocationsOne()}"
-							update="openPositionsForm messages"
-							icon="ui-icon-search" />
-						<p:commandButton value="Procurar posições com todas as localizações"
-							action="#{positionSearchCDI.searchPositionsByLocationsAll()}"
-							update="openPositionsForm messages"
-							icon="ui-icon-search" />
-					</h:panelGroup>
-				</h:form>
-				<h:form style="width:100%">
-					<p:commandButton action="#{positionSearchCDI.cleanAll()}"
-						value="Limpar pesquisa"
-						update="search-code-out search-company-out search-tarea-out
-						search-locations-out
-						  search-title-out openPositionsForm messages"
-						icon="ui-icon-cancel" />
+		<!-- Pesquisas -->
+		<h:panelGrid style="width:100%">
+			<h:form id="search-keyword-out" style="width:100%">
+				<h:panelGrid columns="3" style="width:100%">
+					<p:watermark value="Procurar por keyword: "
+					 	for="search-keyword" />
+					<p:inputText id="search-keyword"
+					 	value="#{checkPositionCDI.keyword}"
+						style="width:100%" />
+					<p:commandButton
+						action="#{checkPositionCDI.searchOpenPositionsByKeyword()}"
+						update="openPositionsForm messages" icon="ui-icon-search" />
+				</h:panelGrid>
 			</h:form>
-			</h:panelGrid>
+		</h:panelGrid>
 
 		<h:form id="openPositionsForm">
 
@@ -156,9 +81,6 @@
 				<p:column headerText="Título">
 					<h:outputText value="#{p.title}" />
 				</p:column>
-				<p:column headerText="Data Abertura">
-					<h:outputText value="#{p.openingDate}" />
-				</p:column>
 				<p:column headerText="Vagas">
 					<h:outputText value="#{p.openings}" />
 				</p:column>
@@ -168,13 +90,15 @@
 				<p:column headerText="Área Técnica">
 					<h:outputText value="#{p.technicalArea}" />
 				</p:column>
+				<p:column headerText="Localizações">
+					<h:outputText value="#{p.allLocations()}" />
+				</p:column>
 				<p:column headerText="Descrição">
 					<p:commandButton value="Ver descrição" icon="ui-icon-script"
 						actionListener="#{checkPositionCDI.checkPosition(p)}"
 						update="checkPositionForm" style="width:100%"
 						oncomplete="PF('checkPosition').show();" />
 				</p:column>
-
 				<p:column headerText="Candidatar-se"
 					rendered="#{!userSessionManagement.cv}">
 					<p:commandButton value="Upload CV"
@@ -205,8 +129,8 @@
 
 				<p:fileUpload id="file-upload-local"
 					update="@form messages headerMenu quickAccessCandidate"
-					label="Escolha o CV (*.pdf)"
-					uploadLabel="Submeter CV" cancelLabel="Cancelar" required="true"
+					label="Escolha o CV (*.pdf)" uploadLabel="Submeter CV"
+					cancelLabel="Cancelar" required="true"
 					requiredMessage="Submeta um CV"
 					fileUploadListener="#{uploadCVCDI.uploadCV}" mode="advanced"
 					dragDropSupport="true" sizeLimit="1000000" fileLimit="1"

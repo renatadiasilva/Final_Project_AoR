@@ -127,7 +127,6 @@ public class ManageInterviewsCDI implements Serializable {
 	}
 	
 	public void loadPosition(PositionEntity position){
-		System.out.println("Posição: "+position.getPositionCode());
 		this.position=position;
 	}
 
