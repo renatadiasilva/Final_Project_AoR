@@ -344,26 +344,20 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	public void notifyScheduledInterview(InterviewEntity interview) {
 		// Sent an email notifiyng candidate and interviewers of new interview
 
-		boolean noCV = false;
-		String filePathString=LOCALHOST+"submissionCV/"+
-				interview.getSubmission().getId()+".pdf";
-		
-		File f = new File(filePathString);
-		if(!f.exists()) {
-			filePathString=LOCALHOST+"userCV/"+
-					interview.getSubmission().getCandidate().getId()+".pdf";
-			f = new File(filePathString);
-			if(!f.exists()) noCV = true;
-		}
-		
-		UserEntity candidate = interview.getSubmission().getCandidate();
-		PositionEntity position = interview.getSubmission().getPosition();
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+		SubmissionEntity submission = interview.getSubmission();
+		UserEntity candidate = submission.getCandidate();
+		PositionEntity position = submission.getPosition();
 
 		String positionMail=position.getPositionCode()
 				+", \'"+position.getTitle()+"\' - "
 				+position.getCompany();
-
+		
+		String linkCV = ""; 
+		if (submission.isCustomCV())
+			linkCV=LOCALHOST+"submissionCV/"+submission.getId()+".pdf";
+		else linkCV=LOCALHOST+"userCV/"+candidate.getId()+".pdf";
+		
 		String infoDate = "dia "+interview.getDay()
 				+" e hora "+interview.getHour();
 		
@@ -385,19 +379,9 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 					+"com o(a) candidato(a) "+candidate.getFirstName()
 					+" "+candidate.getLastName()+" à posição "
 					+positionMail+") para o dia "+interview.getDay()
-					+" e hora "+interview.getHour();
-			
-					if (!noCV) {
-						text += ".\n\nFaça login e consulte"
-								+ " o CV e os dados do candidato nas suas candidaturas agendadas: "
-								+PLATAFORM_LINK;
-					} else {
-						text +=".\n\nConsulte o CV do(a) candidato(a) no seguinte link: "
-						+filePathString;
-					}
-		
-					text += ".\n\nCumprimentos,\nA equipa "
-					+companyName;
+					+" e hora "+interview.getHour()
+					+".\n\nConsulte o CV do(a) candidato(a) no seguinte link: "
+					+linkCV+ ".\n\nCumprimentos,\nA equipa "+companyName;
 
 			this.sendEmail(u.getEmail(), null, "Entrevista agendada"
 					+" para o "+infoDate, text);
