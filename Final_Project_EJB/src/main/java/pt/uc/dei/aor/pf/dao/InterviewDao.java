@@ -31,6 +31,32 @@ public class InterviewDao extends GenericDao<InterviewEntity> {
 				parameters);
 	}
 
+	public List<InterviewEntity> findAllCarriedOutInterviews() {
+		return super.findSomeResults("Interview.findAllCarriedOutInterviews",
+				null);
+	}
+
+	public List<InterviewEntity> findAllScheduledInterviews() {
+		return super.findSomeResults("Interview.findAllScheduledInterviews",
+				null);
+	}
+
+	public List<InterviewEntity> findCarriedOutInterviewsOfManager(
+			UserEntity manager) {
+		Map<String, Object> parameters = new HashMap<String, Object>();		
+		parameters.put("manager", manager);
+		return super.findSomeResults(
+				"Interview.findCarriedOutInterviewsOfManager", parameters);
+	}
+
+	public List<InterviewEntity> findScheduledInterviewsOfManager(
+			UserEntity manager) {
+		Map<String, Object> parameters = new HashMap<String, Object>();		
+		parameters.put("manager", manager);
+		return super.findSomeResults(
+				"Interview.findScheduledInterviewsOfManager", parameters);
+	}
+
 	public List<InterviewEntity> findCarriedOutInterviewsByUser(
 			UserEntity interviewer) {
 		Map<String, Object> parameters = new HashMap<String, Object>();

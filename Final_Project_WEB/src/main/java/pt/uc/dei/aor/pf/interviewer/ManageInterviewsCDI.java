@@ -121,55 +121,31 @@ public class ManageInterviewsCDI implements Serializable {
 	}
 
 	private void loadInterviews() {
-		this.interviews=new ArrayList<>();
-
-		if(this.admin){
-			// Carrega todas as entrevistas, ouch!
-			List<PositionEntity>managedPositions=this.positionEJB.findAll();
-
-			for(PositionEntity position:managedPositions)
-				this.interviews.addAll(this.interviewEJB.findScheduledInterviewsByPosition(position));
-		}
-
-		if(this.manager){
-			// Carrega todas as entrevistas de posições do manager
-			List<PositionEntity>managedPositions=this.positionEJB.findOpenPositionsManagedByUser(currentUser);
-
-			for(PositionEntity position:managedPositions)
-				this.interviews.addAll(this.interviewEJB.findScheduledInterviewsByPosition(position));
-
-		}
-
-		if(this.interviewer)
-			// Carrega todas as entrevistas do interviewer
-			this.interviews=this.interviewEJB.findInterviewsOfUser(currentUser);
-
+		if(this.admin)
+			// Carrega todas as entrevistas por realizar
+			this.interviews = this.interviewEJB.findAllScheduledInterviews();
+		else if(this.manager)
+			// Carrega todas as entrevistas por realizar de posições do manager
+			this.interviews = 
+				this.interviewEJB.findScheduledInterviewsOfManager(currentUser);
+		else if(this.interviewer)
+			// Carrega todas as entrevistas por realizardo interviewer
+			this.interviews=
+				this.interviewEJB.findScheduledInterviewsByUser(currentUser);
 	}
 
 	private void loadCarriedInterviews() {
-		this.carriedInterviews=new ArrayList<>();
-
-		if(this.admin){
-			// Carrega todas as entrevistas, ouch!
-			List<PositionEntity>managedPositions=this.positionEJB.findAll();
-
-			for(PositionEntity position:managedPositions)
-				this.carriedInterviews.addAll(this.interviewEJB.findCarriedOutInterviewsByPosition(position));
-		}
-
-		if(this.manager){
-			// Carrega todas as entrevistas de posições do manager
-			List<PositionEntity>managedPositions=this.positionEJB.findOpenPositionsManagedByUser(currentUser);
-
-			for(PositionEntity position:managedPositions)
-				this.carriedInterviews.addAll(this.interviewEJB.findCarriedOutInterviewsByPosition(position));
-
-		}
-
-		if(this.interviewer)
-			// Carrega todas as entrevistas do interviewer
-			this.carriedInterviews=this.interviewEJB.findCarriedOutInterviewsByUser(currentUser);
-
+		if(this.admin)
+			// Carrega todas as entrevistas realizadas
+			this.carriedInterviews = this.interviewEJB.findAllCarriedOutInterviews();
+		else if(this.manager)
+			// Carrega todas as entrevistas realizadas de posições do manager
+			this.carriedInterviews = 
+				this.interviewEJB.findCarriedOutInterviewsOfManager(currentUser);
+		else if(this.interviewer)
+			// Carrega todas as entrevistas realizadas do interviewer
+			this.carriedInterviews=
+				this.interviewEJB.findCarriedOutInterviewsByUser(currentUser);
 	}
 
 	public List<InterviewEntity> getInterviews() {

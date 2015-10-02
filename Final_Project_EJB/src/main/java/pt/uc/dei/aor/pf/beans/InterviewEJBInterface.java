@@ -47,5 +47,9 @@ public interface InterviewEJBInterface {
 			Date date2);
 	public abstract List<InterviewEntity> findCarriedOutInterviewsByCandidate(
 			UserEntity candidate);
+	public abstract List<InterviewEntity> findAllCarriedOutInterviews();
+	public abstract List<InterviewEntity> findAllScheduledInterviews();
+	public abstract List<InterviewEntity> findCarriedOutInterviewsOfManager(UserEntity manager);
+	public abstract List<InterviewEntity> findScheduledInterviewsOfManager(UserEntity manager);
 			
 }

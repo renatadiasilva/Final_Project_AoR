@@ -73,6 +73,32 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	}
 
 	@Override
+	public List<InterviewEntity> findAllCarriedOutInterviews() {
+		log.info("Finding all carried out interviews");
+		return interviewDAO.findAllCarriedOutInterviews();
+	}
+
+	@Override
+	public List<InterviewEntity> findAllScheduledInterviews() {
+		log.info("Finding all scheduled interviews");
+		return interviewDAO.findAllScheduledInterviews();
+	}
+	
+	@Override
+	public List<InterviewEntity> findCarriedOutInterviewsOfManager(
+			UserEntity manager) {
+		log.info("Finding all carried out interviews of a manager");
+		return interviewDAO.findCarriedOutInterviewsOfManager(manager);
+	}
+
+	@Override
+	public List<InterviewEntity> findScheduledInterviewsOfManager(
+			UserEntity manager) {
+		log.info("Finding all scheduled interviews of a manager");
+		return interviewDAO.findScheduledInterviewsOfManager(manager);
+	}
+
+	@Override
 	public List<InterviewEntity> findCarriedOutInterviewsByUser(
 			UserEntity interviewer) {
 		log.info("Finding all carried out interviews of a interviewer");
