@@ -86,7 +86,8 @@ public class ScheduleInterviewCDI implements Serializable {
 	public void enterManager() {
 		manager = userEJB.find(userManagement.getCurrentUserClone().getId());
 		positions = positionEJB.findOpenPositionsManagedByUser(manager);
-		setEmptyTable("Não é gestor de nenhuma posição neste momento.");
+		setEmptyTable("Não é gestor de nenhuma posição neste momento ou "
+				+ "não exitem posições que verifiquem a pesquisa.");
 		setHeaderTable("Posições a gerir por "
 				+ userManagement.getUserFullName());
 		cleanBean();
@@ -96,7 +97,8 @@ public class ScheduleInterviewCDI implements Serializable {
 	public void enterAdmin() {
 		manager = null;
 		this.positions=this.positionEJB.findOpenPositions();
-		setEmptyTable("Não existem posições.");
+		setEmptyTable("Não existem posições ou "
+				+ "não exitem posições que verifiquem a pesquisa.");
 		setHeaderTable("Todas as posições");
 		cleanBean();
 		position = null;		
