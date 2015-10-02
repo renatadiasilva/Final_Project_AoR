@@ -349,6 +349,12 @@ public class PositionSearchCDI implements Serializable {
 	public void searchPositionsByDate() {
 		this.position = null;
 		log.info("Searching for positions between two dates");
+		// sort dates if necessary
+		if (date1.after(date2)) {
+			Date aux = date1;
+			date1 = date2;
+			date2 = aux;
+		}
 		log.debug("Dates between "+date1+" and "+date2);
 		this.plist = positionEJB.findPositionsByDate(date1, date2, manager);
 	}	

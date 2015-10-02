@@ -45,7 +45,7 @@ import javax.validation.constraints.NotNull;
 					+ " ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findCarriedOutInterviews",
 			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE"
-					+ " AND i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
+					+ " AND i.date BETWEEN :date1 AND :date2 ORDER BY i.date DESC"),
 	@NamedQuery(name = "Interview.findTotalCarriedOutInterviews",
 			query = "SELECT COUNT(i) FROM InterviewEntity i"
 					+ " WHERE i.carriedOut = TRUE"

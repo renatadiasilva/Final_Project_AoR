@@ -50,11 +50,46 @@
 
 		</h:form>
 
+		<h:panelGrid columns="3" style="width:100%">
+
+			<h:form id="search-dateInt-out">
+				<h:panelGroup rendered="#{manageInterviewsCDI.admin}">
+					<p:outputLabel value="De : " for="search-date1Int" />
+					<p:calendar id="search-date1Int"
+						value="#{manageInterviewsCDI.date1}" pattern="dd/MM/yyyy"
+						readonlyInput="true" navigator="true" yearRange="c-100:c+100"
+						locale="pt" size="35" />
+				</h:panelGroup>
+
+				<h:panelGroup rendered="#{manageInterviewsCDI.admin}">
+					<p:outputLabel value="Até: " for="search-date2Int" />
+					<p:calendar id="search-date2Int"
+						value="#{manageInterviewsCDI.date2}" pattern="dd/MM/yyyy"
+						readonlyInput="true" navigator="true" yearRange="c-100:c+100"
+						locale="pt" size="35" />
+				</h:panelGroup>
+				<h:panelGroup rendered="#{manageInterviewsCDI.admin}">
+					<p:commandButton value="Procurar entrevista por data"
+						action="#{manageInterviewsCDI.searchCarriedOutInterviewsByDate()}"
+						update="myCarriedInterviews search-dateInt-out"
+						icon="ui-icon-search" />
+				</h:panelGroup>
+			</h:form>
+
+			<h:form style="width:100%">
+				<p:commandButton action="#{positionSearchCDI.clean()}"
+					value="Limpar pesquisa"
+					update="myCarriedInterviews search-dateInt-out"
+					icon="ui-icon-cancel" />
+			</h:form>
+		</h:panelGrid>
+		<br />
+
 		<h:form id="myCarriedInterviews">
 
 			<h:panelGroup rendered="#{!manageInterviewsCDI.hasScript()}">
 
-				<p:dataTable emptyMessage="Não há entrevistas realizadas ou não há entrevistas realizadas nesta pesquisa."
+				<p:dataTable emptyMessage="Não há entrevistas realizadas."
 					var="interview" value="#{manageInterviewsCDI.carriedInterviews}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 					{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
@@ -63,7 +98,8 @@
 					<f:facet name="header">#{manageInterviewsCDI.headerTable}</f:facet>
 
 					<p:column headerText="Data">
-						<h:outputText value="#{manageInterviewsCDI.displayDate(interview.date)}" />
+						<h:outputText
+							value="#{manageInterviewsCDI.displayDate(interview.date)}" />
 					</p:column>
 
 					<p:column headerText="Consultar posição">

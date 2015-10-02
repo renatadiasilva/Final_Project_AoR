@@ -37,9 +37,6 @@ import java.util.List;
 @SessionScoped
 public class ManageInterviewsCDI implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6287260765364497687L;
 
 	@Inject
@@ -88,6 +85,49 @@ public class ManageInterviewsCDI implements Serializable {
 	private Date interviewDate;
 	
 	private String headerTable;
+	
+	private Date date1, date2;
+
+	// Edição de Entrevista
+	private List<UserEntity> interviewers, selectedInterviewers;
+
+	private List<ScriptEntity> scripts;
+
+	private List<String> conflicts;
+
+	private ScriptEntity interviewScript;
+
+	public void searchCarriedOutInterviewsByDate() {
+
+		clean();
+		// sort dates if necessary
+		if (date1.after(date2)) {
+			Date aux = date1;
+			date1 = date2;
+			date2 = aux;
+		}
+
+		this.carriedInterviews = 
+			interviewEJB.findCarriedOutInterviews(date1, date2);
+	}
+	
+	public void clean() {
+		this.conflicts=null;
+		this.candidateInterviews=null;
+		this.candidateToConclude=null;
+		this.feedback="";
+		this.interviewDate=null;
+		this.defaultInterviewScript=null;
+		this.editInterview=false;
+		this.interview=null;
+		this.interviewScript=null;
+		this.interviewToConclude=null;
+		this.script=null;
+		this.scripts=null;
+		this.selectedInterviewers=null;
+		this.position=null;
+		this.submission=null;
+	}
 
 	public void loadRole(String userEmail, boolean carried){
 
@@ -113,11 +153,10 @@ public class ManageInterviewsCDI implements Serializable {
 					+currentUser.getFirstName()+" "+currentUser.getLastName();
 		}
 
-		if(!carried)
-			this.loadInterviews();
-
-		if(carried)
-			this.loadCarriedInterviews();
+		if(!carried) this.loadInterviews();
+		else this.loadCarriedInterviews();
+		clean();
+		date1=date2=new Date();
 	}
 
 	private void loadInterviews() {
@@ -311,15 +350,6 @@ public class ManageInterviewsCDI implements Serializable {
 
 
 
-
-	// Edição de Entrevista
-	private List<UserEntity> interviewers, selectedInterviewers;
-
-	private List<ScriptEntity> scripts;
-
-	private List<String> conflicts;
-
-	private ScriptEntity interviewScript;
 
 	private void buildInterviewersList(){
 
@@ -588,6 +618,32 @@ public class ManageInterviewsCDI implements Serializable {
 
 	public void setHeaderTable(String headerTable) {
 		this.headerTable = headerTable;
+	}
+
+	public Date getDate1() {
+		if (date1 != null) return date1;
+		return new Date();
+	}
+
+	public void setDate1(Date date1) {
+		this.date1 = date1;
+	}
+
+	public Date getDate2() {
+		if (date2 != null) return date2;
+		return new Date();
+	}
+
+	public void setDate2(Date date2) {
+		this.date2 = date2;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 }
