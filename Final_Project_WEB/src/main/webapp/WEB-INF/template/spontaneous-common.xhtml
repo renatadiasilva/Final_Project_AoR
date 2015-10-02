@@ -14,14 +14,14 @@
 		<h:form id="spontaneousSearch">
 
 			<p:dataTable emptyMessage="Não existem candidaturas espontâneas."
-				var="s" value="#{submissionSearchCDI.slist}"
+				var="s" value="#{associateSpontaneousCDI.spontaneousSubmissions}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
 				<f:facet name="header">Listagem</f:facet>
 				<p:column headerText="Data">
-					<h:outputText 					
-					value="#{submissionSearchCDI.getDateWithoutTime(s.date)}" />
+					<h:outputText
+						value="#{submissionSearchCDI.getDateWithoutTime(s.date)}" />
 				</p:column>
 				<p:column headerText="Candidato">
 					<h:outputText
@@ -37,18 +37,21 @@
 				<p:column headerText="Escola/Universidade">
 					<h:outputText value="#{s.candidate.userInfo.school}" />
 				</p:column>
+
 				<p:column headerText="Carta de Motivação">
 					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
 						<a href="#{submissionSearchCDI.getMotivatioLetterPath(s)}"
-							target="_blank">Consultar a Carta de Motivação</a>
+							target="_blank">Carta de Motivação</a>
 					</h:panelGroup>
 				</p:column>
+
 				<p:column headerText="CV">
 					<h:panelGroup rendered="#{s.candidate.uploadedCV}">
 						<a href="#{submissionSearchCDI.getCvPath(s)}" target="_blank">
 							Consultar CV</a>
 					</h:panelGroup>
 				</p:column>
+
 				<p:column headerText="Linkedin">
 					<h:commandLink value="Ir para a página Linkedin" target="_blank"
 						action="#{submissionSearchCDI.redirectExternalURl(
@@ -56,7 +59,88 @@
 						rendered="#{submissionSearchCDI.hasLikedin(
 					 		s.candidate)}" />
 				</p:column>
+
+				<p:column headerText="Já Associado?">
+					<p:commandButton value="Sim" icon="ui-icon-check"
+						style="width:100%" rendered="#{s.alreadyAssociated}" />
+					<p:commandButton value="Não" icon="ui-icon-close"
+						style="width:100%" rendered="#{!s.alreadyAssociated}" />
+				</p:column>
+
+				<p:column headerText="Associar a Posição">
+
+					<p:commandButton value="Associar" style="width:100%"
+						icon="ui-icon-arrowthick-2-e-w" ajax="false"
+						rendered="#{!associateSpontaneousCDI.currentSpontaneousSubmission(s)}"
+						action="#{associateSpontaneousCDI.loadSpontaneousSubmission(s)}" />
+
+					<p:commandButton value="Cancelar" style="width:100%"
+						icon="ui-icon-close" ajax="false"
+						rendered="#{associateSpontaneousCDI.currentSpontaneousSubmission(s)}"
+						action="#{associateSpontaneousCDI.clean()}" />
+
+				</p:column>
+
 			</p:dataTable>
+
+		</h:form>
+
+		<br />
+
+		<h:form id="associateSpontaneousForm">
+
+			<h:panelGroup
+				rendered="#{associateSpontaneousCDI.hasSpontaneousSubmission()}">
+
+				<p:dataTable emptyMessage="Neste momento não há posições abertas."
+					var="p" value="#{associateSpontaneousCDI.positions}" id="tableHome"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+					{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<f:facet name="header">Posições Abertas</f:facet>
+					<p:column headerText="Código">
+						<h:outputText value="#{p.positionCode}" />
+					</p:column>
+					<p:column headerText="Título">
+						<h:outputText value="#{p.title}" />
+					</p:column>
+					<p:column headerText="Vagas">
+						<h:outputText value="#{p.openings}" />
+					</p:column>
+					<p:column headerText="Empresa">
+						<h:outputText value="#{p.company}" />
+					</p:column>
+					<p:column headerText="Área Técnica">
+						<h:outputText value="#{p.technicalArea}" />
+					</p:column>
+					<p:column headerText="Localizações">
+						<h:outputText value="#{p.allLocations()}" />
+					</p:column>
+					<p:column headerText="Descrição">
+						<p:commandButton value="Ver descrição" icon="ui-icon-script"
+							actionListener="#{checkPositionCDI.checkPosition(p)}"
+							update="checkPositionForm" style="width:100%"
+							oncomplete="PF('confirmSpontaneous').show();" />
+					</p:column>
+
+					<p:column headerText="Associar">
+
+						<p:commandButton value="Escolher" icon="ui-icon-triangle-1-e"
+							rendered="#{!associateSpontaneousCDI.isCandidate(p)}"
+							style="width:100%"
+							update="spontaneousSearch associateSpontaneousForm"
+							actionListener="#{associateSpontaneousCDI.associatePosition(p)}"/>
+
+						<p:commandButton value="Candidato" icon="ui-icon-check"
+							rendered="#{associateSpontaneousCDI.isCandidate(p)}"
+							style="width:100%"/>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</h:panelGroup>
 
 		</h:form>
 

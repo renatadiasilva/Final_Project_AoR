@@ -131,6 +131,9 @@ public class SubmissionEntity implements Serializable {
 
 	@Column(name = "spontaneous")
 	private boolean spontaneous;
+	
+	@Column(name = "already_associated")
+	private boolean alreadyAssociated;
 
 	@ManyToOne
 	@JoinColumn(name = "associated_by")
@@ -171,6 +174,10 @@ public class SubmissionEntity implements Serializable {
 	@Column(name = "proposal_date")
 	@Temporal(TemporalType.DATE)
 	private Date proposalDate;
+	
+	@ManyToOne
+	@JoinColumn(name = "derived_from")
+	private SubmissionEntity derivedFrom;
 
 	public SubmissionEntity() {
 	}
@@ -182,10 +189,15 @@ public class SubmissionEntity implements Serializable {
 		this.candidate = candidate;
 		this.motivationLetter = motivationLetter;
 		this.sources = sources;
+		
 		this.spontaneous = spontaneous;
+		this.alreadyAssociated = !spontaneous;
+		
 		this.status = status;
 		
 		this.customCV = false;
+		
+		this.derivedFrom = null;
 	}
 
 	public Long getId() {
@@ -218,6 +230,14 @@ public class SubmissionEntity implements Serializable {
 
 	public void setSpontaneous(boolean spontaneous) {
 		this.spontaneous = spontaneous;
+	}
+
+	public boolean isAlreadyAssociated() {
+		return alreadyAssociated;
+	}
+
+	public void setAlreadyAssociated(boolean alreadyAssociated) {
+		this.alreadyAssociated = alreadyAssociated;
 	}
 
 	public UserEntity getAssociatedBy() {
@@ -298,6 +318,14 @@ public class SubmissionEntity implements Serializable {
 
 	public void setProposalDate(Date proposalDate) {
 		this.proposalDate = proposalDate;
+	}
+
+	public SubmissionEntity getDerivedFrom() {
+		return derivedFrom;
+	}
+
+	public void setDerivedFrom(SubmissionEntity derivedFrom) {
+		this.derivedFrom = derivedFrom;
 	}
 
 }

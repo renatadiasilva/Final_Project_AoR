@@ -345,7 +345,10 @@ public class SubmissionSearchCDI implements Serializable {
 	}
 
 	public String getMotivatioLetterPath(SubmissionEntity submission) {
-		// (.pdf)
+		// Verifica se deriva de uma candidatura espontânea
+		if(submission.getDerivedFrom()!=null)submission=submission.getDerivedFrom();
+
+		// (.pdf)		
 		HttpServletRequest request = (HttpServletRequest) FacesContext.
 				getCurrentInstance().getExternalContext().getRequest();
 		return request.getScheme()+"://"+request.getServerName()+":"
@@ -354,6 +357,9 @@ public class SubmissionSearchCDI implements Serializable {
 	}
 
 	public String getCvPath(SubmissionEntity submission) {
+		// Verifica se deriva de uma candidatura espontânea
+		if(submission.getDerivedFrom()!=null)submission=submission.getDerivedFrom();
+
 		// (.pdf)
 		HttpServletRequest request = (HttpServletRequest) FacesContext.
 				getCurrentInstance().getExternalContext().getRequest();
@@ -395,7 +401,7 @@ public class SubmissionSearchCDI implements Serializable {
 		SubmissionEntity newSubmission = new SubmissionEntity(
 				submission.getCandidate(), Constants.STATUS_SUBMITED,
 				null, submission.getSources(), false);
-		
+
 		// cuidado na questão da carta de motivação...
 		newSubmission.setPosition(position);
 		newSubmission.setAssociatedBy(user);
