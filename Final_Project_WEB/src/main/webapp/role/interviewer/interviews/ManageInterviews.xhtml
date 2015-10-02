@@ -52,8 +52,9 @@
 
 		<h:form id="myInterviews">
 
-			<p:dataTable emptyMessage="Não há entrevistas por realizar ou não há entrevistas por realizar nesta pesquisa." var="interview"
-				value="#{manageInterviewsCDI.interviews}"
+			<p:dataTable
+				emptyMessage="Não há entrevistas por realizar ou não há entrevistas por realizar nesta pesquisa."
+				var="interview" value="#{manageInterviewsCDI.interviews}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
@@ -105,7 +106,9 @@
 
 				</p:column>
 
-				<p:column headerText="Editar Entrevista">
+				<!-- Para ADMIN/MANAGER -->
+				<p:column headerText="Editar Entrevista"
+					rendered="#{!manageInterviewsCDI.interviewer}">
 
 					<p:commandButton value="Editar" style="width:100%"
 						icon="ui-icon-pencil" ajax="false"
@@ -117,11 +120,6 @@
 						icon="ui-icon-close" ajax="false"
 						action="#{manageInterviewsCDI.unloadInterview()}"
 						rendered="#{manageInterviewsCDI.showEditInterview(interview.submission)}" />
-
-					<!-- Acesso Negado aos entrevistadores -->
-					<p:commandButton value="Negado" style="width:100%"
-						icon="ui-icon-cancel"
-						rendered="#{manageInterviewsCDI.interviewer}" />
 
 				</p:column>
 
