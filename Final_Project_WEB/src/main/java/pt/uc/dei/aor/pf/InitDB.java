@@ -375,7 +375,8 @@ public class InitDB {
 		plist[0].setAdvertisingChannels(channels);
 		plist[0].setOpeningDate(ftDate.parse("2015-08-02"));
 		plist[0].setSlaDate(ftDate.parse("2015-09-20"));
-
+		takeTailCode(plist[0], '0');
+		
 		locations = Arrays.asList(Constants.LOCATION_PORTO);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
 				Constants.SOCIAL_FACEBOOK, 
@@ -383,6 +384,7 @@ public class InitDB {
 		plist[1].setLocations(locations);
 		plist[1].setAdvertisingChannels(channels);
 		plist[1].setOpeningDate(ftDate.parse("2015-09-02"));
+		takeTailCode(plist[1], '1');
 		
 		locations = Arrays.asList(Constants.LOCATION_LISBOA);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
@@ -391,6 +393,7 @@ public class InitDB {
 		plist[2].setAdvertisingChannels(channels);
 		plist[2].setOpeningDate(ftDate.parse("2015-07-31"));
 		plist[2].setHired_people(1);
+		takeTailCode(plist[2], '2');
 
 		locations = Arrays.asList(Constants.LOCATION_LISBOA,
 				Constants.LOCATION_COIMBRA, Constants.LOCATION_PORTO);
@@ -401,6 +404,7 @@ public class InitDB {
 		plist[3].setOpeningDate(ftDate.parse("2015-08-02"));
 		plist[3].setStatus(Constants.STATUS_CLOSED);
 		plist[3].setHired_people(2);
+		takeTailCode(plist[3], '3');
 		
 		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
@@ -410,16 +414,13 @@ public class InitDB {
 		plist[4].setOpeningDate(ftDate.parse("2015-06-29"));
 		plist[4].setStatus(Constants.STATUS_CLOSED);
 		plist[4].setHired_people(1);
+		takeTailCode(plist[4], '4');
 		
-		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
-		channels = Arrays.asList(Constants.SOCIAL_CRITICAL);
-		plist[4].setLocations(locations);
-		plist[4].setAdvertisingChannels(channels);
-
 		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL);
 		plist[5].setLocations(locations);
 		plist[5].setAdvertisingChannels(channels);
+		takeTailCode(plist[5], '5');
 		
 		for (PositionEntity p : plist)
 			p.setPositionCode(p.getPositionCode().replaceAll("null", "1"));
@@ -645,7 +646,12 @@ public class InitDB {
 		for (ScriptEntity sc : sclist)
 			scriptEJB.update(sc);
 
-
+	}
+	
+	private void takeTailCode(PositionEntity p, char d) {
+		String[] a = p.getPositionCode().split("-");
+		a[2] = a[2].substring(0,a[2].length()-1)+d;
+		p.setPositionCode(a[0]+"-"+a[1]+"-"+a[2]);
 	}
 
 }
