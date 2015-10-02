@@ -86,10 +86,6 @@ public class Constants {
 	public static final String PERIOD_MHEADER = "Mês (completo)";
 	public static final String PERIOD_YHEADER = "Ano (completo)";
 
-	// limit searching days by period
-	public static final long LIMITDAY   = 100;
-	public static final long LIMITMONTH = 1000;
-	
 	// Miliseconds per day (to convert on days)
 	public static final long MSPERDAY = 60 * 60 * 24 * 1000;
 
