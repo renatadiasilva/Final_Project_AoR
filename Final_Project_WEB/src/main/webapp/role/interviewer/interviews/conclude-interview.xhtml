@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+
+		<h:form id="concludeInterview">
+
+			<h:panelGrid columns="1"
+				rendered="#{manageInterviewsCDI.hasInterviewToConclude()}"
+				style="width:100%">
+
+				<h1>Feedback da entrevista de
+					#{manageInterviewsCDI.candidateToConcludeName} para a posição
+					#{manageInterviewsCDI.submissionCode}</h1>
+					
+					<p:outputLabel value="Feedback:"/>
+
+				<p:inputTextarea rows="10" cols="50"
+					maxlength="#{max.length.interviewFeedback()}"
+					value="#{manageInterviewsCDI.feedback}" required="true"
+					requiredMessage="Introduza o feedback da entrevista." />
+
+				<p:commandButton value="Upload do Resultado da Entrevista"
+					icon="ui-icon-disk" process="@form" style="width:100%"
+					oncomplete="PF('uploadInterviewResult').show();" />
+
+			</h:panelGrid>
+
+		</h:form>
+
+		<h:form id="uploadInterviewResultForm">
+
+			<p:dialog header="Upload resultado da entrevista"
+				widgetVar="uploadInterviewResult" draggable="false"
+				resizable="false" modal="true">
+
+				<p:fileUpload id="interview-result-upload"
+					update="myInterviews concludeInterview messages uploadInterviewResultForm"
+					label="Escolha o resultado da entrevista (*.xls)"
+					uploadLabel="Concluir Entrevista" cancelLabel="Cancelar"
+					required="true"
+					requiredMessage="Submeta um resultado da entrevista"
+					fileUploadListener="#{manageInterviewsCDI.uploadInterview}"
+					mode="advanced" dragDropSupport="true" sizeLimit="1000000"
+					fileLimit="1"
+					invalidSizeMessage="Ficheiro demaisado grande (max. 1Mb)."
+					invalidFileMessage="Só é permitido o formato .xls"
+					allowTypes="/(\.|\/)(xls)$/"
+					oncomplete="PF('uploadInterviewResult').hide();" />
+
+				<p:button value="Cancelar"
+					onclick="PF('uploadInterviewResult').hide();" icon="ui-icon-close"
+					style="width:100%" />
+
+			</p:dialog>
+
+		</h:form>
+	</ui:composition>
+
+</h:body>
+</html>

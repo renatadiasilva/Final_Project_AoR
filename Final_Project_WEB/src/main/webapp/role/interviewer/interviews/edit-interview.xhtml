@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+
+		<h:form id="editInterviewPart1">
+			<!-- Lista Interviewers -->
+			<h:panelGroup rendered="#{manageInterviewsCDI.editInterview}">
+				<h1>Editar Entrevista</h1>
+				<p:dataTable emptyMessage="Sem Entrevistadores" var="interviewer"
+					value="#{manageInterviewsCDI.interviewers}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<f:facet name="header">Entrevistadores disponíveis</f:facet>
+
+					<p:column headerText="Nome">
+						<h:outputText
+							value="#{interviewer.firstName} #{interviewer.lastName}" />
+					</p:column>
+
+					<p:column headerText="Email">
+						<h:outputText value="#{interviewer.email}" />
+					</p:column>
+
+					<p:column headerText="Associar à entrevista">
+						<p:commandButton value="Associar" icon="ui-icon-plus"
+							style="width:100%"
+							rendered="#{!manageInterviewsCDI.selectedInterviewer(interviewer)}"
+							actionListener="#{manageInterviewsCDI.addInterviewer(interviewer)}"
+							update="editInterviewPart1 editInterviewPart2
+							editInterviewPart3 editInterviewPart4
+							editInterviewPart5" />
+						<p:commandButton value="Desassociar" icon="ui-icon-cancel"
+							style="width:100%"
+							rendered="#{manageInterviewsCDI.selectedInterviewer(interviewer)}"
+							actionListener="#{manageInterviewsCDI.removeInterviewer(interviewer)}"
+							update="editInterviewPart1 editInterviewPart2
+							editInterviewPart3 editInterviewPart4
+							editInterviewPart5" />
+					</p:column>
+
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+
+		<br />
+
+		<h:form id="editInterviewPart2">
+			<h:panelGroup rendered="#{manageInterviewsCDI.editInterview}">
+
+				<h2>Guiões Disponíveis</h2>
+				<p:dataTable emptyMessage="Sem guiões" var="script"
+					value="#{manageInterviewsCDI.scripts}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<p:column headerText="Título">
+						<h:outputText value="#{script.title}" />
+					</p:column>
+
+					<p:column headerText="Comentários">
+						<h:outputText value="#{script.comments}" />
+					</p:column>
+
+					<p:column headerText="Consultar">
+						<p:commandButton value="Ver Perguntas" style="width:100%"
+							icon="ui-icon-zoomin"
+							actionListener="#{newPositionCDI.setCheckScript(script)}"
+							oncomplete="PF('checkScript').show();" update="@form" />
+
+						<p:dialog widgetVar="checkScript" draggable="false"
+							resizable="false" modal="true" style="max-width:300px"
+							header="Guião">
+
+							<h:panelGrid>
+								<p:dataTable id="questionsTable" emptyMessage="Sem questões."
+									var="q" value="#{newPositionCDI.checkScript.questions}"
+									paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+									{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+									paginator="true" rows="10">
+									<f:facet name="header">Questões</f:facet>
+									<p:column headerText="Título">
+										<h:outputText value="#{q.question}" />
+									</p:column>
+									<p:column headerText="Tipo">
+										<h:outputText
+											value="#{newPositionCDI.getTypeTextOfQuestion(q)}" />
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<p:commandButton value="Fechar"
+								onclick="PF('checkScript').hide();" />
+
+						</p:dialog>
+
+					</p:column>
+
+					<p:column headerText="Usar outro guião">
+
+						<p:commandButton value="Escolher" icon="ui-icon-script"
+							style="width:100%"
+							rendered="#{!manageInterviewsCDI.currentInterviewScript(script)}"
+							actionListener="#{manageInterviewsCDI.loadInterviewScript(script)}"
+							update="editInterviewPart2 editInterviewPart3" />
+
+						<p:commandButton value="Manter o guião"
+							icon="ui-icon-cancel" style="width:100%"
+							rendered="#{manageInterviewsCDI.currentInterviewScript(script)}"
+							actionListener="#{manageInterviewsCDI.unloadInterviewScript()}"
+							update="editInterviewPart2 editInterviewPart3" />
+
+					</p:column>
+
+				</p:dataTable>
+
+			</h:panelGroup>
+
+		</h:form>
+
+		<br />
+
+		<h:form id="editInterviewPart3">
+			<!-- Data -->
+			<h:panelGroup rendered="#{manageInterviewsCDI.editInterview}">
+
+				<h2>Escolher a Data e Hora</h2>
+
+				<h:panelGrid columns="1" style="width:100%">
+
+					<p:watermark value="Escolher data e hora: " for="interview-date" />
+					<p:calendar id="interview-date"
+						value="#{manageInterviewsCDI.interviewDate}" required="true"
+						requiredMessage="Escolha uma data e hora"
+						pattern="dd/MM/yyyy HH:mm" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" stepMinute="30"
+						mindate="#{manageInterviewsCDI.minDate()}">
+					</p:calendar>
+
+					<p:commandButton value="Verificar conflitos" style="width:100%"
+						icon="ui-icon-help"
+						action="#{manageInterviewsCDI.buildConflicts()}"
+						ajax="false" />
+
+				</h:panelGrid>
+
+				<p:messages />
+
+			</h:panelGroup>
+
+		</h:form>
+		
+		<br />
+
+		<h:form id="editInterviewPart4">
+			<h:panelGroup rendered="#{manageInterviewsCDI.editInterview}">
+
+				<h2>Conflitos de Agenda</h2>
+				<p:dataTable emptyMessage="Sem conflitos" var="conflict"
+					value="#{manageInterviewsCDI.conflicts}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<p:column headerText="Conflitos">
+						<h:outputText value="#{conflict.toString()}" />
+					</p:column>
+
+				</p:dataTable>
+
+			</h:panelGroup>
+
+		</h:form>
+
+		<br />
+
+		<h:form id="editInterviewPart5">
+			<h:panelGrid rendered="#{manageInterviewsCDI.canSubmit()}"
+				style="width:100%">
+				<p:commandButton value="Actualizar entrevista" style="width:100%"
+					icon="ui-icon-disk" ajax="false"
+					action="#{manageInterviewsCDI.updateInterview()}" />
+				<p:messages />
+			</h:panelGrid>
+		</h:form>
+
+	</ui:composition>
+
+</h:body>
+</html>

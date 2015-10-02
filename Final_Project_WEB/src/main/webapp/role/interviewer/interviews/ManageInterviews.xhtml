@@ -8,7 +8,7 @@
 	<f:metadata>
 		<f:metadata>
 			<f:viewAction
-				actionListener="#{manageInterviewsCDI.loadRole(userSessionManagement.userMail)}" />
+				actionListener="#{manageInterviewsCDI.loadRole(userSessionManagement.userMail, 'false')}" />
 		</f:metadata>
 	</f:metadata>
 
@@ -22,17 +22,17 @@
 
 		<h:form id="viewPositionForm">
 
-			<p:dialog header="#{manageInterviewsCDI.position.positionCode}"
+			<p:dialog header="#{manageInterviewScriptCDI.position.positionCode}"
 				widgetVar="checkPosition" draggable="false" resizable="false"
 				modal="true">
 
 				<h:panelGrid columns="2">
 					<p:outputLabel value="Título:" />
-					<p:outputLabel value="#{manageInterviewsCDI.position.title}" />
+					<p:outputLabel value="#{manageInterviewScriptCDI.position.title}" />
 					<p:outputLabel />
 					<p:outputLabel />
 					<p:outputLabel value="Empresa:" />
-					<p:outputLabel value="#{manageInterviewsCDI.position.company}" />
+					<p:outputLabel value="#{manageInterviewScriptCDI.position.company}" />
 					<p:outputLabel />
 					<p:outputLabel />
 					<p:outputLabel value="Descrição:" />
@@ -40,7 +40,7 @@
 				</h:panelGrid>
 
 				<p:inputTextarea cols="50" rows="10" readonly="true"
-					value="#{manageInterviewsCDI.position.description}" />
+					value="#{manageInterviewScriptCDI.position.description}" />
 				<p:outputLabel />
 
 				<p:commandButton value="Fechar" style="width:100%"
@@ -61,7 +61,8 @@
 				<f:facet name="header">Entrevistas por Realizar</f:facet>
 
 				<p:column headerText="Data">
-					<h:outputText value="#{interview.date}" />
+					<h:outputText
+						value="#{manageInterviewsCDI.displayDate(interview.date)}" />
 				</p:column>
 
 				<p:column headerText="Consultar posição">
@@ -69,7 +70,7 @@
 						value="#{interview.submission.position.positionCode}"
 						style="width:100%" update="@form viewPositionForm"
 						oncomplete="PF('checkPosition').show();"
-						action="#{manageInterviewsCDI.loadPosition(interview.submission.position)}" />
+						action="#{manageInterviewScriptCDI.loadPosition(interview.submission.position)}" />
 				</p:column>
 
 				<p:column headerText="Candidato">
@@ -80,52 +81,62 @@
 				<p:column headerText="Carta de Motivação">
 					<a
 						href="#{submissionSearchCDI.getMotivatioLetterPath(interview.submission)}"
-						target="_blank">Consultar a Carta de Motivação</a>
+						target="_blank">Carta de Motivação</a>
 				</p:column>
 
 				<p:column headerText="CV">
 					<a href="#{submissionSearchCDI.getCvPath(interview.submission)}"
-						target="_blank"> Consultar CV</a>
-				</p:column>
-
-				<p:column headerText="Ver Script">
-					<a href="#{submissionSearchCDI.getCvPath(interview.submission)}"
-						target="_blank"> Consultar CV</a>
+						target="_blank">Consultar CV</a>
 				</p:column>
 
 				<p:column headerText="Consultar/Baixar Guião">
 
 					<p:commandButton value="Consultar/Baixar" style="width:100%"
-						update="@form viewScript myCarriedInterviews"
-						rendered="#{!manageInterviewsCDI.currentScript(interview.script)}"
-						actionListener="#{manageInterviewsCDI.loadInterview(interview)}"
+						ajax="false"
+						rendered="#{!manageInterviewScriptCDI.currentScript(interview.script)}"
+						action="#{manageInterviewScriptCDI.loadInterview(interview)}"
+						actionListener="#{manageInterviewsCDI.unloadInterview()}"
 						icon="ui-icon-script" />
 
-					<p:commandButton value="Fechar" style="width:100%"
-						update="@form viewScript myCarriedInterviews"
-						rendered="#{manageInterviewsCDI.currentScript(interview.script)}"
-						actionListener="#{manageInterviewsCDI.unloadScript()}"
+					<p:commandButton value="Fechar" style="width:100%" ajax="false"
+						rendered="#{manageInterviewScriptCDI.currentScript(interview.script)}"
+						actionListener="#{manageInterviewScriptCDI.unloadInterview()}"
 						icon="ui-icon-close" />
 
 				</p:column>
 
 				<p:column headerText="Editar Entrevista">
-					<!-- Por fazer -->
+
 					<p:commandButton value="Editar" style="width:100%"
-						icon="ui-icon-pencil"
-						rendered="#{!manageInterviewsCDI.interviewer}" />
-					<!-- Por fazer -->
-					<p:commandButton value="Acesso negado" style="width:100%"
+						icon="ui-icon-pencil" ajax="false"
+						action="#{manageInterviewsCDI.loadInterview(interview)}"
+						actionListener="#{manageInterviewScriptCDI.unloadInterview()}"
+						rendered="#{!manageInterviewsCDI.showEditInterview(interview.submission)}" />
+
+					<p:commandButton value="Cancelar" style="width:100%"
+						icon="ui-icon-close" ajax="false"
+						action="#{manageInterviewsCDI.unloadInterview()}"
+						rendered="#{manageInterviewsCDI.showEditInterview(interview.submission)}" />
+
+					<!-- Acesso Negado aos entrevistadores -->
+					<p:commandButton value="Negado" style="width:100%"
 						icon="ui-icon-cancel"
 						rendered="#{manageInterviewsCDI.interviewer}" />
 
 				</p:column>
 
 				<p:column headerText="Concluir Entrevista">
-					<!-- Por fazer -->
+
 					<p:commandButton value="Concluir" style="width:100%"
-						icon="ui-icon-check"
-						action="#{manageInterviewsCDI.loadInterview(interview)}" />
+						icon="ui-icon-check" ajax="false"
+						action="#{manageInterviewsCDI.loadInterviewToConclude(interview)}"
+						actionListener="#{manageInterviewScriptCDI.unloadInterview()}"
+						rendered="#{!manageInterviewsCDI.checkInterviewToConclude(interview)}" />
+
+					<p:commandButton value="Cancelar" style="width:100%"
+						icon="ui-icon-close" ajax="false"
+						actionListener="#{manageInterviewsCDI.cancelConcludeInterview()}"
+						rendered="#{manageInterviewsCDI.checkInterviewToConclude(interview)}" />
 
 				</p:column>
 
@@ -136,16 +147,16 @@
 		<br />
 
 		<h:form id="viewScript">
-			<h:panelGroup rendered="#{manageInterviewsCDI.hasScript()}">
+			<h:panelGroup rendered="#{manageInterviewScriptCDI.hasScript()}">
 
 				<p:dataTable id="xls" emptyMessage="Sem Perguntas" var="question"
-					value="#{manageInterviewsCDI.script.questions}"
+					value="#{manageInterviewScriptCDI.script.questions}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 					{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 					paginator="true" rows="10">
 
 					<f:facet name="header">
-						<h:outputText value="#{manageInterviewsCDI.interviewTitle()}" />
+						<h:outputText value="#{manageInterviewScriptCDI.interviewTitle()}" />
 					</f:facet>
 
 					<p:column>
@@ -160,7 +171,7 @@
 							<h:outputText value="Tipo de resposta" />
 						</f:facet>
 						<p:outputLabel
-							value="#{manageInterviewsCDI.questionType(question)}" />
+							value="#{manageInterviewScriptCDI.questionType(question)}" />
 					</p:column>
 
 				</p:dataTable>
@@ -170,7 +181,7 @@
 						<h:commandLink value="Baixar .xls">
 							<p:graphicImage library="images/logos" name="xls.png" />
 							<p:dataExporter type="xls" target="xls"
-								fileName="#{manageInterviewsCDI.interviewTitle()}" />
+								fileName="#{manageInterviewScriptCDI.interviewTitle()}" />
 						</h:commandLink>
 					</div>
 				</h:panelGroup>
@@ -179,22 +190,26 @@
 
 		</h:form>
 
-		<br />
+		<h:form id="candidateCarriedInterviews">
 
-		<h:form id="myCarriedInterviews">
+			<h:panelGroup rendered="#{manageInterviewScriptCDI.hasScript()}">
 
-			<h:panelGroup rendered="#{!manageInterviewsCDI.hasScript()}">
+				<br />
+				<br />
+				<br />
 
 				<p:dataTable emptyMessage="Sem entrevistas realizadas."
-					var="interview" value="#{manageInterviewsCDI.carriedInterviews}"
+					var="interview"
+					value="#{manageInterviewScriptCDI.candidateInterviews}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 					{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 					paginator="true" rows="10">
 
-					<f:facet name="header">Entrevistas Realizadas</f:facet>
+					<f:facet name="header">Entrevistas realizadas ao candidato</f:facet>
 
 					<p:column headerText="Data">
-						<h:outputText value="#{interview.date}" />
+						<h:outputText
+							value="#{manageInterviewScriptCDI.displayDate(interview.date)}" />
 					</p:column>
 
 					<p:column headerText="Consultar posição">
@@ -202,7 +217,7 @@
 							value="#{interview.submission.position.positionCode}"
 							style="width:100%" update="@form viewPositionForm"
 							oncomplete="PF('checkPosition').show();"
-							action="#{manageInterviewsCDI.loadPosition(interview.submission.position)}" />
+							action="#{manageInterviewScriptCDI.loadPosition(interview.submission.position)}" />
 					</p:column>
 
 					<p:column headerText="Candidato">
@@ -218,14 +233,22 @@
 
 					<p:column headerText="CV">
 						<a href="#{submissionSearchCDI.getCvPath(interview.submission)}"
-							target="_blank"> Consultar CV</a>
+							target="_blank">Consultar CV</a>
+					</p:column>
+
+					<p:column headerText="Ver Feedback">
+
+						<p:commandButton value="Feedback" style="width:100%"
+							actionListener="#{manageInterviewScriptCDI.setInterviewFeedback(interview.feedback)}"
+							icon="ui-icon-comment" oncomplete="PF('checkFeedback').show();"
+							update="interviewFeedback" />
+
 					</p:column>
 
 					<p:column headerText="Baixar Entrevista">
 
-						<!-- Por fazer -->
-						<p:commandButton value="Baixar" style="width:100%"
-							icon="ui-icon-arrowthick-1-s" />
+						<a href="#{manageInterviewScriptCDI.interviewXLSPath(interview)}"
+							target="_blank">Baixar</a>
 
 					</p:column>
 
@@ -233,9 +256,31 @@
 
 			</h:panelGroup>
 
-			<br />
-
 		</h:form>
+
+		<h:form id="interviewFeedback">
+			<p:dialog header="#{interview.submission.position.positionCode}"
+				widgetVar="checkFeedback" draggable="false" resizable="false"
+				modal="true">
+
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Feedback:" />
+					<p:inputTextarea cols="50" rows="10" readonly="true"
+						value="#{manageInterviewScriptCDI.interviewFeedback}" />
+					<p:outputLabel />
+				</h:panelGrid>
+
+				<p:commandButton value="Fechar" style="width:100%"
+					icon="ui-icon-close" onclick="PF('checkFeedback').hide();" />
+
+			</p:dialog>
+		</h:form>
+
+		<br />
+
+		<ui:include src="conclude-interview.xhtml" />
+
+		<ui:include src="edit-interview.xhtml" />
 
 	</ui:define>
 

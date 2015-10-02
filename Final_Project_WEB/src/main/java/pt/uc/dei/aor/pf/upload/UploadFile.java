@@ -20,6 +20,7 @@ public class UploadFile {
 	
 	public static final String IMAGE_EXTENSION=".jpg";
 	public static final String DOCUMENT_EXTENSION_PDF=".pdf";
+	public static final String DOCUMENT_EXTENSION_XLS=".xls";
 	public static final String DOCUMENT_EXTENSION_WORD=".doc";
 	
 	public void uploadFile(UploadedFile file, String folder, Long id, String extension){

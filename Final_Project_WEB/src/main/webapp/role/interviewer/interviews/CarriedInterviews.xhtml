@@ -1,0 +1,136 @@
+<ui:composition template="../../../WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:metadata>
+			<f:viewAction
+				actionListener="#{manageInterviewsCDI.loadRole(userSessionManagement.userMail, 'true')}" />
+		</f:metadata>
+	</f:metadata>
+
+	<ui:define name="titulo">
+	Entrevistador - Entrevistas Realizadas - #{styleSessionManagement.companyName}
+	</ui:define>
+
+	<ui:define name="contents">
+
+		<h1>As minhas entrevistas realizadas</h1>
+
+		<h:form id="viewPositionForm">
+
+			<p:dialog header="#{manageInterviewsCDI.position.positionCode}"
+				widgetVar="checkPosition" draggable="false" resizable="false"
+				modal="true">
+
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Título:" />
+					<p:outputLabel value="#{manageInterviewsCDI.position.title}" />
+					<p:outputLabel />
+					<p:outputLabel />
+					<p:outputLabel value="Empresa:" />
+					<p:outputLabel value="#{manageInterviewsCDI.position.company}" />
+					<p:outputLabel />
+					<p:outputLabel />
+					<p:outputLabel value="Descrição:" />
+
+				</h:panelGrid>
+
+				<p:inputTextarea cols="50" rows="10" readonly="true"
+					value="#{manageInterviewsCDI.position.description}" />
+				<p:outputLabel />
+
+				<p:commandButton value="Fechar" style="width:100%"
+					icon="ui-icon-close" onclick="PF('checkPosition').hide();" />
+
+			</p:dialog>
+
+		</h:form>
+
+		<h:form id="myCarriedInterviews">
+
+			<h:panelGroup rendered="#{!manageInterviewsCDI.hasScript()}">
+
+				<p:dataTable emptyMessage="Sem entrevistas realizadas."
+					var="interview" value="#{manageInterviewsCDI.carriedInterviews}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+					{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+					paginator="true" rows="10">
+
+					<f:facet name="header">Entrevistas Realizadas</f:facet>
+
+					<p:column headerText="Data">
+						<h:outputText value="#{interview.date}" />
+					</p:column>
+
+					<p:column headerText="Consultar posição">
+						<p:commandButton
+							value="#{interview.submission.position.positionCode}"
+							style="width:100%" update="@form viewPositionForm"
+							oncomplete="PF('checkPosition').show();"
+							action="#{manageInterviewsCDI.loadPosition(interview.submission.position)}" />
+					</p:column>
+
+					<p:column headerText="Candidato">
+						<p:outputLabel
+							value="#{interview.submission.candidate.firstName} #{interview.submission.candidate.lastName}" />
+					</p:column>
+
+					<p:column headerText="Carta de Motivação">
+						<a
+							href="#{submissionSearchCDI.getMotivatioLetterPath(interview.submission)}"
+							target="_blank">Consultar a Carta de Motivação</a>
+					</p:column>
+
+					<p:column headerText="CV">
+						<a href="#{submissionSearchCDI.getCvPath(interview.submission)}"
+							target="_blank">Consultar CV</a>
+					</p:column>
+
+					<p:column headerText="Ver Feedback">
+
+						<p:commandButton value="Feedback" style="width:100%"
+							actionListener="#{manageInterviewScriptCDI.setInterviewFeedback(interview.feedback)}"
+							icon="ui-icon-comment" oncomplete="PF('checkFeedback').show();"
+							update="interviewFeedback" />
+
+					</p:column>
+
+					<p:column headerText="Baixar Entrevista">
+
+						<a href="#{manageInterviewsCDI.interviewXLSPath(interview)}"
+							target="_blank">Baixar</a>
+
+					</p:column>
+
+
+				</p:dataTable>
+
+			</h:panelGroup>
+
+		</h:form>
+
+		<h:form id="interviewFeedback">
+			<p:dialog header="#{interview.submission.position.positionCode}"
+				widgetVar="checkFeedback" draggable="false" resizable="false"
+				modal="true">
+
+				<h:panelGrid columns="1">
+					<p:outputLabel value="Feedback:" />
+					<p:inputTextarea cols="50" rows="10" readonly="true"
+						value="#{manageInterviewScriptCDI.interviewFeedback}" />
+					<p:outputLabel />
+				</h:panelGrid>
+
+				<p:commandButton value="Fechar" style="width:100%"
+					icon="ui-icon-close" onclick="PF('checkFeedback').hide();" />
+
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

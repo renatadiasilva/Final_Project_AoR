@@ -54,6 +54,12 @@
 							<p:menuitem value="Gerir Posições (Candidaturas)"
 								url="../../../role/admin/positions/AllPositions.xhtml" />
 						</p:submenu>
+						<p:submenu label="Perfil Inicial"
+							rendered="#{!userSessionManagement.checkDefaultAdmin()}">
+							<p:menuitem value="Definir Por Defeito"
+								actionListener="#{userSessionManagement.defaultRoleAdmin()}"
+								update="@form" icon="ui-icon-home" />
+						</p:submenu>
 					</p:column>
 
 					<p:column>
@@ -83,12 +89,6 @@
 						<p:submenu label="Relatórios">
 							<p:menuitem value="Criar Relatório"
 								url="../../../role/admin/reports/CreateReport.xhtml" />
-						</p:submenu>
-						<p:submenu label="Perfil Inicial"
-							rendered="#{!userSessionManagement.checkDefaultAdmin()}">
-							<p:menuitem value="Definir Por Defeito"
-								actionListener="#{userSessionManagement.defaultRoleAdmin()}"
-								update="@form" icon="ui-icon-home" />
 						</p:submenu>
 						<p:submenu label="Estilos">
 							<p:menuitem value="Gerir estilos"
@@ -133,9 +133,8 @@
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="Gerir Entrevistas"
 								url="../../../role/interviewer/interviews/ManageInterviews.xhtml" />
-							<p:menuitem value="As Minhas Entrevistas Agendadas" url="#" />
-							<p:menuitem value="As Minhas Entrevistas Passadas" url="#" />
-							<p:menuitem value="Submeter Resultado Entrevista" url="#" />
+							<p:menuitem value="As Minhas Entrevistas Passadas"
+								url="../../../role/interviewer/interviews/CarriedInterviews.xhtml" />
 						</p:submenu>
 						<p:submenu label="Perfil Inicial"
 							rendered="#{!userSessionManagement.checkDefaultInterviewer()}">
