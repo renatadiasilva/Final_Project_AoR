@@ -143,7 +143,7 @@ public class InitDB {
 			};
 		
 		QuestionEntity [] qlist = {
-				new QuestionEntity(QuestionEntity.ISTRUE, "Masculino ou Feminino?"), // qlist[0]
+				new QuestionEntity(QuestionEntity.ISTRUE, "É licenciado?"), // qlist[0]
 				new QuestionEntity(QuestionEntity.VALUE, "Qual é a sua idade?"), // qlist[1]
 				new QuestionEntity(QuestionEntity.ANSWER, "Qual é o seu clube?"), // qlist[2]
 				new QuestionEntity(QuestionEntity.ISTRUE, "Você é ninja?"), // qlist[3]

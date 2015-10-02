@@ -63,7 +63,7 @@
 					<f:facet name="header">#{manageInterviewsCDI.headerTable}</f:facet>
 
 					<p:column headerText="Data">
-						<h:outputText value="#{interview.date}" />
+						<h:outputText value="#{manageInterviewsCDI.displayDate(interview.date)}" />
 					</p:column>
 
 					<p:column headerText="Consultar posição">
@@ -99,7 +99,7 @@
 
 					</p:column>
 
-					<p:column headerText="Baixar Entrevista">
+					<p:column headerText="Baixar Respostas">
 
 						<a href="#{manageInterviewsCDI.interviewXLSPath(interview)}"
 							target="_blank">Baixar</a>

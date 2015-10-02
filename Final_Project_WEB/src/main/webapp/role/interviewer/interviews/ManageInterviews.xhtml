@@ -13,12 +13,12 @@
 	</f:metadata>
 
 	<ui:define name="titulo">
-	Entrevistador - Gerir Entrevistas - #{styleSessionManagement.companyName}
+	Entrevistador - Entrevistas Por Realizar - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
 
-		<h1>Gerir Entrevistas</h1>
+		<h1>Entrevistas Por Realizar</h1>
 
 		<h:form id="viewPositionForm">
 
@@ -203,7 +203,7 @@
 					{PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 					paginator="true" rows="10">
 
-					<f:facet name="header">Entrevistas realizadas ao candidato</f:facet>
+					<f:facet name="header">Todas as entrevistas realizadas do candidato</f:facet>
 
 					<p:column headerText="Data">
 						<h:outputText

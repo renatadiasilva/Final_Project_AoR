@@ -27,6 +27,22 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "interviews")
 @NamedQueries({
+	@NamedQuery(name = "Interview.findAllCarriedOutInterviews",
+			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE"
+					+ " ORDER BY i.date DESC"),
+	@NamedQuery(name = "Interview.findAllScheduledInterviews",
+			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = FALSE"
+					+ " ORDER BY i.date"),
+	@NamedQuery(name = "Interview.findCarriedOutInterviewsOfManager",
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s"
+					+ " WHERE i.carriedOut = TRUE"
+					+ " AND s.position.positionManager = :manager"
+					+ " ORDER BY i.date DESC"),
+	@NamedQuery(name = "Interview.findScheduledInterviewsOfManager",
+			query = "SELECT i FROM InterviewEntity i JOIN i.submission s"
+					+ " WHERE i.carriedOut = FALSE"
+					+ " AND s.position.positionManager = :manager"
+					+ " ORDER BY i.date"),
 	@NamedQuery(name = "Interview.findCarriedOutInterviews",
 			query = "SELECT i FROM InterviewEntity i WHERE i.carriedOut = TRUE"
 					+ " AND i.date BETWEEN :date1 AND :date2 ORDER BY i.date"),
