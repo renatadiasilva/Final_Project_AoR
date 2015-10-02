@@ -8,29 +8,15 @@
 	<f:metadata>
 		<f:metadata>
 			<f:viewAction
-				actionListener="#{scheduleInterviewCDI.searchAllPositions()}" />
+				actionListener="#{scheduleInterviewCDI.enterAdmin()}" />
 		</f:metadata>
 	</f:metadata>
 
 	<ui:define name="titulo">
-	Administrador - Agendar Entrevista - #{styleSessionManagement.companyName}
+	Admin - Agendar Entrevista - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-
-		<h:form id="search">
-			<h:panelGrid columns="3" style="width:100%"
-				rendered="#{!scheduleInterviewCDI.loadedPosition()}">
-				<p:watermark value="Procurar posições por palavra chave: "
-					for="mypos-keyword" />
-				<p:inputText id="mypos-keyword"
-					value="#{scheduleInterviewCDI.keyword}" style="width:100%" />
-				<p:commandButton
-					action="#{scheduleInterviewCDI.searchPositionsByKeywordAndManager(
-					userSessionManagement.currentUserClone.id)}"
-					update="@form" icon="ui-icon-search" />
-			</h:panelGrid>
-		</h:form>
 
 		<ui:include
 			src="../../../WEB-INF/template/admin-manager-schedule-interview-common.xhtml" />

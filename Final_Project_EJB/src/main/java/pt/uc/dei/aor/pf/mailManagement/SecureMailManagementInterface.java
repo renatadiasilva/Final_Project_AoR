@@ -2,6 +2,7 @@ package pt.uc.dei.aor.pf.mailManagement;
 
 import javax.ejb.Local;
 
+import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -31,5 +32,7 @@ public interface SecureMailManagementInterface {
 	public abstract void notifyHired(SubmissionEntity submission);
 
 	public abstract void notifyRejected(SubmissionEntity submission);
+
+	public abstract void notifyScheduledInterview(InterviewEntity interview);
 
 }

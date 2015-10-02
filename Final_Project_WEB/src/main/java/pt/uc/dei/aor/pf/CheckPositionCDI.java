@@ -1,6 +1,5 @@
 package pt.uc.dei.aor.pf;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;

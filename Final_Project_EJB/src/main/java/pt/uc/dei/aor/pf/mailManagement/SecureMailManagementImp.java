@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import pt.uc.dei.aor.pf.beans.StyleEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
+import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
@@ -60,9 +61,9 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 			if(bcc!=null)
 				bcc=RECEIVER;
 		}
-		
+
 		if(to!=null||bcc!=null){
-			
+
 			try {
 
 				Message message = new MimeMessage(gmailSession);
@@ -70,7 +71,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 				if(to!=null)
 					message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
-				
+
 				if(bcc!=null)
 					if(to==null)message.setRecipients(Message.RecipientType.BCC,InternetAddress.parse(bcc));
 					else message.addRecipients(Message.RecipientType.BCC,InternetAddress.parse(bcc));
@@ -85,10 +86,10 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 			} catch (MessagingException e) {
 				log.error("Error while sending email : " + e.getMessage());
 			}
-			
+
 		}else log.error("No defined recipients, email not sent");
 
-		
+
 	}
 
 	@Override
@@ -188,7 +189,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 			bcc+=(admin.getEmail())+",";
 
 		String companyName=styleEJB.findDefaulStyle().getCompanyName();
-		
+
 		String positionMail=position.getPositionCode()
 				+", \'"+position.getTitle()+"\' - "+position.getCompany();
 
@@ -199,7 +200,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+" código "+positionMail+", de acordo com o SLA definido."
 				+"\n\nCumprimentos,\nA equipa "
 				+companyName;
-		
+
 		this.sendEmail(null, bcc, position.getPositionCode()
 				+": data de fecho a "+Constants.DAYS_TO_SLA+" dias ou menos", text);
 
@@ -218,12 +219,12 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+" "+position.getPositionManager().getLastName()+","
 				+"\n\nFoi escolhido(a) como gestor(a) da nova posição "
 				+positionMail+".\nAceda à plataforma em "
-						+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "
+				+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "
 				+companyName;
 
 		this.sendEmail(position.getPositionManager().getEmail(), null,
 				"Gestor(a) da nova posição "+position.getPositionCode(), text);
-		
+
 	}
 
 	@Override
@@ -242,14 +243,14 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+submission.getCandidate().getFirstName()+" "
 				+submission.getCandidate().getLastName()+") à posição "
 				+positionMail+".\nFaça login para visualizar "
-						+ "as suas posições: "
+				+ "as suas posições: "
 				+PLATAFORM_LINK+".\n\nCumprimentos,\nA equipa "
 				+companyName;
 
 		this.sendEmail(position.getPositionManager().getEmail(), null,
 				"Nova candidatura à posição "+position.getPositionCode(), text);
-		
-		
+
+
 	}
 
 	@Override
@@ -273,8 +274,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		this.sendEmail(candidate.getEmail(), null, "Nova candidatura à "
 				+ "posição "+submission.getPosition().getPositionCode(), text);
-		
-		
+
+
 	}
 
 	@Override
@@ -299,8 +300,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		this.sendEmail(candidate.getEmail(), null, "Contratação referente à "
 				+ "posição "+submission.getPosition().getPositionCode(), text);
-		
-		
+
+
 	}
 
 	@Override
@@ -313,7 +314,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String positionMail=submission.getPosition().getPositionCode()
 				+", \'"+submission.getPosition().getTitle()+"\' - "
 				+submission.getPosition().getCompany();
-		
+
 		String rejectedStuff;
 		if (submission.getProposalDate() != null)
 			rejectedStuff = "Proposta relativa";
@@ -324,7 +325,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+"\n\nLamentamos informar que a sua "
 				+rejectedStuff.toLowerCase()+" à posição "
 				+positionMail+" foi rejeitada"
-//				+ " (motivo: "+submission.getRejectReason()+")"
+				//				+ " (motivo: "+submission.getRejectReason()+")"
 				+ ". Desejamos-lhe a melhor"
 				+ " sorte na continuação da procura de emprego."
 				+ "\n\nCumprimentos,\nA equipa "
@@ -333,8 +334,53 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		this.sendEmail(candidate.getEmail(), null, rejectedStuff+" à"
 				+ " posição "+submission.getPosition().getPositionCode()
 				+ " rejeitada", text);
+
+
+	}
+
+	@Override
+	public void notifyScheduledInterview(InterviewEntity interview) {
+		// Sent an email notifiyng candidate and interviewers of new interview
+
+		UserEntity candidate = interview.getSubmission().getCandidate();
+		PositionEntity position = interview.getSubmission().getPosition();
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+
+		String positionMail=position.getPositionCode()
+				+", \'"+position.getTitle()+"\' - "
+				+position.getCompany();
+
+		String infoDate = "dia "+interview.getDay()
+				+" e hora "+interview.getHour();
 		
-		
+		String text="Olá "+candidate.getFirstName()
+				+" "+candidate.getLastName()+","
+				+"\n\nInformamos que foi agendada uma entrevista "
+				+" (relativa à sua candidatura à posição "
+				+positionMail+") para o "+infoDate
+				+ ".\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(candidate.getEmail(), null, "Entrevista agendada"
+				+" para o "+infoDate, text);
+
+		for (UserEntity u : interview.getInterviewers()) {
+			text="Olá "+u.getFirstName()
+					+" "+u.getLastName()+","
+					+"\n\nInformamos que lhe foi agendada uma entrevistada ("
+					+" candidato "+candidate.getFirstName()
+					+" "+candidate.getLastName()+" à posição "
+					+positionMail+") para o dia "+interview.getDay()
+					+" e hora "+interview.getHour()+".\nFaça login e consulte"
+					+ " o CV e os dados do candidato nas suas candidaturas agendadas: "
+					+PLATAFORM_LINK+ "\n\nCumprimentos,\nA equipa "
+					+companyName;
+
+			this.sendEmail(u.getEmail(), null, "Entrevista agendada"
+					+" para o "+infoDate, text);
+
+		}
+
 	}
 
 }

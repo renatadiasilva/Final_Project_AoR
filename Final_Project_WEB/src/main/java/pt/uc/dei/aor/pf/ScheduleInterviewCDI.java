@@ -21,6 +21,7 @@ import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 import java.io.Serializable;
@@ -33,9 +34,6 @@ import java.util.List;
 @SessionScoped
 public class ScheduleInterviewCDI implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1929597378229479373L;
 
 	private static final Logger log = LoggerFactory.getLogger(ScheduleInterviewCDI.class);
@@ -57,6 +55,9 @@ public class ScheduleInterviewCDI implements Serializable {
 
 	@EJB
 	private PositionEJBInterface positionEJB;
+	
+	@EJB
+	private SecureMailManagementImp mail;
 
 	private List<PositionEntity>positions;
 
@@ -78,7 +79,28 @@ public class ScheduleInterviewCDI implements Serializable {
 
 	private List<String>conflicts;
 
-	private String keyword;
+	private String keyword, emptyTable, headerTable;
+	
+	private UserEntity manager;
+
+	public void enterManager() {
+		manager = userEJB.find(userManagement.getCurrentUserClone().getId());
+		positions = positionEJB.findOpenPositionsManagedByUser(manager);
+		setEmptyTable("Não é gestor de nenhuma posição neste momento.");
+		setHeaderTable("Posições a gerir por "
+				+ userManagement.getUserFullName());
+		cleanBean();
+		position = null;
+	}
+	
+	public void enterAdmin() {
+		manager = null;
+		this.positions=this.positionEJB.findOpenPositions();
+		setEmptyTable("Não existem posições.");
+		setHeaderTable("Todas as posições");
+		cleanBean();
+		position = null;		
+	}
 
 	public List<SubmissionEntity> getSubmissions() {
 
@@ -166,6 +188,7 @@ public class ScheduleInterviewCDI implements Serializable {
 
 	public void setPosition(PositionEntity position) {
 		this.position = position;
+		this.cleanBean();
 	}
 
 	public List<InterviewEntity> getInterviews() {
@@ -274,9 +297,27 @@ public class ScheduleInterviewCDI implements Serializable {
 		if(this.selectedInterviewers==null||this.selectedInterviewers.isEmpty())
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Escolha o(s) entrevistador(es)", ""));
 		else{
+			//if this is not the first interview of the submission set first to false
+			List<InterviewEntity> list = interviewEJB.findInterviewsOfSubmission(submission);
+			boolean notFirst = false;
+			if (list != null && interviews.size() > 0) notFirst = true; 
+
 			InterviewEntity newInterview=new InterviewEntity(this.submission, this.interviewDate, this.selectedScript, this.userEJB.findUserByEmail(this.userManagement.getUserMail()));
 			newInterview.setInterviewers(this.selectedInterviewers);
 			this.interviewEJB.save(newInterview);
+			
+			if (notFirst) {
+				newInterview.setFirst(false);
+				interviewEJB.update(newInterview);
+            }
+			
+			// change submission status to ACCEPTED
+			submission.setStatus(Constants.STATUS_ACCEPTED);
+			submissionEJB.update(submission);
+				
+			// send mail to interviewers and candidate
+			this.mail.notifyScheduledInterview(newInterview);
+			
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova entrevista agendada."));
 			this.cleanBean();
 		}
@@ -321,6 +362,7 @@ public class ScheduleInterviewCDI implements Serializable {
 	}
 
 	private void cleanBean() {
+		this.keyword="";
 		this.interviewDate=null;
 
 		this.selectedScript=null;
@@ -340,6 +382,8 @@ public class ScheduleInterviewCDI implements Serializable {
 			this.interviews.clear();
 
 		this.interviewDate=null;
+		
+		this.conflicts=null;
 
 	}
 
@@ -377,14 +421,17 @@ public class ScheduleInterviewCDI implements Serializable {
 	
 	public void searchAllPositions(){
 		this.positions=this.positionEJB.findOpenPositions();
+		this.position=null;
 	}
 	
 	public void searchByKeyword(){
+		this.position=null;
 		String pattern = SearchPattern.preparePattern(keyword);
 		this.positions=this.positionEJB.findPositionsByKeyword(pattern);
 	}
 
 	public void searchPositionsManagedByUser(long idM){
+		this.position=null;
 		log.info("Searching for positions by manager");
 		log.debug("Id "+idM);
 		UserEntity manager = userEJB.find(idM);
@@ -395,6 +442,7 @@ public class ScheduleInterviewCDI implements Serializable {
 	}
 
 	public void searchPositionsByKeywordAndManager(Long idM) {
+		this.position=null;
 		log.info("Searching for positions of manager by keyword");
 		log.debug("Id "+idM);
 		UserEntity manager = userEJB.find(idM);
@@ -405,6 +453,14 @@ public class ScheduleInterviewCDI implements Serializable {
 			this.positions = positionEJB.findPositionsByKeywordAndManager(pattern,
 					manager);
 		} else log.error("No manager with id "+idM);
+	}
+
+	public void searchPositionsByKeyword() {
+		this.position=null;
+		this.submission=null;
+		String pattern = SearchPattern.preparePattern(keyword);
+		this.positions = positionEJB.findOpenPositionsByKeyword(pattern,
+				manager);
 	}
 
 	public List<PositionEntity> getPositions() {
@@ -421,6 +477,30 @@ public class ScheduleInterviewCDI implements Serializable {
 
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
+	}
+
+	public UserEntity getManager() {
+		return manager;
+	}
+
+	public void setManager(UserEntity manager) {
+		this.manager = manager;
+	}
+
+	public String getEmptyTable() {
+		return emptyTable;
+	}
+
+	public void setEmptyTable(String emptyTable) {
+		this.emptyTable = emptyTable;
+	}
+
+	public String getHeaderTable() {
+		return headerTable;
+	}
+
+	public void setHeaderTable(String headerTable) {
+		this.headerTable = headerTable;
 	}
 
 }

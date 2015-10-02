@@ -237,6 +237,42 @@ public class PositionDao extends GenericDao<PositionEntity> {
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<PositionEntity> findOpenPositionsByKeyword(String keyword,
+			UserEntity positionManager) {
+
+		String[] attributes = {"code", "title",
+			"company", "technical_area", "description"};
+
+		String extra = "";
+		if (positionManager != null) extra = " AND positions.manager = :id";
+		
+		String queryS = makeQuery("DISTINCT positions.*",
+				"positions, locations", 
+				"(TRANSLATE(UPPER(REPLACE(locations.location"
+				+",\' \',\'\')), \'ÀÁÂÃÄÅĀĂĄÉÊĒĔĖĘĚÌÍÎÏÌĨĪĬÒÓÔÕÖŌŎŐÙÚÛÜŨŪŬŮÇ\',"
+				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
+				+") LIKE :loc OR ", attributes, " OR ", 
+				"positions.id = locations.position_id"
+				+ " AND positions.status = :open"+extra, "code");
+		System.out.println("Query");
+		System.out.println(queryS);
+		if (positionManager != null)
+			System.out.println(keyword+" "+positionManager.getId());
+		Query query = em.createNativeQuery(queryS, PositionEntity.class);
+		query.setParameter("code", keyword);
+		query.setParameter("title", keyword);
+		query.setParameter("company", keyword);
+		query.setParameter("loc", keyword);
+		query.setParameter("technical_area", keyword);
+		query.setParameter("description", keyword);
+		query.setParameter("open", Constants.STATUS_OPEN);
+		if (positionManager != null) 
+			query.setParameter("id", positionManager.getId());
+		return (List<PositionEntity>) query.getResultList();
+		
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<PositionEntity> findPositionsByKeywordShort(String keyword,
 			UserEntity positionManager, String status) {
 

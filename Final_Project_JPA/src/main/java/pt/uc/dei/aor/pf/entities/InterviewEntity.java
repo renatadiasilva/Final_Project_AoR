@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.entities;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -237,4 +238,14 @@ public class InterviewEntity implements Serializable {
 		return s;
 	}
 
+	public String getDay() {
+		SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
+		return ftDate.format(date);	
+	}
+	
+	public String getHour() {
+		SimpleDateFormat ftHour = new SimpleDateFormat ("HH:mm"); 
+		return ftHour.format(date);	
+	}
+	
 }

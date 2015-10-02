@@ -68,4 +68,6 @@ public interface PositionEJBInterface {
 	public abstract Double overallAverageTimeToClose(Date date1, Date date2);
 	public abstract List<PositionEntity> findAfterSLAPositions();
 	public abstract List<PositionEntity> findClosedPositions();
+	public abstract List<PositionEntity> findOpenPositionsByKeyword(
+			String keyword, UserEntity manager);
 }
