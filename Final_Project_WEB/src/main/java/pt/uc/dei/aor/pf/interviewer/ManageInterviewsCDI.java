@@ -111,6 +111,20 @@ public class ManageInterviewsCDI implements Serializable {
 			interviewEJB.findCarriedOutInterviews(date1, date2);
 	}
 	
+	public void searchAllCarriedOutInterviews() {
+
+		clean();
+		// sort dates if necessary
+		if (date1.after(date2)) {
+			Date aux = date1;
+			date1 = date2;
+			date2 = aux;
+		}
+
+		this.carriedInterviews = 
+				this.interviewEJB.findAllCarriedOutInterviews();
+	}
+	
 	public void clean() {
 		this.conflicts=null;
 		this.candidateInterviews=null;

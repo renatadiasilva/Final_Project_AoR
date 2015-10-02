@@ -77,10 +77,11 @@
 			</h:form>
 
 			<h:form style="width:100%">
-				<p:commandButton action="#{positionSearchCDI.clean()}"
-					value="Limpar pesquisa"
-					update="myCarriedInterviews search-dateInt-out"
-					icon="ui-icon-cancel" />
+				<p:commandButton 
+					action="#{manageInterviewsCDI.searchAllCarriedOutInterviews()}"
+					value="Todas" style="width:100%"
+					update="myCarriedInterviews"
+					icon="ui-icon-search" />
 			</h:form>
 		</h:panelGrid>
 		<br />
