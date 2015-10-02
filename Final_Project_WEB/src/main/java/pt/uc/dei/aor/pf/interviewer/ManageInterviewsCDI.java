@@ -23,6 +23,7 @@ import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 import pt.uc.dei.aor.pf.upload.UploadFile;
 
@@ -60,6 +61,9 @@ public class ManageInterviewsCDI implements Serializable {
 	@EJB
 	private ScriptEJBInterface scriptEJB;
 
+	@EJB
+	private SecureMailManagementImp mail;
+
 	private List<InterviewEntity> interviews;
 
 	private List<InterviewEntity> carriedInterviews;
@@ -83,9 +87,9 @@ public class ManageInterviewsCDI implements Serializable {
 	private String interviewFeedback;
 
 	private Date interviewDate;
-	
+
 	private String headerTable;
-	
+
 	private Date date1, date2;
 
 	// Edição de Entrevista
@@ -108,9 +112,9 @@ public class ManageInterviewsCDI implements Serializable {
 		}
 
 		this.carriedInterviews = 
-			interviewEJB.findCarriedOutInterviews(date1, date2);
+				interviewEJB.findCarriedOutInterviews(date1, date2);
 	}
-	
+
 	public void searchAllCarriedOutInterviews() {
 
 		clean();
@@ -124,7 +128,7 @@ public class ManageInterviewsCDI implements Serializable {
 		this.carriedInterviews = 
 				this.interviewEJB.findAllCarriedOutInterviews();
 	}
-	
+
 	public void clean() {
 		this.conflicts=null;
 		this.candidateInterviews=null;
@@ -180,11 +184,11 @@ public class ManageInterviewsCDI implements Serializable {
 		else if(this.manager)
 			// Carrega todas as entrevistas por realizar de posições do manager
 			this.interviews = 
-				this.interviewEJB.findScheduledInterviewsOfManager(currentUser);
+			this.interviewEJB.findScheduledInterviewsOfManager(currentUser);
 		else if(this.interviewer)
 			// Carrega todas as entrevistas por realizardo interviewer
 			this.interviews=
-				this.interviewEJB.findScheduledInterviewsByUser(currentUser);
+			this.interviewEJB.findScheduledInterviewsByUser(currentUser);
 	}
 
 	private void loadCarriedInterviews() {
@@ -194,11 +198,11 @@ public class ManageInterviewsCDI implements Serializable {
 		else if(this.manager)
 			// Carrega todas as entrevistas realizadas de posições do manager
 			this.carriedInterviews = 
-				this.interviewEJB.findCarriedOutInterviewsOfManager(currentUser);
+			this.interviewEJB.findCarriedOutInterviewsOfManager(currentUser);
 		else if(this.interviewer)
 			// Carrega todas as entrevistas realizadas do interviewer
 			this.carriedInterviews=
-				this.interviewEJB.findCarriedOutInterviewsByUser(currentUser);
+			this.interviewEJB.findCarriedOutInterviewsByUser(currentUser);
 	}
 
 	public List<InterviewEntity> getInterviews() {
@@ -206,8 +210,6 @@ public class ManageInterviewsCDI implements Serializable {
 	}
 
 	public boolean currentInterview(InterviewEntity interview){
-		System.out.println("THIS id: "+this.interview.getId());
-		System.out.println("ITERATED id: "+interview.getId());
 		if(this.interview==null)return false;
 		return this.interview.getId()==interview.getId();
 	}
@@ -258,11 +260,6 @@ public class ManageInterviewsCDI implements Serializable {
 
 		this.interview=interview;
 
-		System.out.println(this.interviews.size());
-
-		for(InterviewEntity i:this.interviews)
-			System.out.println(i);
-
 		this.interviewDate=interview.getDate();
 		this.interviewScript=interview.getScript();
 		this.submission=interview.getSubmission();
@@ -279,7 +276,7 @@ public class ManageInterviewsCDI implements Serializable {
 
 		this.interviewScript=interview.getScript();
 
-		this.buildConflicts();
+		//		this.buildConflicts();
 	}
 
 	public void unloadInterview(){
@@ -422,7 +419,7 @@ public class ManageInterviewsCDI implements Serializable {
 		if(this.selectedInterviewers==null)
 			this.selectedInterviewers=new ArrayList<UserEntity>();
 		this.selectedInterviewers.add(interviewer);
-		this.buildConflicts();
+		//		this.buildConflicts();
 	}
 
 	public void buildConflicts(){
@@ -433,11 +430,13 @@ public class ManageInterviewsCDI implements Serializable {
 			if(this.interviewEJB.candidateHasDateConflict(this.interviewDate, this.submission.getCandidate()))
 				this.conflicts.add("O candidato tem um conflito de agenda");			
 
-		for(UserEntity interviewer:this.selectedInterviewers)
-			// Verifica primeiro se é entrevistador da posição ou se a data foi mudada
-			if(!this.interview.getInterviewers().contains(interviewer)||!this.interviewDate.equals(this.interview.getDate()))
+		for(UserEntity interviewer:this.selectedInterviewers) {
+			// Verifica primeiro se é novo entrevistador ou se a data foi mudada
+			if(!this.interview.getInterviewers().contains(interviewer)||!this.interviewDate.equals(this.interview.getDate())) {
 				if(this.interviewEJB.interviewerHasDateConflict(this.interviewDate, interviewer))
 					this.conflicts.add("O entrevistador "+interviewer.getFirstName()+" "+interviewer.getLastName()+" tem um conflito de agenda");
+			}
+		}
 	}
 
 	public void removeInterviewer(UserEntity interviewer){
@@ -446,7 +445,7 @@ public class ManageInterviewsCDI implements Serializable {
 				this.selectedInterviewers.remove(i);
 				break;
 			}
-		this.buildConflicts();
+		//		this.buildConflicts();
 	}
 
 	public boolean selectedInterviewer(UserEntity interviewer){
@@ -527,28 +526,53 @@ public class ManageInterviewsCDI implements Serializable {
 	}
 
 	public void updateInterview(){
-		this.buildConflicts();
-		if(!this.conflicts.isEmpty()){
-			this.interview.setInterviewers(this.selectedInterviewers);
-			this.interview.setDate(this.interviewDate);
 
-			if(this.interviewScript==null)
-				this.interview.setScript(this.defaultInterviewScript);
-			else this.interview.setScript(this.interviewScript);
+		if (this.selectedInterviewers!=null&&!this.selectedInterviewers.isEmpty()) {
+			// Tem entrevistadores escolhidos OK!
+			this.buildConflicts();
 
-			this.interviewEJB.update(this.interview);
+			if(this.conflicts==null&&this.conflicts.isEmpty()){
+				// Não tem conflitos OK! Envia emails
 
-			//Envia os mails aqui
+				// Só envia email ao candidato se a data tiver sido mudada
+				if(!this.interviewDate.equals(this.interview.getDate()))
+					this.mail.notifyChangeDateInterviewCand(interview, interviewDate);
 
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Entrevista Actualizada."));
+				for(UserEntity interviewer:this.selectedInterviewers) {
+					// Envia email com info se é novo entrevistador
+					if(!this.interview.getInterviewers().contains(interviewer))
+						this.mail.notifyNewInterviewInt(interview, interviewer,
+								interviewDate);
+					// Envia email com aviso se já era entrevistador e a data ou guião mudou				
+					else {			
+						boolean newDate = !this.interviewDate.equals(this.interview.getDate());
+						boolean newScript = !this.interviewScript.equals(this.interview.getScript());
+						if(newDate||newScript) this.mail.notifyChangeInterviewInt(interview,
+								interviewDate, interviewer, newDate, newScript);
+						// confirmar
+					}
+				}
+
+				this.interview.setInterviewers(this.selectedInterviewers);
+				this.interview.setDate(this.interviewDate);
+
+				if(this.interviewScript==null)
+					this.interview.setScript(this.defaultInterviewScript);
+				else this.interview.setScript(this.interviewScript);
+
+				this.interviewEJB.update(this.interview);
+
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Entrevista Actualizada."));
+			} else
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existem conflitos de agenda.", ""));
 		} else
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existem conflitos de agenda.", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tem de escolher pelo menos um entrevistador.", ""));
 	}
 
 	public String interviewXLSPath(InterviewEntity interview) {
 		// (.xls)
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		
+
 		return request.getScheme()+"://"+request.getServerName()+":"
 		+request.getServerPort()+"/"+UploadFile.FOLDER_INTERVIEW_RESULT+"/"
 		+interview.getId()+UploadFile.DOCUMENT_EXTENSION_XLS;
@@ -600,7 +624,7 @@ public class ManageInterviewsCDI implements Serializable {
 			this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_INTERVIEW_RESULT, this.interviewToConclude.getId(), UploadFile.DOCUMENT_EXTENSION_XLS);
 
 			this.interviewToConclude.setCarriedOut(true);
-			
+
 			this.interviewToConclude.setFeedback(this.feedback);
 
 			this.interviewEJB.update(this.interviewToConclude);
@@ -612,8 +636,9 @@ public class ManageInterviewsCDI implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Entrevista concluída."));
 
 		}else
-			
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Introduza o Feedback da entrevista."));
+
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,"Introduza o feedback da entrevista.",""));
 
 
 	}

@@ -1,5 +1,7 @@
 package pt.uc.dei.aor.pf.mailManagement;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -39,6 +41,9 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	@EJB
 	private UserEJBInterface userEJB;
 
+	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 	
+	private SimpleDateFormat ftHour = new SimpleDateFormat ("HH:mm"); 
+
 	private static final String FROM="itjobs.aor@gmail.com";
 
 	private static final String RECEIVER = "duarte.m.a.goncalves@gmail.com,renatadiasilva@gmail.com,";
@@ -47,7 +52,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 	private static final String LOCALHOST="https://localhost/";
 	private static final String PLATAFORM_LINK=LOCALHOST+"Final_Project_WEB/";
 	private static final String SERVICE_CONTEXT=LOCALHOST+"Final_Project_WEB/services/";
-	
+
 	public SecureMailManagementImp() {
 	}
 
@@ -351,15 +356,15 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 		String positionMail=position.getPositionCode()
 				+", \'"+position.getTitle()+"\' - "
 				+position.getCompany();
-		
+
 		String linkCV = ""; 
 		if (submission.isCustomCV())
 			linkCV=LOCALHOST+"submissionCV/"+submission.getId()+".pdf";
 		else linkCV=LOCALHOST+"userCV/"+candidate.getId()+".pdf";
-		
+
 		String infoDate = "dia "+interview.getDay()
 				+" e hora "+interview.getHour();
-		
+
 		String text="Olá "+candidate.getFirstName()
 				+" "+candidate.getLastName()+","
 				+"\n\nInformamos que foi agendada uma entrevista "
@@ -386,6 +391,127 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 					+" para o "+infoDate, text);
 
 		}
+
+	}
+
+	@Override
+	public void notifyChangeDateInterviewCand(InterviewEntity interview,
+			Date newDate) {
+		// Sent an email notifiyng candidate of new date of interview
+
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+		SubmissionEntity submission = interview.getSubmission();
+		UserEntity candidate = submission.getCandidate();
+		PositionEntity position = submission.getPosition();
+
+		String positionMail=position.getPositionCode()
+				+", \'"+position.getTitle()+"\' - "
+				+position.getCompany();
+
+		String infoNewDate = "dia "+ftDate.format(newDate)
+				+" e hora "+ftHour.format(newDate);
+		
+		String infoOldDate = "dia "+interview.getDay()
+				+" e hora "+interview.getHour();
+
+		String text="Olá "+candidate.getFirstName()
+				+" "+candidate.getLastName()+","
+				+"\n\nInformamos que foi alterada a data ou hora da sua entrevista "
+				+" de "+infoOldDate+" (relativa à sua candidatura à posição "
+				+positionMail+") para o "+infoNewDate
+				+ ".\n\nCumprimentos,\nA equipa "
+				+companyName;
+
+		this.sendEmail(candidate.getEmail(), null, "Alteração de data de"
+				+ " entrevista para o "+infoNewDate, text);
+
+	}
+
+	@Override
+	public void notifyChangeInterviewInt(InterviewEntity interview, Date newDate,
+			UserEntity oldInterviewer, boolean dateIsNew, boolean scriptIsNew) {
+		// Sent an email notifying old interviewers of changes in interview
+
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+		SubmissionEntity submission = interview.getSubmission();
+		UserEntity candidate = submission.getCandidate();
+		PositionEntity position = submission.getPosition();
+
+		String positionMail=position.getPositionCode()
+				+", \'"+position.getTitle()+"\' - "
+				+position.getCompany();
+
+		String linkCV = ""; 
+		if (submission.isCustomCV())
+			linkCV=LOCALHOST+"submissionCV/"+submission.getId()+".pdf";
+		else linkCV=LOCALHOST+"userCV/"+candidate.getId()+".pdf";
+
+		String infoNewDate = "dia "+ftDate.format(newDate)
+				+" e hora "+ftHour.format(newDate);
+		
+		String infoOldDate = "dia "+interview.getDay()
+				+" e hora "+interview.getHour();
+		
+		String text="Olá "+oldInterviewer.getFirstName()
+				+" "+oldInterviewer.getLastName()+","
+				+"\n\nInformamos que a sua entrevista de "+infoOldDate
+				+" com o(a) candidato(a) "+candidate.getFirstName()
+				+" "+candidate.getLastName()+" à posição "
+				+positionMail+" foi alterada. ";
+		
+		if (dateIsNew)
+			text += "\n\nA entrevista foi remarcada para o dia "+infoNewDate+".";
+				
+		if (scriptIsNew)
+			text += "\n\nO guião da entrevista foi alterado.";
+		
+		if (!dateIsNew&&!scriptIsNew)
+			text += "\n\nOs entrevistadores foram alterados.";
+		
+		text +="\n\nRelembramos que pode consultar o CV do(a) candidato(a)"
+				+ " no seguinte link: "
+				+linkCV+ ".\n\nCumprimentos,\nA equipa "+companyName;
+
+		this.sendEmail(oldInterviewer.getEmail(), null, "Data ou guião "
+				+ "de entrevista alterado", text);
+
+
+	}
+
+	@Override
+	public void notifyNewInterviewInt(InterviewEntity interview,
+			UserEntity newInterviewer, Date date) {
+		// Sent an email notifiyng new interviewers of interview info
+
+		String companyName = styleEJB.findDefaulStyle().getCompanyName();
+		SubmissionEntity submission = interview.getSubmission();
+		UserEntity candidate = submission.getCandidate();
+		PositionEntity position = submission.getPosition();
+
+		String positionMail=position.getPositionCode()
+				+", \'"+position.getTitle()+"\' - "
+				+position.getCompany();
+
+		String linkCV = ""; 
+		if (submission.isCustomCV())
+			linkCV=LOCALHOST+"submissionCV/"+submission.getId()+".pdf";
+		else linkCV=LOCALHOST+"userCV/"+candidate.getId()+".pdf";
+
+		String infoDate = "dia "+ftDate.format(date)
+				+" e hora "+ftHour.format(date);
+		
+		String text="Olá "+newInterviewer.getFirstName()
+				+" "+newInterviewer.getLastName()+","
+				+"\n\nInformamos que lhe foi agendada uma entrevistada ("
+				+"com o(a) candidato(a) "+candidate.getFirstName()
+				+" "+candidate.getLastName()+" à posição "
+				+positionMail+") para o dia "+interview.getDay()
+				+" e hora "+interview.getHour()
+				+".\n\nConsulte o CV do(a) candidato(a) no seguinte link: "
+				+linkCV+ ".\n\nCumprimentos,\nA equipa "+companyName;
+
+		this.sendEmail(newInterviewer.getEmail(), null, "Entrevista agendada"
+				+" para o "+infoDate, text);
 
 	}
 
