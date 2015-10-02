@@ -370,7 +370,11 @@
 				style="width:100%">
 				<h:panelGrid rendered="#{scheduleInterviewCDI.dateProbablyNotOk()}">
 					<p:commandButton value="Submeter entrevista" style="width:100%"
-						icon="ui-icon-disk" ajax="false"
+						icon="ui-icon-disk" update="messages editPosition
+							scheduleInterviewPart1 scheduleInterviewPart2
+							scheduleInterviewPart3 scheduleInterviewPart4
+							scheduleInterviewPart5 scheduleInterviewPart6
+							scheduleInterviewPart7"
 						action="#{scheduleInterviewCDI.createInterview()}">
 						<p:confirm header="Confirmação"
 							message="A entrevista calha a um fim de semana ou
@@ -389,11 +393,15 @@
 				</h:panelGrid>
 				<h:panelGrid rendered="#{!scheduleInterviewCDI.dateProbablyNotOk()}">
 					<p:commandButton value="Submeter entrevista" style="width:100%"
-						icon="ui-icon-disk" ajax="false"
+						icon="ui-icon-disk" update="messages editPosition
+							scheduleInterviewPart1 scheduleInterviewPart2
+							scheduleInterviewPart3 scheduleInterviewPart4
+							scheduleInterviewPart5 scheduleInterviewPart6
+							scheduleInterviewPart7"
 						action="#{scheduleInterviewCDI.createInterview()}" />
 				</h:panelGrid>
-				<p:messages />
 			</h:panelGroup>
+			<p:messages />
 		</h:form>
 
 	</ui:composition>

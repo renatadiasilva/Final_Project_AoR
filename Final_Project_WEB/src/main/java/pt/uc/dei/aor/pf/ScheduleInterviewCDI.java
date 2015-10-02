@@ -139,6 +139,7 @@ public class ScheduleInterviewCDI implements Serializable {
 		this.submission=submission;
 		this.interviewDate=null;
 		this.interviews=this.interviewEJB.findInterviewsOfSubmission(this.submission);
+		this.selectedInterviewers=null;
 		this.buildInterviewersList();
 	}
 
@@ -148,7 +149,7 @@ public class ScheduleInterviewCDI implements Serializable {
 		this.interviewers=null;
 		this.selectedScript=null;
 		this.conflicts=null;
-		this.interviewDate=null;
+		this.selectedInterviewers=null;
 	}
 
 	public boolean loadedPosition(){
@@ -384,9 +385,6 @@ public class ScheduleInterviewCDI implements Serializable {
 
 		this.conflicts=null;
 		
-		System.out.println("tem entrevistadores selecionados? "
-		+hasSelectedInterviewers());
-
 	}
 
 	public boolean canSubmit(){

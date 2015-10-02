@@ -15,7 +15,6 @@ import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.QuestionEJBInterface;
 import pt.uc.dei.aor.pf.beans.ScriptEJBInterface;
-import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
 import pt.uc.dei.aor.pf.beans.UserEJBInterface;
 import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
@@ -73,8 +72,6 @@ public class ManageInterviewsCDI implements Serializable {
 	private InterviewEntity interview;
 
 	private PositionEntity position;
-
-	private SubmissionEJBInterface submissionEJB;
 
 	private SubmissionEntity submission;
 
