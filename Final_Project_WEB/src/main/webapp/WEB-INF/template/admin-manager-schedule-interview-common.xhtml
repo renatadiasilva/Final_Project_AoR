@@ -94,7 +94,8 @@
 						<p:commandButton value="Seleccionar" style="width:100%"
 							rendered="#{!scheduleInterviewCDI.checkPosition(position)}"
 							actionListener="#{scheduleInterviewCDI.setPosition(position)}"
-							icon="ui-icon-suitcase" update="editPosition
+							icon="ui-icon-suitcase"
+							update="editPosition
 							scheduleInterviewPart1 scheduleInterviewPart2
 							scheduleInterviewPart3 scheduleInterviewPart4
 							scheduleInterviewPart5 scheduleInterviewPart6
@@ -103,7 +104,8 @@
 							rendered="#{scheduleInterviewCDI.checkPosition(position)}"
 							style="width:100%" value="Cancelar"
 							actionListener="#{scheduleInterviewCDI.unloadPosition()}"
-							icon="ui-icon-cancel" update="editPosition
+							icon="ui-icon-cancel"
+							update="editPosition
 							scheduleInterviewPart1 scheduleInterviewPart2
 							scheduleInterviewPart3 scheduleInterviewPart4
 							scheduleInterviewPart5 scheduleInterviewPart6
@@ -146,7 +148,7 @@
 							icon="ui-icon-suitcase"
 							update="scheduleInterviewPart1 scheduleInterviewPart2
 							scheduleInterviewPart3 scheduleInterviewPart4 scheduleInterviewPart5
-							scheduleInterviewPart6" />
+							scheduleInterviewPart6 scheduleInterviewPart7" />
 
 						<p:commandButton style="width:100%" value="Cancelar"
 							rendered="#{scheduleInterviewCDI.currentSubmission(submission)}"
@@ -154,7 +156,7 @@
 							actionListener="#{scheduleInterviewCDI.unloadSubmission()}"
 							update="scheduleInterviewPart1 scheduleInterviewPart2
 							scheduleInterviewPart3 scheduleInterviewPart4 scheduleInterviewPart5
-							scheduleInterviewPart6" />
+							scheduleInterviewPart6 scheduleInterviewPart7" />
 
 					</p:column>
 				</p:dataTable>
@@ -364,13 +366,34 @@
 		<br />
 
 		<h:form id="scheduleInterviewPart7">
-			<h:panelGrid rendered="#{scheduleInterviewCDI.canSubmit()}"
+			<h:panelGroup rendered="#{scheduleInterviewCDI.canSubmit()}"
 				style="width:100%">
-				<p:commandButton value="Submeter entrevista" style="width:100%"
-					icon="ui-icon-disk" ajax="false"
-					action="#{scheduleInterviewCDI.createInterview()}" />
+				<h:panelGrid rendered="#{scheduleInterviewCDI.dateProbablyNotOk()}">
+					<p:commandButton value="Submeter entrevista" style="width:100%"
+						icon="ui-icon-disk" ajax="false"
+						action="#{scheduleInterviewCDI.createInterview()}">
+						<p:confirm header="Confirmação"
+							message="A entrevista calha a um fim de semana ou
+							fora do horário de trabalho.
+							Tem a certeza que quer manter a data?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true">
+						<h:panelGrid columns="2" style="width:100%">
+							<p:commandButton value="Sim" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</h:panelGrid>
+					</p:confirmDialog>
+				</h:panelGrid>
+				<h:panelGrid rendered="#{!scheduleInterviewCDI.dateProbablyNotOk()}">
+					<p:commandButton value="Submeter entrevista" style="width:100%"
+						icon="ui-icon-disk" ajax="false"
+						action="#{scheduleInterviewCDI.createInterview()}" />
+				</h:panelGrid>
 				<p:messages />
-			</h:panelGrid>
+			</h:panelGroup>
 		</h:form>
 
 	</ui:composition>

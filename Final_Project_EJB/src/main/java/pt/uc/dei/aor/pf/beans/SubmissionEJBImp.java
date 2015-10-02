@@ -9,7 +9,6 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.dao.InterviewDao;
 import pt.uc.dei.aor.pf.dao.SubmissionDao;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
@@ -47,21 +46,6 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 		log.info("Deleting submission from DB");
 		submissionDAO.delete(submission.getId(), SubmissionEntity.class);
 	}
-
-	@Override
-	public void addPositionToSpontaneous(SubmissionEntity submission,
-			PositionEntity position, UserEntity user) {
-		log.info("Adding position to a spontaneous submission (cloning)");
-		// clone submission: na web???
-		SubmissionEntity newSubmission = new SubmissionEntity(
-				submission.getCandidate(), Constants.STATUS_SUBMITED,
-				submission.getMotivationLetter(),
-				submission.getSources(), false);
-		newSubmission.setPosition(position);
-		newSubmission.setAssociatedBy(user);
-		newSubmission.setDate(submission.getDate());
-		save(newSubmission);
-}
 
 	@Override
 	public SubmissionEntity find(Long id) {

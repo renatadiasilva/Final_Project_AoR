@@ -219,10 +219,6 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				+"\'AAAAAAAAAEEEEEEEIIIIIIIIOOOOOOOOUUUUUUUUC\'"
 				+") LIKE :loc OR ", attributes, " OR ", 
 				"positions.id = locations.position_id"+extra, "code");
-		System.out.println("Query");
-		System.out.println(queryS);
-		if (positionManager != null)
-			System.out.println(keyword+" "+positionManager.getId());
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		query.setParameter("code", keyword);
 		query.setParameter("title", keyword);
@@ -254,10 +250,6 @@ public class PositionDao extends GenericDao<PositionEntity> {
 				+") LIKE :loc OR ", attributes, " OR ", 
 				"positions.id = locations.position_id"
 				+ " AND positions.status = :open"+extra, "code");
-		System.out.println("Query");
-		System.out.println(queryS);
-		if (positionManager != null)
-			System.out.println(keyword+" "+positionManager.getId());
 		Query query = em.createNativeQuery(queryS, PositionEntity.class);
 		query.setParameter("code", keyword);
 		query.setParameter("title", keyword);

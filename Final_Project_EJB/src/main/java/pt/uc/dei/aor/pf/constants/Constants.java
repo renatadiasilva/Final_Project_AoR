@@ -115,5 +115,9 @@ public class Constants {
 	public static final String QUESTION_VALUE = "Numérica";
 	public static final String QUESTION_ISTRUE = "V/F";
 	public static final String QUESTION_ASWER = "Texto livre";
-	
+
+	// working hours
+	public static final int MIN_WORK_HOUR = 9;
+	public static final int MAX_WORK_HOUR = 18;	
+
 }

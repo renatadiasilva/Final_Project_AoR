@@ -12,8 +12,6 @@ public interface SubmissionEJBInterface {
 	public abstract void save(SubmissionEntity submission);
 	public abstract void update(SubmissionEntity submission);
 	public abstract void delete(SubmissionEntity submission);
-	public abstract void addPositionToSpontaneous(SubmissionEntity submission,
-			PositionEntity position, UserEntity user);
 	public abstract SubmissionEntity find(Long id);
 	public abstract List<SubmissionEntity> findAll();
 	public abstract List<SubmissionEntity> findSpontaneousSubmissions();

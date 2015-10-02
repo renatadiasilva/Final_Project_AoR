@@ -137,6 +137,7 @@ public class ScheduleInterviewCDI implements Serializable {
 
 	public void loadSubmission(SubmissionEntity submission){
 		this.submission=submission;
+		this.interviewDate=null;
 		this.interviews=this.interviewEJB.findInterviewsOfSubmission(this.submission);
 		this.buildInterviewersList();
 	}
@@ -144,7 +145,10 @@ public class ScheduleInterviewCDI implements Serializable {
 	public void unloadSubmission(){
 		this.submission=null;
 		this.interviewDate=null;
+		this.interviewers=null;
 		this.selectedScript=null;
+		this.conflicts=null;
+		this.interviewDate=null;
 	}
 
 	public boolean loadedPosition(){
@@ -329,13 +333,6 @@ public class ScheduleInterviewCDI implements Serializable {
 		return !this.selectedInterviewers.isEmpty();
 	}
 
-	//	public boolean hasScripts(){
-	//		if(this.scripts==null)
-	//			this.scripts=this.scriptEJB.findReusableScripts();			
-	//		
-	//		return this.scripts!=null&&!this.scripts.isEmpty();
-	//	}
-
 	public List<ScriptEntity> getScripts() {
 		return scripts;
 	}
@@ -367,23 +364,28 @@ public class ScheduleInterviewCDI implements Serializable {
 
 		this.selectedScript=null;
 
-		if(this.interviewers!=null)
-			this.interviewers.clear();
-
-		if(this.selectedInterviewers!=null)
-			this.selectedInterviewers.clear();
-
-		if(this.submissions!=null)
-			this.submissions.clear();
+		this.interviewers = null;
+		this.selectedInterviewers = null;
+		this.submissions = null;
+		this.interviews = null;
+//		if(this.interviewers!=null)
+//			this.interviewers.clear();
+//
+//		if(this.selectedInterviewers!=null)
+//			this.selectedInterviewers.clear();
+//
+//		if(this.submissions!=null)
+//			this.submissions.clear();
 
 		this.submission=null;
 
-		if(this.interviews!=null)
-			this.interviews.clear();
+//		if(this.interviews!=null)
+//			this.interviews.clear();
 
-		this.interviewDate=null;
-		
 		this.conflicts=null;
+		
+		System.out.println("tem entrevistadores selecionados? "
+		+hasSelectedInterviewers());
 
 	}
 
@@ -394,9 +396,9 @@ public class ScheduleInterviewCDI implements Serializable {
 	public void buildConflicts(){
 		if(this.conflicts==null)
 			this.conflicts=new ArrayList<>();
+		else this.conflicts.clear();
 
-		this.conflicts.clear();
-
+		if (this.interviewDate != null && this.submission != null)
 		if(this.interviewEJB.candidateHasDateConflict(this.interviewDate, this.submission.getCandidate()))
 			this.conflicts.add("O candidato tem um conflito de agenda");			
 
@@ -461,6 +463,25 @@ public class ScheduleInterviewCDI implements Serializable {
 		String pattern = SearchPattern.preparePattern(keyword);
 		this.positions = positionEJB.findOpenPositionsByKeyword(pattern,
 				manager);
+	}
+	
+	private boolean weekEndDay() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(interviewDate);
+		return c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+			|| c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
+	}
+	
+	private boolean notWorkHour() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(interviewDate);
+		int hour = c.get(Calendar.HOUR_OF_DAY);
+		return hour < Constants.MIN_WORK_HOUR
+				|| hour >= Constants.MAX_WORK_HOUR;
+	}
+	
+	public boolean dateProbablyNotOk() {
+		return weekEndDay() || notWorkHour();
 	}
 
 	public List<PositionEntity> getPositions() {

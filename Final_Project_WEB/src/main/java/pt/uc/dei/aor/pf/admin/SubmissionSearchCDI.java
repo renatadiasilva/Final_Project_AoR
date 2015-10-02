@@ -168,7 +168,7 @@ public class SubmissionSearchCDI implements Serializable {
 
 		log.debug("Current status: "+oldStatus);
 		log.debug("New status: "+status);
-		
+
 		// if current status is HIRED and new one is not, clean hiredDate
 		if(oldStatus.equals(Constants.STATUS_HIRED)
 				&&!status.equals(Constants.STATUS_HIRED)) {
@@ -242,7 +242,7 @@ public class SubmissionSearchCDI implements Serializable {
 		}	
 
 		if(!needsReason) {
-			
+
 			this.submission.setStatus(status);
 			this.submissionEJB.update(this.submission);
 
@@ -387,7 +387,23 @@ public class SubmissionSearchCDI implements Serializable {
 	public void unloadSubmission(){
 		this.submission=null;
 	}
-	
+
+	public void addPositionToSpontaneous(SubmissionEntity submission,
+			PositionEntity position, UserEntity user) {
+		log.info("Adding position to a spontaneous submission (cloning)");
+		// clone submission
+		SubmissionEntity newSubmission = new SubmissionEntity(
+				submission.getCandidate(), Constants.STATUS_SUBMITED,
+				null, submission.getSources(), false);
+		
+		// cuidado na questão da carta de motivação...
+		newSubmission.setPosition(position);
+		newSubmission.setAssociatedBy(user);
+		newSubmission.setDate(submission.getDate());
+		submissionEJB.save(newSubmission);
+	}
+
+
 	// getters e setters
 
 	public Date getDate1() {
