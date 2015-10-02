@@ -86,6 +86,8 @@ public class ManageInterviewsCDI implements Serializable {
 	private String interviewFeedback;
 
 	private Date interviewDate;
+	
+	private String headerTable;
 
 	public void loadRole(String userEmail, boolean carried){
 
@@ -93,12 +95,23 @@ public class ManageInterviewsCDI implements Serializable {
 
 		this.admin=this.manager=this.interviewer=false;
 
-		if(this.currentUser.getRoles().contains(Constants.ROLE_ADMIN))
+		if(this.currentUser.getRoles().contains(Constants.ROLE_ADMIN)) {
 			this.admin=true;
-		else if(this.currentUser.getRoles().contains(Constants.ROLE_MANAGER))
+			if (carried) headerTable = "Todas as entrevistas realizadas";
+			else headerTable = "Todas as entrevistas por realizar";
+		} else if(this.currentUser.getRoles().contains(Constants.ROLE_MANAGER)) {
 			this.manager=true;
-		else if(this.currentUser.getRoles().contains(Constants.ROLE_INTERVIEWER))
+			if (carried) headerTable = "Todas as entrevistas realizadas das posições geridas por "
+					+currentUser.getFirstName()+" "+currentUser.getLastName();
+			else headerTable = "Todas as entrevistas por realizar das posições geridas por "
+					+currentUser.getFirstName()+" "+currentUser.getLastName();
+		} else if(this.currentUser.getRoles().contains(Constants.ROLE_INTERVIEWER)) {
 			this.interviewer=true;
+			if (carried) headerTable = "Todas as entrevistas realizadas de "
+					+currentUser.getFirstName()+" "+currentUser.getLastName();
+			else headerTable = "Todas as entrevistas por realizar de "
+					+currentUser.getFirstName()+" "+currentUser.getLastName();
+		}
 
 		if(!carried)
 			this.loadInterviews();
@@ -591,6 +604,14 @@ public class ManageInterviewsCDI implements Serializable {
 
 	public String getSubmissionCode() {
 		return this.interviewToConclude.getSubmission().getPosition().getPositionCode();
+	}
+
+	public String getHeaderTable() {
+		return headerTable;
+	}
+
+	public void setHeaderTable(String headerTable) {
+		this.headerTable = headerTable;
 	}
 
 }

@@ -18,7 +18,7 @@
 
 	<ui:define name="contents">
 
-		<h1>As minhas entrevistas</h1>
+		<h1>Gerir Entrevistas</h1>
 
 		<h:form id="viewPositionForm">
 
@@ -52,13 +52,13 @@
 
 		<h:form id="myInterviews">
 
-			<p:dataTable emptyMessage="Sem entrevistas marcadas." var="interview"
+			<p:dataTable emptyMessage="Não há entrevistas por realizar ou não há entrevistas por realizar nesta pesquisa." var="interview"
 				value="#{manageInterviewsCDI.interviews}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10">
 
-				<f:facet name="header">Entrevistas por Realizar</f:facet>
+				<f:facet name="header">#{manageInterviewsCDI.headerTable}</f:facet>
 
 				<p:column headerText="Data">
 					<h:outputText

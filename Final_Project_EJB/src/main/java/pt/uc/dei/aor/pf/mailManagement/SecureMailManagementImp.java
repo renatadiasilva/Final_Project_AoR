@@ -1,6 +1,5 @@
 package pt.uc.dei.aor.pf.mailManagement;
 
-import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
