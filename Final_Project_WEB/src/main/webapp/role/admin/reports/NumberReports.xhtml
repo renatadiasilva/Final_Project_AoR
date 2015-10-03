@@ -164,17 +164,27 @@
 				</p:columnGroup>
 			</p:dataTable>
 			</h:panelGroup>
+			<br />
+            <div style="width: 100%;">
+                <div style="margin: 0 auto; width: 1200px">
+                    <h:panelGroup rendered="#{reportsCDI.checkIfNotNullNotBySource()}">
+                        <p:chart type="line" model="#{createGraphic.lineModel}"
+                            style="height:400px;" />
+                    </h:panelGroup>
+                </div>
+            </div>
 
-			<h:panelGrid>
-				<h:panelGroup rendered="#{reportsCDI.checkIfNotNullNotBySource()}">
-					<p:chart type="line" model="#{createGraphic.lineModel}"
-						style="height:300px; width:500px" />
-				</h:panelGroup>
-				<h:panelGroup rendered="#{reportsCDI.checkIfNotNullBySource()}">
-					<p:chart type="bar" model="#{createGraphic.barModel}"
-						style="height:300px; width:500px" />
-				</h:panelGroup>
-			</h:panelGrid>
+            <br />
+
+            <div style="width: 100%;">
+                <div style="margin: 0 auto; width: 700px">
+                    <h:panelGroup rendered="#{reportsCDI.checkIfNotNullBySource()}">
+                        <p:chart type="bar" model="#{createGraphic.barModel}"
+                            style="height:400px;" />
+                    </h:panelGroup>
+                </div>
+            </div>
+
 		</h:form>
 
 	</ui:define>
