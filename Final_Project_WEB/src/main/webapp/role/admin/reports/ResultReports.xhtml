@@ -110,8 +110,11 @@
 				<p:column headerText="#{reportsCDI.measureHeader}">
 					<h:outputText value="#{item.measure}" />
 				</p:column>
-				<p:column headerText="Por resultado">
+				<p:column rendered="#{reportsCDI.rejectSubm} headerText="By result">
 					<h:outputText value="#{item.result}" />
+				</p:column>
+				<p:column rendered="#{!reportsCDI.rejectSubm} headerText="By result">
+					<h:outputText value="#{item.resultStatus()}" />
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>

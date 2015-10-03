@@ -138,6 +138,20 @@ public class ReportItem implements Serializable {
 		return "Closed";
 	}
 
+	public String resultStatus() {
+		if (result.equals(Constants.STATUS_SUBMITED))
+			return "Submited";
+		if (result.equals(Constants.STATUS_ACCEPTED))
+			return "Accepted To Interview";
+		if (result.equals(Constants.STATUS_NEGOTIATION))
+			return "Proposal On Negotiation";
+		if (result.equals(Constants.STATUS_PROPOSAL))
+			return "Presented Proposal";
+		if (result.equals(Constants.STATUS_REJECTED))
+			return "Rejected";
+		return "Hired";
+	}
+
 	private String removeAccents(String name) {
 
 		// separates all of the accent marks from the characters
