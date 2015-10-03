@@ -481,6 +481,7 @@ public class ScheduleInterviewCDI implements Serializable {
 	}
 	
 	public boolean dateProbablyNotOk() {
+		if (interviewDate==null) return false;
 		return weekEndDay() || notWorkHour();
 	}
 

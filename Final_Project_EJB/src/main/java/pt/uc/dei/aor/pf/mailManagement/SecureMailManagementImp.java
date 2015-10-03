@@ -459,22 +459,26 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+" "+candidate.getLastName()+" à posição "
 				+positionMail+" foi alterada. ";
 		
-		if (dateIsNew)
-			text += "\n\nA entrevista foi remarcada para o dia "+infoNewDate+".";
+		String subj="";
+		if (dateIsNew) {
+			text += "\n\nA entrevista foi remarcada para o "+infoNewDate+".";
+			subj="Data de entrevista alterada";
+		}
 				
-		if (scriptIsNew)
+		if (scriptIsNew) {
 			text += "\n\nO guião da entrevista foi alterado.";
-		
-		if (!dateIsNew&&!scriptIsNew)
-			text += "\n\nOs entrevistadores foram alterados.";
-		
+			subj="Guião de entrevista alterado";
+		}
+
+		if (dateIsNew&&scriptIsNew) {
+			subj="Data e guião de de entrevista alterados";
+		}
+			
 		text +="\n\nRelembramos que pode consultar o CV do(a) candidato(a)"
 				+ " no seguinte link: "
 				+linkCV+ ".\n\nCumprimentos,\nA equipa "+companyName;
 
-		this.sendEmail(oldInterviewer.getEmail(), null, "Data ou guião "
-				+ "de entrevista alterado", text);
-
+		this.sendEmail(oldInterviewer.getEmail(), null, subj, text);
 
 	}
 
@@ -505,8 +509,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 				+"\n\nInformamos que lhe foi agendada uma entrevistada ("
 				+"com o(a) candidato(a) "+candidate.getFirstName()
 				+" "+candidate.getLastName()+" à posição "
-				+positionMail+") para o dia "+interview.getDay()
-				+" e hora "+interview.getHour()
+				+positionMail+") para o dia "+infoDate
 				+".\n\nConsulte o CV do(a) candidato(a) no seguinte link: "
 				+linkCV+ ".\n\nCumprimentos,\nA equipa "+companyName;
 

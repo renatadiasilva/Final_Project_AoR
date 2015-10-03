@@ -146,7 +146,9 @@
 					<p:commandButton value="Verificar conflitos" style="width:100%"
 						icon="ui-icon-help"
 						action="#{manageInterviewsCDI.buildConflicts()}"
-						ajax="false" />
+						update="editInterviewPart1
+						editInterviewPart2 editInterviewPart3 messages
+						editInterviewPart4 editInterviewPart5" />
 
 				</h:panelGrid>
 
@@ -159,7 +161,7 @@
 		<br />
 
 		<h:form id="editInterviewPart4">
-			<h:panelGroup rendered="#{manageInterviewsCDI.editInterview}">
+			<h:panelGroup rendered="#{manageInterviewsCDI.showConflit()}">
 
 				<h2>Conflitos de Agenda</h2>
 				<p:dataTable emptyMessage="Sem conflitos" var="conflict"
@@ -180,13 +182,38 @@
 		<br />
 
 		<h:form id="editInterviewPart5">
-			<h:panelGrid rendered="#{manageInterviewsCDI.canSubmit()}"
+			<h:panelGroup rendered="#{manageInterviewsCDI.canSubmit()}"
 				style="width:100%">
-				<p:commandButton value="Actualizar entrevista" style="width:100%"
-					icon="ui-icon-disk" ajax="false"
-					action="#{manageInterviewsCDI.updateInterview()}" />
-				<p:messages />
-			</h:panelGrid>
+				<h:panelGrid rendered="#{manageInterviewsCDI.dateProbablyNotOk()}">
+					<p:commandButton value="Actualizar entrevista" style="width:100%"
+						icon="ui-icon-disk" update="editInterviewPart1
+						editInterviewPart2 editInterviewPart3 messages
+						editInterviewPart4 editInterviewPart5"
+						action="#{manageInterviewsCDI.updateInterview()}" >
+						<p:confirm header="Confirmação"
+							message="A entrevista calha a um fim de semana ou
+							fora do horário de trabalho.
+							Tem a certeza que quer manter a data?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true">
+						<h:panelGrid columns="2" style="width:100%">
+							<p:commandButton value="Sim" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button" style="width:100%"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</h:panelGrid>
+					</p:confirmDialog>
+				</h:panelGrid>
+				<h:panelGrid rendered="#{!manageInterviewsCDI.dateProbablyNotOk()}">
+					<p:commandButton value="Actualizar entrevista" style="width:100%"
+						icon="ui-icon-disk" update="editInterviewPart1
+						editInterviewPart2 editInterviewPart3 messages
+						editInterviewPart4 editInterviewPart5 myInterviews"
+						action="#{manageInterviewsCDI.updateInterview()}" />
+				</h:panelGrid>
+			</h:panelGroup>
+			<p:messages />
 		</h:form>
 
 	</ui:composition>

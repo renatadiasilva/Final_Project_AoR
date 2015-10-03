@@ -94,6 +94,7 @@ public class ManageInterviewsCDI implements Serializable {
 
 	// Edição de Entrevista
 	private List<UserEntity> interviewers, selectedInterviewers;
+	private List<Long> oldInterviewerIds;
 
 	private List<ScriptEntity> scripts;
 
@@ -260,6 +261,13 @@ public class ManageInterviewsCDI implements Serializable {
 
 		this.interview=interview;
 
+		//keep record of old interviews
+		oldInterviewerIds = new ArrayList<Long>();
+		for (UserEntity u : this.interview.getInterviewers()) {
+			oldInterviewerIds.add(u.getId());
+			System.out.println("loadInterview"+u.getFirstName());
+		}
+
 		this.interviewDate=interview.getDate();
 		this.interviewScript=interview.getScript();
 		this.submission=interview.getSubmission();
@@ -274,9 +282,7 @@ public class ManageInterviewsCDI implements Serializable {
 
 		this.buildInterviewersList();
 
-		this.interviewScript=interview.getScript();
-
-		//		this.buildConflicts();
+		this.conflicts=null;
 	}
 
 	public void unloadInterview(){
@@ -286,6 +292,7 @@ public class ManageInterviewsCDI implements Serializable {
 		this.conflicts=null;
 		this.interview=null;
 		this.selectedInterviewers=null;
+		this.conflicts=null;
 	}
 
 	public ScriptEntity getScript() {
@@ -358,6 +365,10 @@ public class ManageInterviewsCDI implements Serializable {
 	public void setInterviewFeedback(String interviewFeedback) {
 		this.interviewFeedback = interviewFeedback;
 	}
+	
+	public boolean showConflit() {
+		return editInterview&&conflicts!=null;
+	}
 
 
 
@@ -369,6 +380,9 @@ public class ManageInterviewsCDI implements Serializable {
 		UserEntity currentUser=this.userEJB.findUserByEmail(this.userManagement.getUserMail());
 		UserEntity manager=this.position.getPositionManager();
 		UserEntity candidate=this.interview.getSubmission().getCandidate();
+
+		for (UserEntity u : interview.getInterviewers())
+			System.out.println("buildInterviewersList"+u.getFirstName());
 
 		this.unloadInterviewer(manager);
 		this.unloadInterviewer(currentUser);
@@ -395,6 +409,9 @@ public class ManageInterviewsCDI implements Serializable {
 				this.interviewers.add(0, currentUser);
 		}
 
+		for (UserEntity u : interview.getInterviewers())
+			System.out.println("FinalbuildInterviewersList"+u.getFirstName());
+
 	}
 
 	private void unloadInterviewer(UserEntity interviewer) {
@@ -414,16 +431,24 @@ public class ManageInterviewsCDI implements Serializable {
 	}
 
 	public void addInterviewer(UserEntity interviewer){
+		for (UserEntity u : interview.getInterviewers())
+			System.out.println("ANTESaddInterviewer"+u.getFirstName());
 		if(this.scripts==null||this.scripts.isEmpty())
 			this.scripts=this.scriptEJB.findReusableScripts();
 		if(this.selectedInterviewers==null)
 			this.selectedInterviewers=new ArrayList<UserEntity>();
 		this.selectedInterviewers.add(interviewer);
-		//		this.buildConflicts();
+		for (UserEntity u : interview.getInterviewers())
+			System.out.println("DEPOISaddInterviewer"+u.getFirstName());
+
+
 	}
 
 	public void buildConflicts(){
 		this.conflicts=new ArrayList<>();
+
+		for (UserEntity u : interview.getInterviewers())
+			System.out.println("buildConflits"+u.getFirstName());
 
 		// Só verifica se a data tiver sido mudada
 		if(!this.interviewDate.equals(this.interview.getDate()))
@@ -432,7 +457,7 @@ public class ManageInterviewsCDI implements Serializable {
 
 		for(UserEntity interviewer:this.selectedInterviewers) {
 			// Verifica primeiro se é novo entrevistador ou se a data foi mudada
-			if(!this.interview.getInterviewers().contains(interviewer)||!this.interviewDate.equals(this.interview.getDate())) {
+			if(!oldInterviewerIds.contains(interviewer.getId())||!this.interviewDate.equals(this.interview.getDate())) {
 				if(this.interviewEJB.interviewerHasDateConflict(this.interviewDate, interviewer))
 					this.conflicts.add("O entrevistador "+interviewer.getFirstName()+" "+interviewer.getLastName()+" tem um conflito de agenda");
 			}
@@ -440,12 +465,15 @@ public class ManageInterviewsCDI implements Serializable {
 	}
 
 	public void removeInterviewer(UserEntity interviewer){
+		for (UserEntity u : interview.getInterviewers())
+			System.out.println("DEPOISremoveInterviewer"+u.getFirstName());
 		for(int i=0; i<this.selectedInterviewers.size(); i++)
 			if(this.selectedInterviewers.get(i).getId()==interviewer.getId()){
 				this.selectedInterviewers.remove(i);
 				break;
 			}
-		//		this.buildConflicts();
+		for (UserEntity u : interview.getInterviewers())
+			System.out.println("DEPOISremoveInterviewer"+u.getFirstName());
 	}
 
 	public boolean selectedInterviewer(UserEntity interviewer){
@@ -531,7 +559,10 @@ public class ManageInterviewsCDI implements Serializable {
 			// Tem entrevistadores escolhidos OK!
 			this.buildConflicts();
 
-			if(this.conflicts==null&&this.conflicts.isEmpty()){
+			for (UserEntity u : interview.getInterviewers())
+				System.out.println("updateInterview"+u.getFirstName());
+			
+			if(this.conflicts==null||this.conflicts.isEmpty()){
 				// Não tem conflitos OK! Envia emails
 
 				// Só envia email ao candidato se a data tiver sido mudada
@@ -540,7 +571,9 @@ public class ManageInterviewsCDI implements Serializable {
 
 				for(UserEntity interviewer:this.selectedInterviewers) {
 					// Envia email com info se é novo entrevistador
-					if(!this.interview.getInterviewers().contains(interviewer))
+					System.out.println(interviewer.getFirstName()+" old? "+
+							this.interview.getInterviewers().contains(interviewer));
+					if(!oldInterviewerIds.contains(interviewer.getId()))
 						this.mail.notifyNewInterviewInt(interview, interviewer,
 								interviewDate);
 					// Envia email com aviso se já era entrevistador e a data ou guião mudou				
@@ -576,6 +609,27 @@ public class ManageInterviewsCDI implements Serializable {
 		return request.getScheme()+"://"+request.getServerName()+":"
 		+request.getServerPort()+"/"+UploadFile.FOLDER_INTERVIEW_RESULT+"/"
 		+interview.getId()+UploadFile.DOCUMENT_EXTENSION_XLS;
+	}
+
+	private boolean weekEndDay() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(interviewDate);
+		return c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+			|| c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
+	}
+	
+	private boolean notWorkHour() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(interviewDate);
+		int hour = c.get(Calendar.HOUR_OF_DAY);
+		return hour < Constants.MIN_WORK_HOUR
+				|| hour >= Constants.MAX_WORK_HOUR;
+	}
+	
+	public boolean dateProbablyNotOk() {
+		if (interviewDate==null) return false;
+		return (weekEndDay() || notWorkHour())
+				&&(!this.interviewDate.equals(this.interview.getDate()));
 	}
 
 	// Concluir Entrevista
