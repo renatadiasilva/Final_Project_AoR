@@ -54,6 +54,8 @@ public class AdminNewUserCDI implements Serializable {
 
 	private boolean admin, manager, interviewer, candidate;
 	private boolean submissionDone;
+	
+	private boolean showRoles;
 
 	@Inject
 	private UserSessionManagement userManagement;
@@ -418,6 +420,14 @@ public class AdminNewUserCDI implements Serializable {
 
 	public void setSubmissionDone(boolean submissionDone) {
 		this.submissionDone = submissionDone;
+	}
+
+	public boolean isShowRoles() {
+		return showRoles;
+	}
+
+	public void setShowRoles(boolean showRoles) {
+		this.showRoles = showRoles;
 	}
 
 }

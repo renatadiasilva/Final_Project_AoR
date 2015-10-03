@@ -359,8 +359,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		String linkCV = ""; 
 		if (submission.isCustomCV())
-			linkCV=LOCALHOST+"submissionCV/"+submission.getId()+".pdf";
-		else linkCV=LOCALHOST+"userCV/"+candidate.getId()+".pdf";
+			linkCV=LOCALHOST+"submissionCV/"+submission.getMiscKey()+submission.getId()+".pdf";
+		else linkCV=LOCALHOST+"userCV/"+candidate.getMiscKey()+candidate.getId()+".pdf";
 
 		String infoDate = "dia "+interview.getDay()
 				+" e hora "+interview.getHour();
@@ -443,8 +443,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		String linkCV = ""; 
 		if (submission.isCustomCV())
-			linkCV=LOCALHOST+"submissionCV/"+submission.getId()+".pdf";
-		else linkCV=LOCALHOST+"userCV/"+candidate.getId()+".pdf";
+			linkCV=LOCALHOST+"submissionCV/"+submission.getMiscKey()+submission.getId()+".pdf";
+		else linkCV=LOCALHOST+"userCV/"+candidate.getMiscKey()+candidate.getId()+".pdf";
 
 		String infoNewDate = "dia "+ftDate.format(newDate)
 				+" e hora "+ftHour.format(newDate);
@@ -498,8 +498,8 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 		String linkCV = ""; 
 		if (submission.isCustomCV())
-			linkCV=LOCALHOST+"submissionCV/"+submission.getId()+".pdf";
-		else linkCV=LOCALHOST+"userCV/"+candidate.getId()+".pdf";
+			linkCV=LOCALHOST+"submissionCV/"+submission.getMiscKey()+submission.getId()+".pdf";
+		else linkCV=LOCALHOST+"userCV/"+candidate.getMiscKey()+candidate.getId()+".pdf";
 
 		String infoDate = "dia "+ftDate.format(date)
 				+" e hora "+ftHour.format(date);

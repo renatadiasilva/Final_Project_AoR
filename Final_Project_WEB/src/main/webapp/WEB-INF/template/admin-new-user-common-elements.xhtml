@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+
+		<h:panelGroup rendered="#{adminNewUserCDI.showRoles}">
+
+			<p:outputLabel value="Administrador: " for="adminCheck" />
+			<p:selectBooleanCheckbox id="adminCheck"
+				value="#{adminNewUserCDI.admin}">
+				<p:ajax update="@this" />
+			</p:selectBooleanCheckbox>
+
+			<p:outputLabel value="Gestor: " for="managerCheck" />
+			<p:selectBooleanCheckbox id="managerCheck"
+				value="#{adminNewUserCDI.manager}">
+				<p:ajax update="@this" />
+			</p:selectBooleanCheckbox>
+
+			<p:outputLabel value="Entrevistador: " for="interviewerCheck" />
+			<p:selectBooleanCheckbox id="interviewerCheck"
+				value="#{adminNewUserCDI.interviewer}">
+				<p:ajax update="@this" />
+			</p:selectBooleanCheckbox>
+
+			<p:outputLabel value="Candidato " for="candidateCheck" />
+			<p:selectBooleanCheckbox id="candidateCheck"
+				value="#{adminNewUserCDI.candidate}">
+				<p:ajax
+					update="@this adminNewUserFormCandidate adminNewUserFormNonCandidate" />
+			</p:selectBooleanCheckbox>
+
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+
+		</h:panelGroup>
+
+		<p:outputLabel value="Email: " for="adminSignup-email" />
+		<p:inputText id="adminSignup-email" value="#{adminNewUserCDI.email}"
+			size="35" required="true" requiredMessage="Insira o email.">
+			<p:ajax update="@this" />
+		</p:inputText>
+
+		<p:outputLabel value="Primeiro Nome: " for="adminSignup-firstName" />
+		<p:inputText id="adminSignup-firstName"
+			value="#{adminNewUserCDI.firstName}" size="35" required="true"
+			requiredMessage="Insira o primeiro nome."
+			maxlength="#{max.length.userFirstName()}">
+			<p:ajax update="@this" />
+		</p:inputText>
+
+		<p:outputLabel value="Sobrenome: " for="adminSignup-lastName" />
+		<p:inputText id="adminSignup-lastName"
+			value="#{adminNewUserCDI.lastName}" size="35" required="true"
+			requiredMessage="Insira o sobrenome"
+			maxlength="#{max.length.userLastName()}">
+			<p:ajax update="@this" />
+		</p:inputText>
+
+	</ui:composition>
+
+</h:body>
+</html>

@@ -56,7 +56,7 @@
 						</p:submenu>
 						<p:submenu label="Perfil Inicial"
 							rendered="#{!userSessionManagement.checkDefaultAdmin()}">
-							<p:menuitem value="Definir Por Defeito" 
+							<p:menuitem value="Definir Por Defeito"
 								actionListener="#{userSessionManagement.defaultRoleAdmin()}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
@@ -113,6 +113,8 @@
 								url="../../../role/manager/search/MyCandidates.xhtml" />
 							<p:menuitem value="Candidaturas Espontâneas"
 								url="../../../role/manager/search/SpontaneousSearch.xhtml" />
+							<p:menuitem value="Submeter Candidatura Manual"
+								url="../../../role/manager/newuser/NewUserCandidate.xhtml" />
 						</p:submenu>
 						<p:submenu label="Entrevistas">
 							<p:menuitem value="Agendar Entrevista"
