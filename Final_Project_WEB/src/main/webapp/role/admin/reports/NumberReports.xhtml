@@ -145,14 +145,14 @@
 				</p:columnGroup>
 			</p:dataTable>
 
-			<h:panelGrid>
+			<h:panelGrid columns="2">
 				<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}">
 					<p:chart type="line" model="#{createGraphic2.lineModel2}"
-						style="height:300px; width:500px" />
+						style="height:400px; width:700px" />
 				</h:panelGroup>
 				<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}">
 					<p:chart type="bar" model="#{createGraphic4.barModel}"
-						style="height:300px; width:500px" />
+						style="height:400px; width:700px" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:form>

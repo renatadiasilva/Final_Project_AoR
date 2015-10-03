@@ -241,11 +241,12 @@ public class ReportsCDI implements Serializable {
 					bigIntToInt((BigInteger) o[0]), ""));
 
 		// compute overall average
-		totalResult = submissionEJB.countTotalSubmissions(d1, d2)+"";
+		Long total = submissionEJB.countTotalSubmissions(d1, d2);
+		totalResult = total+"";
 
 		//make graphic
 		graph2.createLineModels(tableHeader, report, periodHeader,
-				measureHeader);
+				measureHeader, total+5);
 	}
 
 	// spontaneous submission countings by period between two dates
@@ -317,15 +318,15 @@ public class ReportsCDI implements Serializable {
 			break;
 		}
 		prepareDates();
-		fileTitle = "Candidaturas_rejeitadas_"+periodHeader.substring(0, 1)
+		fileTitle = "Rejected_submissions_"+periodHeader.substring(0, 1)
 				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
-		tableHeader = "Número de Candidaturas Rejeitadas "
-				+"entre "+ftDate.format(d1)+" e "
-				+ftDate.format(d2)+" (por "
+		tableHeader = "Rejected Submissions "
+				+"between "+ftDate.format(d1)+" and "
+				+ftDate.format(d2)+" (by "
 				+periodHeader.substring(0, 3)+")";
-		measureHeader = "Nº Candidaturas Rejeitadas";
-		measureFooter = "Total Candidaturas Rejeitadas: ";
-		emptyMessage = "Sem candidaturas rejeitadas.";
+		measureHeader = "Number of Rejected Submissions";
+		measureFooter = "Total Rejected Submissions: ";
+		emptyMessage = "No rejected submissions.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
@@ -366,15 +367,15 @@ public class ReportsCDI implements Serializable {
 			break;
 		}
 		prepareDates();
-		fileTitle = "Propostas_apresentadas_"+periodHeader.substring(0, 1)
+		fileTitle = "Proposals_"+periodHeader.substring(0, 1)
 				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
-		tableHeader = "Número de Propostas Apresentadas "
-				+"entre "+ftDate.format(d1)+" e "
-				+ftDate.format(d2)+" (por "
+		tableHeader = "Proposals "
+				+"between "+ftDate.format(d1)+" and "
+				+ftDate.format(d2)+" (by "
 				+periodHeader.substring(0, 3)+")";
-		measureHeader = "Nº Propostas Apresentadas";
-		measureFooter = "Total Propostas Apresentadas: ";
-		emptyMessage = "Sem propostas apresentadas.";
+		measureHeader = "Number of Proposals";
+		measureFooter = "Total Proposals: ";
+		emptyMessage = "No proposals.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
@@ -401,16 +402,16 @@ public class ReportsCDI implements Serializable {
 		long ndays = daysBetween(d1, d2);
 		sortDates(ndays);
 
-		fileTitle = "Candidaturas_fonte_"
+		fileTitle = "Submission_source_"
 				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
-		tableHeader = "Número de Candidaturas por Fonte "
-				+"(submetidas entre "+ftDate.format(d1)+" e "
+		tableHeader = "Submissions by Source "
+				+"(bewteen "+ftDate.format(d1)+" and "
 				+ftDate.format(d2)+")";
-		measureHeader = "Nº Candidaturas";
-		measureFooter = "Total Candidaturas do período"
-				+ " (cada candidatura pode"
-				+ " ter várias fontes): ";
-		emptyMessage = "Nada a apresentar.";
+		measureHeader = "Number of Submissions";
+		measureFooter = "Total Submissions of period"
+				+ " (each submission can"
+				+ " have several sources): ";
+		emptyMessage = "No results.";
 
 		List<Object[]> list = submissionEJB.countSubmissionsBySourceTable(d1,
 				d2, Constants.ALL_SOURCES);
@@ -1016,8 +1017,7 @@ public class ReportsCDI implements Serializable {
 		if (p == Constants.MONTHLY) { 
 			Calendar cal = Calendar.getInstance();
 			cal.set(2015, doubleToInt((Double) o[2])-1, 1);
-			dateH = cal.getDisplayName(Calendar.MONTH, Calendar.LONG,
-					Locale.getDefault())+" ";
+			dateH = Calendar.MONTH+" ";
 		}
 		if (p == Constants.DAILY) {
 			dateH = ftDate.format((Date) o[1]);
