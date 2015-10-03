@@ -10,68 +10,79 @@
 	<ui:composition>
 
 		<!-- Pesquisas -->
-		<h:panelGrid columns="3" style="width:100%">
 
-			<h:form id="search-all-positions" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:commandButton value="Todas as posições"
-						action="#{positionSearchCDI.searchAll()}"
-						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus" icon="ui-icon-search"
-						style="width:100%" />
-				</h:panelGrid>
-			</h:form>
+		<h:form id="search-all-positions" style="width:100%">
+			<h:panelGrid columns="3" style="width:100%">
+				<p:commandButton value="Todas as posições"
+					action="#{positionSearchCDI.searchAll()}"
+					update="myPositionsTable messages submissionsPos
+						editSubmissionReason editSubmissionStatus"
+					icon="ui-icon-search" style="width:100%" />
+			</h:panelGrid>
+		</h:form>
+
+		<br />
+
+		<h:panelGrid columns="5" style="width:100%">
 
 			<h:form id="search-code-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar posição por código: " for="search-code" />
+				<h:panelGroup style="width:100%">
+					<p:watermark value="Procurar posição por código: "
+						for="search-code" />
 					<p:inputText id="search-code" value="#{positionSearchCDI.code}"
 						style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByCode()}"
 						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
-				</h:panelGrid>
+						editSubmissionReason editSubmissionStatus"
+						icon="ui-icon-search" style="display:none" />
+				</h:panelGroup>
 			</h:form>
 
 			<h:form id="search-title-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar posição por título: " for="search-title" />
+				<h:panelGroup style="width:100%">
+					<p:watermark value="Procurar posição por título: "
+						for="search-title" />
 					<p:inputText id="search-title" value="#{positionSearchCDI.title}"
 						style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByTitle()}"
 						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
-				</h:panelGrid>
+						editSubmissionReason editSubmissionStatus"
+						icon="ui-icon-search" style="display:none" />
+				</h:panelGroup>
 			</h:form>
 
 			<h:form id="search-company-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar posição por empresa: " for="search-company" />
+				<h:panelGroup style="width:100%">
+					<p:watermark value="Procurar posição por empresa: "
+						for="search-company" />
 					<p:inputText id="search-company"
 						value="#{positionSearchCDI.company}" style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByCompany()}"
 						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
-				</h:panelGrid>
+						editSubmissionReason editSubmissionStatus"
+						icon="ui-icon-search" style="display:none" />
+				</h:panelGroup>
 			</h:form>
 
 			<h:form id="search-tarea-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar posição por área técnica: " for="search-tarea" />
+				<h:panelGroup style="width:100%">
+					<p:watermark value="Procurar posição por área técnica: "
+						for="search-tarea" />
 					<p:inputText id="search-tarea" value="#{positionSearchCDI.tarea}"
 						style="width:100%" />
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByTechArea()}"
 						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
-				</h:panelGrid>
+						editSubmissionReason editSubmissionStatus"
+						icon="ui-icon-search" style="display:none" />
+				</h:panelGroup>
 			</h:form>
 
 			<h:form id="search-keywordPos-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
+				<h:panelGroup style="width:100%">
 					<p:watermark value="Procurar posição por palavra chave: "
 						for="search-keywordPos" />
 					<p:inputText id="search-keywordPos"
@@ -79,55 +90,40 @@
 					<p:commandButton
 						action="#{positionSearchCDI.searchPositionsByKeyword()}"
 						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
-				</h:panelGrid>
+						editSubmissionReason editSubmissionStatus"
+						icon="ui-icon-search" style="display:none" />
+				</h:panelGroup>
 			</h:form>
 
 		</h:panelGrid>
 
-		<h:panelGrid columns="3" style="width:100%">
-			<h:form id="search-datePos-out">
-				<h:panelGroup>
-					<p:outputLabel value="De : " for="search-date1Pos" />
-					<p:calendar id="search-date1Pos" value="#{positionSearchCDI.date1}"
-						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-						yearRange="c-100:c+100" locale="pt" size="35" />
-				</h:panelGroup>
+		<br />
 
-				<h:panelGroup>
-					<p:outputLabel value="Até: " for="search-date2Pos" />
-					<p:calendar id="search-date2Pos" value="#{positionSearchCDI.date2}"
-						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
-						yearRange="c-100:c+100" locale="pt" size="35" />
-				</h:panelGroup>
-				<h:panelGroup>
-					<p:commandButton value="Procurar posição por data"
-						action="#{positionSearchCDI.searchPositionsByDate()}"
-						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus search-datePos-out" icon="ui-icon-search" />
-				</h:panelGroup>
-			</h:form>
+		<h:form id="search-status-out">
+			<h:panelGrid columns="1" style="width:100%">
 
-			<h:form id="search-status-out">
-				<h:panelGrid columns="5" style="width:100%">
-					<p:outputLabel value="Estado: " for="search-status" />
-					<p:selectOneMenu id="search-status" style="width:100%"
-						value="#{positionSearchCDI.status}">
-						<f:selectItems value="#{positionSearchCDI.availableStatus}" />
-						<f:ajax event="change" />
-					</p:selectOneMenu>
+				<p:selectOneMenu id="search-status" style="width:100%"
+					value="#{positionSearchCDI.status}">
+					<f:selectItems value="#{positionSearchCDI.availableStatus}" />
+					<f:ajax event="change" />
+				</p:selectOneMenu>
 
-					<p:commandButton value="Procurar posição por estado"
-						action="#{positionSearchCDI.searchPositionsByStatus()}"
-						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
-				</h:panelGrid>
-			</h:form>
-		</h:panelGrid>
+				<p:commandButton value="Procurar posição por estado"
+					action="#{positionSearchCDI.searchPositionsByStatus()}"
+					update="myPositionsTable messages submissionsPos
+						editSubmissionReason editSubmissionStatus"
+					icon="ui-icon-search" style="width:100%" />
 
-		<h:panelGrid columns="3" style="width:100%">
-			<h:form id="search-locations-out">
-				<h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+
+		<br />
+		<br />
+		<h:form id="search-locations-out">
+
+			<h:panelGroup>
+
+				<h:panelGrid columns="11">
 					<p:outputLabel value="Coimbra: " for="searchPos-coimbra" />
 					<p:selectBooleanCheckbox id="searchPos-coimbra"
 						value="#{positionSearchCDI.coimbra}" />
@@ -144,30 +140,68 @@
 					<p:selectBooleanCheckbox id="searchPos-otherl"
 						value="#{positionSearchCDI.other}" />
 
-					<p:outputLabel value="Local: " for="searchPos-location" />
+					<p:watermark value="Local: " for="searchPos-location" />
 					<p:inputText id="searchPos-location"
-						value="#{positionSearchCDI.location}" size="35" />
-				</h:panelGroup>
-				<h:panelGroup>
+						value="#{positionSearchCDI.location}" size="60" style="width:100%" />
+
 					<p:commandButton value="Procurar posição por localização"
 						action="#{positionSearchCDI.searchPositionsByLocationsOne()}"
 						update="myPositionsTable messages submissionsPos
-						editSubmissionReason editSubmissionStatus" icon="ui-icon-search" />
-				</h:panelGroup>
-			</h:form>
-			<h:form style="width:100%">
-				<p:commandButton action="#{positionSearchCDI.cleanAll()}"
-					value="Limpar pesquisa"
-					update="search-code-out search-company-out search-tarea-out
-						search-status-out search-datePos-out search-locations-out
-						  search-title-out search-keywordPos-out submissionsPos
-						  editSubmissionReason editSubmissionStatus myPositionsTable messages"
-					icon="ui-icon-cancel" />
-			</h:form>
-		</h:panelGrid>
+						editSubmissionReason editSubmissionStatus"
+						icon="ui-icon-search" style="display:none" />
+				</h:panelGrid>
+
+			</h:panelGroup>
+
+		</h:form>
 
 		<br />
 		<br />
+
+		<!-- Data -->
+		<h:form id="search-datePos-out">
+
+			<h:panelGrid columns="3">
+
+				<h:panelGroup>
+					<p:outputLabel value="De : " for="search-date1Pos" />
+					<p:calendar id="search-date1Pos" value="#{positionSearchCDI.date1}"
+						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:outputLabel value="Até: " for="search-date2Pos" />
+					<p:calendar id="search-date2Pos" value="#{positionSearchCDI.date2}"
+						pattern="dd/MM/yyyy" readonlyInput="true" navigator="true"
+						yearRange="c-100:c+100" locale="pt" size="35" />
+				</h:panelGroup>
+
+				<p:commandButton value="Procurar posição por data"
+					action="#{positionSearchCDI.searchPositionsByDate()}"
+					update="myPositionsTable messages submissionsPos
+					editSubmissionReason editSubmissionStatus search-datePos-out"
+					icon="ui-icon-search" />
+
+			</h:panelGrid>
+
+		</h:form>
+
+		<br />
+		<br />
+
+		<h:form style="width:100%">
+			<h:panelGroup style="width:100%">
+				<p:commandButton action="#{positionSearchCDI.cleanAll()}"
+					value="Limpar pesquisa"
+					update="search-code-out search-company-out search-tarea-out
+					search-status-out search-datePos-out search-locations-out
+					search-title-out search-keywordPos-out submissionsPos
+					editSubmissionReason editSubmissionStatus myPositionsTable messages"
+					icon="ui-icon-cancel" style="width:100%" />
+			</h:panelGroup>
+		</h:form>
+
 		<h:form id="myPositionsTable">
 			<p:dataTable emptyMessage="#{positionSearchCDI.headerTable}" var="p"
 				value="#{positionSearchCDI.plist}"
@@ -283,7 +317,8 @@
 						value="#{positionSearchCDI.getDateWithoutTime(s.date)}" />
 				</p:column>
 				<p:column headerText="Candidato">
-					<h:outputText value="#{s.candidate.firstName} 
+					<h:outputText
+						value="#{s.candidate.firstName} 
 						#{s.candidate.lastName}" />
 				</p:column>
 				<p:column headerText="Estado">

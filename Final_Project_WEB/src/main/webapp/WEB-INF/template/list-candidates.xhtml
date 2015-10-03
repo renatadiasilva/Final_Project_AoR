@@ -10,52 +10,57 @@
 	<ui:composition>
 
 		<!-- Pesquisas -->
+
+		<h:form id="search-all-candidates" style="width:100%">
+			<p:commandButton value="Todos"
+				action="#{candidateSearchCDI.searchAllCandidatesWithInfo()}"
+				update="candidatesTable messages submissionsCand
+						editSubmissionCandReason editSubmissionCandStatus"
+				icon="ui-icon-search" style="width:100%" />
+		</h:form>
+		
+		<br />
+
+		<h:form id="search-first-name-out" style="width:100%">
+			<h:panelGrid columns="3" style="width:100%">
+				<p:watermark value="Procurar por primeiro nome: "
+					for="search-first-name" />
+				<p:inputText id="search-first-name"
+					value="#{candidateSearchCDI.fname}" style="width:100%" />
+				<p:commandButton
+					action="#{candidateSearchCDI.searchCandidatesByFirstName()}"
+					update="candidatesTable messages submissionsCand
+					editSubmissionCandReason editSubmissionCandStatus"
+					icon="ui-icon-search" style="display:none"/>
+			</h:panelGrid>
+		</h:form>
+
 		<h:panelGrid columns="3" style="width:100%">
-
-			<h:form id="search-all-candidates" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:commandButton value="Todos"
-						action="#{candidateSearchCDI.searchAllCandidatesWithInfo()}"
-						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search"
-						style="width:100%" />
-				</h:panelGrid>
-			</h:form>
-
-			<h:form id="search-first-name-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por primeiro nome: "
-					 	for="search-first-name" />
-					<p:inputText id="search-first-name" value="#{candidateSearchCDI.fname}"
-						style="width:100%" />
-					<p:commandButton
-						action="#{candidateSearchCDI.searchCandidatesByFirstName()}"
-						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
-				</h:panelGrid>
-			</h:form>
-
+		
 			<h:form id="search-last-name-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por sobrenome: " for="search-last-name" />
-					<p:inputText id="search-last-name" value="#{candidateSearchCDI.lname}"
-						style="width:100%" />
+					<p:watermark value="Procurar por sobrenome: "
+						for="search-last-name" />
+					<p:inputText id="search-last-name"
+						value="#{candidateSearchCDI.lname}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByLastName()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
 			<h:form id="search-email-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
 					<p:watermark value="Procurar por email: " for="search-email" />
-					<p:inputText id="search-email"
-						value="#{candidateSearchCDI.email}" style="width:100%" />
+					<p:inputText id="search-email" value="#{candidateSearchCDI.email}"
+						style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByEmail()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
@@ -67,7 +72,8 @@
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByAddress()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
@@ -79,7 +85,8 @@
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByCity()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
@@ -91,43 +98,47 @@
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByPhone()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
 			<h:form id="search-country-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
 					<p:watermark value="Procurar por país: " for="search-country" />
-					<p:inputText id="search-country" value="#{candidateSearchCDI.country}"
-						style="width:100%" />
+					<p:inputText id="search-country"
+						value="#{candidateSearchCDI.country}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByCountry()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
 			<h:form id="search-course-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
 					<p:watermark value="Procurar por curso: " for="search-course" />
-					<p:inputText id="search-course" value="#{candidateSearchCDI.course}"
-						style="width:100%" />
+					<p:inputText id="search-course"
+						value="#{candidateSearchCDI.course}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByCourse()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
 			<h:form id="search-school-out" style="width:100%">
 				<h:panelGrid columns="3" style="width:100%">
 					<p:watermark value="Procurar por escola: " for="search-school" />
-					<p:inputText id="search-school" value="#{candidateSearchCDI.school}"
-						style="width:100%" />
+					<p:inputText id="search-school"
+						value="#{candidateSearchCDI.school}" style="width:100%" />
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesBySchool()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
@@ -140,25 +151,26 @@
 					<p:commandButton
 						action="#{candidateSearchCDI.searchCandidatesByKeyword()}"
 						update="candidatesTable messages submissionsCand
-						editSubmissionCandReason editSubmissionCandStatus" icon="ui-icon-search" />
+						editSubmissionCandReason editSubmissionCandStatus"
+						icon="ui-icon-search" style="display:none" />
 				</h:panelGrid>
 			</h:form>
 
-			<h:form style="width:100%">
-				<p:commandButton action="#{candidateSearchCDI.cleanAll()}"
-					value="Limpar pesquisa"
-					update="search-first-name-out search-address-out search-city-out
-						  search-phone-out search-country-out search-course-out
-						  search-school-out search-email-out
-						  search-last-name-out search-keywordPos-out 
-						  editSubmissionCandReason editSubmissionCandStatus 
-						  candidatesTable messages submissionsCand"
-					icon="ui-icon-cancel" />
-			</h:form>
 		</h:panelGrid>
 
 		<br />
-		<br />
+		
+		<h:form style="width:100%">
+			<p:commandButton action="#{candidateSearchCDI.cleanAll()}"
+				value="Limpar pesquisa" style="width:100%"
+				update="search-first-name-out search-address-out search-city-out
+				search-phone-out search-country-out search-course-out
+				search-school-out search-email-out
+				search-last-name-out search-keywordPos-out 
+				editSubmissionCandReason editSubmissionCandStatus 
+				candidatesTable messages submissionsCand"
+				icon="ui-icon-cancel" />
+		</h:form>
 		<h:form id="candidatesTable">
 			<p:dataTable emptyMessage="#{candidateSearchCDI.headerTable}" var="u"
 				value="#{candidateSearchCDI.ulist}"
@@ -197,8 +209,7 @@
 						icon="ui-icon-person"
 						update="@form messages submissionsCand
 						editSubmissionCandStatus editSubmissionCandReason" />
-					<p:commandButton 
-						rendered="#{candidateSearchCDI.checkCandidate(u)}"
+					<p:commandButton rendered="#{candidateSearchCDI.checkCandidate(u)}"
 						style="width:100%" value="Cancelar"
 						actionListener="#{candidateSearchCDI.unloadCandidate()}"
 						icon="ui-icon-cancel"
@@ -212,11 +223,10 @@
 		<h:form id="submissionsCand">
 			<h:panelGrid rendered="#{candidateSearchCDI.loadedCandidate()}">
 				<h2>Candidato #{candidateSearchCDI.candidate.firstName}
-					#{candidateSearchCDI.candidate.lastName}
-					(D.N. #{candidateSearchCDI.candidate.userInfo.birthDate})</h2>
+					#{candidateSearchCDI.candidate.lastName} (D.N.
+					#{candidateSearchCDI.candidate.userInfo.birthDate})</h2>
 			</h:panelGrid>
-			<p:dataTable emptyMessage="O candidato não tem candidaturas."
-			 	var="s"
+			<p:dataTable emptyMessage="O candidato não tem candidaturas." var="s"
 				rendered="#{candidateSearchCDI.loadedCandidate()}"
 				value="#{candidateSearchCDI.submissions}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
@@ -251,10 +261,12 @@
 						actionListener="#{candidateSearchCDI.setSubmission(s)}"
 						icon="ui-icon-person"
 						update="@form messages editSubmissionCandStatus editSubmissionCandReason" />
-					<p:commandButton rendered="#{candidateSearchCDI.checkSubmission(s)}"
+					<p:commandButton
+						rendered="#{candidateSearchCDI.checkSubmission(s)}"
 						style="width:100%" value="Cancelar"
 						actionListener="#{candidateSearchCDI.unloadSubmission()}"
-						icon="ui-icon-cancel" update="@form messages editSubmissionCandStatus" />
+						icon="ui-icon-cancel"
+						update="@form messages editSubmissionCandStatus" />
 				</p:column>
 			</p:dataTable>
 			<p:messages />
@@ -265,8 +277,7 @@
 		<h:form id="editSubmissionCandStatus">
 
 			<h:panelGrid rendered="#{candidateSearchCDI.loadedSubmission()}">
-				<h2>Candidatura de
-					#{candidateSearchCDI.candidate.firstName}
+				<h2>Candidatura de #{candidateSearchCDI.candidate.firstName}
 					#{candidateSearchCDI.candidate.lastName} à posição
 					#{candidateSearchCDI.submission.position.positionCode}</h2>
 			</h:panelGrid>

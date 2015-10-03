@@ -23,39 +23,41 @@
 					href="../../../role/admin/dangerzone/RemovedEmails.xhtml" />
 			</p:panelGrid>
 		</h:form>
+		
 		<br />
+		
 		<!-- Pesquisas -->
 		<h:panelGrid columns="4" style="width:100%">
 
 			<h:form id="search-email-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
+				<h:panelGroup style="width:100%">
 					<p:watermark value="Procurar por email: " for="search-email" />
 					<p:inputText id="search-email" value="#{userSearchCDI.email}"
 						style="width:100%" />
 					<p:commandButton action="#{userSearchCDI.searchByEmail()}"
-						update="userSearch messages" icon="ui-icon-search" />
-				</h:panelGrid>
+						update="userSearch messages" style="display:none" />
+				</h:panelGroup>
 			</h:form>
 
 			<h:form id="search-name-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
+				<h:panelGroup style="width:100%">
 					<p:watermark value="Procurar por nome: " for="search-name" />
 					<p:inputText id="search-name" value="#{userSearchCDI.fname}"
 						style="width:100%" />
 					<p:commandButton action="#{userSearchCDI.searchByName()}"
-						update="userSearch messages" icon="ui-icon-search" />
-				</h:panelGrid>
+						update="userSearch messages" style="display:none" />
+				</h:panelGroup>
 			</h:form>
 
 			<h:form id="search-keyword-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
+				<h:panelGroup style="width:100%">
 					<p:watermark value="Procurar por palavra chave: "
 						for="search-keyword" />
 					<p:inputText id="search-keyword" value="#{userSearchCDI.keyword}"
 						style="width:100%" />
 					<p:commandButton action="#{userSearchCDI.searchByKeyword()}"
-						update="userSearch messages" icon="ui-icon-search" />
-				</h:panelGrid>
+						update="userSearch messages" style="display:none" />
+				</h:panelGroup>
 			</h:form>
 
 			<h:form style="width:100%">
@@ -65,10 +67,14 @@
 						  search-name-out search-keyword-out userSearch messages"
 					icon="ui-icon-cancel" />
 			</h:form>
+			
 		</h:panelGrid>
-
+		
+		<br />
+		
 		<h:form id="search-keywordrole-out">
-			<h:panelGrid columns="2" style="width:100%">
+		
+			<h:panelGrid columns="1" style="width:100%">
 
 				<h:panelGroup style="width:100%">
 					<p:watermark value="Procurar por palavra chave e perfil: "
@@ -76,52 +82,49 @@
 					<p:inputText id="search-keywordrole"
 						value="#{userSearchCDI.keyword}" style="width:100%" />
 					<p:commandButton action="#{userSearchCDI.searchByKeywordAndRole()}"
-						update="userSearch messages" icon="ui-icon-search" />
+						update="userSearch messages" style="display:none" />
 				</h:panelGroup>
 
-				<p:selectOneMenu id="search-keywordRoleAll"
-					value="#{userSearchCDI.role}" style="width:100%">
-					<f:selectItem itemLabel="Administrador"
-						itemValue="#{userSearchCDI.admin()}" />
-					<f:selectItem itemLabel="Gestor"
-						itemValue="#{userSearchCDI.manager()}" />
-					<f:selectItem itemLabel="Entrevistador"
-						itemValue="#{userSearchCDI.interviewer()}" />
-					<f:selectItem itemLabel="Candidato"
-						itemValue="#{userSearchCDI.candidate()}" />
-				</p:selectOneMenu>
+				<h:panelGroup style="width:100%">
+					<p:selectOneMenu id="search-keywordRoleAll"
+						value="#{userSearchCDI.role}" style="width:100%">
+						<f:selectItem itemLabel="Administrador"
+							itemValue="#{userSearchCDI.admin()}" />
+						<f:selectItem itemLabel="Gestor"
+							itemValue="#{userSearchCDI.manager()}" />
+						<f:selectItem itemLabel="Entrevistador"
+							itemValue="#{userSearchCDI.interviewer()}" />
+						<f:selectItem itemLabel="Candidato"
+							itemValue="#{userSearchCDI.candidate()}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
 
 			</h:panelGrid>
+			
 		</h:form>
-
+		<br />
 		<h:form>
 
 			<h:panelGrid columns="5" style="width:100%">
-
 				<p:commandButton value="Todos" action="#{userSearchCDI.searchAll()}"
 					update="userSearch messages" icon="ui-icon-search"
 					style="width:100%" />
-
 				<p:commandButton value="Só administradores"
 					action="#{userSearchCDI.searchAllAdmins()}"
 					update="userSearch messages" icon="ui-icon-search"
 					style="width:100%" />
-
 				<p:commandButton value="Só gestores"
 					action="#{userSearchCDI.searchAllManagers()}"
 					update="userSearch messages" icon="ui-icon-search"
 					style="width:100%" />
-
 				<p:commandButton value="Só entrevistadores"
 					action="#{userSearchCDI.searchAllInterviewers()}"
 					update="userSearch messages" icon="ui-icon-search"
 					style="width:100%" />
-
 				<p:commandButton value="Só candidatos"
 					action="#{userSearchCDI.searchAllCandidates()}"
 					update="userSearch messages" icon="ui-icon-search"
 					style="width:100%" />
-
 			</h:panelGrid>
 
 		</h:form>

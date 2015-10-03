@@ -56,7 +56,7 @@
 						</p:submenu>
 						<p:submenu label="Perfil Inicial"
 							rendered="#{!userSessionManagement.checkDefaultAdmin()}">
-							<p:menuitem value="Definir Por Defeito"
+							<p:menuitem value="Definir Por Defeito" 
 								actionListener="#{userSessionManagement.defaultRoleAdmin()}"
 								update="@form" icon="ui-icon-home" />
 						</p:submenu>
@@ -65,7 +65,7 @@
 					<p:column>
 						<p:submenu label="Candidaturas">
 							<p:menuitem value="Submeter Candidatura Manual"
-								url="../../../role/admin/newuser/NewUser.xhtml" />
+								url="../../../role/admin/newuser/NewUserCandidate.xhtml" />
 							<p:menuitem value="Gerir Candidatos"
 								url="../../../role/admin/search/AllCandidates.xhtml" />
 							<p:menuitem value="Candidaturas Espontâneas"

@@ -8,6 +8,8 @@
 	<!-- mudar -->
 	<f:metadata>
 		<f:viewAction actionListener="#{scriptSearchCDI.clean()}" />
+		<f:viewAction actionListener="#{newScriptCDI.init()}" />
+		<f:viewAction actionListener="#{newScriptCDI.setShow('false')}" />
 	</f:metadata>
 
 	<ui:define name="titulo">Admin - 
@@ -23,26 +25,18 @@
 				href="../../../role/admin/dangerzone/RemoveScript.xhtml" />
 		</h:form>
 		<br />
+
 		<!-- Pesquisas -->
-		<h:panelGrid columns="4" style="width:100%">
-
-			<h:form id="search-sctitle-out" style="width:100%">
-				<h:panelGrid columns="3" style="width:100%">
-					<p:watermark value="Procurar por título: " for="search-sctitle" />
-					<p:inputText id="search-sctitle" value="#{scriptSearchCDI.title}"
-						style="width:100%" />
-					<p:commandButton action="#{scriptSearchCDI.searchByTitle()}"
-						update="scriptSearch messages questions" icon="ui-icon-search" />
-				</h:panelGrid>
-			</h:form>
-
-			<h:form style="width:100%">
-				<p:commandButton action="#{scriptSearchCDI.cleanAll()}"
-					value="Limpar pesquisa"
-					update="search-sctitle-out scriptSearch messages questions"
-					icon="ui-icon-cancel" />
-			</h:form>
-		</h:panelGrid>
+		<h:form id="search-sctitle-out" style="width:100%">
+			<h:panelGroup style="width:100%">
+				<p:watermark value="Procurar por título: " for="search-sctitle" />
+				<p:inputText id="search-sctitle" value="#{scriptSearchCDI.title}"
+					style="width:100%" />
+				<p:commandButton action="#{scriptSearchCDI.searchByTitle()}"
+					update="scriptSearch messages questions" icon="ui-icon-search"
+					style="display:none" />
+			</h:panelGroup>
+		</h:form>
 
 		<h:form>
 
@@ -60,6 +54,13 @@
 
 			</h:panelGrid>
 
+		</h:form>
+
+		<h:form style="width:100%">
+			<p:commandButton action="#{scriptSearchCDI.cleanAll()}"
+				value="Limpar pesquisa"
+				update="search-sctitle-out scriptSearch messages questions"
+				icon="ui-icon-cancel" style="width:100%" />
 		</h:form>
 
 		<h:form id="scriptSearch">
@@ -95,11 +96,28 @@
 						actionListener="#{scriptSearchCDI.unloadScript()}"
 						icon="ui-icon-cancel" update="@form messages questions" />
 				</p:column>
+
+				<p:column headerText="Basear novo guião">
+					<p:commandButton value="Seleccionar" style="width:100%"
+						icon="ui-icon-script" action="#{newScriptCDI.useScript(sc)}"
+						update="scriptSearch questions scriptAttributesForm
+						questionTypeForm pickListForm createScriptForm closeEditScript"
+						rendered="#{!newScriptCDI.checkScriptToStartFrom(sc)}" />
+					<p:commandButton value="Cancelar" style="width:100%"
+						icon="ui-icon-cancel" action="#{newScriptCDI.setShow('false')}"
+						actionListener="#{newScriptCDI.init()}"
+						update="scriptSearch questions scriptAttributesForm
+						questionTypeForm pickListForm createScriptForm closeEditScript"
+						rendered="#{newScriptCDI.checkScriptToStartFrom(sc)}" />
+				</p:column>
+
 			</p:dataTable>
 		</h:form>
 
 		<h:form id="questions">
-			<h:panelGrid rendered="#{scriptSearchCDI.loadedScript()}">
+
+			<h:panelGrid rendered="#{scriptSearchCDI.loadedScript()}"
+				style="width:100%">
 				<h2>Script #{scriptSearchCDI.script.title}</h2>
 			</h:panelGrid>
 
@@ -117,6 +135,17 @@
 					<h:outputText value="#{scriptSearchCDI.getTypeText(q)}" />
 				</p:column>
 			</p:dataTable>
+
+		</h:form>
+
+		<ui:include src="common-script.xhtml" />
+
+		<h:form id="closeEditScript">
+			<h:panelGroup rendered="#{newScriptCDI.show}" style="width:100%">
+				<p:commandButton value="Cancelar" style="width:100%"
+					action="#{newScriptCDI.init()}" icon="ui-icon-cancel"
+					actionListener="#{newScriptCDI.setShow('false')}" ajax="false" />
+			</h:panelGroup>
 		</h:form>
 
 	</ui:define>

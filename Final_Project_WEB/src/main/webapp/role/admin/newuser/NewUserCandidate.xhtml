@@ -5,11 +5,12 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="titulo">Admin - Novo Utilizador
+	<ui:define name="titulo">Admin - Submeter Candidatura Manual
 	 - #{styleSessionManagement.companyName}</ui:define>
 
 	<f:metadata>
 		<f:viewAction actionListener="#{adminNewUserCDI.clear()}" />
+		<f:viewAction actionListener="#{adminNewUserCDI.setCandidate('true')}" />
 	</f:metadata>
 
 	<ui:define name="contents">

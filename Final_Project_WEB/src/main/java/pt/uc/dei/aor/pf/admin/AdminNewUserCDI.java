@@ -75,6 +75,7 @@ public class AdminNewUserCDI implements Serializable {
 	}
 
 	public void clear(){
+		System.out.println("Cleaning Up");
 		email=firstName=lastName=null;
 		address=city=homePhone=mobilePhone=country=course=school=linkedin;
 		admin=manager=interviewer=candidate=false;
