@@ -41,22 +41,22 @@
 
 			<h:panelGrid id="buttonsTimeReports" columns="5">
 
-				<p:commandButton value="Criar Relatório"
+				<p:commandButton value="Criar relatório/gráfico"
 					action="#{reportsCDI.averageTimeToBeHired()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.timeToHired}" />
 
-				<p:commandButton value="Criar Relatório"
+				<p:commandButton value="Criar relatório/gráfico"
 					action="#{reportsCDI.submissionCountResults()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.submissionCount}" />
 
-				<p:commandButton value="Criar Relatório"
+				<p:commandButton value="Criar relatório/gráfico"
 					action="#{reportsCDI.spontaneousCountResults()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.spontaneousCount}" />
 
-				<p:commandButton value="Criar Relatório"
+				<p:commandButton value="Criar relatório/gráfico"
 					action="#{reportsCDI.hiredCountResuls()}" update="@form, messages"
 					icon="ui-icon-script" rendered="#{reportsCDI.hiredCount}" />
 
