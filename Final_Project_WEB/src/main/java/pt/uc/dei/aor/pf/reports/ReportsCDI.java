@@ -953,8 +953,9 @@ public class ReportsCDI implements Serializable {
 			dateH = cal.getDisplayName(Calendar.MONTH, Calendar.LONG,
 					Locale.getDefault())+" ";
 		}
-		if (p == Constants.DAILY) dateH = ((Date) o[1])+"";
-		else dateH += doubleToInt((Double) o[1]);
+		if (p == Constants.DAILY) {
+			dateH = ftDate.format((Date) o[1]);
+		} else dateH += doubleToInt((Double) o[1]);
 		return dateH;
 	}
 
@@ -962,7 +963,7 @@ public class ReportsCDI implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
-
+	
 	// getters and setters
 
 	public Date getD1() {
