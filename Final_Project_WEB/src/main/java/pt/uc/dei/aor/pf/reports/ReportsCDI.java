@@ -1,5 +1,6 @@
 package pt.uc.dei.aor.pf.reports;
 
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,12 +12,15 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.uc.dei.aor.pf.SearchPattern;
+import pt.uc.dei.aor.pf.admin.CreateGraphic2;
+import pt.uc.dei.aor.pf.admin.CreateGraphic4;
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.PositionEJBInterface;
 import pt.uc.dei.aor.pf.beans.SubmissionEJBInterface;
@@ -39,6 +43,12 @@ public class ReportsCDI implements Serializable {
 	private static final Logger log = 
 			LoggerFactory.getLogger(ReportsCDI.class);
 
+	@Inject
+	private CreateGraphic2 graph2;
+
+	@Inject
+	private CreateGraphic4 graph4;
+
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
 
@@ -50,7 +60,7 @@ public class ReportsCDI implements Serializable {
 
 	@EJB
 	private UserEJBInterface userEJB;
-
+	
 	// data input fields
 	private Date d1, d2;
 	private String period, keyword;
@@ -125,14 +135,14 @@ public class ReportsCDI implements Serializable {
 		log.info("Creating report with number of submissions by position");
 		log.debug("From "+d1+" to "+d2);
 
-		fileTitle = "Candidaturas_posicao_"+ftDateFile.format(d1)+"_"
+		fileTitle = "Submissions_position_"+ftDateFile.format(d1)+"_"
 				+ftDateFile.format(d2);		
-		tableHeader = "Número de candidaturas por posição (posições "
-				+ "criadas entre "+ftDate.format(d1)+" e "
+		tableHeader = "Submissions Count by Position (positions "
+				+ "created between "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
-		measureHeader = "Nº Candidaturas submetidas";
-		measureFooter = "Total Candidaturas: ";
-		emptyMessage = "Sem candidaturas.";
+		measureHeader = "Number of Submissions";
+		measureFooter = "Total Submissions: ";
+		emptyMessage = "No submissions.";
 
 		List<Object[]> result = positionEJB.countSubmissionsByPosition(
 				d1, d2);
@@ -159,16 +169,17 @@ public class ReportsCDI implements Serializable {
 		if (p == Constants.MONTHLY) periodHeader = Constants.PERIOD_MHEADER;
 		else periodHeader = Constants.PERIOD_YHEADER;
 		prepareDates();
-		tableHeader = "Tempo Médio para Contratação por "
-				+periodHeader.substring(0, 3)+" (candidaturas "
-				+"submetidas entre "+ftDate.format(d1)+" e "
+		
+		tableHeader = "Average Time to Hired by "
+				+periodHeader.substring(0, 3)+" (submissions "
+				+"between "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
-		fileTitle = "Tempo_medio_contratacao_"
+		fileTitle = "Average_time_hired_"
 				+periodHeader.substring(0, 1)+"_"+ftDateFile.format(d1)+"_"
 				+ftDateFile.format(d2);
-		measureHeader = "Tempo médio (em dias)";
-		measureFooter = "Tempo médio total: ";
-		emptyMessage = "Sem contratações.";
+		measureHeader = "Average time (in days)";
+		measureFooter = "Total average time: ";
+		emptyMessage = "No hired people.";
 
 		List<Object[]> list = submissionEJB.averageTimeToHired(d1, d2, p);
 
@@ -209,15 +220,16 @@ public class ReportsCDI implements Serializable {
 			break;
 		}
 		prepareDates();
-		tableHeader = "Número de candidaturas "
-				+"submetidas entre "+ftDate.format(d1)+" e "
-				+ftDate.format(d2)+" (por "
+		
+		tableHeader = "Total Submissions between "
+				+ftDate.format(d1)+" and "
+				+ftDate.format(d2)+" (by "
 				+periodHeader.substring(0, 3)+")";
-		fileTitle = "Candidaturas_total_"+periodHeader.substring(0, 1)
+		fileTitle = "Total_submissions"+periodHeader.substring(0, 1)
 				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
-		measureHeader = "Nº Candidaturas submetidas";
-		measureFooter = "Total Candidaturas: ";
-		emptyMessage = "Sem candidaturas.";
+		measureHeader = "Number of Submissions";
+		measureFooter = "Total Submissions: ";
+		emptyMessage = "No submissions.";
 
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
 				"");
@@ -231,6 +243,9 @@ public class ReportsCDI implements Serializable {
 		// compute overall average
 		totalResult = submissionEJB.countTotalSubmissions(d1, d2)+"";
 
+		//make graphic
+		graph2.createLineModels(tableHeader, report, periodHeader,
+				measureHeader);
 	}
 
 	// spontaneous submission countings by period between two dates
@@ -255,15 +270,15 @@ public class ReportsCDI implements Serializable {
 			break;
 		}
 		prepareDates();
-		fileTitle = "Candidaturas_espontaneas_"+periodHeader.substring(0, 1)
+		fileTitle = "Spontaneous_submissions"+periodHeader.substring(0, 1)
 				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
-		tableHeader = "Número de Candidaturas Espontâneas "
-				+"submetidas entre "+ftDate.format(d1)+" e "
-				+ftDate.format(d2)+" (por "
+		tableHeader = "Spontaneous Submissions "
+				+"between "+ftDate.format(d1)+" and "
+				+ftDate.format(d2)+" (by "
 				+periodHeader.substring(0, 3)+")";
-		measureHeader = "Nº Candidaturas Espontâneas";
-		measureFooter = "Total Candidaturas Espontâneas: ";
-		emptyMessage = "Sem candidaturas espontâneas.";
+		measureHeader = "Number of Sponteanous Submissions";
+		measureFooter = "Total Sponteanous Submissions: ";
+		emptyMessage = "No sponteanous submissions.";
 
 		//Nota: só são apresentados resultados quando há candidaturas
 		List<Object[]> list = submissionEJB.countSubmissionsByDate(d1, d2, p,
@@ -609,10 +624,9 @@ public class ReportsCDI implements Serializable {
 		long ndays = daysBetween(d1, d2);
 		sortDates(ndays);
 
-		tableHeader = "Número de entrevistas "
-				+"realizadas entre "+ftDate.format(d1)+" e "
+		tableHeader = "Carried Out Interviews between "+ftDate.format(d1)+" and "
 				+ftDate.format(d2);
-		fileTitle = "Entrevistas_realizadas_"
+		fileTitle = "CarriedOut_interviews_"
 				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		measureHeader = "Resultado";
 		measureFooter = "Total Entrevistas: ";
@@ -684,15 +698,14 @@ public class ReportsCDI implements Serializable {
 				log.debug("Candidate "+candidate.getFirstName()+" "
 						+candidate.getLastName());				
 
-				tableHeader = "Detalhes de entrevistas feitas ao candidato "
+				tableHeader = "Interview detail of candidate "
 						+candidate.getFirstName()+" "
 						+candidate.getLastName()+" ("+candidate.getEmail()+")";
-				fileTitle = "Detalhes_entrevistas_"
-						+candidate.getFirstName()+""
-						+candidate.getLastName();
-				measureHeader = "Resultado";
-				measureFooter = "Total Entrevistas: ";
-				emptyMessage = "Sem entrevistas.";
+				fileTitle = "Interview_details_"+removeAccents(candidate.getFirstName())
+						+removeAccents(candidate.getLastName());
+				measureHeader = "Result";
+				measureFooter = "Total Interviews: ";
+				emptyMessage = "No interviews.";
 
 				List<InterviewEntity> list = 
 						interviewEJB.findCarriedOutInterviewsByCandidate(candidate);
@@ -901,6 +914,21 @@ public class ReportsCDI implements Serializable {
 		return value.intValue();
 	}
 
+	private String removeAccents(String name) {
+
+		// removes all whitespaces of the word
+		String pattern = name.replaceAll("\\s", "_");
+
+		// separates all of the accent marks from the characters
+		pattern = Normalizer.normalize(pattern, Normalizer.Form.NFD);
+
+		// compares each character against being a letter and 
+		// throw out the ones that aren't.
+		pattern = pattern.replaceAll("\\p{M}", "");
+
+		return pattern;
+	}
+
 	// always look for info in the hole month if period is montly
 	// and look for info in the hole year if period is year
 	private void prepareDates() {
@@ -951,6 +979,8 @@ public class ReportsCDI implements Serializable {
 			d2 = aux;
 		}		
 	}
+	
+	
 
 	private long daysBetween(Date d1, Date d2) {
 
@@ -999,7 +1029,7 @@ public class ReportsCDI implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
 	}
-	
+
 	// getters and setters
 
 	public Date getD1() {

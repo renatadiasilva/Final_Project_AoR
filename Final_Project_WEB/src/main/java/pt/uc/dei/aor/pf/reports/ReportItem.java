@@ -1,6 +1,7 @@
 package pt.uc.dei.aor.pf.reports;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
@@ -98,4 +99,22 @@ public class ReportItem implements Serializable {
 	public void setSubmission(SubmissionEntity submission) {
 		this.submission = submission;
 	}
+	
+	public String interviewCandidate() {
+		return removeAccents(interview.getSubmission().getCandidate().getFirstName()
+				+" "+interview.getSubmission().getCandidate().getLastName());
+	}
+
+	private String removeAccents(String name) {
+
+		// separates all of the accent marks from the characters
+		String pattern = Normalizer.normalize(name, Normalizer.Form.NFD);
+
+		// compares each character against being a letter and 
+		// throw out the ones that aren't.
+		pattern = pattern.replaceAll("\\p{M}", "");
+
+		return pattern;
+	}
+
 }

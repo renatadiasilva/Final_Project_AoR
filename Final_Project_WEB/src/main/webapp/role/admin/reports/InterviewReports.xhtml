@@ -156,37 +156,42 @@
 
 					<p:columnGroup type="header">
 						<p:row>
-							<p:column colspan="6" headerText="Entrevista" />
-							<p:column headerText="#{reportsCDI.measureHeader}" />
+							<p:column colspan="5" headerText="Interview" />
+							<p:column rowspan="2" headerText="#{reportsCDI.measureHeader}" />
+						</p:row>
+						<p:row>
+							<p:column headerText="Date" />
+							<p:column headerText="Hour" />
+							<p:column headerText="Candidate" />
+							<p:column headerText="Position" />
+							<p:column headerText="Technical Area" />
 						</p:row>
 					</p:columnGroup>
 
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Data" />
+							<h:outputText value="Date" />
 						</f:facet>
 						<p:outputLabel value="#{item.dateInterview}" />
 					</p:column>
 
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Hora" />
+							<h:outputText value="Hour" />
 						</f:facet>
 						<p:outputLabel value="#{item.hourInterview}" />
 					</p:column>
 
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Candidato" />
+							<h:outputText value="Candidate" />
 						</f:facet>
-						<p:outputLabel
-							value="#{item.interview.submission.candidate.firstName}
-					#{item.interview.submission.candidate.lastName}" />
+						<p:outputLabel value="#{item.interviewCandidate()}" />
 					</p:column>
 
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Posição" />
+							<h:outputText value="Position" />
 						</f:facet>
 						<p:outputLabel
 							value="#{item.interview.submission.position.positionCode}" />
@@ -194,17 +199,10 @@
 
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Área Técnica" />
+							<h:outputText value="Technical Area" />
 						</f:facet>
 						<p:outputLabel
 							value="#{item.interview.submission.position.technicalArea}" />
-					</p:column>
-
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Entrevistadores" />
-						</f:facet>
-						<p:outputLabel value="#{item.interviewers}" />
 					</p:column>
 
 					<p:column>
@@ -216,7 +214,7 @@
 
 					<p:columnGroup type="footer">
 						<p:row>
-							<p:column colspan="6" footerText="#{reportsCDI.measureFooter}"
+							<p:column colspan="5" footerText="#{reportsCDI.measureFooter}"
 								style="text-align:right" />
 							<p:column footerText="#{reportsCDI.totalResult}" />
 						</p:row>

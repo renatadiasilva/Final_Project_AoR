@@ -7,6 +7,7 @@
 
 	<f:metadata>
 		<f:viewAction actionListener="#{reportsCDI.clean()}" />
+		<f:viewAction actionListener="#{createGraphic4.init()}" />
 	</f:metadata>
 
 	<ui:define name="titulo">
@@ -100,27 +101,24 @@
 					<p:outputLabel rendered="#{reportsCDI.averageTime()}"
 						value="Período: " for="numbreport-period1" />
 					<p:selectOneMenu rendered="#{reportsCDI.averageTime()}"
-					 	id="numbreport-period1"
-						value="#{reportsCDI.period}" style="width:100px">
+						id="numbreport-period1" value="#{reportsCDI.period}"
+						style="width:100px">
 						<f:selectItem itemLabel="Mensal"
 							itemValue="#{reportsCDI.monthly()}" />
-						<f:selectItem itemLabel="Anual"
-							itemValue="#{reportsCDI.yearly()}" />
+						<f:selectItem itemLabel="Anual" itemValue="#{reportsCDI.yearly()}" />
 					</p:selectOneMenu>
 					<p:outputLabel rendered="#{!reportsCDI.averageTime()}"
 						value="Período: " for="numbreport-period2" />
 					<p:selectOneMenu rendered="#{!reportsCDI.averageTime()}"
-					 	id="numbreport-period2"
-						value="#{reportsCDI.period}" style="width:100px">
-						<f:selectItem itemLabel="Diário"
-							itemValue="#{reportsCDI.daily()}" />
+						id="numbreport-period2" value="#{reportsCDI.period}"
+						style="width:100px">
+						<f:selectItem itemLabel="Diário" itemValue="#{reportsCDI.daily()}" />
 						<f:selectItem itemLabel="Mensal"
 							itemValue="#{reportsCDI.monthly()}" />
-						<f:selectItem itemLabel="Anual"
-							itemValue="#{reportsCDI.yearly()}" />
+						<f:selectItem itemLabel="Anual" itemValue="#{reportsCDI.yearly()}" />
 					</p:selectOneMenu>
 				</h:panelGroup>
-<!-- testar sem periodo -->
+				<!-- testar sem periodo -->
 			</h:panelGrid>
 
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
@@ -146,6 +144,17 @@
 					</p:row>
 				</p:columnGroup>
 			</p:dataTable>
+
+			<h:panelGrid>
+				<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}">
+					<p:chart type="line" model="#{createGraphic2.lineModel2}"
+						style="height:300px; width:500px" />
+				</h:panelGroup>
+				<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}">
+					<p:chart type="bar" model="#{createGraphic4.barModel}"
+						style="height:300px; width:500px" />
+				</h:panelGroup>
+			</h:panelGrid>
 		</h:form>
 
 	</ui:define>

@@ -82,9 +82,9 @@ public class Constants {
 	public static final char MONTHLY = 'm';
 	public static final char YEARLY = 'y';
 
-	public static final String PERIOD_DHEADER = "Dia";
-	public static final String PERIOD_MHEADER = "Mês (completo)";
-	public static final String PERIOD_YHEADER = "Ano (completo)";
+	public static final String PERIOD_DHEADER = "Day";
+	public static final String PERIOD_MHEADER = "Month (complete)";
+	public static final String PERIOD_YHEADER = "Year (complete)";
 
 	// Miliseconds per day (to convert on days)
 	public static final long MSPERDAY = 60 * 60 * 24 * 1000;
