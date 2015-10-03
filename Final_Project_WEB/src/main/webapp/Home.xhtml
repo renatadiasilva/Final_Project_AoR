@@ -220,7 +220,7 @@
 	</ui:define>
 
 	<ui:define name="contents">
-		<h:form>
+		<h:form rendered="false">
 			<p:commandButton value="Populate" ajax="false"
 				actionListener="#{initDB.populate()}" />
 		</h:form>
