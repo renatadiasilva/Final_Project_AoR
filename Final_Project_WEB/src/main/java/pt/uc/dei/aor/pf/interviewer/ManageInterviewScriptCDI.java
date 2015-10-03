@@ -2,9 +2,7 @@ package pt.uc.dei.aor.pf.interviewer;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
 
 import pt.uc.dei.aor.pf.beans.InterviewEJBInterface;
 import pt.uc.dei.aor.pf.beans.QuestionEJBInterface;
@@ -14,7 +12,6 @@ import pt.uc.dei.aor.pf.entities.QuestionEntity;
 import pt.uc.dei.aor.pf.entities.ScriptEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
-import pt.uc.dei.aor.pf.upload.UploadFile;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -122,15 +119,6 @@ public class ManageInterviewScriptCDI implements Serializable {
 
 	public void setInterviewFeedback(String interviewFeedback) {
 		this.interviewFeedback = interviewFeedback;
-	}
-	
-	public String interviewXLSPath(InterviewEntity interview){
-		// (.xls)
-		HttpServletRequest request = (HttpServletRequest) FacesContext.
-				getCurrentInstance().getExternalContext().getRequest();
-		return request.getScheme()+"://"+request.getServerName()+":"
-		+request.getServerPort()+"/"+UploadFile.FOLDER_INTERVIEW_RESULT+"/"
-		+interview.getId()+UploadFile.DOCUMENT_EXTENSION_XLS;
 	}
 
 	public PositionEntity getPosition() {

@@ -29,7 +29,7 @@ public class UploadCVCDI {
 	
 	private UploadedFile file;
 	
-	public void uploadCV(FileUploadEvent event){
+	public void uploadCV(FileUploadEvent event){		
 		this.file=event.getFile();
 		
 		boolean newCV = !this.userManagement.isCv();

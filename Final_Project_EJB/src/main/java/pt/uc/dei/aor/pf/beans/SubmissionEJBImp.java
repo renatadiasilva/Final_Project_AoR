@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,7 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 
 	@Override
 	public void save(SubmissionEntity submission) {
+		submission.setMiscKey(RandomStringUtils.randomAlphanumeric(8));
 		log.info("Saving submission in DB");
 		isSubmissionComplete(submission);
 		submissionDAO.save(submission);
@@ -231,6 +233,7 @@ public class SubmissionEJBImp implements SubmissionEJBInterface {
 
 	@Override
 	public SubmissionEntity saveAndReturn(SubmissionEntity spontaneousSubmission) {
+		spontaneousSubmission.setMiscKey(RandomStringUtils.randomAlphanumeric(8));
 		return this.submissionDAO.saveAndReturn(spontaneousSubmission);
 	}
 

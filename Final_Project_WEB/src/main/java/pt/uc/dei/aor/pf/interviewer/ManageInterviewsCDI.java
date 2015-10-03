@@ -608,7 +608,7 @@ public class ManageInterviewsCDI implements Serializable {
 
 		return request.getScheme()+"://"+request.getServerName()+":"
 		+request.getServerPort()+"/"+UploadFile.FOLDER_INTERVIEW_RESULT+"/"
-		+interview.getId()+UploadFile.DOCUMENT_EXTENSION_XLS;
+		+interview.getMiscKey()+interview.getId()+UploadFile.DOCUMENT_EXTENSION_XLS;
 	}
 
 	private boolean weekEndDay() {
@@ -675,7 +675,7 @@ public class ManageInterviewsCDI implements Serializable {
 
 			this.file=event.getFile();
 
-			this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_INTERVIEW_RESULT, this.interviewToConclude.getId(), UploadFile.DOCUMENT_EXTENSION_XLS);
+			this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_INTERVIEW_RESULT, this.interviewToConclude.getMiscKey()+String.valueOf(this.interviewToConclude.getId()), UploadFile.DOCUMENT_EXTENSION_XLS);
 
 			this.interviewToConclude.setCarriedOut(true);
 

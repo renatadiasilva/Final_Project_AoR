@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +36,7 @@ public class InterviewEJBImp implements InterviewEJBInterface {
 	
 	@Override
 	public void save(InterviewEntity interview) {
+		interview.setMiscKey(RandomStringUtils.randomAlphanumeric(8));
 		log.info("Saving interview in DB");
 		isInterviewComplete(interview);
 		interviewDAO.save(interview);

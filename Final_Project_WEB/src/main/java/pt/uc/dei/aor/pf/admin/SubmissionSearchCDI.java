@@ -133,7 +133,7 @@ public class SubmissionSearchCDI implements Serializable {
 		this.submissionEJB.update(this.submissionToEdit);
 
 		// Grava o customCV
-		this.uploadFile.uploadFile(customCV, UploadFile.FOLDER_SUBMISSION_CV, this.submissionToEdit.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+		this.uploadFile.uploadFile(customCV, UploadFile.FOLDER_SUBMISSION_CV, this.submissionToEdit.getMiscKey()+String.valueOf(this.submissionToEdit.getId()), UploadFile.DOCUMENT_EXTENSION_PDF);
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Novo CV submetido."));
 
@@ -144,7 +144,7 @@ public class SubmissionSearchCDI implements Serializable {
 		UploadedFile motivationLetter=event.getFile();
 
 		// Grava o customCV
-		this.uploadFile.uploadFile(motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, this.submissionToEdit.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+		this.uploadFile.uploadFile(motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, this.submissionToEdit.getMiscKey()+String.valueOf(this.submissionToEdit.getId()), UploadFile.DOCUMENT_EXTENSION_PDF);
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nova carta de motivação submetida."));
 
@@ -353,7 +353,7 @@ public class SubmissionSearchCDI implements Serializable {
 				getCurrentInstance().getExternalContext().getRequest();
 		return request.getScheme()+"://"+request.getServerName()+":"
 		+request.getServerPort()+"/"+UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER+"/"
-		+submission.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
+		+submission.getMiscKey()+submission.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
 	}
 
 	public String getCvPath(SubmissionEntity submission) {
@@ -368,11 +368,12 @@ public class SubmissionSearchCDI implements Serializable {
 		if(submission.isCustomCV())
 			return request.getScheme()+"://"+request.getServerName()+":"
 			+request.getServerPort()+"/"+UploadFile.FOLDER_SUBMISSION_CV+"/"
-			+submission.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
+			+submission.getMiscKey()+submission.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
 
 		// Caso não tenha, vai o CV por defeito do candidato
 		return request.getScheme()+"://"+request.getServerName()+":"
 		+request.getServerPort()+"/"+UploadFile.FOLDER_USER_CV+"/"
+		+submission.getCandidate().getMiscKey()
 		+submission.getCandidate().getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
 	}
 

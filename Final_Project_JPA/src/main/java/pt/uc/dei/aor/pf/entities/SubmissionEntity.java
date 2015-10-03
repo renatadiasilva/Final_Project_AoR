@@ -178,6 +178,10 @@ public class SubmissionEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "derived_from")
 	private SubmissionEntity derivedFrom;
+	
+	@NotNull
+	@Column(name="misc_key")
+	private String miscKey;
 
 	public SubmissionEntity() {
 	}
@@ -326,6 +330,14 @@ public class SubmissionEntity implements Serializable {
 
 	public void setDerivedFrom(SubmissionEntity derivedFrom) {
 		this.derivedFrom = derivedFrom;
+	}
+
+	public String getMiscKey() {
+		return miscKey;
+	}
+
+	public void setMiscKey(String miscKey) {
+		this.miscKey = miscKey;
 	}
 
 }

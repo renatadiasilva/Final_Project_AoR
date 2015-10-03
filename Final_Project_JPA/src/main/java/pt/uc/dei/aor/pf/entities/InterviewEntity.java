@@ -140,6 +140,10 @@ public class InterviewEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "scheduled_by", nullable = false)
 	private UserEntity scheduledBy;
+	
+	@NotNull
+	@Column(name="misc_key")
+	private String miscKey;
 
 	public InterviewEntity() {
 	}
@@ -263,5 +267,13 @@ public class InterviewEntity implements Serializable {
 		SimpleDateFormat ftHour = new SimpleDateFormat ("HH:mm"); 
 		return ftHour.format(date);	
 	}
-	
+
+	public String getMiscKey() {
+		return miscKey;
+	}
+
+	public void setMiscKey(String miscKey) {
+		this.miscKey = miscKey;
+	}
+
 }

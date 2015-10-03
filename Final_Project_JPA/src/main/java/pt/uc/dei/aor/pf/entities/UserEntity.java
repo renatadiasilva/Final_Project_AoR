@@ -134,6 +134,10 @@ public class UserEntity implements Serializable {
 	@OneToMany(mappedBy = "associatedBy", cascade = CascadeType.ALL)
 	@OrderBy("date")
 	private List<SubmissionEntity> spontaneusSubmissionAssociatedBy;
+	
+	@NotNull
+	@Column(name="misc_key")
+	private String miscKey;
 
 	public UserEntity() {
 	}
@@ -318,6 +322,14 @@ public class UserEntity implements Serializable {
 
 	public void setCreatedUsers(List<UserEntity> createdUsers) {
 		this.createdUsers = createdUsers;
+	}
+
+	public String getMiscKey() {
+		return miscKey;
+	}
+
+	public void setMiscKey(String miscKey) {
+		this.miscKey = miscKey;
 	}
 
 }

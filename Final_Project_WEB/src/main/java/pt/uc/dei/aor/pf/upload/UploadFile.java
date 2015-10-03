@@ -23,11 +23,11 @@ public class UploadFile {
 	public static final String DOCUMENT_EXTENSION_XLS=".xls";
 	public static final String DOCUMENT_EXTENSION_WORD=".doc";
 	
-	public void uploadFile(UploadedFile file, String folder, Long id, String extension){
+	public void uploadFile(UploadedFile file, String folder, String id, String extension){
 		Properties props = System.getProperties();
 		
 		try {
-			// Ex.: 'contexto'/userCV/63.pdf
+			// Ex.: 'contexto'/userCV/miscKey+63.pdf
 			file.write(props.getProperty("user.dir")+"\\"+folder+"\\"+id+extension);
 		} catch (Exception e) {
 			e.printStackTrace();

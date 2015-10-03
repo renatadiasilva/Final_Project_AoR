@@ -450,12 +450,12 @@ public class UserManagementImp implements UserManagementInterface {
 	}
 
 	@Override
-	public long uploadCV() {
+	public String uploadCV() {
 		this.currentUser.setUploadedCV(true);
 		this.userEJB.update(this.currentUser);
 
 		log.info("CV uploaded, User uploaded, id returned: "+this.currentUser.getEmail());
-		return this.currentUser.getId();
+		return this.currentUser.getMiscKey()+String.valueOf(this.currentUser.getId());
 	}
 
 	@Override
@@ -466,6 +466,11 @@ public class UserManagementImp implements UserManagementInterface {
 	@Override
 	public long getId() {
 		return this.currentUser.getId();
+	}
+
+	@Override
+	public String getMiscKey() {
+		return this.currentUser.getMiscKey();
 	}	
 
 }

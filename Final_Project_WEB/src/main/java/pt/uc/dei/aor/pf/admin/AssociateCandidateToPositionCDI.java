@@ -56,7 +56,7 @@ public class AssociateCandidateToPositionCDI implements Serializable {
 		this.newCandidate.setUploadedCV(true);
 		this.userEJB.update(newCandidate);
 
-		this.uploadFile.uploadFile(file, UploadFile.FOLDER_USER_CV, this.newCandidate.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+		this.uploadFile.uploadFile(file, UploadFile.FOLDER_USER_CV, this.newCandidate.getMiscKey()+String.valueOf(this.newCandidate.getId()), UploadFile.DOCUMENT_EXTENSION_PDF);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("CV do candidato submetido."));
 	}
 
@@ -70,7 +70,7 @@ public class AssociateCandidateToPositionCDI implements Serializable {
 
 		submission=this.submissionEJB.saveAndReturn(submission);
 
-		this.uploadFile.uploadFile(motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, submission.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+		this.uploadFile.uploadFile(motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, submission.getMiscKey()+String.valueOf(submission.getId()), UploadFile.DOCUMENT_EXTENSION_PDF);
 
 		this.position=null;
 	}

@@ -110,7 +110,7 @@ public class NewSubmissionCDI implements Serializable{
 		submission=this.submissionEJB.saveAndReturn(submission);
 
 		// Grava a motivationLetter
-		this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, submission.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+		this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, submission.getMiscKey()+String.valueOf(submission.getId()), UploadFile.DOCUMENT_EXTENSION_PDF);
 
 		this.cleanAds();
 		this.position=null;

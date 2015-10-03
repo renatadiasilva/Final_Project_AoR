@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +46,7 @@ public class UserEJBImp implements UserEJBInterface {
 
 	@Override
 	public void save(UserEntity user) {
+		user.setMiscKey(RandomStringUtils.randomAlphanumeric(8));
 		log.info("Saving user in DB");
 		isUserComplete(user);
 		try {

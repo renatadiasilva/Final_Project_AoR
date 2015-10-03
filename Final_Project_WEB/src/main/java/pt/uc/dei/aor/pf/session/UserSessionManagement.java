@@ -349,7 +349,7 @@ public class UserSessionManagement implements Serializable {
 		}
 	}
 
-	public long uploadCV(){
+	public String uploadCV(){
 		return this.userManagement.uploadCV();
 	}
 
@@ -404,7 +404,7 @@ public class UserSessionManagement implements Serializable {
 	public String getCvPath(){
 		// (.pdf)
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/userCV/"+this.userManagement.getId()+UploadFile.DOCUMENT_EXTENSION_PDF;
+		return request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/userCV/"+this.userManagement.getMiscKey()+String.valueOf(this.userManagement.getId())+UploadFile.DOCUMENT_EXTENSION_PDF;
 	}
 
 	public String getUserMail(){

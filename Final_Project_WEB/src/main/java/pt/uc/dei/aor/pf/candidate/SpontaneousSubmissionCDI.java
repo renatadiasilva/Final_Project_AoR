@@ -48,7 +48,7 @@ public class SpontaneousSubmissionCDI {
 		spontaneousSubmission=this.submissionEJB.saveAndReturn(spontaneousSubmission);
 
 		// Grava a motivationLetter
-		this.uploadFile.uploadFile(this.motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, spontaneousSubmission.getId(), UploadFile.DOCUMENT_EXTENSION_PDF);
+		this.uploadFile.uploadFile(this.motivationLetter, UploadFile.FOLDER_SUBMISSION_MOTIVATION_LETTER, spontaneousSubmission.getMiscKey()+String.valueOf(spontaneousSubmission.getId()), UploadFile.DOCUMENT_EXTENSION_PDF);
 		
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Candidatura espontânea submetida. Durante a próxima hora pode mudar o CV e a Carta de Motivação desta candidatura na área das suas candidaturas."));
 	}

@@ -99,7 +99,7 @@ public class NewStyleCDI implements Serializable {
 		// Grava o ficheiro com o ID da Entidade Persistida
 		String fileName=this.file.getFileName();
 		String extension=fileName.substring(fileName.lastIndexOf('.'), fileName.length());
-		this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_CUSTOM_LOGOS, this.id, extension);
+		this.uploadFile.uploadFile(this.file, UploadFile.FOLDER_CUSTOM_LOGOS, String.valueOf(this.id), extension);
 		
 		// Actualiza o estilo com a extensão do ficheiro
 		this.newStyle.setLogoFormat(extension);

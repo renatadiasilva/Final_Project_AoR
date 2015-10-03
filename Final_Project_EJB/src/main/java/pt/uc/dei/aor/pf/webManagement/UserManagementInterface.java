@@ -70,9 +70,11 @@ public interface UserManagementInterface {
 
 	public abstract boolean checkAuthentication(String email);
 
-	public abstract long uploadCV();
+	public abstract String uploadCV();
 
 	public abstract boolean isCv();
+	
+	public abstract String getMiscKey();
 
 	public abstract long getId();
 
