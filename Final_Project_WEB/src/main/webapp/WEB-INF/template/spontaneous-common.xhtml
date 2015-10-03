@@ -117,13 +117,6 @@
 					<p:column headerText="Localizações">
 						<h:outputText value="#{p.allLocations()}" />
 					</p:column>
-					<p:column headerText="Descrição">
-						<p:commandButton value="Ver descrição" icon="ui-icon-script"
-							actionListener="#{checkPositionCDI.checkPosition(p)}"
-							update="checkPositionForm" style="width:100%"
-							oncomplete="PF('confirmSpontaneous').show();" />
-					</p:column>
-
 					<p:column headerText="Associar">
 
 						<p:commandButton value="Escolher" icon="ui-icon-triangle-1-e"

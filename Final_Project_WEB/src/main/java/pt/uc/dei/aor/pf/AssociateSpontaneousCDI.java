@@ -16,6 +16,7 @@ import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
 import pt.uc.dei.aor.pf.entities.UserEntity;
+import pt.uc.dei.aor.pf.mailManagement.SecureMailManagementImp;
 import pt.uc.dei.aor.pf.session.UserSessionManagement;
 
 import java.io.Serializable;
@@ -24,9 +25,6 @@ import java.io.Serializable;
 @SessionScoped
 public class AssociateSpontaneousCDI implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4006581824096212501L;
 	
 	@Inject
@@ -40,6 +38,9 @@ public class AssociateSpontaneousCDI implements Serializable {
 	
 	@EJB
 	private SubmissionEJBInterface submissionEJB;
+	
+	@EJB
+	private SecureMailManagementImp mail; 
 	
 	private SubmissionEntity spontaneousSubmission;
 	
@@ -101,8 +102,9 @@ public class AssociateSpontaneousCDI implements Serializable {
 
 		this.spontaneousSubmission.setAlreadyAssociated(true);
 		this.submissionEJB.update(this.spontaneousSubmission);
-		
-		// Envia os mails aqui
+
+		// send email to position manager
+		this.mail.newSubmissionWarning(clonedSubmission);
 		
 		this.clean();
 		

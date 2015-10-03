@@ -261,7 +261,7 @@ public class SecureMailManagementImp implements SecureMailManagementInterface{
 
 	@Override
 	public void newCandidateWarning(SubmissionEntity submission) {
-		// Sent an email notifiyng position manager about a new submission
+		// Sent an email notifiyng candidate about a new manual submission
 
 		UserEntity candidate = submission.getCandidate();
 		String companyName = styleEJB.findDefaulStyle().getCompanyName();
