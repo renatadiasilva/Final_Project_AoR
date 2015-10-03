@@ -159,48 +159,48 @@ public class InitDB {
 				+ "applications. Now, we’re looking for talented Technical "
 				+ "Managers for Embedded Systems to join our Systems and "
 				+ "Software Engineering team in breaching the frontiers of "
-				+ "space, aerospace and defence.\\nAcross international "
+				+ "space, aerospace and defence. Across international "
 				+ "projects, you’ll be working on some of the most critical "
 				+ "software applications developing today, as part of a global "
 				+ "team with more than 15 years’ experience working with "
-				+ "embedded software and systems.\\nSound like you? Then it’s "
+				+ "embedded software and systems. Sound like you? Then it’s "
 				+ "time to challenge your limits. It’s time to give your career"
 				+ " the rocket boost it deserves. It’s time you "
-				+ "joined CRITICAL Software!\\n\\nKEY RESPONSIBILITIES"
-				+ "\\n\\nUndertaking software development for embedded systems "
-				+ "\\nPerforming Verification & Validation testing of embedded "
-				+ "systems\\nLeading a team through your technical expertise "
+				+ "joined CRITICAL Software! KEY RESPONSIBILITIES"
+				+ " Undertaking software development for embedded systems "
+				+ " Performing Verification & Validation testing of embedded "
+				+ "systems Leading a team through your technical expertise "
 				+ "(task allocation, status reporting, and people management)"
-				+ "\\n\\nREQUIRED QUALIFICATIONS, SKILLS AND EXPERIENCE<"
-				+ "\\nMore than 7 years’ experience working in software "
-				+ "development and embedded systems engineering\\nDeep "
+				+ " REQUIRED QUALIFICATIONS, SKILLS AND EXPERIENCE<"
+				+ " More than 7 years’ experience working in software "
+				+ "development and embedded systems engineering Deep "
 				+ "knowledge of different Operating Systems, particularly "
 				+ "the concepts of real-time and embedded systems, computer "
-				+ "architectures and programming languages (C/C++, Ada95)\\n"
+				+ "architectures and programming languages (C/C++, Ada95) "
 				+ "Full-lifecycle software development experience, from "
 				+ "initial requirements elicitation to design, coding, "
 				+ "testing, documentation, implementation, integration "
-				+ "and training\\nTeamwork and technical project management "
-				+ "experience\\nStrong leadership, problem-solving and "
-				+ "communication skills\\nProficiency in English\\n"
-				+ "Good organisational skills\\nAvailability to travel, "
-				+ "mainly Europe (United Kingdom, Germany, France)\\n\\n"
-				+ "DESIRED QUALIFICATIONS, SKILLS AND EXPERIENCE<\\n\\n"
+				+ "and training Teamwork and technical project management "
+				+ "experience Strong leadership, problem-solving and "
+				+ "communication skills Proficiency in English "
+				+ "Good organisational skills Availability to travel, "
+				+ "mainly Europe (United Kingdom, Germany, France) "
+				+ "DESIRED QUALIFICATIONS, SKILLS AND EXPERIENCE< "
 				+ "Knowledge of embedded software development in "
-				+ "microcontrollers\\nKnowledge of safety-critical standards"
-				+ " (for example, ECSS, DO-178B/C, ISO 26262, IEC 61508)\\n"
+				+ "microcontrollers Knowledge of safety-critical standards"
+				+ " (for example, ECSS, DO-178B/C, ISO 26262, IEC 61508) "
 				+ "Knowledge of system development using model-based "
 				+ "development techniques and tools (for example, SCADE "
 				+ "and MATLAB)";
 
 		PositionEntity [] plist = {
-			new PositionEntity("Programadores Java", null, 4, 
+			new PositionEntity("Java Developers", null, 4, 
 				Constants.STATUS_OPEN, null, 60, 
 				ulist[2], ulist[1], "Critical Software", 
 				Constants.TECH_JAVA, "Procuram-se programadores de"
 						+ " java bla bla bla", null,
 				sclist[2]), // plist[0]
-			new PositionEntity("Tecnico de Segurança", null, 1, 
+			new PositionEntity("Security Technician", null, 1, 
 				Constants.STATUS_OPEN, null, 60, 
 				ulist[2], ulist[1], "Critical Software",
 				Constants.TECH_SAFETY, bigDescription, null, sclist[2]), // plist[1]
@@ -209,11 +209,11 @@ public class InitDB {
 				ulist[10], ulist[1], "IT Grow", Constants.TECH_DOTNET,
 				"Procuram-se programadores .NET bla bla bla", 
 				null, sclist[2]), // plist[2]
-			new PositionEntity("Analistas de Integração", null, 2, 
+			new PositionEntity("Integration Analists", null, 2, 
 				Constants.STATUS_OPEN, ftDate.parse("2015-09-12"),
 				30, ulist[10], ulist[1], "BPI", 
 				Constants.TECH_INTEGRATION,
-				"O BPI procura analistas de integração para integrar"
+				"O BPI procura analistas para integrar"
 				+ " a sua equipa blablabla", 
 				null, sclist[1]), // plist[3]
 			new PositionEntity("Junior Programador de Java", null, 1, 
@@ -221,7 +221,7 @@ public class InitDB {
 				40, ulist[2], ulist[1], "BPI", 
 				Constants.TECH_JAVA,
 				"O BPI procura programadores de Java para integrar"
-				+ " a sua equipa de desenvolvimento da aplicação blablabla", 
+				+ " a sua equipa de desenvolvimento blablabla", 
 				null, sclist[0]), // plist[4]
 			new PositionEntity("Gestor de projeto", null, 1, 
 				Constants.STATUS_OPEN, null,
@@ -472,8 +472,7 @@ public class InitDB {
 		slist[9].setSources(sources);
 		slist[9].setStatus(Constants.STATUS_REJECTED);
 		slist[9].setDate(ftDate.parse("2015-08-10"));
-		slist[9].setRejectReason("O candidato não tem currículo "
-				+ "para a posição");
+		slist[9].setRejectReason("The candidate has a bad CV for the position");
 		
 		sources = Arrays.asList(Constants.SOURCE_EXPRESSO);
 		slist[10].setPosition(plist[2]);
@@ -509,7 +508,7 @@ public class InitDB {
 		slist[14].setSources(sources);
 		slist[14].setStatus(Constants.STATUS_REJECTED);
 		slist[14].setDate(ftDate.parse("2015-08-17"));
-		slist[14].setRejectReason("Faltam competências ao candidato");
+		slist[14].setRejectReason("Skills are missing");
 
 		sources = Arrays.asList(Constants.SOURCE_FACEBOOK,
 				Constants.SOURCE_EXPRESSO);
@@ -559,38 +558,37 @@ public class InitDB {
 		ilist[1].addInterviewer(ulist[2]);
 		ilist[1].addInterviewer(ulist[11]);
 		ilist[1].setCarriedOut(true);
-		ilist[1].setFeedback("O candidato mostrou-se muito dinâmico blablabla");
+		ilist[1].setFeedback("The candidate was extremily dinamic. blablabla");
 
 		ilist[2].addInterviewer(ulist[10]);
 		ilist[2].setCarriedOut(true);
-		ilist[2].setFeedback("O candidato correspondeu ao currículo "
-				+ "apresentado blablabla");
+		ilist[2].setFeedback("The candidate corresponded to the skills presented"
+				+ " blablabla");
 
 		ilist[3].addInterviewer(ulist[3]);
 		ilist[3].setCarriedOut(true);
-		ilist[3].setFeedback("O candidato tem uma criatividade "
-				+ "impressionante blablabla");
+		ilist[3].setFeedback("The candidate has an impressive criativity "
+				+ " blablabla");
 
 		ilist[4].addInterviewer(ulist[3]);
 		ilist[4].setCarriedOut(true);
-		ilist[4].setFeedback("O candidato foi aprovado mas precisa de "
-				+ "realizar nova entrevista");
+		ilist[4].setFeedback("The candidate needs a new interview");
 
 		ilist[5].addInterviewer(ulist[3]);
 		ilist[5].addInterviewer(ulist[10]);
 		ilist[5].addInterviewer(ulist[11]);
 		ilist[5].setCarriedOut(true);
-		ilist[5].setFeedback("O candidato satisfez plenamente blablabla");
+		ilist[5].setFeedback("We are completly satisfy with the candidate blablabla");
 		ilist[5].setFirst(false);
 
 		ilist[6].addInterviewer(ulist[3]);
 		ilist[6].addInterviewer(ulist[11]);
 		ilist[6].setCarriedOut(true);
-		ilist[6].setFeedback("Recomenda-se a contratação");
+		ilist[6].setFeedback("We recommend the candidate to be hired");
 
 		ilist[7].addInterviewer(ulist[3]);
 		ilist[7].setCarriedOut(true);
-		ilist[7].setFeedback("Excelente! Recomenda-se a contratação");
+		ilist[7].setFeedback("Excelente candidate, we recommend the candidate to be hired");
 		
 		ilist[8].addInterviewer(ulist[3]);
 		ilist[8].addInterviewer(ulist[11]);
@@ -598,14 +596,14 @@ public class InitDB {
 		
 		ilist[9].addInterviewer(ulist[3]);
 		ilist[9].setCarriedOut(true);
-		ilist[9].setFeedback("Boa prestação. A considerar.");
+		ilist[9].setFeedback("Good interviee result. The candidate is to be considered.");
 		
 		ilist[10].addInterviewer(ulist[3]);
 		ilist[10].setCarriedOut(false);
 		
 		ilist[11].addInterviewer(ulist[3]);
 		ilist[11].setCarriedOut(true);
-		ilist[11].setFeedback("Mais valia para a equipa. Boas indicações");
+		ilist[11].setFeedback("Should be an asset to the team. The candidate give good indications");
 		
 
 		// ENTITIES PRESISTENCE
