@@ -68,7 +68,8 @@
 
 			</h:panelGrid>
 		</h:form>
-
+		<br />
+		<br />
 		<!-- result table -->
 		<h:form id="resultReportTable">
 			<h:panelGroup>
@@ -141,7 +142,7 @@
 						<f:facet name="header">
 							<h:outputText value="Status" />
 						</f:facet>
-						<h:outputText value="#{item.position.status}" />
+						<h:outputText value="#{item.positionStatus()}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">

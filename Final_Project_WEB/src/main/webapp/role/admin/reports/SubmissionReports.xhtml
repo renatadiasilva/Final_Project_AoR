@@ -149,20 +149,19 @@
 						<f:facet name="header">
 							<h:outputText value="Submissions" />
 						</f:facet>
-						<h:outputText value="#{item.submission.candidate.firstName}
-						#{item.submission.candidate.lastName}" />
+						<h:outputText value="#{item.submissionCandidate()}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Date" />
 						</f:facet>
-						<h:outputText value="#{item.submission.date}" />
+						<h:outputText value="#{item.dateSubmission}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Result" />
 						</f:facet>
-						<h:outputText value="#{item.submission.status}" />
+						<h:outputText value="#{item.submissionStatus()}" />
 					</p:column>
 					<p:columnGroup type="footer">
 						<p:row>

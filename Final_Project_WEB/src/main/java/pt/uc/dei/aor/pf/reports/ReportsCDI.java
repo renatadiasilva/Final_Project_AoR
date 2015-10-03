@@ -214,7 +214,7 @@ public class ReportsCDI implements Serializable {
 
 		//make graphic
 		graph.createLineModel(tableHeader, report, periodHeader,
-				measureHeader, 45L);
+				measureHeader, 75L);
 	}
 
 	// submission countings by period between two dates
@@ -633,7 +633,7 @@ public class ReportsCDI implements Serializable {
 
 		//make graphic
 		graph.createLineModel(tableHeader, report, periodHeader,
-				measureHeader, 45L);
+				measureHeader, 75L);
 	}
 
 	// print details of submissions of a given closed position
@@ -646,7 +646,7 @@ public class ReportsCDI implements Serializable {
 			if (position.getStatus().equals(Constants.STATUS_CLOSED)) {
 				log.debug("Position "+position.getPositionCode());				
 
-				tableHeader = "Position details"
+				tableHeader = "Position details "
 						+position.getPositionCode()+" (open from "
 						+ftDate.format(position.getOpeningDate())
 						+" to "+ftDate.format(position.getClosingDate())+")";
@@ -751,7 +751,7 @@ public class ReportsCDI implements Serializable {
 
 		//make graphic
 		graph.createLineModel(tableHeader, report, periodHeader,
-				measureHeader, 45L);
+				measureHeader, 75L);
 	}
 
 	// print past interviews of candidate

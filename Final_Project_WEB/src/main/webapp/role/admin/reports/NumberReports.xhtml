@@ -117,43 +117,70 @@
 						<f:selectItem itemLabel="Anual" itemValue="#{reportsCDI.yearly()}" />
 					</p:selectOneMenu>
 				</h:panelGroup>
-				<!-- testar sem periodo -->
 			</h:panelGrid>
-
-			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
-				value="#{reportsCDI.report}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+		</h:form>
+		<br />
+		<br />
+		<!-- result table -->
+		<h:form id="resultNumberReportTable">
+			<h:panelGroup>
+				<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}"
+					style="width:100%">
+					<div style="float: right">
+						<h:commandLink value="Baixar .pdf"
+							rendered="#{!reportsCDI.report.isEmpty()}">
+							<p:graphicImage library="images/logos" name="pdf.png" />
+							<p:dataExporter type="pdf" target="reptable"
+								fileName="#{reportsCDI.fileTitle}"
+								preProcessor="#{preProcessPDFCDI.preProcessPDF}" />
+						</h:commandLink>
+						<h:commandLink value="Baixar .xls"
+							rendered="#{!reportsCDI.report.isEmpty()}">
+							<p:graphicImage library="images/logos" name="xls.png" />
+							<p:dataExporter type="xls" target="reptable"
+								fileName="#{reportsCDI.fileTitle}" />
+						</h:commandLink>
+					</div>
+				</h:panelGroup>
+				<br />
+				<br />
+				<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
+					value="#{reportsCDI.report}" id="reptable"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10" rendered="#{reportsCDI.checkIfNotNull()}">
-				<f:facet name="header">
-					<h:outputText value="#{reportsCDI.tableHeader}" />
-				</f:facet>
+					paginator="true" rows="10"
+					rendered="#{reportsCDI.checkIfNotNull()}">
+					<f:facet name="header">
+						<h:outputText value="#{reportsCDI.tableHeader}" />
+					</f:facet>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{reportsCDI.periodHeader}" />
-					</f:facet>
-					<p:outputLabel value="#{item.dateHeader}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{reportsCDI.measureHeader}" />
-					</f:facet>
-					<p:outputLabel value="#{item.measure}" />
-				</p:column>
-				<p:columnGroup type="footer">
-					<p:row>
-						<p:column footerText="#{reportsCDI.measureFooter} "
-							style="text-align:right" />
-						<p:column footerText="#{reportsCDI.totalResult}" />
-					</p:row>
-				</p:columnGroup>
-			</p:dataTable>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{reportsCDI.periodHeader}" />
+						</f:facet>
+						<p:outputLabel value="#{item.dateHeader}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{reportsCDI.measureHeader}" />
+						</f:facet>
+						<p:outputLabel value="#{item.measure}" />
+					</p:column>
+					<p:columnGroup type="footer">
+						<p:row>
+							<p:column footerText="#{reportsCDI.measureFooter} "
+								style="text-align:right" />
+							<p:column footerText="#{reportsCDI.totalResult}" />
+						</p:row>
+					</p:columnGroup>
+				</p:dataTable>
+
+			</h:panelGroup>
 
 			<br />
 
 			<div style="width: 100%;">
-				<div style="margin: 0 auto; width: 1000px">
+				<div style="margin: 0 auto; width: 1200px">
 					<h:panelGroup rendered="#{reportsCDI.checkIfNotNullNotBySource()}">
 						<p:chart type="line" model="#{createGraphic.lineModel}"
 							style="height:400px;" />
@@ -161,7 +188,7 @@
 				</div>
 			</div>
 			<div style="width: 100%;">
-				<div style="margin: 0 auto; width: 1000px">
+				<div style="margin: 0 auto; width: 700px">
 					<h:panelGroup rendered="#{reportsCDI.checkIfNotNullBySource()}">
 						<p:chart type="bar" model="#{createGraphic.barModel}"
 							style="height:400px;" />

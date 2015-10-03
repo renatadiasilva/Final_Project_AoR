@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 
+import pt.uc.dei.aor.pf.constants.Constants;
 import pt.uc.dei.aor.pf.entities.InterviewEntity;
 import pt.uc.dei.aor.pf.entities.PositionEntity;
 import pt.uc.dei.aor.pf.entities.SubmissionEntity;
@@ -83,6 +84,11 @@ public class ReportItem implements Serializable {
 		return ftDate.format(interview.getDate());
 	}
 
+	public String getDateSubmission() {
+		if (submission == null) return "";
+		return ftDate.format(submission.getDate());
+	}
+
 	public String getHourInterview() {
 		if (interview == null) return "";
 		return ftHour.format(interview.getDate());
@@ -103,6 +109,33 @@ public class ReportItem implements Serializable {
 	public String interviewCandidate() {
 		return removeAccents(interview.getSubmission().getCandidate().getFirstName()
 				+" "+interview.getSubmission().getCandidate().getLastName());
+	}
+
+	public String submissionCandidate() {
+		return removeAccents(submission.getCandidate().getFirstName()
+				+" "+submission.getCandidate().getLastName());
+	}
+
+	public String submissionStatus() {
+		if (submission.getStatus().equals(Constants.STATUS_SUBMITED))
+			return "Submited";
+		if (submission.getStatus().equals(Constants.STATUS_ACCEPTED))
+			return "Accepted To Interview";
+		if (submission.getStatus().equals(Constants.STATUS_NEGOTIATION))
+			return "Proposal On Negotiation";
+		if (submission.getStatus().equals(Constants.STATUS_PROPOSAL))
+			return "Presented Proposal";
+		if (submission.getStatus().equals(Constants.STATUS_REJECTED))
+			return "Rejected";
+		return "Hired";
+	}
+
+	public String positionStatus() {
+		if (position.getStatus().equals(Constants.STATUS_OPEN))
+			return "Open";
+		if (position.getStatus().equals(Constants.STATUS_ONHOLD))
+			return "On Hold";
+		return "Closed";
 	}
 
 	private String removeAccents(String name) {
