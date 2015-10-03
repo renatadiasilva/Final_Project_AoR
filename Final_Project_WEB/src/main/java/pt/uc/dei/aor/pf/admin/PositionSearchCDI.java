@@ -221,7 +221,7 @@ public class PositionSearchCDI implements Serializable {
 				pos.setStatus(Constants.STATUS_OPEN);
 				pos.setClosingDate(null);
 				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage("Há novamente vagas disponíveis "
+						new FacesMessage("Há novamente vagas disponíveis"
 								+ " na posição. A posição foi"
 								+ " aberta automaticamente."));
 			}

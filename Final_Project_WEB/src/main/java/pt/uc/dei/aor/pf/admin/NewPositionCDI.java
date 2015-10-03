@@ -664,7 +664,7 @@ public class NewPositionCDI implements Serializable {
 		 &&!this.status.equals(Constants.STATUS_CLOSED)) {
 			this.position.setClosingDate(null);
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Atenção que abriu/pôr em hold"
+					new FacesMessage("Atenção que abriu/pôs em hold "
 						+ "uma posição fechada."));
 		}
 
