@@ -534,7 +534,7 @@ public class ReportsCDI implements Serializable {
 		tableHeader = "Rejected submissions by position"
 				+ " (positions created between "+ftDate.format(d1)+" and "
 				+ftDate.format(d2)+")";
-		fileTitle = "Rejected_submissions_position"+periodHeader.substring(0, 1)
+		fileTitle = "Rejected_submissions_position_"
 				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		measureHeader = "Number of Rejected Submissions";
 		measureFooter = "Total Rejected Submissions: ";
@@ -566,7 +566,7 @@ public class ReportsCDI implements Serializable {
 		long ndays = daysBetween(d1, d2);
 		sortDates(ndays);
 
-		fileTitle = "Proposals_position"+periodHeader.substring(0, 1)
+		fileTitle = "Proposals_position_"
 				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		tableHeader = "Proposal presented by position (positions "
 				+ "created between "+ftDate.format(d1)+" and "
