@@ -6,23 +6,23 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener = "#{reportsCDI.clean()}" />
+		<f:viewAction actionListener="#{reportsCDI.clean()}" />
 	</f:metadata>
-	
+
 	<ui:define name="titulo">
 	Admin - Relatórios por Posições - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		
+
 		<h:panelGroup rendered="#{reportsCDI.submissionPos}">
-		<h1>Candidaturas por posição</h1>	
+			<h1>Candidaturas por posição</h1>
 		</h:panelGroup>
 		<h:panelGroup rendered="#{reportsCDI.rejectedPos}">
-		<h1>Candidaturas rejeitadas por posição</h1>	
+			<h1>Candidaturas rejeitadas por posição</h1>
 		</h:panelGroup>
 		<h:panelGroup rendered="#{reportsCDI.proposalPos}">
-		<h1>Propostas apresentadas por posição</h1>	
+			<h1>Propostas apresentadas por posição</h1>
 		</h:panelGroup>
 
 		<h:form id="positionReports">
@@ -31,17 +31,17 @@
 
 				<p:commandButton value="Criar relatório"
 					action="#{reportsCDI.submissionsByPosition()}"
-					update="@form, messages" icon="ui-icon-script" 
+					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.submissionPos}" />
 
 				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.rejectedCountByPosition()}"
-					update="@form, messages" icon="ui-icon-script" 
+					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.rejectedPos}" />
 
 				<p:commandButton value="Criar Relatório"
 					action="#{reportsCDI.proposalCountByPosition()}"
-					update="@form, messages" icon="ui-icon-script" 
+					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.proposalPos}" />
 
 				<p:commandButton value="Voltar à lista de relatórios"
@@ -68,88 +68,121 @@
 
 			</h:panelGrid>
 
-			<p:dataTable id="posreport" emptyMessage="#{reportsCDI.emptyMessage}" var="item"
-				value="#{reportsCDI.report}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
+			<h:panelGroup>
+				<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}"
+					style="width:100%">
+					<div style="float: right">
+						<h:commandLink value="Baixar .pdf"
+							rendered="#{!reportsCDI.report.isEmpty()}">
+							<p:graphicImage library="images/logos" name="pdf.png" />
+							<p:dataExporter type="pdf" target="reptable2"
+								fileName="#{reportsCDI.fileTitle}"
+								preProcessor="#{preProcessPDFCDI.preProcessPDF}" />
+						</h:commandLink>
+						<h:commandLink value="Baixar .xls"
+							rendered="#{!reportsCDI.report.isEmpty()}">
+							<p:graphicImage library="images/logos" name="xls.png" />
+							<p:dataExporter type="xls" target="reptable2"
+								fileName="#{reportsCDI.fileTitle}" />
+						</h:commandLink>
+					</div>
+				</h:panelGroup>
+				<br />
+				<br />
+
+				<p:dataTable id="reptable2"
+					emptyMessage="#{reportsCDI.emptyMessage}" var="item"
+					value="#{reportsCDI.report}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10"
-				rendered="#{reportsCDI.checkIfNotNull()}">
-				<f:facet name="header">
-					<h:outputText value="#{reportsCDI.tableHeader}" />
-				</f:facet>
+					paginator="true" rows="10"
+					rendered="#{reportsCDI.checkIfNotNull()}">
+					<f:facet name="header">
+						<h:outputText value="#{reportsCDI.tableHeader}" />
+					</f:facet>
 
-				<p:columnGroup type="header">
-					<p:row>
-						<p:column colspan="7" headerText="Posição" />
-						<p:column rowspan="2" 
-							headerText="#{reportsCDI.measureHeader}" />
-					</p:row>
-					<p:row>
-						<p:column headerText="Código" />
-						<p:column headerText="Título" />
-						<p:column headerText="Data de Abertura" />
-						<p:column headerText="Estado" />
-						<p:column headerText="Vagas" />
-						<p:column headerText="Empresa" />
-						<p:column headerText="Área Técnica" />
-					</p:row>
-				</p:columnGroup>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column colspan="7" headerText="Position" />
+							<p:column rowspan="2" headerText="#{reportsCDI.measureHeader}" />
+						</p:row>
+						<p:row>
+							<p:column headerText="Code" />
+							<p:column headerText="Title" />
+							<p:column headerText="Opening Date" />
+							<p:column headerText="Status" />
+							<p:column headerText="Openings" />
+							<p:column headerText="Company" />
+							<p:column headerText="Technical Area" />
+						</p:row>
+					</p:columnGroup>
 
-				<p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Code" />
+						</f:facet>
+						<h:outputText value="#{item.position.positionCode}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Opening Date" />
+						</f:facet>
+						<h:outputText value="#{item.position.openingDate}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Title" />
+						</f:facet>
+						<h:outputText value="#{item.position.title}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText value="#{item.positionStatus()}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Openings" />
+						</f:facet>
+						<h:outputText value="#{item.position.openings}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Company" />
+						</f:facet>
+						<h:outputText value="#{item.position.company}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Technical Area" />
+						</f:facet>
+						<h:outputText value="#{item.position.technicalArea}" />
+					</p:column>
+					<p:column>
 					<f:facet name="header">
-						<h:outputText value="Data de Abertura" />
+							<h:outputText value="#{reportsCDI.measureHeader}" />
 					</f:facet>
-					<h:outputText value="#{item.position.openingDate}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Código" />
-					</f:facet>
-					<h:outputText value="#{item.position.positionCode}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Título" />
-					</f:facet>
-					<h:outputText value="#{item.position.title}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Estado" />
-					</f:facet>
-					<h:outputText value="#{item.position.status}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Vagas" />
-					</f:facet>
-					<h:outputText value="#{item.position.openings}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Empresa" />
-					</f:facet>
-					<h:outputText value="#{item.position.company}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Área Técnica" />
-					</f:facet>
-					<h:outputText value="#{item.position.technicalArea}" />
-				</p:column>
-				<p:column>
-					<h:outputText value="#{item.measure}" />
-				</p:column>
-				<p:columnGroup type="footer">
-					<p:row>
-						<p:column colspan="7" 
-							footerText="#{reportsCDI.measureFooter}"
-							style="text-align:right" />
-						<p:column footerText="#{reportsCDI.totalResult}" />
-					</p:row>
-				</p:columnGroup>
-			</p:dataTable>
-
+						<h:outputText value="#{item.measure}" />
+					</p:column>
+					<p:columnGroup type="footer">
+						<p:row>
+							<p:column colspan="7" footerText="#{reportsCDI.measureFooter}"
+								style="text-align:right" />
+							<p:column footerText="#{reportsCDI.totalResult}" />
+						</p:row>
+					</p:columnGroup>
+				</p:dataTable>
+			</h:panelGroup>
+			<br />
+			<div style="width: 100%;">
+				<div style="margin: 0 auto; width: 1200px">
+					<h:panelGroup rendered="#{reportsCDI.checkIfNotNullAndNotEmpty()}">
+						<p:chart type="line" model="#{createGraphic.lineModel}"
+							style="height:400px;" />
+					</h:panelGroup>
+				</div>
+			</div>
 		</h:form>
 
 	</ui:define>

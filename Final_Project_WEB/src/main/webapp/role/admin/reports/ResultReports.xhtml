@@ -73,8 +73,30 @@
 
 			</h:panelGrid>
 
+			<h:panelGroup>
+				<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}"
+					style="width:100%">
+					<div style="float: right">
+						<h:commandLink value="Baixar .pdf"
+							rendered="#{!reportsCDI.report.isEmpty()}">
+							<p:graphicImage library="images/logos" name="pdf.png" />
+							<p:dataExporter type="pdf" target="reptable3"
+								fileName="#{reportsCDI.fileTitle}"
+								preProcessor="#{preProcessPDFCDI.preProcessPDF}" />
+						</h:commandLink>
+						<h:commandLink value="Baixar .xls"
+							rendered="#{!reportsCDI.report.isEmpty()}">
+							<p:graphicImage library="images/logos" name="xls.png" />
+							<p:dataExporter type="xls" target="reptable3"
+								fileName="#{reportsCDI.fileTitle}" />
+						</h:commandLink>
+					</div>
+				</h:panelGroup>
+				<br />
+				<br />
+
 			<p:dataTable emptyMessage="#{reportsCDI.emptyMessage}" var="item"
-				value="#{reportsCDI.report}"
+				value="#{reportsCDI.report}" id="reptable3"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
 				paginator="true" rows="10" rendered="#{reportsCDI.checkIfNotNull()}">
@@ -99,6 +121,8 @@
 					</p:row>
 				</p:columnGroup>
 			</p:dataTable>
+			</h:panelGroup>
+			
 		</h:form>
 
 	</ui:define>
