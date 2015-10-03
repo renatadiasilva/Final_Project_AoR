@@ -27,12 +27,12 @@
 
 			<h:panelGrid id="buttonsResultReports" columns="5">
 
-				<p:commandButton value="Criar relatório"
+				<p:commandButton value="Criar relatório/Gráfico"
 					action="#{reportsCDI.rejectedCountResults()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.rejectSubm}" />
 
-				<p:commandButton value="Criar relatório"
+				<p:commandButton value="Criar relatório/Gráfico"
 					action="#{reportsCDI.proposalCountResults()}"
 					update="@form, messages" icon="ui-icon-script"
 					rendered="#{!reportsCDI.rejectSubm}" />
@@ -99,6 +99,17 @@
 					</p:row>
 				</p:columnGroup>
 			</p:dataTable>
+
+			<br />
+
+			<div style="width: 100%;">
+				<div style="margin: 0 auto; width: 1000px">
+					<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}">
+						<p:chart type="line" model="#{createGraphic.lineModel}"
+							style="height:400px;" />
+					</h:panelGroup>
+				</div>
+			</div>
 		</h:form>
 
 	</ui:define>

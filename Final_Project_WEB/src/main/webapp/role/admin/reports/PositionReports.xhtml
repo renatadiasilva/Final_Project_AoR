@@ -6,42 +6,42 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:metadata>
-		<f:viewAction actionListener = "#{reportsCDI.clean()}" />
+		<f:viewAction actionListener="#{reportsCDI.clean()}" />
 	</f:metadata>
-	
+
 	<ui:define name="titulo">
 	Admin - Relatórios por Posições - #{styleSessionManagement.companyName}
 	</ui:define>
 
 	<ui:define name="contents">
-		
+
 		<h:panelGroup rendered="#{reportsCDI.submissionPos}">
-		<h1>Candidaturas por posição</h1>	
+			<h1>Candidaturas por posição</h1>
 		</h:panelGroup>
 		<h:panelGroup rendered="#{reportsCDI.rejectedPos}">
-		<h1>Candidaturas rejeitadas por posição</h1>	
+			<h1>Candidaturas rejeitadas por posição</h1>
 		</h:panelGroup>
 		<h:panelGroup rendered="#{reportsCDI.proposalPos}">
-		<h1>Propostas apresentadas por posição</h1>	
+			<h1>Propostas apresentadas por posição</h1>
 		</h:panelGroup>
 
 		<h:form id="positionReports">
 
 			<h:panelGrid id="buttonsPositionReports" columns="3">
 
-				<p:commandButton value="Criar relatório"
+				<p:commandButton value="Criar relatório/Gráfico"
 					action="#{reportsCDI.submissionsByPosition()}"
-					update="@form, messages" icon="ui-icon-script" 
+					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.submissionPos}" />
 
-				<p:commandButton value="Criar Relatório"
+				<p:commandButton value="Criar Relatório/Gráfico"
 					action="#{reportsCDI.rejectedCountByPosition()}"
-					update="@form, messages" icon="ui-icon-script" 
+					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.rejectedPos}" />
 
-				<p:commandButton value="Criar Relatório"
+				<p:commandButton value="Criar Relatório/Gráfico"
 					action="#{reportsCDI.proposalCountByPosition()}"
-					update="@form, messages" icon="ui-icon-script" 
+					update="@form, messages" icon="ui-icon-script"
 					rendered="#{reportsCDI.proposalPos}" />
 
 				<p:commandButton value="Voltar à lista de relatórios"
@@ -68,12 +68,11 @@
 
 			</h:panelGrid>
 
-			<p:dataTable id="posreport" emptyMessage="#{reportsCDI.emptyMessage}" var="item"
-				value="#{reportsCDI.report}"
+			<p:dataTable id="posreport" emptyMessage="#{reportsCDI.emptyMessage}"
+				var="item" value="#{reportsCDI.report}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink}
 				 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-				paginator="true" rows="10"
-				rendered="#{reportsCDI.checkIfNotNull()}">
+				paginator="true" rows="10" rendered="#{reportsCDI.checkIfNotNull()}">
 				<f:facet name="header">
 					<h:outputText value="#{reportsCDI.tableHeader}" />
 				</f:facet>
@@ -81,8 +80,7 @@
 				<p:columnGroup type="header">
 					<p:row>
 						<p:column colspan="7" headerText="Posição" />
-						<p:column rowspan="2" 
-							headerText="#{reportsCDI.measureHeader}" />
+						<p:column rowspan="2" headerText="#{reportsCDI.measureHeader}" />
 					</p:row>
 					<p:row>
 						<p:column headerText="Código" />
@@ -142,13 +140,22 @@
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>
-						<p:column colspan="7" 
-							footerText="#{reportsCDI.measureFooter}"
+						<p:column colspan="7" footerText="#{reportsCDI.measureFooter}"
 							style="text-align:right" />
 						<p:column footerText="#{reportsCDI.totalResult}" />
 					</p:row>
 				</p:columnGroup>
 			</p:dataTable>
+			<br />
+
+			<div style="width: 100%;">
+				<div style="margin: 0 auto; width: 1000px">
+					<h:panelGroup rendered="#{reportsCDI.checkIfNotNull()}">
+						<p:chart type="line" model="#{createGraphic.lineModel}"
+							style="height:400px;" />
+					</h:panelGroup>
+				</div>
+			</div>
 
 		</h:form>
 
