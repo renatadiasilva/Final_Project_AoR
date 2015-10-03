@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
@@ -38,7 +40,7 @@ public class ScriptSearchCDI implements Serializable {
 
 	@EJB
 	private InterviewEJBInterface interviewEJB;
-	
+
 	@EJB
 	private QuestionEJBInterface questionEJB;
 
@@ -101,6 +103,24 @@ public class ScriptSearchCDI implements Serializable {
 		return this.script!=null;
 	}
 
+	public boolean isDeletable(){		
+		// Script base de outros script
+		if(!this.scriptEJB.findChildScripts(this.script).isEmpty())return false;
+
+		// Script em uso em posições
+		if(!this.positionEJB.findPositionsByScript(this.script).isEmpty())return false;
+
+		// Script em uso em entrevistas
+		if(!this.interviewEJB.findInterviewsWithScript(this.script).isEmpty())return false;
+
+		return true;
+	}
+
+	public void deleteScript(){
+		this.scriptEJB.delete(this.script);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Guião Apagado"));
+	}
+
 	public boolean checkScript(ScriptEntity script){
 		if(this.script==null)return false;
 		if(this.script.getId()==script.getId())return true;
@@ -110,11 +130,11 @@ public class ScriptSearchCDI implements Serializable {
 	public void unloadScript(){
 		this.script=null;
 	}
-	
+
 	public String getTypeText(QuestionEntity question) {
 		return questionEJB.getTypeText(question);
 	}
-	
+
 	// getters e setters
 
 	public String getTitle() {

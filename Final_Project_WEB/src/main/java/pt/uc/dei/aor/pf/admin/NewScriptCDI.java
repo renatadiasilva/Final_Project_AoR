@@ -61,9 +61,12 @@ public class NewScriptCDI implements Serializable {
 	private String title;
 
 	private String comments;
+	
+	private boolean show;
 
 	@PostConstruct
 	public void init() {
+		
 		this.textual=true;
 		this.trueFalse=this.numeric=false;
 
@@ -109,6 +112,9 @@ public class NewScriptCDI implements Serializable {
 
 			ScriptEntity newScript=new ScriptEntity(this.scriptToStartFrom, this.title, this.questions.getTarget(),
 					this.comments, true, creator);
+			
+			// Se está a derivar de outro Script, define de onde vem
+			if(this.scriptToStartFrom!=null)newScript.setDerivedFrom(this.scriptToStartFrom);
 
 			this.scriptEJB.save(newScript);
 
@@ -144,47 +150,34 @@ public class NewScriptCDI implements Serializable {
 	}
 
 	public void useScript(ScriptEntity script){
+		this.show=true;
+		
 		this.scriptToStartFrom=script;
 
-		this.title=this.scriptToStartFrom.getTitle();
+		this.title="";
+		
 		this.comments=this.scriptToStartFrom.getComments();
 
 		// Põe as questões do script no target
 		this.questionsTarget=this.scriptToStartFrom.getQuestions();
 
 		// Retira as questões do target do source
-		this.questionsSource = this.questionsEJB.findAll();
+		this.questionsSource=this.questionsEJB.findAll();
 		
-//		long id1,id2;
-//		for(QuestionEntity q1:this.questionsTarget){
-//			id1=q1.getId();
-//			for(QuestionEntity q2:this.questionsSource){
-//				id2=q2.getId();
-//				if(id1==id2){
-//					System.out.println(q2.getQuestion()+" removed");
-//					this.questionsSource.remove(q2);
-//				}
-//			}
-//		}
-		
-//		this.questionsSource.removeAll(this.questionsTarget);
-		
-//		for(QuestionEntity q:this.questionsTarget)
-//			if(this.questionsSource.contains(q))
-//				this.questionsSource.remove(q);
-		
-//		for(QuestionEntity q1:this.questionsTarget){
-//			for(QuestionEntity q2:this.questionsSource){
-//				if(q1.equals(q2)){
-//					System.out.println(q1.getQuestion()+" removed");
-//					this.questionsSource.remove(q2);
-//				}
-//			}
-//		}
+		for(int i=0;i<this.questionsTarget.size();i++)
+			this.removeFromSource(this.questionsTarget.get(i));
 
 		// Sets
 		this.questions.setSource(questionsSource);
 		this.questions.setTarget(questionsTarget);
+	}
+
+	private void removeFromSource(QuestionEntity question) {
+		for(int j=0;j<this.questionsSource.size();j++)
+			if(this.questionsSource.get(j).getId()==question.getId()){
+				this.questionsSource.remove(j);
+				break;
+			}		
 	}
 
 	public void createNewQuestion(){
@@ -284,4 +277,12 @@ public class NewScriptCDI implements Serializable {
 		this.textual=this.numeric=this.trueFalse=false;
 	}
 
+	public boolean isShow() {
+		return show;
+	}
+
+	public void setShow(boolean show) {
+		this.show = show;
+	}
+	
 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+	<ui:composition>
+
+		<!-- Título, Comentários -->
+		<h:form id="scriptAttributesForm">
+			<br />
+			<br />
+			<h:panelGrid columns="2" style="width:550px;"
+				rendered="#{newScriptCDI.show}">
+				<p:outputLabel value="Título: *" />
+				<p:inputText value="#{newScriptCDI.title}" style="width:100%;">
+					<p:ajax update="@this" />
+				</p:inputText>
+				<p:outputLabel value="Comentários: *" />
+				<p:inputTextarea value="#{newScriptCDI.comments}"
+					style="width:100%;" rows="3">
+					<p:ajax update="@this" />
+				</p:inputTextarea>
+			</h:panelGrid>
+			<br />
+			<br />
+		</h:form>
+
+		<h:form id="questionTypeForm">
+			<h:panelGrid columns="6" id="questionType"
+				rendered="#{newScriptCDI.show}">
+				<p:outputLabel value="Resposta textual" />
+				<p:selectBooleanCheckbox value="#{newScriptCDI.textual}">
+					<p:ajax update="@form" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Resposta verdadeiro/falso" />
+				<p:selectBooleanCheckbox value="#{newScriptCDI.trueFalse}">
+					<p:ajax update="@form" />
+				</p:selectBooleanCheckbox>
+
+				<p:outputLabel value="Resposta numérica" />
+				<p:selectBooleanCheckbox value="#{newScriptCDI.numeric}">
+					<p:ajax update="@form" />
+				</p:selectBooleanCheckbox>
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="pickListForm">
+			<!-- Adicionar questões -->
+			<h:panelGrid columns="3" id="addQuestion"
+				rendered="#{newScriptCDI.show}">
+				<p:inputText id="new-script-ad-question"
+					value="#{newScriptCDI.newQuestion}" style="width:500px;" />
+				<p:watermark for="new-script-ad-question"
+					value="Insira uma questão nova." />
+				<p:commandButton icon="ui-icon-plus" update="@form"
+					actionListener="#{newScriptCDI.createNewQuestion()}" />
+			</h:panelGrid>
+			<br />
+
+			<!-- Gerar lista de questões -->
+			<p:pickList id="scriptBuilder" value="#{newScriptCDI.questions}"
+				var="question" itemValue="#{question}" itemLabel="#{question}"
+				showSourceControls="true" showTargetControls="true"
+				showCheckbox="true" responsive="true" showSourceFilter="true"
+				showTargetFilter="true" filterMatchMode="contains"
+				converter="questionConverter" rendered="#{newScriptCDI.show}">
+
+				<f:facet name="sourceCaption">Questões Disponíveis</f:facet>
+				<f:facet name="targetCaption">Questões do Guião *</f:facet>
+
+				<p:ajax event="transfer" listener="#{newScriptCDI.onTransfer}" />
+
+				<p:column style="width:100%;">
+					<h:outputText value="#{question}" />
+				</p:column>
+			</p:pickList>
+		</h:form>
+
+		<br />
+
+		<h:form id="createScriptForm">
+			<h:panelGrid columns="2" rendered="#{newScriptCDI.show}">
+				<p:commandButton value="Limpar Campos" style="width:100%"
+					action="#{newScriptCDI.init()}"
+					update="messages scriptAttributesForm questionTypeForm 
+						pickListForm createScriptForm"
+					icon="ui-icon-cancel" />
+				<p:commandButton value="Criar novo guião" icon="ui-icon-disk"
+					ajax="false" style="width:550px;"
+					action="#{newScriptCDI.createScript()}"
+					actionListener="#{scriptSearchCDI.clean()}" />
+			</h:panelGrid>
+		</h:form>
+
+	</ui:composition>
+
+</h:body>
+</html>

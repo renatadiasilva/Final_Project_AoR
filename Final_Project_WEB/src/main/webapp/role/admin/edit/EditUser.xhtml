@@ -20,8 +20,8 @@
 				<p:link value="Eliminar utilizadores"
 					href="../../../role/admin/dangerzone/RemoveDataUser.xhtml" />
 				<p:link value="Lista de utilizadores removidos"
-					href="../../../role/admin/dangerzone/RemovedEmails.xhtml" />		
-			</p:panelGrid>		
+					href="../../../role/admin/dangerzone/RemovedEmails.xhtml" />
+			</p:panelGrid>
 		</h:form>
 		<br />
 		<!-- Pesquisas -->
@@ -60,7 +60,7 @@
 
 			<h:form style="width:100%">
 				<p:commandButton action="#{userSearchCDI.cleanAll()}"
-					value="Limpar pesquisa"
+					value="Limpar pesquisa" style="width:100%"
 					update="search-email-out search-keywordrole-out
 						  search-name-out search-keyword-out userSearch messages"
 					icon="ui-icon-cancel" />
@@ -68,17 +68,19 @@
 		</h:panelGrid>
 
 		<h:form id="search-keywordrole-out">
-			<h:panelGrid columns="5" style="width:100%">
-				<p:watermark value="Procurar por palavra chave e perfil: "
-					for="search-keywordrole" />
-				<p:inputText id="search-keywordrole"
-					value="#{userSearchCDI.keyword}" style="width:100%" />
-				<p:commandButton action="#{userSearchCDI.searchByKeywordAndRole()}"
-					update="userSearch messages" icon="ui-icon-search" />
+			<h:panelGrid columns="2" style="width:100%">
 
-				<p:outputLabel value="Perfil: " for="search-keywordRoleAll" />
+				<h:panelGroup style="width:100%">
+					<p:watermark value="Procurar por palavra chave e perfil: "
+						for="search-keywordrole" />
+					<p:inputText id="search-keywordrole"
+						value="#{userSearchCDI.keyword}" style="width:100%" />
+					<p:commandButton action="#{userSearchCDI.searchByKeywordAndRole()}"
+						update="userSearch messages" icon="ui-icon-search" />
+				</h:panelGroup>
+
 				<p:selectOneMenu id="search-keywordRoleAll"
-					value="#{userSearchCDI.role}" style="width:150px">
+					value="#{userSearchCDI.role}" style="width:100%">
 					<f:selectItem itemLabel="Administrador"
 						itemValue="#{userSearchCDI.admin()}" />
 					<f:selectItem itemLabel="Gestor"
