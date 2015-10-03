@@ -129,11 +129,17 @@
 					<h:outputText value="#{reportsCDI.tableHeader}" />
 				</f:facet>
 
-				<p:column headerText="#{reportsCDI.periodHeader}">
-					<h:outputText value="#{item.dateHeader}" />
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{reportsCDI.periodHeader}" />
+					</f:facet>
+					<p:outputLabel value="#{item.dateHeader}" />
 				</p:column>
-				<p:column headerText="#{reportsCDI.measureHeader}">
-					<h:outputText value="#{item.measure}" />
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{reportsCDI.measureHeader}" />
+					</f:facet>
+					<p:outputLabel value="#{item.measure}" />
 				</p:column>
 				<p:columnGroup type="footer">
 					<p:row>

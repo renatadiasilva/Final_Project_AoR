@@ -102,14 +102,18 @@ public class ReportsCDI implements Serializable {
 		return report != null;
 	}
 
+	public boolean checkIfNotNullAndNotEmpty() {
+		return report != null && !report.isEmpty();
+	}
+
 	// present graphic only after hiting button (submisionBySource case)
 	public boolean checkIfNotNullNotBySource() {
-		return report != null && !submissionsBySource;
+		return report != null && !report.isEmpty() && !submissionsBySource;
 	}
 
 	// present graphic only after hiting button (not submisionBySource case)
 	public boolean checkIfNotNullBySource() {
-		return report != null && submissionsBySource;
+		return report != null && !report.isEmpty() && submissionsBySource;
 	}
 
 	// clean all data when enter the page
