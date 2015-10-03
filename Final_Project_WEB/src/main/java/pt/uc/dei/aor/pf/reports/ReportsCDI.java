@@ -61,13 +61,14 @@ public class ReportsCDI implements Serializable {
 
 	// results
 	private String measureHeader;
-	private String tableHeader;
+	private String tableHeader, fileTitle;
 	private String periodHeader;
 	private String measureFooter;
 	private String totalResult;
 	private String emptyMessage;
 	private List<ReportItem> report;
 	private SimpleDateFormat ftDate = new SimpleDateFormat ("yyyy-MM-dd"); 
+	private SimpleDateFormat ftDateFile = new SimpleDateFormat ("yyyyMMdd"); 
 
 	// rendered flags
 	private boolean submissionPos;
@@ -124,6 +125,8 @@ public class ReportsCDI implements Serializable {
 		log.info("Creating report with number of submissions by position");
 		log.debug("From "+d1+" to "+d2);
 
+		fileTitle = "Candidaturas_posicao_"+ftDateFile.format(d1)+"_"
+				+ftDateFile.format(d2);		
 		tableHeader = "Número de candidaturas por posição (posições "
 				+ "criadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
@@ -160,6 +163,9 @@ public class ReportsCDI implements Serializable {
 				+periodHeader.substring(0, 3)+" (candidaturas "
 				+"submetidas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
+		fileTitle = "Tempo_medio_contratacao_"
+				+periodHeader.substring(0, 1)+"_"+ftDateFile.format(d1)+"_"
+				+ftDateFile.format(d2);
 		measureHeader = "Tempo médio (em dias)";
 		measureFooter = "Tempo médio total: ";
 		emptyMessage = "Sem contratações.";
@@ -207,6 +213,8 @@ public class ReportsCDI implements Serializable {
 				+"submetidas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+" (por "
 				+periodHeader.substring(0, 3)+")";
+		fileTitle = "Candidaturas_total_"+periodHeader.substring(0, 1)
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		measureHeader = "Nº Candidaturas submetidas";
 		measureFooter = "Total Candidaturas: ";
 		emptyMessage = "Sem candidaturas.";
@@ -247,6 +255,8 @@ public class ReportsCDI implements Serializable {
 			break;
 		}
 		prepareDates();
+		fileTitle = "Candidaturas_espontaneas_"+periodHeader.substring(0, 1)
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		tableHeader = "Número de Candidaturas Espontâneas "
 				+"submetidas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+" (por "
@@ -292,6 +302,8 @@ public class ReportsCDI implements Serializable {
 			break;
 		}
 		prepareDates();
+		fileTitle = "Candidaturas_rejeitadas_"+periodHeader.substring(0, 1)
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		tableHeader = "Número de Candidaturas Rejeitadas "
 				+"entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+" (por "
@@ -339,6 +351,8 @@ public class ReportsCDI implements Serializable {
 			break;
 		}
 		prepareDates();
+		fileTitle = "Propostas_apresentadas_"+periodHeader.substring(0, 1)
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		tableHeader = "Número de Propostas Apresentadas "
 				+"entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+" (por "
@@ -372,6 +386,8 @@ public class ReportsCDI implements Serializable {
 		long ndays = daysBetween(d1, d2);
 		sortDates(ndays);
 
+		fileTitle = "Candidaturas_fonte_"
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		tableHeader = "Número de Candidaturas por Fonte "
 				+"(submetidas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
@@ -417,6 +433,8 @@ public class ReportsCDI implements Serializable {
 			break;
 		}
 		prepareDates();
+		fileTitle = "Contratacoes_"+periodHeader.substring(0, 1)
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		tableHeader = "Número de contratações "
 				+"entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+" (por "
@@ -451,6 +469,8 @@ public class ReportsCDI implements Serializable {
 		tableHeader = "Número de candidaturas rejeitadas por posição"
 				+ " (posições criadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
+		fileTitle = "Candidaturas_rejeitadas_posicao"+periodHeader.substring(0, 1)
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		measureHeader = "Nº Candidaturas rejeitadas";
 		measureFooter = "Total Candidaturas rejeitadas: ";
 		emptyMessage = "Sem candidaturas rejeitadas.";
@@ -476,6 +496,8 @@ public class ReportsCDI implements Serializable {
 		long ndays = daysBetween(d1, d2);
 		sortDates(ndays);
 
+		fileTitle = "Propostas_apresentadas_posicao"+periodHeader.substring(0, 1)
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		tableHeader = "Número propostas apresentadas por posição (posições "
 				+ "criadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
@@ -512,6 +534,9 @@ public class ReportsCDI implements Serializable {
 				+periodHeader.substring(0, 3)+" (posições "
 				+"criadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2)+")";
+		fileTitle = "Tempo_medio_fecho_"
+				+periodHeader.substring(0, 1)+"_"+ftDateFile.format(d1)+"_"
+				+ftDateFile.format(d2);
 		measureHeader = "Tempo médio (em dias)";
 		measureFooter = "Tempo médio total: ";
 		emptyMessage = "Nada a apresentar.";
@@ -547,6 +572,9 @@ public class ReportsCDI implements Serializable {
 						+position.getPositionCode()+" (aberta de "
 						+ftDate.format(position.getOpeningDate())
 						+" até "+ftDate.format(position.getClosingDate())+")";
+				fileTitle = "Detalhes_posicao_"+position.getPositionCode()
+						+ftDateFile.format(position.getOpeningDate())
+						+" até "+ftDateFile.format(position.getClosingDate());
 				measureFooter = "Total Candidaturas: ";
 				emptyMessage = "Sem candidaturas.";
 
@@ -584,6 +612,8 @@ public class ReportsCDI implements Serializable {
 		tableHeader = "Número de entrevistas "
 				+"realizadas entre "+ftDate.format(d1)+" e "
 				+ftDate.format(d2);
+		fileTitle = "Entrevistas_realizadas_"
+				+ftDateFile.format(d1)+"_"+ftDateFile.format(d2);
 		measureHeader = "Resultado";
 		measureFooter = "Total Entrevistas: ";
 		emptyMessage = "Sem entrevistas.";
@@ -616,6 +646,9 @@ public class ReportsCDI implements Serializable {
 		if (p == Constants.MONTHLY) periodHeader = Constants.PERIOD_MHEADER;
 		else periodHeader = Constants.PERIOD_YHEADER;
 		prepareDates();
+		fileTitle = "Tempo_medio_entrevista_"
+				+periodHeader.substring(0, 1)+"_"+ftDateFile.format(d1)+"_"
+				+ftDateFile.format(d2);
 		tableHeader = "Tempo Médio para 1ª Entrevista por "
 				+periodHeader.substring(0, 3)+" (candidaturas "
 				+"submetidas entre "+ftDate.format(d1)+" e "
@@ -654,6 +687,9 @@ public class ReportsCDI implements Serializable {
 				tableHeader = "Detalhes de entrevistas feitas ao candidato "
 						+candidate.getFirstName()+" "
 						+candidate.getLastName()+" ("+candidate.getEmail()+")";
+				fileTitle = "Detalhes_entrevistas_"
+						+candidate.getFirstName()+""
+						+candidate.getLastName();
 				measureHeader = "Resultado";
 				measureFooter = "Total Entrevistas: ";
 				emptyMessage = "Sem entrevistas.";
@@ -1210,6 +1246,14 @@ public class ReportsCDI implements Serializable {
 
 	public void setPositionChoose(boolean positionChoose) {
 		this.positionChoose = positionChoose;
+	}
+
+	public String getFileTitle() {
+		return fileTitle;
+	}
+
+	public void setFileTitle(String fileTitle) {
+		this.fileTitle = fileTitle;
 	}
 
 }
