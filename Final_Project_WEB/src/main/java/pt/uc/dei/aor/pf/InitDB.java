@@ -97,7 +97,7 @@ public class InitDB {
 		};
 		
 		UserInfoEntity [] uilist = {
-			new UserInfoEntity(new Date(), 
+			new UserInfoEntity(ftDate.parse("1960-10-06"), 
 					"Avenida da Liberdade",
 					"Lisboa", null, "969 362 531", "Portugal",
 					"Engenharia Informática","Universidade do Porto, Portugal",
@@ -153,45 +153,13 @@ public class InitDB {
 		
 		String bigDescription = "Working for us is like nothing on earth. "
 				+ "Every day, our teams across the globe challenge the limits "
-				+ "of human achievement, engineering solutions for our planet "
-				+ "and beyond.Our astronomically talented engineers build "
+				+ "of human achievement, engineering solutions "
+				+ "and beyond. Our astronomically talented engineers build "
 				+ "rock-solid software for leading industries’ most critical "
 				+ "applications. Now, we’re looking for talented Technical "
 				+ "Managers for Embedded Systems to join our Systems and "
 				+ "Software Engineering team in breaching the frontiers of "
-				+ "space, aerospace and defence. Across international "
-				+ "projects, you’ll be working on some of the most critical "
-				+ "software applications developing today, as part of a global "
-				+ "team with more than 15 years’ experience working with "
-				+ "embedded software and systems. Sound like you? Then it’s "
-				+ "time to challenge your limits. It’s time to give your career"
-				+ " the rocket boost it deserves. It’s time you "
-				+ "joined CRITICAL Software! KEY RESPONSIBILITIES"
-				+ " Undertaking software development for embedded systems "
-				+ " Performing Verification & Validation testing of embedded "
-				+ "systems Leading a team through your technical expertise "
-				+ "(task allocation, status reporting, and people management)"
-				+ " REQUIRED QUALIFICATIONS, SKILLS AND EXPERIENCE<"
-				+ " More than 7 years’ experience working in software "
-				+ "development and embedded systems engineering Deep "
-				+ "knowledge of different Operating Systems, particularly "
-				+ "the concepts of real-time and embedded systems, computer "
-				+ "architectures and programming languages (C/C++, Ada95) "
-				+ "Full-lifecycle software development experience, from "
-				+ "initial requirements elicitation to design, coding, "
-				+ "testing, documentation, implementation, integration "
-				+ "and training Teamwork and technical project management "
-				+ "experience Strong leadership, problem-solving and "
-				+ "communication skills Proficiency in English "
-				+ "Good organisational skills Availability to travel, "
-				+ "mainly Europe (United Kingdom, Germany, France) "
-				+ "DESIRED QUALIFICATIONS, SKILLS AND EXPERIENCE< "
-				+ "Knowledge of embedded software development in "
-				+ "microcontrollers Knowledge of safety-critical standards"
-				+ " (for example, ECSS, DO-178B/C, ISO 26262, IEC 61508) "
-				+ "Knowledge of system development using model-based "
-				+ "development techniques and tools (for example, SCADE "
-				+ "and MATLAB)";
+				+ "space, aerospace and defence.";
 
 		PositionEntity [] plist = {
 			new PositionEntity("Java Developers", null, 4, 
@@ -375,7 +343,7 @@ public class InitDB {
 		plist[0].setAdvertisingChannels(channels);
 		plist[0].setOpeningDate(ftDate.parse("2015-08-02"));
 		plist[0].setSlaDate(ftDate.parse("2015-09-20"));
-		takeTailCode(plist[0], '0');
+//		takeTailCode(plist[0], '0');
 		
 		locations = Arrays.asList(Constants.LOCATION_PORTO);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
@@ -384,7 +352,7 @@ public class InitDB {
 		plist[1].setLocations(locations);
 		plist[1].setAdvertisingChannels(channels);
 		plist[1].setOpeningDate(ftDate.parse("2015-09-02"));
-		takeTailCode(plist[1], '1');
+//		takeTailCode(plist[1], '1');
 		
 		locations = Arrays.asList(Constants.LOCATION_LISBOA);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
@@ -393,7 +361,7 @@ public class InitDB {
 		plist[2].setAdvertisingChannels(channels);
 		plist[2].setOpeningDate(ftDate.parse("2015-07-31"));
 		plist[2].setHired_people(1);
-		takeTailCode(plist[2], '2');
+//		takeTailCode(plist[2], '2');
 
 		locations = Arrays.asList(Constants.LOCATION_LISBOA,
 				Constants.LOCATION_COIMBRA, Constants.LOCATION_PORTO);
@@ -404,7 +372,7 @@ public class InitDB {
 		plist[3].setOpeningDate(ftDate.parse("2015-08-02"));
 		plist[3].setStatus(Constants.STATUS_CLOSED);
 		plist[3].setHired_people(2);
-		takeTailCode(plist[3], '3');
+//		takeTailCode(plist[3], '3');
 		
 		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL,
@@ -414,13 +382,13 @@ public class InitDB {
 		plist[4].setOpeningDate(ftDate.parse("2015-06-29"));
 		plist[4].setStatus(Constants.STATUS_CLOSED);
 		plist[4].setHired_people(1);
-		takeTailCode(plist[4], '4');
+//		takeTailCode(plist[4], '4');
 		
 		locations = Arrays.asList(Constants.LOCATION_COIMBRA);
 		channels = Arrays.asList(Constants.SOCIAL_CRITICAL);
 		plist[5].setLocations(locations);
 		plist[5].setAdvertisingChannels(channels);
-		takeTailCode(plist[5], '5');
+//		takeTailCode(plist[5], '5');
 		
 		for (PositionEntity p : plist)
 			p.setPositionCode(p.getPositionCode().replaceAll("null", "1"));
@@ -646,10 +614,10 @@ public class InitDB {
 
 	}
 	
-	private void takeTailCode(PositionEntity p, char d) {
-		String[] a = p.getPositionCode().split("-");
-		a[2] = a[2].substring(0,a[2].length()-1)+d;
-		p.setPositionCode(a[0]+"-"+a[1]+"-"+a[2]);
-	}
+//	private void takeTailCode(PositionEntity p, char d) {
+//		String[] a = p.getPositionCode().split("-");
+//		a[2] = a[2].substring(0,a[2].length()-1)+d;
+//		p.setPositionCode(a[0]+"-"+a[1]+"-"+a[2]);
+//	}
 
 }
