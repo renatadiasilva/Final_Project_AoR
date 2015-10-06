@@ -38,19 +38,21 @@ public class UserDao extends GenericDao<UserEntity> {
 
 		List<String>verifyRoles=new ArrayList<>();
 
-		verifyRoles.addAll(roles);
+		if (roles != null && !roles.isEmpty()) {
+			verifyRoles.addAll(roles);
 
-		if(verifyRoles.contains(Constants.ROLE_INTERVIEWER))
-			return verifyRoles;
+			if(verifyRoles.contains(Constants.ROLE_INTERVIEWER))
+				return verifyRoles;
 
-		if(verifyRoles.contains(Constants.ROLE_ADMIN)){
-			verifyRoles.add(Constants.ROLE_INTERVIEWER);
-			return verifyRoles;
+			if(verifyRoles.contains(Constants.ROLE_ADMIN)){
+				verifyRoles.add(Constants.ROLE_INTERVIEWER);
+				return verifyRoles;
+			}
+
+			if(verifyRoles.contains(Constants.ROLE_MANAGER))
+				verifyRoles.add(Constants.ROLE_INTERVIEWER);
+
 		}
-
-		if(verifyRoles.contains(Constants.ROLE_MANAGER))
-			verifyRoles.add(Constants.ROLE_INTERVIEWER);
-
 		return verifyRoles;
 	}
 
@@ -131,14 +133,14 @@ public class UserDao extends GenericDao<UserEntity> {
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findCandidatesByPhone(String phone,
 			UserEntity manager) {
-		
+
 		if (manager == null) {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("phone", phone);
 			parameters.put("removed", Constants.REMOVED_DATA);
 			return super.findSomeResults("User.findCandidatesByPhone", parameters);
 		}
-		
+
 		String queryS = "SELECT DISTINCT users.*"
 				+ " FROM users, users_info, submissions, positions"
 				+ " WHERE (home_phone LIKE :phone"
